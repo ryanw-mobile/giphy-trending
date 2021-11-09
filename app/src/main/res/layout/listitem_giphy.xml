@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="uk.ryanwong.giphytrending.model.Data" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/trending_image"
+            style="@style/style_listitem_image"
+            android:contentDescription="@{data.title}"
+            app:imageUrl="@{data.images.fixed_height_small_still.url}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+        <TextView
+            android:id="@+id/trending_type"
+            style="@style/style_listitem_type"
+            android:text="@{data.type}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="GIF" />
+
+        <TextView
+            android:id="@+id/trending_title"
+            style="@style/style_listitem_title"
+            android:text="@{data.title}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@tools:sample/cities" />
+
+        <TextView
+            android:id="@+id/trending_username"
+            style="@style/style_listitem_username"
+            android:text="@{data.username}"
+            app:layout_constraintBottom_toTopOf="@id/trending_title"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Username" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -9,7 +9,7 @@
 
         <variable
             name="data"
-            type="uk.ryanwong.giphytrending.model.Data" />
+            type="uk.ryanwong.giphytrending.domain.model.TrendingDomainModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +21,7 @@
             android:id="@+id/trending_image"
             style="@style/style_listitem_image"
             android:contentDescription="@{data.title}"
-            app:imageUrl="@{data.images.fixedHeightSmallStill.url}"
+            app:imageUrl="@{data.url}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"

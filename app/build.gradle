@@ -17,13 +17,15 @@ android {
         versionCode 1
         versionName "1.0"
 
+        resConfigs "en"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // Configurable values - We are able to set different values for each build
         buildConfigField 'String', 'GIPHY_ENDPOINT', '"https://api.giphy.com/"'
         buildConfigField 'String', 'GIPHY_API_KEY', keyProps["giphyApiKey"]
         buildConfigField 'String', 'DATABASE_NAME', '"trending.db"'
-        buildConfigField 'String', 'API_LIMIT', '"25"'
+        buildConfigField 'String', 'API_LIMIT', '"100"'
         buildConfigField 'String', 'API_RATING', '"G"'
     }
 
@@ -68,7 +70,6 @@ android {
     }
 
     buildFeatures {
-        viewBinding true
         dataBinding true
     }
     compileOptions {
@@ -99,12 +100,16 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation "androidx.recyclerview:recyclerview:1.2.1"
-    implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     // Android Lifecycle Extensions
+    def lifecycle_version = '2.4.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation "androidx.activity:activity-ktx:1.4.0"
+    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+
 
     // Glide for Images
     implementation 'com.github.bumptech.glide:glide:4.12.0'
@@ -114,6 +119,12 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
+
+    // Moshi
+    def moshi_version = "1.12.0"
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+    implementation "com.squareup.moshi:moshi-adapters:$moshi_version"
 
     // Dagger 2
     implementation "com.google.dagger:dagger:$dagger_version"
@@ -130,7 +141,6 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
     // optional - RxJava support for Room
     implementation "androidx.room:room-rxjava2:$room_version"
     kapt "androidx.room:room-compiler:$room_version"

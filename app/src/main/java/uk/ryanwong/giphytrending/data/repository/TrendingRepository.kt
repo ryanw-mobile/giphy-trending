@@ -9,12 +9,12 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subscribers.DisposableSubscriber
 import uk.ryanwong.giphytrending.BuildConfig
 import uk.ryanwong.giphytrending.GiphyApplication
-import uk.ryanwong.giphytrending.data.source.local.toDataEntityList
-import uk.ryanwong.giphytrending.data.source.local.toDataList
+import uk.ryanwong.giphytrending.data.source.local.toDomainModelList
+import uk.ryanwong.giphytrending.data.source.local.toTrendingEntityList
 import uk.ryanwong.giphytrending.data.source.network.GiphyApi
+import uk.ryanwong.giphytrending.data.source.network.model.TrendingNetworkModel
 import uk.ryanwong.giphytrending.di.DaggerAppComponent
-import uk.ryanwong.giphytrending.model.Data
-import uk.ryanwong.giphytrending.model.Trending
+import uk.ryanwong.giphytrending.domain.model.TrendingDomainModel
 import javax.inject.Inject
 
 class TrendingRepository {
@@ -22,16 +22,16 @@ class TrendingRepository {
     @Inject
     lateinit var giphyApiService: GiphyApi
 
-    private val _data by lazy { MutableLiveData<List<Data>>() }
-    val data: LiveData<List<Data>>
-        get() = _data
+    private val _trendingList by lazy { MutableLiveData<List<TrendingDomainModel>>() }
+    val trendingList: LiveData<List<TrendingDomainModel>>
+        get() = _trendingList
 
     private val _isInProgress by lazy { MutableLiveData<Boolean>() }
     val isInProgress: LiveData<Boolean>
         get() = _isInProgress
 
-    private val _isError by lazy { MutableLiveData<Boolean>() }
-    val isError: LiveData<Boolean>
+    private val _isError by lazy { MutableLiveData<String>() }
+    val isError: LiveData<String>
         get() = _isError
 
     init {
@@ -39,7 +39,7 @@ class TrendingRepository {
     }
 
     fun fetchDataFromDatabase(): Disposable = getTrendingQuery()
-    
+
     private fun insertData(): Disposable {
         return giphyApiService.getTrending(
             BuildConfig.GIPHY_API_KEY, BuildConfig.API_LIMIT,
@@ -49,22 +49,20 @@ class TrendingRepository {
             .subscribeWith(subscribeToDatabase())
     }
 
-    private fun subscribeToDatabase(): DisposableSubscriber<Trending> {
-        return object : DisposableSubscriber<Trending>() {
+    private fun subscribeToDatabase(): DisposableSubscriber<TrendingNetworkModel> {
+        return object : DisposableSubscriber<TrendingNetworkModel>() {
 
-            override fun onNext(trending: Trending?) {
+            override fun onNext(trending: TrendingNetworkModel?) {
                 if (trending != null) {
-                    val entityList = trending.data.toList().toDataEntityList()
-                    GiphyApplication.database.apply {
-                        dataDao().insertData(entityList)
-                    }
+                    val dataList = trending.trendingData.toTrendingEntityList()
+                    GiphyApplication.database.dataDao().insertAllData(dataList)
                 }
             }
 
             override fun onError(t: Throwable?) {
                 _isInProgress.postValue(true)
                 Log.e("insertData()", "TrendingResult error: ${t?.message}")
-                _isError.postValue(true)
+                _isError.postValue(t?.message ?: "Unknown Error")
                 _isInProgress.postValue(false)
             }
 
@@ -84,8 +82,8 @@ class TrendingRepository {
                 { dataEntityList ->
                     _isInProgress.postValue(true)
                     if (dataEntityList != null && dataEntityList.isNotEmpty()) {
-                        _isError.postValue(false)
-                        _data.postValue(dataEntityList.toDataList())
+                        _isError.postValue(null)
+                        _trendingList.postValue(dataEntityList.toDomainModelList())
                     } else {
                         insertData()
                     }
@@ -95,7 +93,7 @@ class TrendingRepository {
                 {
                     _isInProgress.postValue(true)
                     Log.e("getTrendingQuery()", "Database error: ${it.message}")
-                    _isError.postValue(true)
+                    _isError.postValue(it?.message ?: "Database error")
                     _isInProgress.postValue(false)
                 }
             )

@@ -22,6 +22,7 @@ android {
         // Configurable values - We are able to set different values for each build
         buildConfigField 'String', 'GIPHY_ENDPOINT', '"https://api.giphy.com/"'
         buildConfigField 'String', 'GIPHY_API_KEY', keyProps["giphyApiKey"]
+        buildConfigField 'String', 'DATABASE_NAME', '"trending.db"'
     }
 
     signingConfigs {

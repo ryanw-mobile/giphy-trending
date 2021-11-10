@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="data"
             type="uk.ryanwong.giphytrending.model.Data" />
@@ -47,6 +49,7 @@
             android:id="@+id/trending_username"
             style="@style/style_listitem_username"
             android:text="@{data.username}"
+            android:visibility="@{data.username.isEmpty() ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@id/trending_title"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Username" />

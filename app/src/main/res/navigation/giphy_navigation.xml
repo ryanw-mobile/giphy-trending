@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/giphy_navigation"
+    app:startDestination="@id/trendingFragment">
+
+    <fragment
+        android:id="@+id/trendingFragment"
+        android:name="uk.ryanwong.giphytrending.ui.trending.TrendingFragment"
+        android:label="TrendingFragment" />
+</navigation>

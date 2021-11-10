@@ -12,7 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_half">
 
         <ImageView
             android:id="@+id/trending_image"
@@ -20,6 +21,7 @@
             android:contentDescription="@{data.title}"
             app:imageUrl="@{data.images.fixed_height_small_still.url}"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="4:3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import uk.ryanwong.giphytrending.databinding.ListitemGiphyBinding
-import uk.ryanwong.giphytrending.model.Data
+import uk.ryanwong.giphytrending.domain.model.TrendingDomainModel
 
 class TrendingAdapter :
-    ListAdapter<Data, TrendingAdapter.TrendingViewHolder>(TrendingDiffCallback()) {
+    ListAdapter<TrendingDomainModel, TrendingAdapter.TrendingViewHolder>(TrendingDiffCallback()) {
     /**
      * Called when RecyclerView needs a new [ViewHolder] of the given type to represent
      * an item.
@@ -68,7 +68,7 @@ class TrendingAdapter :
 
     class TrendingViewHolder private constructor(val binding: ListitemGiphyBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Data) {
+        fun bind(item: TrendingDomainModel) {
             binding.data = item
             binding.executePendingBindings()
         }
@@ -84,7 +84,7 @@ class TrendingAdapter :
     }
 }
 
-class TrendingDiffCallback : DiffUtil.ItemCallback<Data>() {
+class TrendingDiffCallback : DiffUtil.ItemCallback<TrendingDomainModel>() {
     /**
      * Called to check whether two objects represent the same item.
      *
@@ -101,7 +101,10 @@ class TrendingDiffCallback : DiffUtil.ItemCallback<Data>() {
      * @return True if the two items represent the same object or false if they are different.
      * @see Callback.areItemsTheSame
      */
-    override fun areItemsTheSame(oldItem: Data, newItem: Data): Boolean {
+    override fun areItemsTheSame(
+        oldItem: TrendingDomainModel,
+        newItem: TrendingDomainModel
+    ): Boolean {
         return oldItem === newItem
     }
 
@@ -133,7 +136,10 @@ class TrendingDiffCallback : DiffUtil.ItemCallback<Data>() {
      * @return True if the contents of the items are the same or false if they are different.
      * @see Callback.areContentsTheSame
      */
-    override fun areContentsTheSame(oldItem: Data, newItem: Data): Boolean {
+    override fun areContentsTheSame(
+        oldItem: TrendingDomainModel,
+        newItem: TrendingDomainModel
+    ): Boolean {
         return oldItem == newItem
     }
 

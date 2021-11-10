@@ -4,11 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import uk.ryanwong.giphytrending.BuildConfig
 
-@Database(entities = [DataEntity::class], version = 1)
+@Database(entities = [TrendingEntity::class], version = 2, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class TrendingDatabase : RoomDatabase() {
-    abstract fun dataDao(): DataDao
+    abstract fun dataDao(): TrendingDao
 
     companion object {
 

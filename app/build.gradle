@@ -7,6 +7,9 @@ plugins {
 android {
     compileSdk 31
 
+    Properties keyProps = new Properties()
+    keyProps.load(new FileInputStream(file('../../keystore.properties')))
+
     defaultConfig {
         applicationId "uk.ryanwong.giphytrending"
         minSdk 21
@@ -15,14 +18,52 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Configurable values - We are able to set different values for each build
+        buildConfigField 'String', 'GIPHY_ENDPOINT', '"https://api.giphy.com/"'
+        buildConfigField 'String', 'GIPHY_API_KEY', keyProps["giphyApiKey"]
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(keyProps["store"])
+            keyAlias keyProps["alias"]
+            storePassword keyProps["storePass"]
+            keyPassword keyProps["pass"]
+        }
     }
 
     buildTypes {
-        release {
+        debug {
+            applicationIdSuffix '.debug'
             minifyEnabled false
+
+            signingConfig signingConfigs.release
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    def date = new Date()
+                    def formattedDate = date.format('yyyyMMdd-HHmmss')
+                    outputFileName = "giphy-${variant.name}-${variant.versionName}-${formattedDate}.apk"
+                }
+            }
+        }
+
+        release {
+            shrinkResources true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.release
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    def date = new Date()
+                    def formattedDate = date.format('yyyyMMdd-HHmmss')
+                    outputFileName = "giphy-${variant.name}-${variant.versionName}-${formattedDate}.apk"
+                }
+            }
         }
     }
+
     buildFeatures {
         viewBinding true
         dataBinding true

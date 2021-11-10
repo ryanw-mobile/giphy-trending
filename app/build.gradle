@@ -23,6 +23,8 @@ android {
         buildConfigField 'String', 'GIPHY_ENDPOINT', '"https://api.giphy.com/"'
         buildConfigField 'String', 'GIPHY_API_KEY', keyProps["giphyApiKey"]
         buildConfigField 'String', 'DATABASE_NAME', '"trending.db"'
+        buildConfigField 'String', 'API_LIMIT', '"25"'
+        buildConfigField 'String', 'API_RATING', '"G"'
     }
 
     signingConfigs {

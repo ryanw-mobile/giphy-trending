@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black_semitrans">#AA000000</color>
+    <color name="image_bg">#222222</color>
 </resources>

@@ -1,4 +1,4 @@
-package uk.ryanwong.giphytrending.datasource.network
+package uk.ryanwong.giphytrending.data.source.network
 
 import io.reactivex.Flowable
 import retrofit2.http.GET

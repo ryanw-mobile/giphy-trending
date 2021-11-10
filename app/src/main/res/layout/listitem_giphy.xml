@@ -19,7 +19,7 @@
             android:id="@+id/trending_image"
             style="@style/style_listitem_image"
             android:contentDescription="@{data.title}"
-            app:imageUrl="@{data.images.fixed_height_small_still.url}"
+            app:imageUrl="@{data.images.fixedHeightSmallStill.url}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="4:3"
             app:layout_constraintEnd_toEndOf="parent"

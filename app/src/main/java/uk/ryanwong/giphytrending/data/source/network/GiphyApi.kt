@@ -3,7 +3,7 @@ package uk.ryanwong.giphytrending.data.source.network
 import io.reactivex.Flowable
 import retrofit2.http.GET
 import retrofit2.http.Query
-import uk.ryanwong.giphytrending.model.Trending
+import uk.ryanwong.giphytrending.data.source.network.model.TrendingNetworkModel
 
 interface GiphyApi {
     @GET("v1/gifs/trending")
@@ -11,5 +11,5 @@ interface GiphyApi {
         @Query("api_key") apiKey: String,
         @Query("limit") limit: String,
         @Query("rating") rating: String
-    ): Flowable<Trending>
+    ): Flowable<TrendingNetworkModel>
 }

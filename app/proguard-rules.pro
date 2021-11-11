@@ -19,8 +19,4 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keepclassmembers enum * {
-        @com.google.gson.annotations.SerializedName <fields>;
-    }
-
 -keep class uk.ryanwong.giphytrending.data.source.network.model.** { *; }

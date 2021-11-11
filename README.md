@@ -1,6 +1,6 @@
 # giphy-trending
 
-![Screenshot1](screenshots/screen1.png) ![Screenshot2](screenshots/screen2.png)
+![Screenshot1](screenshots/screen0.png) ![Screenshot2](screenshots/screen1.png)
 
 This is a sample app based on
 the [walk through](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)

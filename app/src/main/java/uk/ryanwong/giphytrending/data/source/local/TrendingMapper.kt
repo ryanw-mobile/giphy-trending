@@ -1,9 +1,9 @@
 package uk.ryanwong.giphytrending.data.source.local
 
 import uk.ryanwong.giphytrending.data.source.network.model.TrendingData
-import uk.ryanwong.giphytrending.domain.model.TrendingDomainModel
+import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
 
-fun TrendingEntity.toDomainModel() = TrendingDomainModel(
+fun TrendingEntity.toDomainModel() = GiphyImageItemDomainModel(
     id = this.id,
     previewUrl = this.previewUrl,
     imageUrl = this.imageUrl,

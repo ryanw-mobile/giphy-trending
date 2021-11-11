@@ -14,7 +14,7 @@ import uk.ryanwong.giphytrending.data.source.local.toTrendingEntityList
 import uk.ryanwong.giphytrending.data.source.network.GiphyApi
 import uk.ryanwong.giphytrending.data.source.network.model.TrendingNetworkModel
 import uk.ryanwong.giphytrending.di.DaggerAppComponent
-import uk.ryanwong.giphytrending.domain.model.TrendingDomainModel
+import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
 import javax.inject.Inject
 
 class TrendingRepository {
@@ -22,8 +22,8 @@ class TrendingRepository {
     @Inject
     lateinit var giphyApiService: GiphyApi
 
-    private val _trendingList by lazy { MutableLiveData<List<TrendingDomainModel>>() }
-    val trendingList: LiveData<List<TrendingDomainModel>>
+    private val _trendingList by lazy { MutableLiveData<List<GiphyImageItemDomainModel>>() }
+    val trendingList: LiveData<List<GiphyImageItemDomainModel>>
         get() = _trendingList
 
     private val _isInProgress by lazy { MutableLiveData<Boolean>() }

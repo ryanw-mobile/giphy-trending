@@ -1,6 +1,6 @@
 package uk.ryanwong.giphytrending.domain.model
 
-data class TrendingDomainModel(
+data class GiphyImageItemDomainModel(
     var id: String,
     val previewUrl: String,
     val imageUrl: String,

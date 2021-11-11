@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import uk.ryanwong.giphytrending.databinding.ListitemGiphyBinding
-import uk.ryanwong.giphytrending.domain.model.TrendingDomainModel
+import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
 
 class TrendingAdapter :
-    ListAdapter<TrendingDomainModel, TrendingAdapter.TrendingViewHolder>(TrendingDiffCallback()) {
+    ListAdapter<GiphyImageItemDomainModel, TrendingAdapter.TrendingViewHolder>(TrendingDiffCallback()) {
     /**
      * Called when RecyclerView needs a new [ViewHolder] of the given type to represent
      * an item.
@@ -68,7 +68,7 @@ class TrendingAdapter :
 
     class TrendingViewHolder private constructor(val binding: ListitemGiphyBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: TrendingDomainModel) {
+        fun bind(item: GiphyImageItemDomainModel) {
             binding.data = item
             binding.executePendingBindings()
         }
@@ -84,7 +84,7 @@ class TrendingAdapter :
     }
 }
 
-class TrendingDiffCallback : DiffUtil.ItemCallback<TrendingDomainModel>() {
+class TrendingDiffCallback : DiffUtil.ItemCallback<GiphyImageItemDomainModel>() {
     /**
      * Called to check whether two objects represent the same item.
      *
@@ -102,8 +102,8 @@ class TrendingDiffCallback : DiffUtil.ItemCallback<TrendingDomainModel>() {
      * @see Callback.areItemsTheSame
      */
     override fun areItemsTheSame(
-        oldItem: TrendingDomainModel,
-        newItem: TrendingDomainModel
+        oldItem: GiphyImageItemDomainModel,
+        newItem: GiphyImageItemDomainModel
     ): Boolean {
         return oldItem === newItem
     }
@@ -137,8 +137,8 @@ class TrendingDiffCallback : DiffUtil.ItemCallback<TrendingDomainModel>() {
      * @see Callback.areContentsTheSame
      */
     override fun areContentsTheSame(
-        oldItem: TrendingDomainModel,
-        newItem: TrendingDomainModel
+        oldItem: GiphyImageItemDomainModel,
+        newItem: GiphyImageItemDomainModel
     ): Boolean {
         return oldItem == newItem
     }

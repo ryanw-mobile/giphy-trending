@@ -9,7 +9,7 @@
 
         <variable
             name="data"
-            type="uk.ryanwong.giphytrending.domain.model.TrendingDomainModel" />
+            type="uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout style="@style/style_listitem">

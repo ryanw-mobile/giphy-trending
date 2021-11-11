@@ -17,6 +17,7 @@ REST API apps -- If we can have something done in a simple way, why make it comp
 
 * Kotlin
 * ViewModel / MVVM architecture
+* Material 3 with light and dark mode theming
 * Data Binding
 * Live Data
 * Retrofit 2

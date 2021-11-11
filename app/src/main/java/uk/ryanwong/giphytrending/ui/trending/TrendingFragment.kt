@@ -51,7 +51,7 @@ class TrendingFragment : Fragment() {
 
     private fun setUpRecyclerView() {
         binding.recyclerView.apply {
-            setHasFixedSize(true)
+            setHasFixedSize(false)
             itemAnimator = DefaultItemAnimator()
             adapter = trendingAdapter
         }

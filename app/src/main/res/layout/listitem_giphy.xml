@@ -23,7 +23,6 @@
             android:contentDescription="@{data.title}"
             app:imageUrl="@{data.url}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -34,14 +33,14 @@
             style="@style/style_listitem_type"
             android:text="@{data.type}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/trending_image"
             tools:text="GIF" />
 
         <TextView
             android:id="@+id/trending_title"
             style="@style/style_listitem_title"
             android:text="@{data.title}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/trending_image"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="@tools:sample/cities" />
 

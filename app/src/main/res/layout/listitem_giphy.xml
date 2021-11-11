@@ -63,7 +63,7 @@
         <TextView
             android:id="@+id/trending_username"
             style="@style/style_listitem_username"
-            android:text="@{data.username}"
+            android:text="@{`@` + data.username}"
             android:visibility="@{data.username.isEmpty() ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/trending_type"
             app:layout_constraintEnd_toStartOf="@id/trending_type"

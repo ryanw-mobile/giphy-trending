@@ -4,18 +4,17 @@
     <style name="style_listitem_image">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/image_bg_dark</item>
         <item name="android:scaleType">fitXY</item>
         <item name="android:adjustViewBounds">true</item>
     </style>
 
-    <style name="style_listitem_type" parent="TextAppearance.AppCompat.Body2">
+    <style name="style_listitem_type" parent="TextAppearance.AppCompat.Caption">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">@dimen/margin_half</item>
+        <item name="android:layout_marginTop">@dimen/margin_half</item>
+        <item name="android:layout_marginEnd">@dimen/margin_half</item>
         <item name="android:background">@color/md_theme_dark_primaryInverse</item>
-        <item name="android:paddingStart">@dimen/margin_half</item>
-        <item name="android:paddingEnd">@dimen/margin_half</item>
+        <item name="android:padding">@dimen/margin_half</item>
         <item name="android:fontFamily">@font/bitter</item>
         <item name="android:textColor">@color/md_theme_dark_onSurface</item>
     </style>
@@ -23,17 +22,16 @@
     <style name="style_listitem_title" parent="TextAppearance.AppCompat.Body2">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/black_semitrans</item>
+        <item name="android:background">@color/white_semitrans</item>
+        <item name="android:textColor">@color/md_theme_light_onSurface</item>
         <item name="android:padding">@dimen/margin_standard</item>
         <item name="android:fontFamily">@font/bitter</item>
-        <item name="android:textColor">@color/md_theme_dark_onSurface</item>
     </style>
 
     <style name="style_listitem_username" parent="TextAppearance.AppCompat.Caption">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/bitter</item>
-        <item name="android:layout_margin">@dimen/margin_half</item>
         <item name="android:background">@color/design_default_color_primary_dark</item>
         <item name="android:padding">@dimen/margin_half</item>
         <item name="android:textColor">@color/white</item>

@@ -15,14 +15,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/margin_half">
+        android:paddingStart="@dimen/margin_standard"
+        android:paddingTop="@dimen/margin_half"
+        android:paddingEnd="@dimen/margin_standard"
+        android:paddingBottom="@dimen/margin_half">
 
         <ImageView
             android:id="@+id/trending_image"
             style="@style/style_listitem_image"
             android:contentDescription="@{data.title}"
             app:imageUrl="@{data.url}"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/trending_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -40,8 +43,10 @@
             android:id="@+id/trending_title"
             style="@style/style_listitem_title"
             android:text="@{data.title}"
-            app:layout_constraintBottom_toBottomOf="@id/trending_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/trending_image"
             tools:text="@tools:sample/cities" />
 
         <TextView
@@ -49,8 +54,9 @@
             style="@style/style_listitem_username"
             android:text="@{data.username}"
             android:visibility="@{data.username.isEmpty() ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toTopOf="@id/trending_title"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/trending_type"
+            app:layout_constraintEnd_toStartOf="@id/trending_type"
+            app:layout_constraintTop_toTopOf="@id/trending_type"
             tools:text="Username" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,7 +19,8 @@ fun TrendingData.toTrendingEntity() = TrendingEntity(
     title = this.title,
     type = this.type,
     username = this.username,
-    trendingDateTime = this.trending_datetime
+    trendingDateTime = this.trending_datetime,
+    importDateTime = this.import_datetime
 )
 
 fun List<TrendingData>.toTrendingEntityList() = this.map { it.toTrendingEntity() }

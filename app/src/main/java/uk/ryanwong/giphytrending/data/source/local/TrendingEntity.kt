@@ -19,5 +19,13 @@ data class TrendingEntity(
     @ColumnInfo(name = "username")
     val username: String,
     @ColumnInfo(name = "trending_datetime")
-    val trendingDateTime: Date
+    val trendingDateTime: Date,
+    @ColumnInfo(name = "import_datetime")
+    val importDateTime: Date,
+
+    // This field is not from the RestAPI
+    // Every time we overwrite the DB with API data. To remove outdated data in the FB,
+    // we use this extra dirty bit approach to simulate synchronization.
+    @ColumnInfo(name = "dirty")
+    val dirty: Boolean = false
 )

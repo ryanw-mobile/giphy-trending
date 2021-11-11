@@ -1,5 +1,7 @@
 # giphy-trending
 
+![Screenshot1](screenshots/screen1.png) ![Screenshot2](screenshots/screen2.png)
+
 This is a sample app based on
 the [walk through](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
 by Fahri Can. I have made significant modifications to the App design and architecture, therefore it
@@ -21,6 +23,7 @@ REST API apps -- If we can have something done in a simple way, why make it comp
 * Splash Screen API
 * Data Binding
 * Live Data
+* Room DB
 * Retrofit 2
 * RxJava 2
 * Glide
@@ -39,6 +42,8 @@ more production-ready.
 * Additional handling done to preserve the scrolling state and avoid flickering during refresh
 * SwipeRefreshLayout has been added to allow manual refresh
 * A dedicated Domain Model was added to separate the Network Data Model
+* Introduced copy image link, and open Giphy page on browser functions
+
 
 ## Requirements
 

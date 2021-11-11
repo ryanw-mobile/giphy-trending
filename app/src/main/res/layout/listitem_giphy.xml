@@ -12,19 +12,13 @@
             type="uk.ryanwong.giphytrending.domain.model.TrendingDomainModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/margin_standard"
-        android:paddingTop="@dimen/margin_half"
-        android:paddingEnd="@dimen/margin_standard"
-        android:paddingBottom="@dimen/margin_half">
+    <androidx.constraintlayout.widget.ConstraintLayout style="@style/style_listitem">
 
         <ImageView
             android:id="@+id/trending_image"
             style="@style/style_listitem_image"
             android:contentDescription="@{data.title}"
-            app:imageUrl="@{data.url}"
+            app:imageUrl="@{data.previewUrl}"
             app:layout_constraintBottom_toTopOf="@id/trending_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,12 +33,29 @@
             app:layout_constraintTop_toTopOf="@id/trending_image"
             tools:text="GIF" />
 
+        <ImageView
+            android:id="@+id/button_open"
+            style="@style/style_listitem_imagebutton"
+            app:layout_constraintEnd_toStartOf="@id/button_share"
+            app:layout_constraintTop_toBottomOf="@id/trending_image"
+            app:onClickToOpen="@{data.webUrl}"
+            app:srcCompat="@drawable/ic_baseline_open_in_browser_24" />
+
+        <ImageView
+            android:id="@+id/button_share"
+            style="@style/style_listitem_imagebutton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/trending_image"
+            app:onClickToShare="@{data.imageUrl}"
+            app:srcCompat="@drawable/ic_baseline_content_copy_24" />
+
         <TextView
             android:id="@+id/trending_title"
             style="@style/style_listitem_title"
+            android:minHeight="@dimen/image_button_size"
             android:text="@{data.title}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_open"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/trending_image"
             tools:text="@tools:sample/cities" />

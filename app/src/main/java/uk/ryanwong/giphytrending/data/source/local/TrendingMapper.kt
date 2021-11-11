@@ -5,7 +5,9 @@ import uk.ryanwong.giphytrending.domain.model.TrendingDomainModel
 
 fun TrendingEntity.toDomainModel() = TrendingDomainModel(
     id = this.id,
-    url = this.url,
+    previewUrl = this.previewUrl,
+    imageUrl = this.imageUrl,
+    webUrl = this.webUrl,
     title = this.title,
     type = this.type,
     username = this.username
@@ -15,7 +17,9 @@ fun List<TrendingEntity>.toDomainModelList() = this.map { it.toDomainModel() }
 
 fun TrendingData.toTrendingEntity() = TrendingEntity(
     id = this.id,
-    url = urlCleanUp(this.images.fixed_width.url),
+    previewUrl = urlCleanUp(this.images.fixed_width.url),
+    imageUrl = urlCleanUp(this.images.original.url),
+    webUrl = this.url,
     title = this.title,
     type = this.type,
     username = this.username,

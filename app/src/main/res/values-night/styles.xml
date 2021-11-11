@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="style_listitem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/margin_standard</item>
+        <item name="android:layout_marginTop">@dimen/margin_half</item>
+        <item name="android:layout_marginEnd">@dimen/margin_standard</item>
+        <item name="android:layout_marginBottom">@dimen/margin_half</item>
+        <item name="android:background">@color/white_semitrans</item>
+    </style>
+
     <style name="style_listitem_image">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -20,9 +30,8 @@
     </style>
 
     <style name="style_listitem_title" parent="TextAppearance.AppCompat.Body2">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@color/white_semitrans</item>
         <item name="android:textColor">@color/md_theme_light_onSurface</item>
         <item name="android:padding">@dimen/margin_standard</item>
         <item name="android:fontFamily">@font/bitter</item>
@@ -35,5 +44,15 @@
         <item name="android:background">@color/design_default_color_primary_dark</item>
         <item name="android:padding">@dimen/margin_half</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="style_listitem_imagebutton">
+        <item name="android:layout_width">@dimen/image_button_size</item>
+        <item name="android:layout_height">@dimen/image_button_size</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:padding">@dimen/margin_standard</item>
+        <item name="tint">@color/md_theme_light_onSurface</item>
     </style>
 </resources>

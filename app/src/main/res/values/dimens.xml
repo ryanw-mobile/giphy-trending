@@ -2,4 +2,5 @@
 <resources>
     <dimen name="margin_standard">16dp</dimen>
     <dimen name="margin_half">8dp</dimen>
+    <dimen name="image_button_size">48dp</dimen>
 </resources>

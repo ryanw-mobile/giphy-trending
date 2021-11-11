@@ -10,8 +10,12 @@ data class TrendingEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: String,
-    @ColumnInfo(name = "url")
-    val url: String,
+    @ColumnInfo(name = "preview_url")
+    val previewUrl: String,
+    @ColumnInfo(name = "image_url")
+    val imageUrl: String,
+    @ColumnInfo(name = "web_url")
+    val webUrl: String,
     @ColumnInfo(name = "title")
     val title: String,
     @ColumnInfo(name = "type")

@@ -10,7 +10,7 @@ import uk.ryanwong.giphytrending.BuildConfig
 @Database(entities = [TrendingEntity::class], version = 4, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class TrendingDatabase : RoomDatabase() {
-    abstract fun dataDao(): TrendingDao
+    abstract fun trendingDao(): TrendingDao
 
     companion object {
 

@@ -41,7 +41,7 @@ class TrendingFragment : Fragment() {
         // to load and cleanup resources in onCreate() and onDestroy()
         binding.lifecycleOwner = viewLifecycleOwner
         setUpRecyclerView()
-        binding.fetchProgress.setupRefreshLayout { viewModel.refreshList() }
+        binding.fetchProgress.setupRefreshLayout { viewModel.refresh() }
     }
 
     override fun onStart() {

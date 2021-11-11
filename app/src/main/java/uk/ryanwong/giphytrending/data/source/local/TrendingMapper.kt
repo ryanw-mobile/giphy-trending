@@ -15,7 +15,7 @@ fun List<TrendingEntity>.toDomainModelList() = this.map { it.toDomainModel() }
 
 fun TrendingData.toTrendingEntity() = TrendingEntity(
     id = this.id,
-    url = this.images.fixed_width.url,
+    url = urlCleanUp(this.images.fixed_width.url),
     title = this.title,
     type = this.type,
     username = this.username,
@@ -24,3 +24,11 @@ fun TrendingData.toTrendingEntity() = TrendingEntity(
 )
 
 fun List<TrendingData>.toTrendingEntityList() = this.map { it.toTrendingEntity() }
+
+/**
+ * The image URL returned by the server contains tracking code.
+ * Trying to remove it to avoid unnecessary cache invalidation (experimental)
+ */
+private fun urlCleanUp(url: String): String {
+    return url.substringBefore("?")
+}

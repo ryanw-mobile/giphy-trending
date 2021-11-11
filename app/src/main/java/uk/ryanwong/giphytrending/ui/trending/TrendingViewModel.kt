@@ -15,6 +15,7 @@ class TrendingViewModel : ViewModel() {
     private val compositeDisposable by lazy { CompositeDisposable() }
 
     // This is to maintain the recyclerview scrolling state during list refresh
+    // No practical use for this UI layout because we have to back to top for swipe to refresh
     private var _listState: Parcelable? = null
     val listState: Parcelable?
         get() = _listState
@@ -25,11 +26,16 @@ class TrendingViewModel : ViewModel() {
 
     init {
         DaggerAppComponent.create().inject(this)
-        refreshList()
+        fetchDataFromDatabase()
+        refresh()
     }
 
-    fun refreshList() {
-        compositeDisposable.add(repository.fetchDataFromDatabase())
+    fun refresh() {
+        compositeDisposable.add(repository.refreshTrending())
+    }
+
+    private fun fetchDataFromDatabase() {
+        compositeDisposable.add(repository.fetchTrending())
     }
 
     override fun onCleared() {

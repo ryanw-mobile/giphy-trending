@@ -20,7 +20,9 @@ class CustomDateTimeAdapter(private val format: String) : JsonAdapter<Date?>() {
     }
 
     override fun toJson(writer: JsonWriter, value: Date?) {
-        writer.value(SimpleDateFormat(format, Locale.getDefault()).format(value))
+        value?.let {
+            writer.value(SimpleDateFormat(format, Locale.getDefault()).format(it))
+        }
     }
 
     class Factory : JsonAdapter.Factory {

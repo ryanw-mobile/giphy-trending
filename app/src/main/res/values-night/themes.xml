@@ -31,4 +31,15 @@
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/bitter</item>
     </style>
+
+    <!-- Splash Screen -->
+    <style name="Theme.GiphyTrending.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/md_theme_dark_onSecondary</item>
+
+        // Either a drawable or an animated drawable. One of these is required.
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+
+        // Link your original theme here
+        <item name="postSplashScreenTheme">@style/Theme.GiphyTrending</item>
+    </style>
 </resources>

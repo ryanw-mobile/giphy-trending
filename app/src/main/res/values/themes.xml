@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.GiphyTrending" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/md_theme_light_primary</item>
@@ -30,6 +30,17 @@
 
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/bitter</item>
+    </style>
+
+    <!-- Splash Screen -->
+    <style name="Theme.GiphyTrending.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/md_theme_light_onSecondary</item>
+
+        // Either a drawable or an animated drawable. One of these is required.
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+
+        // Link your original theme here
+        <item name="postSplashScreenTheme">@style/Theme.GiphyTrending</item>
     </style>
 
 </resources>

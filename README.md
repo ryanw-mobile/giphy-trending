@@ -18,6 +18,7 @@ REST API apps -- If we can have something done in a simple way, why make it comp
 * Kotlin
 * ViewModel / MVVM architecture
 * Material 3 with light and dark mode theming
+* Splash Screen API
 * Data Binding
 * Live Data
 * Retrofit 2
@@ -31,7 +32,7 @@ REST API apps -- If we can have something done in a simple way, why make it comp
 The original sample codes were over simplified. Modifications have been made to make the App look
 more production-ready.
 
-* The UI architecture and list item layout have been redesigned
+* The UI architecture and list item layout have been redesigned to apply Material 3 specifications
 * The database schema and DAOs have been improved to support more functionalities
 * The RecyclerView has been modified to use ListAdapter, DiffUtils to avoid expensive
   notifyDataSetChanged()

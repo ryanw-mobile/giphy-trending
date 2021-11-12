@@ -86,6 +86,13 @@ more production-ready.
 * Options are: `Debug`, `Release`
 * Debug builds will have an App package name suffix `.debug`
 
+### Build and sign a bundle for distribution
+After August 2021, all new apps and games will be required to publish with the Android App Bundle format.
+
+   ```
+   ./gradlew clean && ./gradlew bundleRelease
+   ```
+
 ### Build and sign an apk for distribution
 
    ```

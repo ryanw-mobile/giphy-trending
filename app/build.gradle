@@ -23,6 +23,9 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        // Bundle output filename
+        setProperty("archivesBaseName", "giphy-" + versionName + "-" + new Date().format('yyyyMMdd-HHmmss'))
+
         // Configurable values - We are able to set different values for each build
         buildConfigField 'String', 'GIPHY_ENDPOINT', '"https://api.giphy.com/"'
         buildConfigField 'String', 'GIPHY_API_KEY', keyProps["giphyApiKey"]

@@ -43,6 +43,7 @@ more production-ready.
 * SwipeRefreshLayout has been added to allow manual refresh
 * A dedicated Domain Model was added to separate the Network Data Model
 * Introduced copy image link, and open Giphy page on browser functions
+* Added test cases
 
 
 ## Requirements
@@ -99,8 +100,5 @@ more production-ready.
 This sample App is for demonstrating my coding habit and skills for potential employers. Here is a
 list of things I may further work on, while waiting for my next Android Developer role:
 
-* Tests: unit tests, instrumented tests
-* Lazy loading / pagination
-* Splash Screen using the new official API
 * Bottom Navigation with additional fragments loading more APIs
-* Photo detail view
+* User preferences - for example how many trending items to be shown

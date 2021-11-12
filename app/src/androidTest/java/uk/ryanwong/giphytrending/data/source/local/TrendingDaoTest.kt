@@ -37,7 +37,10 @@ class TrendingDaoTest {
     @Test
     fun emptyDatabase_InsertOne_ReturnOne() {
         // Given: Empty database -- Do nothing
-
+        trendingDao.queryData().test().assertValue {
+            it.isEmpty()
+        }
+        
         // When: Insert one TrendingEntity
         trendingDao.insertData(TrendingEntityTestData.case1)
 
@@ -50,6 +53,10 @@ class TrendingDaoTest {
     @Test
     fun emptyDatabase_InsertList_ReturnSameList() {
         // Given: Empty database -- Do nothing
+        // RxJava way
+        trendingDao.queryData().test().assertValue {
+            it.isEmpty()
+        }
 
         // When: Insert a list of 3 TrendingEntity objects
         val testTrendingList = listOf(
@@ -75,8 +82,9 @@ class TrendingDaoTest {
             TrendingEntityTestData.case3
         )
         trendingDao.insertAllData(testTrendingList)
-        val trendingListGiven = trendingDao.queryData().blockingGet()
-        MatcherAssert.assertThat(trendingListGiven.size, `is`(3))
+        trendingDao.queryData().test().assertValue {
+            it.size == 3
+        }
 
         // When: insert a modified version of case 2 with same ID
         trendingDao.insertData(TrendingEntityTestData.case2Modified)
@@ -89,7 +97,10 @@ class TrendingDaoTest {
         MatcherAssert.assertThat(trendingList.contains(TrendingEntityTestData.case1), `is`(true))
         MatcherAssert.assertThat(trendingList.contains(TrendingEntityTestData.case2), `is`(false))
         MatcherAssert.assertThat(trendingList.contains(TrendingEntityTestData.case3), `is`(true))
-        MatcherAssert.assertThat(trendingList.contains(TrendingEntityTestData.case2Modified), `is`(true))
+        MatcherAssert.assertThat(
+            trendingList.contains(TrendingEntityTestData.case2Modified),
+            `is`(true)
+        )
     }
 
     @Test
@@ -101,15 +112,22 @@ class TrendingDaoTest {
             TrendingEntityTestData.case3
         )
         trendingDao.insertAllData(testTrendingList)
-        val trendingListGiven = trendingDao.queryData().blockingGet()
-        MatcherAssert.assertThat(trendingListGiven.size, `is`(3))
+        trendingDao.queryData().test().assertValue {
+            it.size == 3
+        }
 
         // When: Clear the database
         trendingDao.clear()
 
         // Then: Database should have zero rows returned
-        val trendingList = trendingDao.queryData().blockingGet()
-        MatcherAssert.assertThat(trendingList.size, `is`(0))
+        // JUnit / Hamcrest's way
+        // val trendingList = trendingDao.queryData().blockingGet()
+        // MatcherAssert.assertThat(trendingList.size, `is`(0))
+
+        // RxJava way
+        trendingDao.queryData().test().assertValue {
+            it.isEmpty()
+        }
     }
 
     /***
@@ -161,8 +179,14 @@ class TrendingDaoTest {
         trendingDao.deleteDirty()
 
         // Then: Database should return empty list
-        val trendingList = trendingDao.queryData().blockingGet()
-        MatcherAssert.assertThat(trendingList.size, `is`(0))
+        // JUnit / Hamcrest way
+        // val trendingList = trendingDao.queryData().blockingGet()
+        // MatcherAssert.assertThat(trendingList.size, `is`(0))
+
+        // RxJava way
+        trendingDao.queryData().test().assertValue {
+            it.isEmpty()
+        }
     }
 
     @Test
@@ -177,8 +201,9 @@ class TrendingDaoTest {
         trendingDao.markDirty()
         trendingDao.insertData(TrendingEntityTestData.case4)
 
-        val trendingListGiven = trendingDao.queryData().blockingGet()
-        MatcherAssert.assertThat(trendingListGiven.size, `is`(4))
+        trendingDao.queryData().test().assertValue {
+            it.size == 4
+        }
 
         // When: delete dirty rows
         trendingDao.deleteDirty()

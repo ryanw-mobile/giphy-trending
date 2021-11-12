@@ -9,20 +9,20 @@ import uk.ryanwong.giphytrending.BuildConfig
 
 @Database(entities = [TrendingEntity::class], version = 5, exportSchema = false)
 @TypeConverters(Converters::class)
-abstract class TrendingDatabase : RoomDatabase() {
+abstract class GiphyDatabase : RoomDatabase() {
     abstract fun trendingDao(): TrendingDao
 
     companion object {
 
         @Volatile // All threads have immediate access to this property
-        private var instance: TrendingDatabase? = null
+        private var instance: GiphyDatabase? = null
 
         private val LOCK = Any() // Makes sure no threads making the same thing at the same time
 
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
-                TrendingDatabase::class.java,
+                GiphyDatabase::class.java,
                 BuildConfig.DATABASE_NAME
             ).fallbackToDestructiveMigration().build()
 

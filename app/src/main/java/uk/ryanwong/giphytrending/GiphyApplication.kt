@@ -1,12 +1,12 @@
 package uk.ryanwong.giphytrending
 
 import android.app.Application
-import uk.ryanwong.giphytrending.data.source.local.TrendingDatabase
+import uk.ryanwong.giphytrending.data.source.local.GiphyDatabase
 
 class GiphyApplication : Application() {
     companion object {
         lateinit var instance: GiphyApplication
-        lateinit var database: TrendingDatabase
+        lateinit var database: GiphyDatabase
     }
 
     init {
@@ -15,6 +15,6 @@ class GiphyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        database = TrendingDatabase.invoke(this)
+        database = GiphyDatabase.invoke(this)
     }
 }

@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import uk.ryanwong.giphytrending.databinding.ListitemGiphyBinding
 import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
 
-class TrendingAdapter :
-    ListAdapter<GiphyImageItemDomainModel, TrendingAdapter.TrendingViewHolder>(TrendingDiffCallback()) {
+class GiphyImageItemAdapter :
+    ListAdapter<GiphyImageItemDomainModel, GiphyImageItemAdapter.GiphyImageItemViewHolder>(
+        TrendingDiffCallback()
+    ) {
     /**
      * Called when RecyclerView needs a new [ViewHolder] of the given type to represent
      * an item.
@@ -32,8 +34,8 @@ class TrendingAdapter :
      * @see .getItemViewType
      * @see .onBindViewHolder
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrendingViewHolder {
-        return TrendingViewHolder.from(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GiphyImageItemViewHolder {
+        return GiphyImageItemViewHolder.from(parent)
     }
 
     /**
@@ -57,7 +59,7 @@ class TrendingAdapter :
      * item at the given position in the data set.
      * @param position The position of the item within the adapter's data set.
      */
-    override fun onBindViewHolder(holder: TrendingViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GiphyImageItemViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
@@ -66,7 +68,7 @@ class TrendingAdapter :
         return position.toLong()
     }
 
-    class TrendingViewHolder private constructor(val binding: ListitemGiphyBinding) :
+    class GiphyImageItemViewHolder private constructor(val binding: ListitemGiphyBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: GiphyImageItemDomainModel) {
             binding.data = item
@@ -74,11 +76,11 @@ class TrendingAdapter :
         }
 
         companion object {
-            fun from(parent: ViewGroup): TrendingViewHolder {
+            fun from(parent: ViewGroup): GiphyImageItemViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = ListitemGiphyBinding.inflate(layoutInflater, parent, false)
 
-                return TrendingViewHolder(binding)
+                return GiphyImageItemViewHolder(binding)
             }
         }
     }

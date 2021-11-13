@@ -6,7 +6,7 @@ import uk.ryanwong.giphytrending.data.repository.TrendingRepository
 import uk.ryanwong.giphytrending.data.source.network.GiphyApi
 import uk.ryanwong.giphytrending.data.source.network.GiphyApiService
 import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
-import uk.ryanwong.giphytrending.ui.TrendingAdapter
+import uk.ryanwong.giphytrending.ui.GiphyImageItemAdapter
 import javax.inject.Singleton
 
 @Module
@@ -23,7 +23,7 @@ class AppModule {
     fun provideTrendingList() = ArrayList<GiphyImageItemDomainModel>()
 
     @Provides
-    fun provideTrendingAdapter(): TrendingAdapter = TrendingAdapter().apply {
+    fun provideTrendingAdapter(): GiphyImageItemAdapter = GiphyImageItemAdapter().apply {
         setHasStableIds(true)
     }
 }

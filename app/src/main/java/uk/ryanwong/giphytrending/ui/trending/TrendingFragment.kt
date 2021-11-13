@@ -12,14 +12,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import uk.ryanwong.giphytrending.databinding.FragmentTrendingBinding
 import uk.ryanwong.giphytrending.di.DaggerAppComponent
-import uk.ryanwong.giphytrending.ui.TrendingAdapter
+import uk.ryanwong.giphytrending.ui.GiphyImageItemAdapter
 import uk.ryanwong.giphytrending.ui.setupRefreshLayout
 import javax.inject.Inject
 
 class TrendingFragment : Fragment() {
 
     @Inject
-    lateinit var trendingAdapter: TrendingAdapter
+    lateinit var giphyImageItemAdapter: GiphyImageItemAdapter
 
     private val viewModel: TrendingViewModel by viewModels()
 
@@ -60,10 +60,10 @@ class TrendingFragment : Fragment() {
                     DividerItemDecoration.VERTICAL
                 )
             )
-            adapter = trendingAdapter
+            adapter = giphyImageItemAdapter
         }
 
-        trendingAdapter.apply {
+        giphyImageItemAdapter.apply {
             registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
                 override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                     viewModel.listState?.let {
@@ -118,7 +118,7 @@ class TrendingFragment : Fragment() {
             text = errorMsg
         }
         viewModel.saveListState(binding.recyclerView.layoutManager?.onSaveInstanceState())
-        trendingAdapter.submitList(emptyList())
+        giphyImageItemAdapter.submitList(emptyList())
         binding.fetchProgress.isRefreshing = false
     }
 
@@ -129,7 +129,7 @@ class TrendingFragment : Fragment() {
                     binding.fetchProgress.isRefreshing = true
                     binding.recyclerView.visibility = View.VISIBLE
                     viewModel.saveListState(binding.recyclerView.layoutManager?.onSaveInstanceState())
-                    trendingAdapter.submitList(it)
+                    giphyImageItemAdapter.submitList(it)
                     binding.emptyText.visibility = View.GONE
                     binding.fetchProgress.isRefreshing = false
                 } else {

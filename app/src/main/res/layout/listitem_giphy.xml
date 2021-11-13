@@ -18,9 +18,9 @@
             android:id="@+id/trending_type"
             style="@style/style_listitem_type"
             android:text="@{data.type}"
-            app:layout_constraintBottom_toTopOf="@id/trending_image"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/trending_image"
             tools:text="GIF" />
 
         <TextView
@@ -28,24 +28,26 @@
             style="@style/style_listitem_username"
             android:text="@{`@` + data.username}"
             android:visibility="@{data.username.isEmpty() ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toTopOf="@id/trending_image"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/trending_type"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/trending_image"
             tools:text="Username" />
 
         <ImageView
             android:id="@+id/button_open"
             style="@style/style_listitem_imagebutton"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/button_share"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/trending_image"
             app:onClickToOpen="@{data.webUrl}"
             app:srcCompat="@drawable/ic_baseline_open_in_browser_24" />
 
         <ImageView
             android:id="@+id/button_share"
             style="@style/style_listitem_imagebutton"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/trending_image"
             app:onClickToShare="@{data.imageUrl}"
             app:srcCompat="@drawable/ic_baseline_content_copy_24" />
 
@@ -66,10 +68,11 @@
             android:minHeight="@dimen/image_button_size"
             android:text="@{data.title}"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/trending_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/trending_image"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/cities" />
 
 

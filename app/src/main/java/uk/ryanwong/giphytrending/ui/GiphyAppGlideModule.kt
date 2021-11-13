@@ -8,7 +8,7 @@ import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 
 @GlideModule
-class AppNameGlideModule : AppGlideModule() {
+class GiphyAppGlideModule : AppGlideModule() {
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         super.applyOptions(context, builder)
         builder.apply { RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL) }

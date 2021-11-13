@@ -4,5 +4,6 @@
     <color name="listitem_image_type_textcolor">@color/md_theme_dark_onSurface</color>
     <color name="listitem_username_background">@color/md_theme_dark_onPrimaryContainer</color>
     <color name="listitem_username_textcolor">@color/md_theme_light_onSurface</color>
+    <color name="bottomnav_divider">@color/md_theme_dark_secondary</color>
 
 </resources>

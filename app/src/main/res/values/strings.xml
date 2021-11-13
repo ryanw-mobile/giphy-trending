@@ -3,4 +3,5 @@
     <string name="no_giphies_found">No Giphies found!</string>
     <string name="error_export_clipboard">Error copying image link to clipboard. Please try again later.</string>
     <string name="clipboard_copied">Copied image link to clipboard</string>
+    <string name="trending">Trending</string>
 </resources>

@@ -1,12 +1,12 @@
 package uk.ryanwong.giphytrending.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.Completable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subscribers.DisposableSubscriber
+import timber.log.Timber
 import uk.ryanwong.giphytrending.BuildConfig
 import uk.ryanwong.giphytrending.GiphyApplication
 import uk.ryanwong.giphytrending.data.source.local.toDomainModelList
@@ -55,7 +55,7 @@ class TrendingRepository {
                     }
                 },
                 {
-                    Log.e("TrendingRepository", "Database error: ${it.message}")
+                    Timber.e("fetchTrending() - Database error: ${it.message}")
                     _isError.postValue(
                         it?.message ?: "Error when retrieving data from the local storage."
                     )
@@ -75,13 +75,10 @@ class TrendingRepository {
         }.subscribeOn(Schedulers.io())
             .subscribe(
                 {
-                    Log.v("TrendingRepository", "refreshTrending() - mark dirty: success")
+                    Timber.v("refreshTrending() - mark dirty: success")
                     getTrendingFromNetwork()
                 }, {
-                    Log.e(
-                        "TrendingRepository",
-                        "refreshTrending() -Database error when marking dirty bit: ${it.message}"
-                    )
+                    Timber.e("refreshTrending() -Database error when marking dirty bit: ${it.message}")
                     _isError.postValue(it?.message ?: "Error when accessing to the local storage.")
                 }
             )
@@ -107,7 +104,7 @@ class TrendingRepository {
 
             override fun onError(t: Throwable?) {
                 _isInProgress.postValue(true)
-                Log.e("TrendingRepository", "cacheTrendingToDb(): error - ${t?.message}")
+                Timber.e("cacheTrendingToDb(): error - ${t?.message}")
                 _isError.postValue(
                     t?.message ?: "Error when processing data returned from the server."
                 )
@@ -115,7 +112,7 @@ class TrendingRepository {
             }
 
             override fun onComplete() {
-                Log.v("TrendingRepository", "cacheTrendingToDb(): insertion completed")
+                Timber.v("cacheTrendingToDb(): insertion completed")
                 invalidateDirtyTrendingDb()
             }
         }
@@ -126,14 +123,11 @@ class TrendingRepository {
             GiphyApplication.database.trendingDao().deleteDirty()
         }.subscribeOn(Schedulers.io())
             .subscribe({
-                Log.v("TrendingRepository", "invalidateDirtyTrendingDb(): success")
+                Timber.v("invalidateDirtyTrendingDb(): success")
                 fetchTrending()
             },
                 {
-                    Log.e(
-                        "TrendingRepository",
-                        "invalidateDirtyTrendingDb: error when invalidating dirty rows - ${it?.message}"
-                    )
+                    Timber.e("invalidateDirtyTrendingDb: error when invalidating dirty rows - ${it?.message}")
                 })
     }
 }

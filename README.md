@@ -20,17 +20,23 @@ REST API apps -- If we can have something done in a simple way, why make it comp
 * Kotlin
 * ViewModel / MVVM architecture
 * Material 3 with light and dark mode theming
-* Splash Screen API
+* Constraint Layout
 * Data Binding
-* Live Data
 * Room DB
-* Retrofit 2
-* RxJava 2
-* Glide
+* Live Data
 * Navigation
+
+### Major libraries used
+
+* Splash Screen API
+* RxJava 2
+* Retrofit 2
+* Moshi
 * Dagger 2
+* Glide
 * Timber - for logging
-* Instrumented tests: JUnit and Hamcrest
+* LeakCanary - for detecting memory leaks
+* JUnit and Hamcrest - instrumented tests
 
 ## Improvements:
 
@@ -46,7 +52,6 @@ more production-ready.
 * A dedicated Domain Model was added to separate the Network Data Model
 * Introduced copy image link, and open Giphy page on browser functions
 * Added test cases
-
 
 ## Requirements
 
@@ -89,7 +94,9 @@ more production-ready.
 * Debug builds will have an App package name suffix `.debug`
 
 ### Build and sign a bundle for distribution
-After August 2021, all new apps and games will be required to publish with the Android App Bundle format.
+
+After August 2021, all new apps and games will be required to publish with the Android App Bundle
+format.
 
    ```
    ./gradlew clean && ./gradlew bundleRelease

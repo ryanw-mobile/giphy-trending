@@ -2,5 +2,6 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/bitter</item>
+        <item>@font/bitter_bold</item>
     </array>
 </resources>

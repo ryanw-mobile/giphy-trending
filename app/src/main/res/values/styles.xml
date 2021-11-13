@@ -8,7 +8,6 @@
         <item name="android:layout_marginTop">@dimen/margin_half</item>
         <item name="android:layout_marginEnd">@dimen/margin_standard</item>
         <item name="android:layout_marginBottom">@dimen/margin_half</item>
-        <item name="android:background">@color/black_semitrans</item>
     </style>
 
     <style name="style_listitem_image">
@@ -22,28 +21,37 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/margin_half</item>
-        <item name="android:layout_marginEnd">@dimen/margin_half</item>
-        <item name="android:background">@color/md_theme_light_primaryInverse</item>
-        <item name="android:padding">@dimen/margin_half</item>
+        <item name="android:layout_marginBottom">@dimen/margin_half</item>
+        <item name="android:background">@color/listitem_image_type_background</item>
+        <item name="android:paddingStart">@dimen/margin_standard</item>
+        <item name="android:paddingEnd">@dimen/margin_standard</item>
+        <item name="android:paddingTop">@dimen/margin_half</item>
+        <item name="android:paddingBottom">@dimen/margin_half</item>
         <item name="android:fontFamily">@font/bitter</item>
-        <item name="android:textColor">@color/md_theme_light_onSurface</item>
-    </style>
-
-    <style name="style_listitem_title" parent="TextAppearance.AppCompat.Body2">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/md_theme_dark_onSurface</item>
-        <item name="android:padding">@dimen/margin_standard</item>
-        <item name="android:fontFamily">@font/bitter</item>
+        <item name="android:textColor">@color/listitem_image_type_textcolor</item>
     </style>
 
     <style name="style_listitem_username" parent="TextAppearance.AppCompat.Caption">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/bitter</item>
-        <item name="android:background">@color/design_default_color_primary_dark</item>
-        <item name="android:padding">@dimen/margin_half</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_marginTop">@dimen/margin_half</item>
+        <item name="android:layout_marginBottom">@dimen/margin_half</item>
+        <item name="android:background">@color/listitem_username_background</item>
+        <item name="android:paddingStart">@dimen/margin_standard</item>
+        <item name="android:paddingEnd">@dimen/margin_standard</item>
+        <item name="android:paddingTop">@dimen/margin_half</item>
+        <item name="android:paddingBottom">@dimen/margin_half</item>
+        <item name="android:textColor">@color/listitem_username_textcolor</item>
+    </style>
+
+    <style name="style_listitem_title" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/margin_standard</item>
+        <item name="android:paddingBottom">@dimen/margin_standard</item>
+        <item name="android:fontFamily">@font/bitter_bold</item>
+        <item name="android:textColor">@color/listitem_image_type_textcolor</item>
     </style>
 
     <style name="style_listitem_imagebutton">
@@ -52,7 +60,8 @@
         <item name="android:background">?android:attr/selectableItemBackground</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
-        <item name="android:padding">@dimen/margin_standard</item>
-        <item name="tint">@color/md_theme_dark_onSurface</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:alpha">0.68</item>
+        <item name="android:tint">@color/listitem_image_type_textcolor</item>
     </style>
 </resources>

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import uk.ryanwong.giphytrending.databinding.FragmentTrendingBinding
 import uk.ryanwong.giphytrending.di.DaggerAppComponent
@@ -53,6 +54,12 @@ class TrendingFragment : Fragment() {
         binding.recyclerView.apply {
             setHasFixedSize(false)
             itemAnimator = DefaultItemAnimator()
+            addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    DividerItemDecoration.VERTICAL
+                )
+            )
             adapter = trendingAdapter
         }
 

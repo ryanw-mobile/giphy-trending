@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
-import com.bumptech.glide.Glide
 import uk.ryanwong.giphytrending.R
 
 
@@ -17,7 +16,7 @@ import uk.ryanwong.giphytrending.R
 fun setImageUrl(imageView: ImageView, src: String?) {
     src?.let {
         val uri = src.toUri().buildUpon().scheme("https").build()
-        Glide.with(imageView)
+        GlideApp.with(imageView)
             .load(uri)
 //            .placeholder(R.drawable.ic_baseline_error_outline_24)
 //            .error(R.drawable.ic_baseline_error_outline_24)

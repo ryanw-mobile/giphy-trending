@@ -29,6 +29,8 @@ REST API apps -- If we can have something done in a simple way, why make it comp
 * Glide
 * Navigation
 * Dagger 2
+* Timber - for logging
+* Instrumented tests: JUnit and Hamcrest
 
 ## Improvements:
 

@@ -41,7 +41,10 @@ class TrendingFragment : Fragment() {
         // The purpose of LifecycleObserver is to eliminate writing the boilerplate code
         // to load and cleanup resources in onCreate() and onDestroy()
         binding.lifecycleOwner = viewLifecycleOwner
-        setUpRecyclerView()
+        binding.recyclerView.setupRecyclerView().apply {
+            adapter = giphyImageItemAdapter
+        }
+        setupItemAdapter()
         binding.fetchProgress.setupRefreshLayout { viewModel.refresh() }
     }
 
@@ -50,19 +53,9 @@ class TrendingFragment : Fragment() {
         observeLiveData()
     }
 
-    private fun setUpRecyclerView() {
-        binding.recyclerView.apply {
-            setHasFixedSize(false)
-            itemAnimator = DefaultItemAnimator()
-            addItemDecoration(
-                DividerItemDecoration(
-                    requireContext(),
-                    DividerItemDecoration.VERTICAL
-                )
-            )
-            adapter = giphyImageItemAdapter
         }
 
+    private fun setupItemAdapter() {
         giphyImageItemAdapter.apply {
             registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
                 override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {

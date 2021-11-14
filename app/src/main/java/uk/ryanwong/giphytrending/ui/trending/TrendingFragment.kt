@@ -58,7 +58,23 @@ class TrendingFragment : Fragment() {
         observeLiveData()
     }
 
+    override fun onPause() {
+        // Experimental Memory Leak fix:
+        // https://stackoverflow.com/questions/56796929/memory-leak-with-swiperefreshlayout
+        binding.fetchProgress.apply {
+            isEnabled = false
+            isRefreshing = false
+            clearAnimation()
+
         }
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.fetchProgress.isEnabled = true
+    }
+
 
     private fun setupItemAdapter() {
         giphyImageItemAdapter.apply {

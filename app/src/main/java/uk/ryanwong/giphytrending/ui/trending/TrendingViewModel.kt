@@ -12,6 +12,15 @@ class TrendingViewModel @Inject constructor(private val repository: GiphyReposit
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
+    // UI should not interact with repository directly
+    val trendingList by lazy { repository.trendingList }
+    val errorMessage by lazy { repository.errorMessage }
+    val showLoading by lazy { repository.showLoading }
+
+    val showNoData = Transformations.map(trendingList) { list ->
+        !showLoading.value!! && list.isEmpty()
+    }
+
     // This is to maintain the recyclerview scrolling state during list refresh
     // No practical use for this UI layout because we have to back to top for swipe to refresh
     private var _listState: Parcelable? = null

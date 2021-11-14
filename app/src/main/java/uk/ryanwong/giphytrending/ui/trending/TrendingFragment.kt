@@ -74,66 +74,39 @@ class TrendingFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        observeInProgress()
-        observeIsError()
-        observeGiphyList()
-    }
+        viewModel.showLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+            binding.fetchProgress.isRefreshing = isLoading
+        })
 
-    private fun observeInProgress() {
-        viewModel.repository.isInProgress.observe(this, Observer { isLoading ->
-            isLoading.let {
-                if (it) {
-                    binding.emptyText.visibility = View.GONE
-                    binding.recyclerView.visibility = View.GONE
-                    binding.fetchProgress.isRefreshing = true
-                } else {
-                    binding.fetchProgress.isRefreshing = false
-                }
+        viewModel.trendingList.observe(viewLifecycleOwner, { trendingList ->
+            trendingList.let {
+                viewModel.saveListState(binding.recyclerView.layoutManager?.onSaveInstanceState())
+                giphyImageItemAdapter.submitList(it)
             }
+        })
+
+        viewModel.errorMessage.observe(viewLifecycleOwner, { errorMessage ->
+            showErrorDialog(errorMessage)
         })
     }
 
-    private fun observeIsError() {
-        viewModel.repository.isError.observe(this, Observer { isError ->
-            isError?.let {
-                if (it.isNotEmpty()) {
-                    disableViewsOnError(it)
-                } else {
-                    binding.emptyText.visibility = View.GONE
-                    binding.fetchProgress.isRefreshing = true
-                }
-            } ?: run {
-                binding.emptyText.visibility = View.GONE
-                binding.fetchProgress.isRefreshing = true
-            }
-        })
-    }
+    private fun showErrorDialog(errorMessage: String?) {
+        errorMessage?.let {
+            if (errorMessage.isNotBlank()) {
+                // make sure we only show one latest dialog to users for better UX:
+                errorDialog?.dismiss()
 
-    private fun disableViewsOnError(errorMsg: String) {
-        binding.recyclerView.visibility = View.GONE
-        binding.emptyText.apply {
-            visibility = View.VISIBLE
-            text = errorMsg
+                // Show an error dialog
+                errorDialog =
+                    AlertDialog.Builder(requireContext()).apply {
+                        setTitle(getString(R.string.something_went_wrong))
+                        setMessage(errorMessage)
+                        setPositiveButton(getString(R.string.ok)) { _, _ ->
+                            // do nothing
+                        }
+                    }.create()
+                errorDialog?.show()
+            }
         }
-        viewModel.saveListState(binding.recyclerView.layoutManager?.onSaveInstanceState())
-        giphyImageItemAdapter.submitList(emptyList())
-        binding.fetchProgress.isRefreshing = false
-    }
-
-    private fun observeGiphyList() {
-        viewModel.repository.trendingList.observe(this, Observer { giphies ->
-            giphies.let {
-                if (it != null && it.isNotEmpty()) {
-                    binding.fetchProgress.isRefreshing = true
-                    binding.recyclerView.visibility = View.VISIBLE
-                    viewModel.saveListState(binding.recyclerView.layoutManager?.onSaveInstanceState())
-                    giphyImageItemAdapter.submitList(it)
-                    binding.emptyText.visibility = View.GONE
-                    binding.fetchProgress.isRefreshing = false
-                } else {
-                    disableViewsOnError("Empty List")
-                }
-            }
-        })
     }
 }

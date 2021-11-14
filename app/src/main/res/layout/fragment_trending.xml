@@ -2,17 +2,22 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.trending.TrendingFragment">
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="uk.ryanwong.giphytrending.ui.trending.TrendingViewModel" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/fetch_progress"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".ui.trending.TrendingFragment">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -26,6 +31,7 @@
                 android:paddingTop="@dimen/margin_half"
                 android:paddingBottom="@dimen/margin_standard"
                 android:scrollbars="vertical"
+                android:visibility="@{viewModel.showNoData ? View.GONE : View.VISIBLE}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -34,20 +40,21 @@
                 tools:listitem="@layout/listitem_giphy" />
 
             <TextView
-                android:id="@+id/empty_text"
+                android:id="@+id/textview_nodata"
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:paddingStart="@dimen/margin_standard"
                 android:paddingEnd="@dimen/margin_standard"
                 android:text="@string/no_giphies_found"
                 android:textColor="@color/design_default_color_primary"
-                android:visibility="gone"
+                android:visibility="@{viewModel.showNoData ? View.VISIBLE : View.GONE}"
+                app:drawableTopCompat="@drawable/ic_baseline_error_outline_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="visible" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

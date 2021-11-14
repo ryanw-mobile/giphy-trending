@@ -1,18 +1,19 @@
 package uk.ryanwong.giphytrending.ui.trending
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import uk.ryanwong.giphytrending.GiphyApplication
+import uk.ryanwong.giphytrending.R
 import uk.ryanwong.giphytrending.databinding.FragmentTrendingBinding
-import uk.ryanwong.giphytrending.di.DaggerAppComponent
 import uk.ryanwong.giphytrending.ui.GiphyImageItemAdapter
+import uk.ryanwong.giphytrending.ui.setupRecyclerView
 import uk.ryanwong.giphytrending.ui.setupRefreshLayout
 import javax.inject.Inject
 
@@ -21,15 +22,19 @@ class TrendingFragment : Fragment() {
     @Inject
     lateinit var giphyImageItemAdapter: GiphyImageItemAdapter
 
-    private val viewModel: TrendingViewModel by viewModels()
-
-    lateinit var binding: FragmentTrendingBinding
+    @Inject
+    lateinit var viewModelFactory: TrendingViewModelFactory
+    private lateinit var viewModel: TrendingViewModel
+    private lateinit var binding: FragmentTrendingBinding
+    private var errorDialog: AlertDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        viewModel = ViewModelProvider(this, viewModelFactory)[TrendingViewModel::class.java]
+
         binding = FragmentTrendingBinding.inflate(inflater, container, false)
         DaggerAppComponent.create().inject(this)
         return binding.root

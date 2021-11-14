@@ -1,16 +1,14 @@
 package uk.ryanwong.giphytrending.ui.trending
 
 import android.os.Parcelable
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
-import uk.ryanwong.giphytrending.data.repository.TrendingRepository
-import uk.ryanwong.giphytrending.di.DaggerAppComponent
+import uk.ryanwong.giphytrending.GiphyApplication
+import uk.ryanwong.giphytrending.data.repository.GiphyRepository
 import javax.inject.Inject
 
-class TrendingViewModel : ViewModel() {
-
-    @Inject
-    lateinit var repository: TrendingRepository
+class TrendingViewModel @Inject constructor(private val repository: GiphyRepository) : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 

@@ -33,10 +33,10 @@ class TrendingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        GiphyApplication.appComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory)[TrendingViewModel::class.java]
 
         binding = FragmentTrendingBinding.inflate(inflater, container, false)
-        DaggerAppComponent.create().inject(this)
         return binding.root
     }
 

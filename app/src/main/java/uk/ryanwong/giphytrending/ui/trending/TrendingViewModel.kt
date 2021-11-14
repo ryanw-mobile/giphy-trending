@@ -32,7 +32,7 @@ class TrendingViewModel @Inject constructor(private val repository: GiphyReposit
     }
 
     init {
-        DaggerAppComponent.create().inject(this)
+        GiphyApplication.appComponent.inject(this)
         fetchDataFromDatabase()
         refresh()
     }

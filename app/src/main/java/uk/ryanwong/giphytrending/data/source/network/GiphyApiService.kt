@@ -24,6 +24,7 @@ object GiphyApiService {
             .build()
     }
 
+    // AppModule.provideApi() helps inject this
     fun getClient(): GiphyApi {
         val moshi = Moshi.Builder()
             .add(Date::class.java, CustomDateTimeAdapter("yyyy-MM-dd HH:mm:ss").nullSafe())

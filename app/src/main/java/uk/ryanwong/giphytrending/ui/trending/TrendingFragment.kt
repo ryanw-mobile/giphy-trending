@@ -2,9 +2,7 @@ package uk.ryanwong.giphytrending.ui.trending
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -35,8 +33,8 @@ class TrendingFragment : Fragment() {
     ): View {
         GiphyApplication.appComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory)[TrendingViewModel::class.java]
-
         binding = FragmentTrendingBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -75,6 +73,21 @@ class TrendingFragment : Fragment() {
         binding.fetchProgress.isEnabled = true
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_trendingfragment, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_refresh -> {
+                binding.fetchProgress.isRefreshing = true
+                viewModel.refresh()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     private fun setupItemAdapter() {
         giphyImageItemAdapter.apply {

@@ -4,7 +4,11 @@
     <string name="error_export_clipboard">Error copying image link to clipboard. Please try again later.</string>
     <string name="clipboard_copied">Copied image link to clipboard</string>
     <string name="trending">Trending</string>
+    <string name="settings">Settings</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="ok">OK</string>
     <string name="refresh">Refresh</string>
+    <string name="api_max_description">Items to show</string>
+    <string name="apimax_desc">The image list consumes a relatively small amount of data. Images are downloaded only when they become visible on the screen.</string>
+    <string name="acknowledgement_sampleapp">This is a sample App for demonstration purpose.\nSource available at github.com/ryanwong-uk/giphy-trending</string>
 </resources>

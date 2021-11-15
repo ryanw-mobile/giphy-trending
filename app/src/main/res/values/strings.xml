@@ -11,4 +11,5 @@
     <string name="api_max_description">Items to show</string>
     <string name="apimax_desc">The image list consumes a relatively small amount of data. Images are downloaded only when they become visible on the screen.</string>
     <string name="acknowledgement_sampleapp">This is a sample App for demonstration purpose.\nSource available at github.com/ryanwong-uk/giphy-trending</string>
+    <string name="loading">Loading...</string>
 </resources>

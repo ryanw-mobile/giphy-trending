@@ -1,21 +1,48 @@
 package uk.ryanwong.giphytrending.ui
 
-import androidx.core.content.ContextCompat
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import uk.ryanwong.giphytrending.R
 
-fun SwipeRefreshLayout.setupRefreshLayout(
-    refreshListener: SwipeRefreshLayout.OnRefreshListener
-) {
-    this.setColorSchemeColors(
-        ContextCompat.getColor(context, R.color.design_default_color_primary),
-        ContextCompat.getColor(context, R.color.design_default_color_primary_dark),
-        ContextCompat.getColor(context, R.color.design_default_color_secondary)
-    )
-    this.setOnRefreshListener(refreshListener)
+
+fun View.animateDown() {
+    val animate = TranslateAnimation(
+        0F,
+        0F,
+        -1 * this.getHeight().toFloat(),
+        0F
+    ).apply {
+        duration = 1000
+        fillAfter = true
+    }
+    startAnimation(animate)
+}
+
+fun View.animateUp() {
+    val animate = TranslateAnimation(
+        0F,
+        0F,
+        0F,
+        -1 * this.getHeight().toFloat()
+    ).apply {
+        duration = 500
+        fillAfter = true
+        setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(p0: Animation?) {
+            }
+
+            override fun onAnimationEnd(p0: Animation?) {
+                this@animateUp.visibility = View.GONE
+            }
+
+            override fun onAnimationRepeat(p0: Animation?) {
+            }
+        })
+    }
+    startAnimation(animate)
 }
 
 fun RecyclerView.setupRecyclerView(): RecyclerView {

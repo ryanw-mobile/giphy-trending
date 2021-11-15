@@ -48,7 +48,7 @@ more production-ready.
 * The RecyclerView has been modified to use ListAdapter, DiffUtils to avoid expensive
   notifyDataSetChanged()
 * Additional handling done to preserve the scrolling state and avoid flickering during refresh
-* SwipeRefreshLayout has been added to allow manual refresh
+* Menu button has been added to allow manual refresh
 * A dedicated Domain Model was added to separate the Network Data Model
 * Introduced copy image link, and open Giphy page on browser functions
 * Added test cases

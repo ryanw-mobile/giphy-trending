@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import uk.ryanwong.giphytrending.GiphyApplication
@@ -23,7 +22,8 @@ class TrendingFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: TrendingViewModelFactory
     private lateinit var viewModel: TrendingViewModel
-    private lateinit var binding: FragmentTrendingBinding
+    private var _binding: FragmentTrendingBinding? = null
+    private val binding get() = _binding!!
     private var errorDialog: AlertDialog? = null
 
     override fun onCreateView(
@@ -33,7 +33,7 @@ class TrendingFragment : Fragment() {
     ): View {
         GiphyApplication.appComponent.inject(this)
         viewModel = ViewModelProvider(this, viewModelFactory)[TrendingViewModel::class.java]
-        binding = FragmentTrendingBinding.inflate(inflater, container, false)
+        _binding = FragmentTrendingBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         return binding.root
     }
@@ -63,7 +63,7 @@ class TrendingFragment : Fragment() {
             isEnabled = false
             isRefreshing = false
             clearAnimation()
-
+            onDestroyView()
         }
         super.onPause()
     }
@@ -71,6 +71,11 @@ class TrendingFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.fetchProgress.isEnabled = true
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -103,7 +108,7 @@ class TrendingFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        viewModel.showLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+        viewModel.showLoading.observe(viewLifecycleOwner, { isLoading ->
             binding.fetchProgress.isRefreshing = isLoading
         })
 
@@ -116,6 +121,17 @@ class TrendingFragment : Fragment() {
 
         viewModel.errorMessage.observe(viewLifecycleOwner, { errorMessage ->
             showErrorDialog(errorMessage)
+        })
+
+
+        viewModel.showNoData.observe(viewLifecycleOwner, { showNoData ->
+            if (showNoData) {
+                binding.recyclerView.visibility = View.GONE
+                binding.textviewNodata.visibility = View.VISIBLE
+            } else {
+                binding.recyclerView.visibility = View.VISIBLE
+                binding.textviewNodata.visibility = View.GONE
+            }
         })
     }
 

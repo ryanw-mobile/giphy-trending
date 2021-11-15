@@ -1,6 +1,7 @@
 package uk.ryanwong.giphytrending.ui.trending
 
 import android.os.Parcelable
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
@@ -13,11 +14,10 @@ class TrendingViewModel @Inject constructor(private val repository: GiphyReposit
     private val compositeDisposable by lazy { CompositeDisposable() }
 
     // UI should not interact with repository directly
-    val trendingList by lazy { repository.trendingList }
-    val errorMessage by lazy { repository.errorMessage }
-    val showLoading by lazy { repository.showLoading }
-
-    val showNoData = Transformations.map(trendingList) { list ->
+    val trendingList = repository.trendingList
+    val errorMessage = repository.errorMessage
+    val showLoading = repository.showLoading
+    val showNoData: LiveData<Boolean> = Transformations.map(trendingList) { list ->
         !showLoading.value!! && list.isEmpty()
     }
 

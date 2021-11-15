@@ -10,8 +10,9 @@ import uk.ryanwong.giphytrending.GiphyApplication
 import uk.ryanwong.giphytrending.R
 import uk.ryanwong.giphytrending.databinding.FragmentTrendingBinding
 import uk.ryanwong.giphytrending.ui.GiphyImageItemAdapter
+import uk.ryanwong.giphytrending.ui.animateDown
+import uk.ryanwong.giphytrending.ui.animateUp
 import uk.ryanwong.giphytrending.ui.setupRecyclerView
-import uk.ryanwong.giphytrending.ui.setupRefreshLayout
 import javax.inject.Inject
 
 class TrendingFragment : Fragment() {
@@ -48,34 +49,11 @@ class TrendingFragment : Fragment() {
             adapter = giphyImageItemAdapter
         }
         setupItemAdapter()
-        binding.fetchProgress.setupRefreshLayout { viewModel.refresh() }
     }
 
     override fun onStart() {
         super.onStart()
         observeLiveData()
-    }
-
-    override fun onPause() {
-        // Experimental Memory Leak fix:
-        // https://stackoverflow.com/questions/56796929/memory-leak-with-swiperefreshlayout
-        binding.fetchProgress.apply {
-            isEnabled = false
-            isRefreshing = false
-            clearAnimation()
-            onDestroyView()
-        }
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.fetchProgress.isEnabled = true
-    }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -86,7 +64,6 @@ class TrendingFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_refresh -> {
-                binding.fetchProgress.isRefreshing = true
                 viewModel.refresh()
                 return true
             }
@@ -109,7 +86,14 @@ class TrendingFragment : Fragment() {
 
     private fun observeLiveData() {
         viewModel.showLoading.observe(viewLifecycleOwner, { isLoading ->
-            binding.fetchProgress.isRefreshing = isLoading
+            if (isLoading && binding.loadingBar.visibility == View.GONE) {
+                binding.loadingBar.apply {
+                    visibility = View.VISIBLE
+                    animateDown()
+                }
+            } else if (!isLoading && binding.loadingBar.visibility == View.VISIBLE) {
+                binding.loadingBar.animateUp()
+            }
         })
 
         viewModel.trendingList.observe(viewLifecycleOwner, { trendingList ->

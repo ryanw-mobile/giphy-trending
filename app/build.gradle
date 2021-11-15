@@ -128,7 +128,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     // Android Lifecycle Extensions
     def lifecycle_version = '2.4.0'

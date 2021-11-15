@@ -64,4 +64,14 @@
         <item name="android:alpha">0.68</item>
         <item name="android:tint">@color/listitem_image_type_textcolor</item>
     </style>
+
+    <style name="loading_bar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/listitem_image_type_textcolor</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:padding">@dimen/margin_half</item>
+        <item name="android:visibility">gone</item>
+    </style>
 </resources>

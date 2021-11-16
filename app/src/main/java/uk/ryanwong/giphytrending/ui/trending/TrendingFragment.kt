@@ -27,6 +27,15 @@ class TrendingFragment : Fragment() {
     private val binding get() = _binding!!
     private var errorDialog: AlertDialog? = null
 
+    private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
+        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+            viewModel.listState?.let {
+                // layoutManager.scrollToPositionWithOffset(position, 0)
+                binding.recyclerView.layoutManager?.onRestoreInstanceState(it)
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,6 +65,17 @@ class TrendingFragment : Fragment() {
         observeLiveData()
     }
 
+    override fun onDestroyView() {
+        giphyImageItemAdapter.apply {
+            unregisterAdapterDataObserver(adapterDataObserver)
+        }
+        binding.recyclerView.apply {
+            adapter = null
+        }
+        _binding = null
+        super.onDestroyView()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_trendingfragment, menu)
@@ -73,14 +93,7 @@ class TrendingFragment : Fragment() {
 
     private fun setupItemAdapter() {
         giphyImageItemAdapter.apply {
-            registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                    viewModel.listState?.let {
-                        // layoutManager.scrollToPositionWithOffset(position, 0)
-                        binding.recyclerView.layoutManager?.onRestoreInstanceState(it)
-                    }
-                }
-            })
+            registerAdapterDataObserver(adapterDataObserver)
         }
     }
 

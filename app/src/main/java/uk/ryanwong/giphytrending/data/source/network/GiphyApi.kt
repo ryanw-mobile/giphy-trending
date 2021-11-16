@@ -9,7 +9,7 @@ interface GiphyApi {
     @GET("v1/gifs/trending")
     fun getTrending(
         @Query("api_key") apiKey: String,
-        @Query("limit") limit: String,
+        @Query("limit") limit: Int,
         @Query("rating") rating: String
     ): Flowable<TrendingNetworkModel>
 }

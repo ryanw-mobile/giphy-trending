@@ -25,16 +25,16 @@ class GiphyRepository {
     @Inject
     lateinit var giphyDatabase: GiphyDatabase
 
-    private val _trendingList by lazy { MutableLiveData<List<GiphyImageItemDomainModel>>() }
+    private val _trendingList = MutableLiveData<List<GiphyImageItemDomainModel>>()
     val trendingList: LiveData<List<GiphyImageItemDomainModel>>
         get() = _trendingList
 
-    private val _showLoading by lazy { MutableLiveData<Boolean>() }
+    private val _showLoading = MutableLiveData(false)
     val showLoading: LiveData<Boolean>
         get() = _showLoading
 
-    private val _errorMessage by lazy { MutableLiveData<String>() }
-    val errorMessage: LiveData<String>
+    private val _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?>
         get() = _errorMessage
 
     init {
@@ -55,6 +55,7 @@ class GiphyRepository {
                     if (dataEntityList != null) {
                         _errorMessage.postValue(null)
                         _trendingList.postValue(dataEntityList.toDomainModelList())
+                        _showLoading.postValue(false)
                     }
                 },
                 {
@@ -71,7 +72,7 @@ class GiphyRepository {
      * Repository currently run RestAPI calls, cache data to local database,
      * and return the cached contents.
      */
-    fun refreshTrending(): Disposable {
+    fun refreshTrending(apiMaxEntries: Int): Disposable {
         return Completable.fromAction {
             _showLoading.postValue(true)
             // Mark existing contents dirty. After successful API call old entries will be removed
@@ -80,7 +81,7 @@ class GiphyRepository {
             .subscribe(
                 {
                     Timber.v("refreshTrending() - mark dirty: success")
-                    getTrendingFromNetwork()
+                    getTrendingFromNetwork(apiMaxEntries)
                 }, {
                     Timber.e("refreshTrending() -Database error when marking dirty bit: ${it.message}")
                     _showLoading.postValue(false)
@@ -91,9 +92,9 @@ class GiphyRepository {
             )
     }
 
-    private fun getTrendingFromNetwork(): Disposable {
+    private fun getTrendingFromNetwork(apiMaxEntries: Int): Disposable {
         return giphyApiService.getTrending(
-            BuildConfig.GIPHY_API_KEY, BuildConfig.API_MAX_ENTRIES,
+            BuildConfig.GIPHY_API_KEY, apiMaxEntries,
             BuildConfig.API_RATING
         )
             .subscribeOn(Schedulers.io())

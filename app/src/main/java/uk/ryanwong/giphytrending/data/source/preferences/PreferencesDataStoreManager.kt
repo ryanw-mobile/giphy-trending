@@ -4,12 +4,17 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.map
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import uk.ryanwong.giphytrending.BuildConfig
+import java.io.IOException
 
 
 private const val USER_PREFERENCES_NAME = "user_preferences"
@@ -36,6 +41,18 @@ class PreferencesDataStoreManager(val context: Context) {
     suspend fun updateMaxApiEntries(maxEntries: Int = BuildConfig.API_MAX_ENTRIES.toInt()) {
         context.dataStore.edit { settings ->
             settings[API_MAX_ENTRIES] = maxEntries
+        }
+    }
+
+    fun emitMaxApiEntries(): Flow<Int> {
+        return context.dataStore.data.catch {
+            if (it is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw it
+            }
+        }.map { settings ->
+            settings[API_MAX_ENTRIES] ?: BuildConfig.API_MAX_ENTRIES.toInt()
         }
     }
 }

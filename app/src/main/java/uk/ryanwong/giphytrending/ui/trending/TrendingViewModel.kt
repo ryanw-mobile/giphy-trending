@@ -4,19 +4,27 @@ import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import uk.ryanwong.giphytrending.GiphyApplication
 import uk.ryanwong.giphytrending.data.repository.GiphyRepository
+import uk.ryanwong.giphytrending.data.repository.UserPreferencesRepository
 import javax.inject.Inject
 
-class TrendingViewModel @Inject constructor(private val repository: GiphyRepository) : ViewModel() {
+class TrendingViewModel @Inject constructor(
+    private val giphyRepository: GiphyRepository,
+    private val userPreferencesRepository: UserPreferencesRepository
+) : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
     // UI should not interact with repository directly
-    val trendingList = repository.trendingList
-    val errorMessage = repository.errorMessage
-    val showLoading = repository.showLoading
+    val trendingList = giphyRepository.trendingList
+    val errorMessage = giphyRepository.errorMessage
+    val showLoading = giphyRepository.showLoading
     val showNoData: LiveData<Boolean> = Transformations.map(trendingList) { list ->
         !showLoading.value!! && list.isEmpty()
     }
@@ -33,16 +41,21 @@ class TrendingViewModel @Inject constructor(private val repository: GiphyReposit
 
     init {
         GiphyApplication.appComponent.inject(this)
-        fetchDataFromDatabase()
-        refresh()
+        fetchDataFromDatabase() // get cached data first. Fragment should call refresh when view is ready
     }
 
-    fun refresh() {
-        compositeDisposable.add(repository.refreshTrending())
-    }
+    fun refresh() =
+        viewModelScope.launch {
+            userPreferencesRepository.getApiMax().collect() { apiMaxEntries ->
+                Timber.v("refresh requesting $apiMaxEntries entries from the repository")
+                compositeDisposable.add(
+                    giphyRepository.refreshTrending(apiMaxEntries)
+                )
+            }
+        }
 
     private fun fetchDataFromDatabase() {
-        compositeDisposable.add(repository.fetchTrending())
+        compositeDisposable.add(giphyRepository.fetchTrending())
     }
 
     override fun onCleared() {

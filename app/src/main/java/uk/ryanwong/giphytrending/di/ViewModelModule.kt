@@ -11,8 +11,11 @@ import uk.ryanwong.giphytrending.ui.trending.TrendingViewModelFactory
 class ViewModelModule {
 
     @Provides
-    fun providesTrendingViewModelFactory(repository: GiphyRepository): TrendingViewModelFactory {
-        return TrendingViewModelFactory(repository)
+    fun providesTrendingViewModelFactory(
+        giphyRepository: GiphyRepository,
+        userPreferencesRepository: UserPreferencesRepository
+    ): TrendingViewModelFactory {
+        return TrendingViewModelFactory(giphyRepository, userPreferencesRepository)
     }
 
     @Provides

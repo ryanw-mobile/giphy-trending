@@ -63,6 +63,7 @@ class TrendingFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         observeLiveData()
+        viewModel.refresh()
     }
 
     override fun onDestroyView() {
@@ -119,7 +120,6 @@ class TrendingFragment : Fragment() {
         viewModel.errorMessage.observe(viewLifecycleOwner, { errorMessage ->
             showErrorDialog(errorMessage)
         })
-
 
         viewModel.showNoData.observe(viewLifecycleOwner, { showNoData ->
             if (showNoData) {

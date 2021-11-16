@@ -4,7 +4,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import uk.ryanwong.giphytrending.data.source.preferences.PreferencesDataStoreManager
 
-
 /**
  * Class that handles saving and retrieving user preferences
  * The repository caches the value to avoid repeated asynchronous queries
@@ -18,4 +17,6 @@ class UserPreferencesRepository(private val preferencesDataStoreManager: Prefere
     fun updateApiMax(apiMax: Int) = runBlocking {
         launch { preferencesDataStoreManager.updateMaxApiEntries(apiMax) }
     }
+
+    fun getApiMax() = preferencesDataStoreManager.emitMaxApiEntries()
 }

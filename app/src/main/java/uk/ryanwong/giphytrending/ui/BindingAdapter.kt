@@ -4,11 +4,13 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import com.google.android.material.snackbar.Snackbar
 import uk.ryanwong.giphytrending.R
 
 
@@ -54,15 +56,33 @@ fun setClipboardClickable(view: View, src: String?) {
             val clip = ClipData.newPlainText(uri.toString(), uri.toString())
             clipboard?.setPrimaryClip(clip)
                 .also {
-                    Toast.makeText(
-                        view.context,
+                    val snackbar = Snackbar.make(
+                        view,
                         view.context.getString(R.string.clipboard_copied),
-                        Toast.LENGTH_LONG
-                    ).show()
-                } ?: Toast.makeText(
-                view.context,
-                view.context.getString(R.string.error_export_clipboard), Toast.LENGTH_LONG
-            ).show()
+                        Snackbar.LENGTH_LONG
+                    )
+                    val layoutParams =
+                        (snackbar.view.layoutParams as CoordinatorLayout.LayoutParams).apply {
+                            anchorId = R.id.nav_view //Id for your bottomNavBar or TabLayout
+                            anchorGravity = Gravity.TOP
+                            gravity = Gravity.TOP
+                        }
+                    snackbar.view.layoutParams = layoutParams
+                    snackbar.show()
+                } ?: run {
+                val snackbar = Snackbar.make(
+                    view,
+                    view.context.getString(R.string.error_export_clipboard), Snackbar.LENGTH_LONG
+                )
+                val layoutParams =
+                    (snackbar.view.layoutParams as CoordinatorLayout.LayoutParams).apply {
+                        anchorId = R.id.nav_view //Id for your bottomNavBar or TabLayout
+                        anchorGravity = Gravity.TOP
+                        gravity = Gravity.TOP
+                    }
+                snackbar.view.layoutParams = layoutParams
+                snackbar.show()
+            }
         }
     } ?: run {
         // If the link is empty we would better hide this

@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import uk.ryanwong.giphytrending.BuildConfig
 import java.io.IOException
+import javax.inject.Inject
 
 
 private const val USER_PREFERENCES_NAME = "user_preferences"
@@ -24,7 +25,7 @@ private const val KEY_API_MAX_ENTRIES = "api_max_entries"
  * Default Coroutine approach of Preferences DataStore implementation.
  * Not considering RxJava because Coroutine is more future proof in the Android-Kotlin world
  */
-class PreferencesDataStoreManager(val context: Context) {
+class PreferencesDataStoreManager @Inject constructor(private val context: Context) {
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = USER_PREFERENCES_NAME)
 

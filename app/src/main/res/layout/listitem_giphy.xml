@@ -56,10 +56,9 @@
             style="@style/style_listitem_image"
             android:contentDescription="@{data.title}"
             app:imageUrl="@{data.previewUrl}"
-            app:layout_constraintBottom_toTopOf="@id/trending_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_open"
+            app:layout_constraintTop_toBottomOf="@id/trending_title"
             tools:src="@tools:sample/backgrounds/scenic" />
 
         <TextView
@@ -67,10 +66,8 @@
             style="@style/style_listitem_title"
             android:minHeight="@dimen/image_button_size"
             android:text="@{data.title}"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintBottom_toTopOf="@id/trending_image"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@tools:sample/cities" />

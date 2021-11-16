@@ -75,4 +75,45 @@
         <item name="android:padding">@dimen/margin_half</item>
         <item name="android:visibility">gone</item>
     </style>
+
+    <style name="settings_item_title" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:paddingStart">@dimen/margin_standard</item>
+        <item name="android:paddingEnd">@dimen/margin_standard</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/francois_one</item>
+    </style>
+
+    <style name="setting_item_description" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="android:paddingStart">@dimen/margin_standard</item>
+        <item name="android:paddingEnd">@dimen/margin_standard</item>
+        <item name="android:paddingTop">@dimen/margin_half</item>
+        <item name="android:paddingBottom">@dimen/margin_half</item>
+    </style>
+
+    <style name="setting_apimax_value_text" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="setting_acknowledgement" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="setting_seekbar" parent="Widget.AppCompat.SeekBar">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/margin_standard</item>
+        <item name="android:max">150</item>
+        <item name="android:paddingStart">@dimen/margin_standard</item>
+        <item name="android:paddingEnd">@dimen/margin_standard</item>
+        <item name="android:progressTint">#E91E63</item>
+    </style>
 </resources>

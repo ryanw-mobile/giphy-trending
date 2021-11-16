@@ -6,9 +6,11 @@ import dagger.Module
 import dagger.Provides
 import uk.ryanwong.giphytrending.BuildConfig
 import uk.ryanwong.giphytrending.data.repository.GiphyRepository
+import uk.ryanwong.giphytrending.data.repository.UserPreferencesRepository
 import uk.ryanwong.giphytrending.data.source.local.GiphyDatabase
 import uk.ryanwong.giphytrending.data.source.network.GiphyApi
 import uk.ryanwong.giphytrending.data.source.network.GiphyApiService
+import uk.ryanwong.giphytrending.data.source.preferences.PreferencesDataStoreManager
 import uk.ryanwong.giphytrending.ui.GiphyImageItemAdapter
 import javax.inject.Singleton
 
@@ -33,6 +35,7 @@ class AppModule(val context: Context) {
     @Provides
     fun provideApi(): GiphyApi = GiphyApiService.getClient()
 
+    @Singleton
     @Provides
     fun provideTrendingRepository() = GiphyRepository()
 
@@ -40,4 +43,14 @@ class AppModule(val context: Context) {
     fun provideTrendingAdapter(): GiphyImageItemAdapter = GiphyImageItemAdapter().apply {
         setHasStableIds(true)
     }
+
+    @Singleton
+    @Provides
+    fun providePreferenceDataStoreManager(context: Context) = PreferencesDataStoreManager(context)
+
+    @Singleton
+    @Provides
+    fun provideUserPreferencesRepository(preferenceDataStoreManager: PreferencesDataStoreManager) =
+        UserPreferencesRepository(preferenceDataStoreManager)
+
 }

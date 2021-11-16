@@ -30,7 +30,7 @@ android {
         buildConfigField 'String', 'GIPHY_ENDPOINT', '"https://api.giphy.com/"'
         buildConfigField 'String', 'GIPHY_API_KEY', keyProps["giphyApiKey"]
         buildConfigField 'String', 'DATABASE_NAME', '"trending.db"'
-        buildConfigField 'String', 'API_LIMIT', '"100"'
+        buildConfigField 'String', 'API_MAX_ENTRIES', '"100"'
         buildConfigField 'String', 'API_RATING', '"G"'
     }
 
@@ -181,8 +181,6 @@ dependencies {
     // Datastore preferences
     def datastore_version = "1.0.0"
     implementation "androidx.datastore:datastore-preferences:$datastore_version"
-    // optional - RxJava2 support
-    implementation "androidx.datastore:datastore-preferences-rxjava2:$datastore_version"
 
     implementation 'com.jakewharton.timber:timber:5.0.1'
 

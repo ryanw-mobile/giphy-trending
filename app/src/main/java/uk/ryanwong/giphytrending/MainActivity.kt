@@ -3,8 +3,8 @@ package uk.ryanwong.giphytrending
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.Navigation
+import androidx.navigation.ui.NavigationUI
 import uk.ryanwong.giphytrending.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -19,8 +19,11 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.topAppBar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        binding.navView.setupWithNavController(
-            findNavController(R.id.nav_host_fragment_activity_main)
-        )
+        binding.navView?.let {
+            NavigationUI.setupWithNavController(
+                it,
+                Navigation.findNavController(this, R.id.nav_host_fragment_activity_main)
+            )
+        }
     }
 }

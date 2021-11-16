@@ -1,6 +1,7 @@
 # giphy-trending
 
 ![Screenshot1](screenshots/screen0.png) ![Screenshot2](screenshots/screen1.png)
+![Screenshot3](screenshots/screen2.png) ![Screenshot4](screenshots/screen3.png)
 
 This is a sample app based on
 the [walk through](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
@@ -35,6 +36,9 @@ REST API apps -- If we can have something done in a simple way, why make it comp
 * Dagger 2
 * Glide
 * Timber - for logging
+* PreferencesDataStore
+* Kotlin Coroutine (for PreferenceDataStore)
+* Kotlin Flow (for PreferenceDataStore)
 * LeakCanary - for detecting memory leaks
 * JUnit and Hamcrest - instrumented tests
 
@@ -51,6 +55,7 @@ more production-ready.
 * Menu button has been added to allow manual refresh
 * A dedicated Domain Model was added to separate the Network Data Model
 * Introduced copy image link, and open Giphy page on browser functions
+* Added user customisable API limit
 * Added test cases
 
 ## Requirements
@@ -116,5 +121,6 @@ format.
 This sample App is for demonstrating my coding habit and skills for potential employers. Here is a
 list of things I may further work on, while waiting for my next Android Developer role:
 
-* Bottom Navigation with additional fragments loading more APIs
-* User preferences - for example how many trending items to be shown
+* More test cases
+* Better DI approach
+* CI pipeline

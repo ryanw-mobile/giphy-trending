@@ -27,14 +27,14 @@
         <item name="android:paddingEnd">@dimen/margin_standard</item>
         <item name="android:paddingTop">@dimen/margin_half</item>
         <item name="android:paddingBottom">@dimen/margin_half</item>
-        <item name="android:fontFamily">@font/bitter</item>
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
         <item name="android:textColor">@color/listitem_image_type_textcolor</item>
     </style>
 
     <style name="style_listitem_username" parent="TextAppearance.AppCompat.Caption">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">@font/bitter</item>
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
         <item name="android:layout_marginTop">@dimen/margin_half</item>
         <item name="android:layout_marginBottom">@dimen/margin_half</item>
         <item name="android:background">@color/listitem_username_background</item>
@@ -71,6 +71,7 @@
         <item name="android:background">@color/listitem_image_type_textcolor</item>
         <item name="android:gravity">center</item>
         <item name="android:orientation">horizontal</item>
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
         <item name="android:padding">@dimen/margin_half</item>
         <item name="android:visibility">gone</item>
     </style>

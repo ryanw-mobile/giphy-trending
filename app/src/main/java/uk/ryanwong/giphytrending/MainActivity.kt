@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.topAppBar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        binding.navView?.let {
+        binding.navView.let {
             NavigationUI.setupWithNavController(
                 it,
                 Navigation.findNavController(this, R.id.nav_host_fragment_activity_main)

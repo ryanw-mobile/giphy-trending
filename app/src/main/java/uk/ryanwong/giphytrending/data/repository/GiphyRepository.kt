@@ -93,7 +93,7 @@ class GiphyRepository {
 
     private fun getTrendingFromNetwork(): Disposable {
         return giphyApiService.getTrending(
-            BuildConfig.GIPHY_API_KEY, BuildConfig.API_LIMIT,
+            BuildConfig.GIPHY_API_KEY, BuildConfig.API_MAX_ENTRIES,
             BuildConfig.API_RATING
         )
             .subscribeOn(Schedulers.io())

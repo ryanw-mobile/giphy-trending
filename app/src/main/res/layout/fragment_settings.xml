@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.settings.SettingsFragment">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="uk.ryanwong.giphytrending.ui.settings.SettingsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/margin_standard">
+
+        <TextView
+            android:id="@+id/textview_apimax_head"
+            style="@style/settings_item_title"
+            android:text="@string/api_max_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textview_apimax_subhead"
+            style="@style/setting_item_description"
+            android:text="@string/apimax_desc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textview_apimax_head" />
+
+        <SeekBar
+            android:id="@+id/seekbar_apimax"
+            style="@style/setting_seekbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textview_apimax_subhead" />
+
+        <TextView
+            android:id="@+id/seekbar_textlabel"
+            style="@style/setting_apimax_value_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/seekbar_apimax"
+            tools:text="100" />
+
+        <TextView
+            android:id="@+id/acknowledgement"
+            style="@style/setting_acknowledgement"
+            android:text="@string/acknowledgement_sampleapp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

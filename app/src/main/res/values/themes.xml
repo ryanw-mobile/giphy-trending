@@ -29,7 +29,7 @@
         <item name="colorPrimaryInverse">@color/md_theme_light_primaryInverse</item>
 
         <!-- Customize your theme here. -->
-        <item name="android:fontFamily">@font/bitter</item>
+        <item name="android:fontFamily">@font/open_sans_semibold</item>
     </style>
 
     <!-- Splash Screen -->

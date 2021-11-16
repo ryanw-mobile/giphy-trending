@@ -6,9 +6,9 @@
         android:icon="@drawable/ic_baseline_local_fire_department_24"
         android:title="@string/trending" />
 
-    <!--item
+    <item
         android:id="@+id/navigation_settings"
         android:icon="@drawable/ic_baseline_more_horiz_24"
-        android:title="@string/settings" /-->
+        android:title="@string/settings" />
 
 </menu>

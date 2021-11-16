@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
-        <item>@font/bitter</item>
-        <item>@font/bitter_bold</item>
+        <item>@font/francois_one</item>
+        <item>@font/open_sans_semibold</item>
     </array>
 </resources>

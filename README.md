@@ -1,12 +1,13 @@
-# giphy-trending
+# giphy-trending - Sample Android App for skills demonstration
+
+[TravisCI](https://app.travis-ci.com/ryanwong-uk/giphy-trending.svg?branch=master)
+
+This is a sample app originally based on
+the [walk through](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
+by Fahri Can. As I work on the project, the App now has most of its code rewritten on my own.
 
 ![Screenshot1](screenshots/screen0.png) ![Screenshot2](screenshots/screen1.png)
 ![Screenshot3](screenshots/screen2.png) ![Screenshot4](screenshots/screen3.png)
-
-This is a sample app based on
-the [walk through](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
-by Fahri Can. I have made significant modifications to the App design and architecture, therefore it
-is much more than a clone.
 
 ## Skills covered:
 
@@ -15,32 +16,36 @@ migrating from Java to Kotlin, we have a choice of Coroutines over RxJava, Hilt 
 JetPack Compose over the traditional XML/RecyclerView layouts.
 
 This Sample App is for demonstrating the traditional approach which applies XML UI, RxJava, and
-Dagger. Personally I would recommend Coroutines over RxJava, as it is much easier for coding common
-REST API apps -- If we can have something done in a simple way, why make it complex?
+Dagger. `Coroutines` / `suspend functions`, Kotlin `flow` are used for `PreferencesDataStore`
+because `RxJava` really has no advantages here. Personally I would recommend `Coroutines`
+over `RxJava`, as it is much easier for coding common REST API Apps -- If we can have something done
+in a simple way, why make it complex?
+
+### High level architecture
 
 * Kotlin
-* ViewModel / MVVM architecture
-* Material 3 with light and dark mode theming
-* Constraint Layout
+* MVVM architecture
 * Data Binding
-* Room DB
 * Live Data
-* Navigation
+* Material 3 with light and dark mode theming
+* CI: Travis-CI
 
 ### Major libraries used
 
+* `ConstraintLayout`
+* `Navigation`
+* `Lifecycle`
+* User preferences: `PreferencesDataStore` with Kotlin `Coroutine` and `Flow`
+* Database: `Room`
+* `Retrofit2`
+* `Moshi`
+* `RxJava2`
 * Splash Screen API
-* RxJava 2
-* Retrofit 2
-* Moshi
-* Dagger 2
-* Glide
-* Timber - for logging
-* PreferencesDataStore
-* Kotlin Coroutine (for PreferenceDataStore)
-* Kotlin Flow (for PreferenceDataStore)
-* LeakCanary - for detecting memory leaks
-* JUnit and Hamcrest - instrumented tests
+* Network images: `Glide`
+* DI: `Dagger2`
+* Logging: `Timber`
+* Memory leak detection: `LeakCanary`
+* Tests: `JUnit` and `Hamcrest`
 
 ## Improvements:
 
@@ -122,5 +127,4 @@ This sample App is for demonstrating my coding habit and skills for potential em
 list of things I may further work on, while waiting for my next Android Developer role:
 
 * More test cases
-* Better DI approach
-* CI pipeline
+* Better DI approach (pending peer code review)

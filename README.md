@@ -26,25 +26,28 @@ in a simple way, why make it complex?
 * ['Jetpack Databinding'](https://developer.android.com/jetpack/androidx/releases/databinding)
 * Live Data
 * Material 3 with light and dark mode theming
-* CI: [Travis-CI](https://travis-ci.org/)
-* Code coverage: [codecov](https://codecov.io/)
+* [Travis-CI](https://travis-ci.org/) - CI
+* [codecov](https://codecov.io/) - Code coverage
 
 ### Major libraries used
 
 * [`Jetpack ConstraintLayout`](https://developer.android.com/jetpack/androidx/releases/constraintlayout)
 * [`Jetpack Navigation`](https://developer.android.com/jetpack/androidx/releases/navigation)
 * [`Jetpack Lifecycle`](https://developer.android.com/jetpack/androidx/releases/lifecycle)
-* User preferences: [`Jetpack PreferencesDataStore`](https://developer.android.com/jetpack/androidx/releases/datastore) with Kotlin [`Coroutines`](https://github.com/Kotlin/kotlinx.coroutines) and `Flow`
-* Database: [`Jetpack Room`](https://developer.android.com/jetpack/androidx/releases/room)
+* [`Jetpack PreferencesDataStore`](https://developer.android.com/jetpack/androidx/releases/datastore)
+  with Kotlin [`Coroutines`](https://github.com/Kotlin/kotlinx.coroutines) and `Flow` - User
+  preferences
+* [`Jetpack Room`](https://developer.android.com/jetpack/androidx/releases/room) - Database:
 * [`Retrofit2`](https://square.github.io/retrofit/)
 * [`Moshi`](https://github.com/square/moshi)
 * [`RxJava 2`](https://github.com/ReactiveX/RxJava)
 * Splash Screen API
-* Network images: [`Glide`](https://github.com/bumptech/glide)
-* DI: [`Dagger2`](https://github.com/google/dagger)
-* Logging: [`Timber`](https://github.com/JakeWharton/timber)
-* Memory leak detection: [`LeakCanary`](https://github.com/square/leakcanary)
-* Tests: [`JUnit 4`](https://github.com/junit-team/junit4) and [`Hamcrest`](http://hamcrest.org/JavaHamcrest/)
+* [`Glide`](https://github.com/bumptech/glide) - Network images
+* [`Dagger2`](https://github.com/google/dagger) - DI
+* [`Timber`](https://github.com/JakeWharton/timber) - Logging
+* [`LeakCanary`](https://github.com/square/leakcanary) - Memory leak detection
+* [`JUnit 4`](https://github.com/junit-team/junit4) - Tests
+* [`Hamcrest`](http://hamcrest.org/JavaHamcrest/) - Tests
 
 ## Improvements:
 

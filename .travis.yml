@@ -2,20 +2,20 @@ language: android
 jdk: openjdk11
 os: linux
 
+# require the branch name to be master (note for PRs this is the base branch name)
+if: branch = master OR tag IS present
+
 android:
   licenses:
     - android-sdk-license-.+
     - google-gdk-license-.+
     - android-sdk-preview-license-.+
   components:
-    #    - tools
-    #    - platform-tools
     - build-tools-31.0.0
     - android-31
     - android-21
-    - extra-google-m2repository
-    - extra-android-m2repository
-    - extra-android-support
+    - extra
+    - addon
     - sys-img-armeabi-v7a-android-21
 env:
   global:
@@ -29,7 +29,6 @@ before_install:
   - wget "https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip" -O commandlinetools.zip
   - unzip commandlinetools.zip -d $ANDROID_HOME/
   - yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager "platforms;android-${TARGET_VERSION}" --sdk_root=$ANDROID_HOME
-#  - yes | $ANDROID_HOME/cmdline-tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS_VERSION}" --sdk_root=$ANDROID_HOME
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -40,8 +39,13 @@ cache:
     - "$HOME/.android/build-cache"
 before_script:
   - chmod +x gradlew
+  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
 script:
   - "./gradlew clean"
   - "./gradlew build"
+  - "./gradlew connectedAndroidTest"
 after_success:
   - bash <(curl -s https://codecov.io/bash)

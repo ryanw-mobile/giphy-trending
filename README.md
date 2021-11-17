@@ -1,6 +1,6 @@
 # giphy-trending - Sample Android App for skills demonstration
 
-[TravisCI](https://app.travis-ci.com/ryanwong-uk/giphy-trending.svg?branch=master)
+![TravisCI](https://app.travis-ci.com/ryanwong-uk/giphy-trending.svg?branch=master)
 
 This is a sample app originally based on
 the [walk through](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)

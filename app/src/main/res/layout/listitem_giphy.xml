@@ -12,7 +12,9 @@
             type="uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout style="@style/style_listitem">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout"
+        style="@style/style_listitem">
 
         <TextView
             android:id="@+id/trending_type"

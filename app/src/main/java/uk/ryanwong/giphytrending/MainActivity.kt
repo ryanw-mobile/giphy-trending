@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
 
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.topAppBar)
+        setSupportActionBar(binding.topAppbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         binding.navView.let {

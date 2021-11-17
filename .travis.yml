@@ -8,8 +8,8 @@ android:
     - google-gdk-license-.+
     - android-sdk-preview-license-.+
   components:
-#    - tools
-#    - platform-tools
+    #    - tools
+    #    - platform-tools
     - build-tools-31.0.0
     - android-31
     - android-21
@@ -41,8 +41,7 @@ cache:
 before_script:
   - chmod +x gradlew
 script:
-  - "./gradlew clean build"
-  - "./gradlew test"
-  - "./gradlew build check"
-# after_success:
-#  - bash <(curl -s https://codecov.io/bash)
+  - "./gradlew clean"
+  - "./gradlew build"
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

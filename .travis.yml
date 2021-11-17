@@ -5,13 +5,13 @@ dist: trusty
 
 android:
   licenses:
-    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-preview-.+'
     - 'android-sdk-license-.+'
-    - 'google-gdk-license-.+'
 
   components:
     - tools
-    - build-tools-32.0.0-rc1
+    - platform-tools
+    - build-tools-31.0.0
     - android-31
     - android-21
     - extra-google-google_play_services

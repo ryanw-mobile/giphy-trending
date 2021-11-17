@@ -8,8 +8,33 @@ plugins {
 android {
     compileSdk 31
 
-    Properties keyProps = new Properties()
-    keyProps.load(new FileInputStream(file('../../keystore.properties')))
+    signingConfigs {
+        release
+    }
+
+    def isRunningOnTravis = System.getenv("CI") == "true"
+
+    if (isRunningOnTravis) {
+        // configure keystore
+        signingConfigs.release.storeFile = file("../secure.keystore")
+        signingConfigs.release.storePassword = System.getenv("storePass")
+        signingConfigs.release.keyAlias = System.getenv("alias")
+        signingConfigs.release.keyPassword = System.getenv("pass")
+
+        // Extra keys attached in the keystore.properties
+        defaultConfig.buildConfigField 'String', 'GIPHY_API_KEY', System.getenv("giphyApiKey")
+    } else {
+        Properties keyProps = new Properties()
+        keyProps.load(new FileInputStream(file('../../keystore.properties')))
+        signingConfigs.release.storeFile = file(keyProps["store"])
+        signingConfigs.release.keyAlias = keyProps["alias"]
+        signingConfigs.release.storePassword = keyProps["storePass"]
+        signingConfigs.release.keyPassword = keyProps["pass"]
+
+        // Extra keys attached in the keystore.properties
+        defaultConfig.buildConfigField 'String', 'GIPHY_API_KEY', keyProps["giphyApiKey"]
+    }
+
 
     defaultConfig {
         applicationId "uk.ryanwong.giphytrending"
@@ -28,19 +53,9 @@ android {
 
         // Configurable values - We are able to set different values for each build
         buildConfigField 'String', 'GIPHY_ENDPOINT', '"https://api.giphy.com/"'
-        buildConfigField 'String', 'GIPHY_API_KEY', keyProps["giphyApiKey"]
         buildConfigField 'String', 'DATABASE_NAME', '"trending.db"'
         buildConfigField 'String', 'API_MAX_ENTRIES', '"100"'
         buildConfigField 'String', 'API_RATING', '"G"'
-    }
-
-    signingConfigs {
-        release {
-            storeFile file(keyProps["store"])
-            keyAlias keyProps["alias"]
-            storePassword keyProps["storePass"]
-            keyPassword keyProps["pass"]
-        }
     }
 
     buildTypes {

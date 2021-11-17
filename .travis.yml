@@ -1,6 +1,7 @@
 language: android
-jdk: oraclejdk8
+jdk: openjdk11
 os: linux
+dist: trusty
 
 android:
   licenses:

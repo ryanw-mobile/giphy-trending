@@ -1,4 +1,4 @@
-# giphy-trending - Sample Android App for skills demonstration [![Build Status](https://app.travis-ci.com/ryanwong-uk/giphy-trending.svg?branch=master)](https://app.travis-ci.com/ryanwong-uk/giphy-trending)
+# giphy-trending - Sample Android App for skills demonstration [![Build Status](https://app.travis-ci.com/ryanwong-uk/giphy-trending.svg?branch=master)](https://app.travis-ci.com/ryanwong-uk/giphy-trending) [![codecov](https://codecov.io/gh/ryanwong-uk/giphy-trending/branch/master/graph/badge.svg?token=J8PHIH3OPU)](https://codecov.io/gh/ryanwong-uk/giphy-trending)
 
 This is a sample app originally based on
 the [walk through](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
@@ -23,27 +23,28 @@ in a simple way, why make it complex?
 
 * Kotlin
 * MVVM architecture
-* Data Binding
+* ['Jetpack Databinding'](https://developer.android.com/jetpack/androidx/releases/databinding)
 * Live Data
 * Material 3 with light and dark mode theming
-* CI: Travis-CI
+* CI: [Travis-CI](https://travis-ci.org/)
+* Code coverage: [codecov](https://codecov.io/)
 
 ### Major libraries used
 
-* `ConstraintLayout`
-* `Navigation`
-* `Lifecycle`
-* User preferences: `PreferencesDataStore` with Kotlin `Coroutine` and `Flow`
-* Database: `Room`
-* `Retrofit2`
-* `Moshi`
-* `RxJava2`
+* [`Jetpack ConstraintLayout`](https://developer.android.com/jetpack/androidx/releases/constraintlayout)
+* [`Jetpack Navigation`](https://developer.android.com/jetpack/androidx/releases/navigation)
+* [`Jetpack Lifecycle`](https://developer.android.com/jetpack/androidx/releases/lifecycle)
+* User preferences: [`Jetpack PreferencesDataStore`](https://developer.android.com/jetpack/androidx/releases/datastore) with Kotlin [`Coroutines`](https://github.com/Kotlin/kotlinx.coroutines) and `Flow`
+* Database: [`Jetpack Room`](https://developer.android.com/jetpack/androidx/releases/room)
+* [`Retrofit2`](https://square.github.io/retrofit/)
+* [`Moshi`](https://github.com/square/moshi)
+* [`RxJava 2`](https://github.com/ReactiveX/RxJava)
 * Splash Screen API
-* Network images: `Glide`
-* DI: `Dagger2`
-* Logging: `Timber`
-* Memory leak detection: `LeakCanary`
-* Tests: `JUnit` and `Hamcrest`
+* Network images: [`Glide`](https://github.com/bumptech/glide)
+* DI: [`Dagger2`](https://github.com/google/dagger)
+* Logging: [`Timber`](https://github.com/JakeWharton/timber)
+* Memory leak detection: [`LeakCanary`](https://github.com/square/leakcanary)
+* Tests: [`JUnit 4`](https://github.com/junit-team/junit4) and [`Hamcrest`](http://hamcrest.org/JavaHamcrest/)
 
 ## Improvements:
 

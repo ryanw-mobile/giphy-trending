@@ -10,14 +10,15 @@ import javax.inject.Inject
  * The repository caches the value to avoid repeated asynchronous queries
  * Coroutine is used instead of RxJava here
  */
-class UserPreferencesRepository @Inject constructor(private val preferencesDataStoreManager: PreferencesDataStoreManager) {
+class UserPreferencesRepository @Inject constructor(private val preferencesDataStoreManager: PreferencesDataStoreManager) :
+    DefaultUserPreferencesRepository {
 
     // Expose preferences live data
-    val apiMaxEntries = preferencesDataStoreManager.apiMaxEntries
+    override val apiMaxEntries = preferencesDataStoreManager.apiMaxEntries
 
-    fun updateApiMax(apiMax: Int) = runBlocking {
+    override fun updateApiMax(apiMax: Int) = runBlocking {
         launch { preferencesDataStoreManager.updateMaxApiEntries(apiMax) }
     }
 
-    fun getApiMax() = preferencesDataStoreManager.emitMaxApiEntries()
+    override fun getApiMax() = preferencesDataStoreManager.emitMaxApiEntries()
 }

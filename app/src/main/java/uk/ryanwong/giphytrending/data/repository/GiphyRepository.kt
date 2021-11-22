@@ -17,7 +17,7 @@ import uk.ryanwong.giphytrending.data.source.network.model.TrendingNetworkModel
 import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
 import javax.inject.Inject
 
-class GiphyRepository {
+class GiphyRepository : DefaultGiphyRepository {
 
     @Inject
     lateinit var giphyApiService: GiphyApi
@@ -26,15 +26,15 @@ class GiphyRepository {
     lateinit var giphyDatabase: GiphyDatabase
 
     private val _trendingList = MutableLiveData<List<GiphyImageItemDomainModel>>()
-    val trendingList: LiveData<List<GiphyImageItemDomainModel>>
+    override val trendingList: LiveData<List<GiphyImageItemDomainModel>>
         get() = _trendingList
 
     private val _showLoading = MutableLiveData(false)
-    val showLoading: LiveData<Boolean>
+    override val showLoading: LiveData<Boolean>
         get() = _showLoading
 
     private val _errorMessage = MutableLiveData<String?>()
-    val errorMessage: LiveData<String?>
+    override val errorMessage: LiveData<String?>
         get() = _errorMessage
 
     init {
@@ -46,7 +46,7 @@ class GiphyRepository {
      * Repository currently retrieves cached data from local database.
      * This can be changed without acknowledging to the callers.
      */
-    fun fetchTrending(): Disposable {
+    override fun fetchTrending(): Disposable {
         return giphyDatabase.trendingDao()
             .queryData()
             .subscribeOn(Schedulers.io())
@@ -72,7 +72,7 @@ class GiphyRepository {
      * Repository currently run RestAPI calls, cache data to local database,
      * and return the cached contents.
      */
-    fun refreshTrending(apiMaxEntries: Int): Disposable {
+    override fun refreshTrending(apiMaxEntries: Int): Disposable {
         return Completable.fromAction {
             _showLoading.postValue(true)
             // Mark existing contents dirty. After successful API call old entries will be removed

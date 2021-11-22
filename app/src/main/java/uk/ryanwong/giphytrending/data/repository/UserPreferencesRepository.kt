@@ -1,7 +1,5 @@
 package uk.ryanwong.giphytrending.data.repository
 
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import uk.ryanwong.giphytrending.data.source.preferences.PreferencesDataStoreManager
 import javax.inject.Inject
 
@@ -16,8 +14,8 @@ class UserPreferencesRepository @Inject constructor(private val preferencesDataS
     // Expose preferences live data
     override val apiMaxEntries = preferencesDataStoreManager.apiMaxEntries
 
-    override fun updateApiMax(apiMax: Int) = runBlocking {
-        launch { preferencesDataStoreManager.updateMaxApiEntries(apiMax) }
+    override suspend fun updateApiMax(apiMax: Int) {
+        preferencesDataStoreManager.updateMaxApiEntries(apiMax)
     }
 
     override fun getApiMax() = preferencesDataStoreManager.emitMaxApiEntries()

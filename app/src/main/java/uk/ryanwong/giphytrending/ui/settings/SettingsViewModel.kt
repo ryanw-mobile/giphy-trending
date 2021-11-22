@@ -2,6 +2,8 @@ package uk.ryanwong.giphytrending.ui.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import uk.ryanwong.giphytrending.GiphyApplication
 import uk.ryanwong.giphytrending.data.repository.UserPreferencesRepository
 import javax.inject.Inject
@@ -24,7 +26,7 @@ class SettingsViewModel @Inject constructor(private val repository: UserPreferen
 
     fun translateMaxApiEntries(value: Int) = value.plus(API_MIN).toString()
 
-    fun setApiMax(maxApiEntries: Int) {
+    fun setApiMax(maxApiEntries: Int) = viewModelScope.launch {
         repository.updateApiMax(maxApiEntries.plus(API_MIN))
     }
 }

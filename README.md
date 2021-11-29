@@ -2,7 +2,7 @@
 
 This is a sample app originally based on
 the [walk through](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
-by Fahri Can. As I work on the project, the App now has most of its code rewritten on my own.
+by Fahri Can. As I work on the project, the App now has most of the codes rewritten on my own.
 
 ![Screenshot1](screenshots/screen0.png) ![Screenshot2](screenshots/screen1.png)
 ![Screenshot3](screenshots/screen2.png) ![Screenshot4](screenshots/screen3.png)
@@ -23,7 +23,7 @@ in a simple way, why make it complex?
 
 * Kotlin
 * MVVM architecture
-* ['Jetpack Databinding'](https://developer.android.com/jetpack/androidx/releases/databinding)
+* [`Jetpack Databinding`](https://developer.android.com/jetpack/androidx/releases/databinding)
 * Live Data
 * Material 3 with light and dark mode theming
 * [Travis-CI](https://travis-ci.org/) - CI

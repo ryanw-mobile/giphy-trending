@@ -42,8 +42,8 @@ android {
         targetSdk 31
         versionCode 4
         versionName "1.3.0"
+        resConfigs 'en'
 
-        resConfigs "en"
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -111,13 +111,10 @@ android {
         animationsDisabled = true
     }
     packagingOptions {
-        // for JNA and JNA-platform
-        exclude "META-INF/AL2.0"
-        exclude "META-INF/LGPL2.1"
-        // for byte-buddy
-        exclude "META-INF/licenses/ASM"
-        pickFirst "win32-x86-64/attach_hotspot_windows.dll"
-        pickFirst "win32-x86/attach_hotspot_windows.dll"
+        resources {
+            excludes += ['META-INF/AL2.0', 'META-INF/LGPL2.1', 'META-INF/licenses/ASM']
+            pickFirsts += ['win32-x86-64/attach_hotspot_windows.dll', 'win32-x86/attach_hotspot_windows.dll']
+        }
     }
     testOptions.unitTests {
         includeAndroidResources = true

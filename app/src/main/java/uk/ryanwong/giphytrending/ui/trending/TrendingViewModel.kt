@@ -46,7 +46,7 @@ class TrendingViewModel @Inject constructor(
 
     fun refresh() =
         viewModelScope.launch {
-            userPreferencesRepository.getApiMax().collect() { apiMaxEntries ->
+            userPreferencesRepository.getApiMax().collect { apiMaxEntries ->
                 Timber.v("refresh requesting $apiMaxEntries entries from the repository")
                 compositeDisposable.add(
                     giphyRepository.refreshTrending(apiMaxEntries)

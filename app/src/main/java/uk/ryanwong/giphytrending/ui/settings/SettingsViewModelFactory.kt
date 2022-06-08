@@ -2,7 +2,6 @@ package uk.ryanwong.giphytrending.ui.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import uk.ryanwong.giphytrending.data.repository.GiphyRepository
 import uk.ryanwong.giphytrending.data.repository.UserPreferencesRepository
 import javax.inject.Inject
 

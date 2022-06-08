@@ -42,8 +42,8 @@ android {
         targetSdk 31
         versionCode 4
         versionName "1.3.0"
+        resConfigs 'en'
 
-        resConfigs "en"
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -111,13 +111,10 @@ android {
         animationsDisabled = true
     }
     packagingOptions {
-        // for JNA and JNA-platform
-        exclude "META-INF/AL2.0"
-        exclude "META-INF/LGPL2.1"
-        // for byte-buddy
-        exclude "META-INF/licenses/ASM"
-        pickFirst "win32-x86-64/attach_hotspot_windows.dll"
-        pickFirst "win32-x86/attach_hotspot_windows.dll"
+        resources {
+            excludes += ['META-INF/AL2.0', 'META-INF/LGPL2.1', 'META-INF/licenses/ASM']
+            pickFirsts += ['win32-x86-64/attach_hotspot_windows.dll', 'win32-x86/attach_hotspot_windows.dll']
+        }
     }
     testOptions.unitTests {
         includeAndroidResources = true
@@ -126,25 +123,25 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.5.0-beta01'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
-    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.6.0'
+    implementation 'androidx.core:core-splashscreen:1.0.0-rc01'
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.google.android.material:material:1.7.0-alpha02'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     def retrofit_version = '2.9.0'
-    def dagger_version = '2.40'
-    def room_version = '2.3.0'
+    def dagger_version = '2.42'
+    def room_version = '2.4.2'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 
     // Android Lifecycle Extensions
-    def lifecycle_version = '2.4.0'
+    def lifecycle_version = '2.4.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation "androidx.activity:activity-ktx:1.4.0"
     kapt "android.arch.lifecycle:common-java8:1.1.1"
@@ -153,21 +150,21 @@ dependencies {
 
     // Navigation
     def navigation_version = "2.3.5"
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.4.2"
+    implementation "androidx.navigation:navigation-ui-ktx:2.4.2"
 
     // Glide for Images
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
-    kapt 'com.github.bumptech.glide:compiler:4.12.0'
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
+    kapt 'com.github.bumptech.glide:compiler:4.13.2'
 
     // Retrofit 2
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.7'
 
     // Moshi
-    def moshi_version = "1.12.0"
+    def moshi_version = '1.13.0'
     implementation "com.squareup.moshi:moshi:$moshi_version"
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
     implementation "com.squareup.moshi:moshi-adapters:$moshi_version"
@@ -181,7 +178,7 @@ dependencies {
     //RxJava 2
     implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
     implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
-    implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:2.4.0"
+    implementation 'androidx.lifecycle:lifecycle-reactivestreams-ktx:2.4.1'
     androidTestImplementation "android.arch.core:core-testing:1.1.1"
 
     // Room 2
@@ -199,5 +196,5 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:5.0.1'
 
     // debugImplementation because LeakCanary should only run in debug builds.
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
 }

@@ -14,13 +14,13 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class GiphyRepositoryModule {
+object GiphyRepositoryModule {
     @Singleton
     @Provides
     fun provideGiphyRepository(
         giphyApiService: GiphyApi,
         giphyDatabase: GiphyDatabase,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
+        @IoDispatcher dispatcher: CoroutineDispatcher
     ): GiphyRepository {
         return GiphyRepositoryImpl(
             giphyApiService = giphyApiService,

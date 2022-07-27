@@ -46,6 +46,7 @@ class TrendingFragment @Inject constructor(
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         observeStateFlow()
     }
 

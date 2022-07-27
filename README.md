@@ -7,6 +7,8 @@ by Fahri Can. As I work on the project, the App now has most of the codes rewrit
 ![Screenshot1](screenshots/screen0.png) ![Screenshot2](screenshots/screen1.png)
 ![Screenshot3](screenshots/screen2.png) ![Screenshot4](screenshots/screen3.png)
 
+This app was first created in Nov 2021. Looking back what I have done, I found the quality of this App unacceptable, so it is now being rewritten.
+
 ## Skills covered:
 
 The Android Development world is currently experiencing a shift of technology stack. Besides
@@ -42,7 +44,7 @@ in a simple way, why make it complex?
 * [`RxJava 2`](https://github.com/ReactiveX/RxJava)
 * Splash Screen API
 * [`Glide`](https://github.com/bumptech/glide) - Network images
-* [`Dagger2`](https://github.com/google/dagger) - DI
+* [`Dagger Hilt`](https://dagger.dev/hilt/) - DI
 * [`Timber`](https://github.com/JakeWharton/timber) - Logging
 * [`LeakCanary`](https://github.com/square/leakcanary) - Memory leak detection
 * [`JUnit 4`](https://github.com/junit-team/junit4) - Tests
@@ -128,5 +130,4 @@ This sample App is for demonstrating my coding habit and skills for potential em
 list of things I may further work on, while waiting for my next Android Developer role:
 
 * More test cases
-* Better DI approach (pending peer code review)
 * UI to be rewritten in Jetpack Compose (Major rework)

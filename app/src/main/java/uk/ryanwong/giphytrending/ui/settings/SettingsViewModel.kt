@@ -7,9 +7,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import uk.ryanwong.giphytrending.BuildConfig
 import uk.ryanwong.giphytrending.data.repository.UserPreferencesRepository
 import uk.ryanwong.giphytrending.di.MainDispatcher
 import javax.inject.Inject
+import kotlin.math.max
 
 // Minimum entries to request from server
 private const val API_MIN = 50
@@ -24,9 +26,12 @@ class SettingsViewModel @Inject constructor(
     var apiMaxEntriesProgress: StateFlow<Int> = _apiMaxEntriesProgress
 
     // The seekbar progress has to deduct the minimum value
-//    val apiMaxEntriesProgress = repository.apiMaxEntries.map { apiMax ->
-//        max(apiMax.minus(API_MIN), 0)
-//    }
+    fun getApiMax() {
+        viewModelScope.launch(dispatcher) {
+            val apiMax = repository.getApiMax().getOrNull() ?: BuildConfig.API_MAX_ENTRIES.toInt()
+            _apiMaxEntriesProgress.value = max(apiMax.minus(API_MIN), 0)
+        }
+    }
 
     fun translateMaxApiEntries(value: Int) = value.plus(API_MIN).toString()
 

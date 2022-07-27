@@ -11,10 +11,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import uk.ryanwong.giphytrending.databinding.FragmentSettingsBinding
 
+@AndroidEntryPoint
 class SettingsFragment : Fragment() {
 
     private val settingsViewModel: SettingsViewModel by viewModels()
@@ -53,6 +55,11 @@ class SettingsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         observeStateFlow()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        settingsViewModel.getApiMax()
     }
 
     private fun observeStateFlow() {

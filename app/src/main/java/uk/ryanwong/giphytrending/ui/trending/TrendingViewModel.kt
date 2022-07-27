@@ -1,65 +1,82 @@
 package uk.ryanwong.giphytrending.ui.trending
 
 import android.os.Parcelable
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.reactivex.disposables.CompositeDisposable
-import kotlinx.coroutines.flow.collect
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import uk.ryanwong.giphytrending.GiphyApplication
 import uk.ryanwong.giphytrending.data.repository.GiphyRepository
 import uk.ryanwong.giphytrending.data.repository.UserPreferencesRepository
+import uk.ryanwong.giphytrending.di.MainDispatcher
+import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
+import uk.ryanwong.giphytrending.ui.TrendingUIState
 import javax.inject.Inject
 
+@HiltViewModel
 class TrendingViewModel @Inject constructor(
     private val giphyRepository: GiphyRepository,
-    private val userPreferencesRepository: UserPreferencesRepository
+    private val userPreferencesRepository: UserPreferencesRepository,
+    @MainDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val compositeDisposable by lazy { CompositeDisposable() }
+    private val _trendingUIState: MutableStateFlow<TrendingUIState> =
+        MutableStateFlow(TrendingUIState.Ready)
+    var trendingUIState: StateFlow<TrendingUIState> = _trendingUIState
 
-    // UI should not interact with repository directly
-    val trendingList = giphyRepository.trendingList
-    val errorMessage = giphyRepository.errorMessage
-    val showLoading = giphyRepository.showLoading
-    val showNoData: LiveData<Boolean> = Transformations.map(trendingList) { list ->
-        !showLoading.value!! && list.isEmpty()
-    }
+    private val _trendingList: MutableStateFlow<List<GiphyImageItemDomainModel>> =
+        MutableStateFlow(emptyList())
+    var trendingList: StateFlow<List<GiphyImageItemDomainModel>> = _trendingList
 
     // This is to maintain the recyclerview scrolling state during list refresh
-    // No practical use for this UI layout because we have to back to top for swipe to refresh
     private var _listState: Parcelable? = null
-    val listState: Parcelable?
-        get() = _listState
+    val listState: Parcelable? = _listState
+
+    init {
+        viewModelScope.launch(dispatcher) {
+            // get cached data first. Fragment should call refresh when view is ready
+            processTrendingList(repositoryResult = giphyRepository.fetchCachedTrending())
+        }
+    }
 
     fun saveListState(listScrollingState: Parcelable?) {
         _listState = listScrollingState
     }
 
-    init {
-        GiphyApplication.appComponent.inject(this)
-        fetchDataFromDatabase() // get cached data first. Fragment should call refresh when view is ready
+
+    fun refresh() {
+        viewModelScope.launch(dispatcher) {
+            _trendingUIState.value = TrendingUIState.Loading
+            val apiMaxEntries = 1// userPreferencesRepository.getApiMax().collect()
+            Timber.v("refresh requesting $apiMaxEntries entries from the repository")
+
+            processTrendingList(repositoryResult = giphyRepository.reloadTrending(apiMaxEntries))
+        }
     }
 
-    fun refresh() =
-        viewModelScope.launch {
-            userPreferencesRepository.getApiMax().collect() { apiMaxEntries ->
-                Timber.v("refresh requesting $apiMaxEntries entries from the repository")
-                compositeDisposable.add(
-                    giphyRepository.refreshTrending(apiMaxEntries)
-                )
+    private fun processTrendingList(repositoryResult: Result<List<GiphyImageItemDomainModel>>) {
+        when {
+            repositoryResult.isFailure -> {
+                // TODO: Can have a better Result class and error message.
+                _trendingUIState.value =
+                    TrendingUIState.Error(errMsg = "Error getting data: {${repositoryResult.exceptionOrNull()?.message}")
+            }
+            repositoryResult.isSuccess -> {
+                _trendingList.value = repositoryResult.getOrNull() ?: emptyList()
+                _trendingUIState.value = TrendingUIState.Ready
             }
         }
-
-    private fun fetchDataFromDatabase() {
-        compositeDisposable.add(giphyRepository.fetchTrending())
     }
 
     override fun onCleared() {
         super.onCleared()
-        compositeDisposable.clear()
+        _trendingList.value = emptyList()
+    }
+
+    fun notifyErrorMessageDisplayed() {
+        _trendingUIState.value = TrendingUIState.Ready
     }
 }

@@ -6,7 +6,7 @@ import uk.ryanwong.giphytrending.data.source.network.model.TrendingNetworkRespon
 
 interface GiphyApi {
     @GET("v1/gifs/trending")
-    fun getTrending(
+    suspend fun getTrending(
         @Query("api_key") apiKey: String,
         @Query("limit") limit: Int,
         @Query("rating") rating: String

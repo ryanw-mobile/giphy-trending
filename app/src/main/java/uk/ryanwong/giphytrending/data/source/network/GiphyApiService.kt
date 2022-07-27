@@ -34,7 +34,7 @@ object GiphyApiService {
         return Retrofit.Builder()
             .client(createOkHttpClient())
             .baseUrl(BuildConfig.GIPHY_ENDPOINT)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+      //      .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
             .create(GiphyApi::class.java)

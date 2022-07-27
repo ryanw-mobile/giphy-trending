@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import uk.ryanwong.giphytrending.BuildConfig
 import uk.ryanwong.giphytrending.data.repository.GiphyRepository
 import uk.ryanwong.giphytrending.data.repository.UserPreferencesRepository
 import uk.ryanwong.giphytrending.di.MainDispatcher
@@ -49,7 +50,8 @@ class TrendingViewModel @Inject constructor(
     fun refresh() {
         viewModelScope.launch(dispatcher) {
             _trendingUIState.value = TrendingUIState.Loading
-            val apiMaxEntries = 1// userPreferencesRepository.getApiMax().collect()
+            val apiMaxEntries = userPreferencesRepository.getApiMax().getOrNull()
+                ?: BuildConfig.API_MAX_ENTRIES.toInt()
             Timber.v("refresh requesting $apiMaxEntries entries from the repository")
 
             processTrendingList(repositoryResult = giphyRepository.reloadTrending(apiMaxEntries))

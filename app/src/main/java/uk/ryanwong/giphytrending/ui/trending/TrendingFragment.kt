@@ -26,15 +26,16 @@ import uk.ryanwong.giphytrending.ui.setupRecyclerView
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TrendingFragment @Inject constructor(
-    private val giphyImageItemAdapter: GiphyImageItemAdapter
-) : Fragment() {
+class TrendingFragment : Fragment() {
 
     private val trendingViewModel: TrendingViewModel by viewModels()
     private var _binding: FragmentTrendingBinding? = null
     private val binding get() = _binding!!
     private var errorDialog: AlertDialog? = null
     private var uiState: TrendingUIState = TrendingUIState.Ready
+
+    @Inject
+    lateinit var giphyImageItemAdapter: GiphyImageItemAdapter
 
     private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
         override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {

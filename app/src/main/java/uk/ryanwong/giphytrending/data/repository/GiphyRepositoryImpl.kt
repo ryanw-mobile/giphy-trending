@@ -12,6 +12,7 @@ import uk.ryanwong.giphytrending.data.source.network.GiphyApi
 import uk.ryanwong.giphytrending.data.source.network.model.TrendingNetworkResponse
 import uk.ryanwong.giphytrending.di.IoDispatcher
 import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
+import uk.ryanwong.giphytrending.except
 import javax.inject.Inject
 
 class GiphyRepositoryImpl @Inject constructor(
@@ -33,17 +34,9 @@ class GiphyRepositoryImpl @Inject constructor(
      */
     override suspend fun fetchCachedTrending(): Result<List<GiphyImageItemDomainModel>> {
         return withContext(dispatcher) {
-            try {
-                Result.success(
-                    value = giphyDatabase.trendingDao().queryData().toDomainModelList()
-                )
-
-            } catch (cancellationException: CancellationException) {
-                throw cancellationException
-            } catch (ex: Exception) {
-                Timber.e("fetchTrending() - Database error: ${ex.message}")
-                Result.failure(exception = ex)
-            }
+            Result.runCatching {
+                giphyDatabase.trendingDao().queryData().toDomainModelList()
+            }.except<CancellationException, _>()
         }
     }
 
@@ -93,17 +86,10 @@ class GiphyRepositoryImpl @Inject constructor(
 
     private suspend fun invalidateDirtyTrendingDb(): Result<Unit> {
         return withContext(dispatcher) {
-            try {
+            Result.runCatching {
                 giphyDatabase.trendingDao().deleteDirty()
                 Timber.v("invalidateDirtyTrendingDb: success")
-                Result.success(Unit)
-
-            } catch (cancellationException: CancellationException) {
-                throw cancellationException
-            } catch (ex: Exception) {
-                Timber.e("invalidateDirtyTrendingDb: ${ex.message}")
-                Result.failure(exception = ex)
-            }
+            }.except<CancellationException, _>()
         }
     }
 }

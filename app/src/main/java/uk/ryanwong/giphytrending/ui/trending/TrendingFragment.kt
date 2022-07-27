@@ -2,38 +2,51 @@ package uk.ryanwong.giphytrending.ui.trending
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
-import uk.ryanwong.giphytrending.GiphyApplication
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import uk.ryanwong.giphytrending.R
 import uk.ryanwong.giphytrending.databinding.FragmentTrendingBinding
 import uk.ryanwong.giphytrending.ui.GiphyImageItemAdapter
+import uk.ryanwong.giphytrending.ui.TrendingUIState
 import uk.ryanwong.giphytrending.ui.animateDown
 import uk.ryanwong.giphytrending.ui.animateUp
 import uk.ryanwong.giphytrending.ui.setupRecyclerView
 import javax.inject.Inject
 
-class TrendingFragment : Fragment() {
+@AndroidEntryPoint
+class TrendingFragment @Inject constructor(
+    private val giphyImageItemAdapter: GiphyImageItemAdapter
+) : Fragment() {
 
-    @Inject
-    lateinit var giphyImageItemAdapter: GiphyImageItemAdapter
-
-    @Inject
-    lateinit var viewModelFactory: TrendingViewModelFactory
-    private lateinit var viewModel: TrendingViewModel
+    private val trendingViewModel: TrendingViewModel by viewModels()
     private var _binding: FragmentTrendingBinding? = null
     private val binding get() = _binding!!
     private var errorDialog: AlertDialog? = null
+    private var uiState: TrendingUIState = TrendingUIState.Ready
 
     private val adapterDataObserver = object : RecyclerView.AdapterDataObserver() {
         override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-            viewModel.listState?.let {
+            trendingViewModel.listState?.let {
                 // layoutManager.scrollToPositionWithOffset(position, 0)
                 binding.recyclerView.layoutManager?.onRestoreInstanceState(it)
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        observeStateFlow()
     }
 
     override fun onCreateView(
@@ -41,8 +54,6 @@ class TrendingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        GiphyApplication.appComponent.inject(this)
-        viewModel = ViewModelProvider(this, viewModelFactory)[TrendingViewModel::class.java]
         _binding = FragmentTrendingBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         return binding.root
@@ -62,8 +73,7 @@ class TrendingFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        observeLiveData()
-        viewModel.refresh()
+        trendingViewModel.refresh()
     }
 
     override fun onDestroyView() {
@@ -85,7 +95,7 @@ class TrendingFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_refresh -> {
-                viewModel.refresh()
+                trendingViewModel.refresh()
                 return true
             }
         }
@@ -98,38 +108,49 @@ class TrendingFragment : Fragment() {
         }
     }
 
-    private fun observeLiveData() {
-        viewModel.showLoading.observe(viewLifecycleOwner, { isLoading ->
-            if (isLoading && binding.loadingBar.visibility == View.GONE) {
-                binding.loadingBar.apply {
-                    visibility = View.VISIBLE
-                    animateDown()
+    private fun observeStateFlow() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                trendingViewModel.trendingUIState.collect { trendingUIState ->
+                    uiState = trendingUIState
+                    when {
+                        trendingUIState is TrendingUIState.Loading && binding.loadingBar.visibility == View.GONE -> {
+                            binding.loadingBar.apply {
+                                visibility = View.VISIBLE
+                                animateDown()
+                            }
+                        }
+                        trendingUIState !is TrendingUIState.Loading
+                                && binding.loadingBar.visibility == View.VISIBLE -> {
+                            binding.loadingBar.animateUp()
+                        }
+                        trendingUIState is TrendingUIState.Error -> {
+                            showErrorDialog(trendingUIState.errMsg)
+                        }
+                    }
                 }
-            } else if (!isLoading && binding.loadingBar.visibility == View.VISIBLE) {
-                binding.loadingBar.animateUp()
             }
-        })
+        }
 
-        viewModel.trendingList.observe(viewLifecycleOwner, { trendingList ->
-            trendingList.let {
-                viewModel.saveListState(binding.recyclerView.layoutManager?.onSaveInstanceState())
-                giphyImageItemAdapter.submitList(it)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                trendingViewModel.trendingList.collect { trendingList ->
+                    trendingViewModel.saveListState(binding.recyclerView.layoutManager?.onSaveInstanceState())
+                    giphyImageItemAdapter.submitList(trendingList)
+                    toggleNoDataScreen(showNoData = (uiState is TrendingUIState.Ready && trendingList.isEmpty()))
+                }
             }
-        })
+        }
+    }
 
-        viewModel.errorMessage.observe(viewLifecycleOwner, { errorMessage ->
-            showErrorDialog(errorMessage)
-        })
-
-        viewModel.showNoData.observe(viewLifecycleOwner, { showNoData ->
-            if (showNoData) {
-                binding.recyclerView.visibility = View.GONE
-                binding.textviewNodata.visibility = View.VISIBLE
-            } else {
-                binding.recyclerView.visibility = View.VISIBLE
-                binding.textviewNodata.visibility = View.GONE
-            }
-        })
+    private fun toggleNoDataScreen(showNoData: Boolean) {
+        if (showNoData) {
+            binding.recyclerView.visibility = View.GONE
+            binding.textviewNodata.visibility = View.VISIBLE
+        } else {
+            binding.recyclerView.visibility = View.VISIBLE
+            binding.textviewNodata.visibility = View.GONE
+        }
     }
 
     private fun showErrorDialog(errorMessage: String?) {
@@ -144,7 +165,7 @@ class TrendingFragment : Fragment() {
                         setTitle(getString(R.string.something_went_wrong))
                         setMessage(errorMessage)
                         setPositiveButton(getString(R.string.ok)) { _, _ ->
-                            // do nothing
+                            trendingViewModel.notifyErrorMessageDisplayed()
                         }
                     }.create()
                 errorDialog?.show()

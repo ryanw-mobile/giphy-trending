@@ -13,20 +13,19 @@ This app was first created in Nov 2021. Looking back what I have done, I found t
 
 The Android Development world is currently experiencing a shift of technology stack. Besides
 migrating from Java to Kotlin, we have a choice of Coroutines over RxJava, Hilt over Dagger, and
-JetPack Compose over the traditional XML/RecyclerView layouts.
+JetPack Compose over the traditional XML View layouts.
 
-This Sample App is for demonstrating the traditional approach which applies XML UI, RxJava, and
-Dagger. `Coroutines` / `suspend functions`, Kotlin `flow` are used for `PreferencesDataStore`
-because `RxJava` really has no advantages here. Personally I would recommend `Coroutines`
-over `RxJava`, as it is much easier for coding common REST API Apps -- If we can have something done
-in a simple way, why make it complex?
+This Sample App is for demonstrating the traditional approach which applies XML UI, `Kotlin Coroutines`, `Kotlin Flow`, 
+`Dagger Hilt`, `PreferencesDataStore`. 
+
+Previously this App used `RxJava` but it is now being rewritten using `Coroutines` because it is much more simpler.
 
 ### High level architecture
 
 * Kotlin
 * MVVM architecture
 * [`Jetpack Databinding`](https://developer.android.com/jetpack/androidx/releases/databinding)
-* Live Data
+* Kotlin Flow (replacing Live Data)
 * Material 3 with light and dark mode theming
 * [Travis-CI](https://travis-ci.org/) - CI
 
@@ -36,12 +35,11 @@ in a simple way, why make it complex?
 * [`Jetpack Navigation`](https://developer.android.com/jetpack/androidx/releases/navigation)
 * [`Jetpack Lifecycle`](https://developer.android.com/jetpack/androidx/releases/lifecycle)
 * [`Jetpack PreferencesDataStore`](https://developer.android.com/jetpack/androidx/releases/datastore)
-  with Kotlin [`Coroutines`](https://github.com/Kotlin/kotlinx.coroutines) and `Flow` - User
-  preferences
-* [`Jetpack Room`](https://developer.android.com/jetpack/androidx/releases/room) - Database:
+* [`Kotlin Coroutines`](https://github.com/Kotlin/kotlinx.coroutines) 
+* [`Kotlin Flow`](https://kotlinlang.org/docs/flow.html)
+* [`Jetpack Room`](https://developer.android.com/jetpack/androidx/releases/room) - Database
 * [`Retrofit2`](https://square.github.io/retrofit/)
 * [`Moshi`](https://github.com/square/moshi)
-* [`RxJava 2`](https://github.com/ReactiveX/RxJava)
 * Splash Screen API
 * [`Glide`](https://github.com/bumptech/glide) - Network images
 * [`Dagger Hilt`](https://dagger.dev/hilt/) - DI

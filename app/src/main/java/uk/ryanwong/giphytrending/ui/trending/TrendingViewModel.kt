@@ -64,6 +64,7 @@ class TrendingViewModel @Inject constructor(
                 // TODO: Can have a better Result class and error message.
                 _trendingUIState.value =
                     TrendingUIState.Error(errMsg = "Error getting data: {${repositoryResult.exceptionOrNull()?.message}")
+                repositoryResult.exceptionOrNull()?.printStackTrace()
             }
             repositoryResult.isSuccess -> {
                 _trendingList.value = repositoryResult.getOrNull() ?: emptyList()

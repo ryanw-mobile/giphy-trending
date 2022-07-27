@@ -1,8 +1,13 @@
 package uk.ryanwong.giphytrending.data.repository
 
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import uk.ryanwong.giphytrending.data.source.preferences.PreferencesDataStoreManager
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.withContext
+import uk.ryanwong.giphytrending.BuildConfig
+import uk.ryanwong.giphytrending.data.source.preferences.PreferencesDataStoreWrapper
+import uk.ryanwong.giphytrending.di.IoDispatcher
+import uk.ryanwong.giphytrending.except
 import javax.inject.Inject
 
 /**
@@ -10,15 +15,26 @@ import javax.inject.Inject
  * The repository caches the value to avoid repeated asynchronous queries
  * Coroutine is used instead of RxJava here
  */
-class UserPreferencesRepositoryImpl @Inject constructor(private val preferencesDataStoreManager: PreferencesDataStoreManager) :
-    UserPreferencesRepository {
+class UserPreferencesRepositoryImpl @Inject constructor(
+    private val preferencesDataStoreWrapper: PreferencesDataStoreWrapper,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher
+) : UserPreferencesRepository {
 
-    // Expose preferences live data
-    val apiMaxEntries = preferencesDataStoreManager.apiMaxEntries
-
-    override fun updateApiMax(apiMax: Int) = runBlocking {
-        launch { preferencesDataStoreManager.updateMaxApiEntries(apiMax) }
+    override suspend fun setApiMax(apiMax: Int) {
+        withContext(dispatcher) {
+            Result.runCatching {
+                preferencesDataStoreWrapper.setMaxApiEntries(apiMax)
+            }.except<CancellationException, _>()
+        }
     }
 
-    override fun getApiMax() = preferencesDataStoreManager.emitMaxApiEntries()
+    override suspend fun getApiMax(): Result<Int> {
+        return withContext(dispatcher) {
+            Result.runCatching {
+                val flow = preferencesDataStoreWrapper.getMaxApiEntries()
+                val apiMax = flow.firstOrNull() ?: BuildConfig.API_MAX_ENTRIES.toInt()
+                apiMax
+            }.except<CancellationException, _>()
+        }
+    }
 }

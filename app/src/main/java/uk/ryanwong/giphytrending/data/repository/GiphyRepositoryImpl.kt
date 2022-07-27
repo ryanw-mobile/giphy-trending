@@ -19,6 +19,14 @@ class GiphyRepositoryImpl @Inject constructor(
     private val giphyDatabase: GiphyDatabase,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : GiphyRepository {
+    /**
+     * Note:
+     * The current use of Result() is not the best option. I should have derived my own Result class.
+     * Greg would say I need error messages showing more specific problem,
+     * probably would need to have some more user friendly error messages, too.
+     * Given this is a demo app, I will refine later if I have time.
+     * I apologise, Greg.
+     */
 
     /**
      * Does not trigger network calls
@@ -47,12 +55,12 @@ class GiphyRepositoryImpl @Inject constructor(
             try {
                 // Mark existing contents dirty. After successful API call old entries will be removed
                 giphyDatabase.trendingDao().markDirty()
-                Timber.v("reloadTrending() - mark dirty: success")
+                Timber.v("reloadTrending - mark dirty: success")
 
                 val trendingNetworkResponse = getTrendingFromNetwork(apiMaxEntries)
                 giphyDatabase.trendingDao()
                     .insertAllData(data = trendingNetworkResponse.trendingData.toTrendingEntityList())
-                Timber.v("reloadTrending(): insertion completed")
+                Timber.v("reloadTrending: insertion completed")
 
                 val invalidationResult = invalidateDirtyTrendingDb()
                 if (invalidationResult.isFailure) {
@@ -68,7 +76,7 @@ class GiphyRepositoryImpl @Inject constructor(
             } catch (cancellationException: CancellationException) {
                 throw cancellationException
             } catch (ex: Exception) {
-                Timber.e("refreshTrending() : ${ex.message}")
+                Timber.e("refreshTrending: ${ex.message}")
                 Result.failure(exception = ex)
             }
         }
@@ -87,13 +95,13 @@ class GiphyRepositoryImpl @Inject constructor(
         return withContext(dispatcher) {
             try {
                 giphyDatabase.trendingDao().deleteDirty()
-                Timber.v("invalidateDirtyTrendingDb(): success")
+                Timber.v("invalidateDirtyTrendingDb: success")
                 Result.success(Unit)
 
             } catch (cancellationException: CancellationException) {
                 throw cancellationException
             } catch (ex: Exception) {
-                Timber.e("refreshTrending() : ${ex.message}")
+                Timber.e("invalidateDirtyTrendingDb: ${ex.message}")
                 Result.failure(exception = ex)
             }
         }

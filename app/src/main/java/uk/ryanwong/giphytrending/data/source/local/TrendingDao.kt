@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import io.reactivex.Single
 
 @Dao
 interface TrendingDao {
@@ -16,7 +15,7 @@ interface TrendingDao {
     fun insertAllData(data: List<TrendingEntity>)
 
     @Query("SELECT * FROM trending ORDER BY trending_datetime DESC, import_datetime DESC")
-    fun queryData(): Single<List<TrendingEntity>>
+    fun queryData(): List<TrendingEntity>
 
     @Query("DELETE FROM trending")
     fun clear()

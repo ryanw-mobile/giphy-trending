@@ -1,8 +1,6 @@
 package uk.ryanwong.giphytrending.data.repository
 
-import io.reactivex.disposables.Disposable
-import io.reactivex.subscribers.DisposableSubscriber
-import uk.ryanwong.giphytrending.data.source.network.model.TrendingNetworkModel
+import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
 
 interface GiphyRepository {
     /***
@@ -10,15 +8,12 @@ interface GiphyRepository {
      * Repository currently retrieves cached data from local database.
      * This can be changed without acknowledging to the callers.
      */
-    fun fetchTrending(): Disposable
+    suspend fun fetchCachedTrending(): Result<List<GiphyImageItemDomainModel>>
 
     /***
      * Request the repository to refresh and update the exposed trending list
      * Repository currently run RestAPI calls, cache data to local database,
      * and return the cached contents.
      */
-    fun refreshTrending(apiMaxEntries: Int): Disposable
-    fun getTrendingFromNetwork(apiMaxEntries: Int): Disposable
-    fun cacheTrendingToDb(): DisposableSubscriber<TrendingNetworkModel>
-    fun invalidateDirtyTrendingDb(): Disposable
+    suspend fun reloadTrending(apiMaxEntries: Int): Result<List<GiphyImageItemDomainModel>>
 }

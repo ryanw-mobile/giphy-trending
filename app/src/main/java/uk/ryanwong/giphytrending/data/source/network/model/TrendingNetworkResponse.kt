@@ -1,9 +1,9 @@
 package uk.ryanwong.giphytrending.data.source.network.model
 
 import com.squareup.moshi.Json
-import java.util.*
+import java.util.Date
 
-data class TrendingNetworkModel(
+data class TrendingNetworkResponse(
     @Json(name = "data")
     val trendingData: List<TrendingData>,
     val meta: Meta,

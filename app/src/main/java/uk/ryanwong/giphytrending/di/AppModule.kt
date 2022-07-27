@@ -2,6 +2,7 @@ package uk.ryanwong.giphytrending.di
 
 import android.content.Context
 import androidx.room.Room
+import dagger.Component
 import dagger.Module
 import dagger.Provides
 import uk.ryanwong.giphytrending.BuildConfig
@@ -14,8 +15,18 @@ import uk.ryanwong.giphytrending.data.source.preferences.PreferencesDataStoreMan
 import uk.ryanwong.giphytrending.ui.GiphyImageItemAdapter
 import javax.inject.Singleton
 
+@Singleton
+@Component(
+    modules = [
+        //        NetworkModule::class,
+        DispatcherModule::class,
+        //        ViewModelModule::class
+    ]
+)
+
 @Module
 class AppModule(val context: Context) {
+
 
     @Singleton
     @Provides

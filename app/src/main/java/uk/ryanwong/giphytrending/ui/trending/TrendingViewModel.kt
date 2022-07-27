@@ -46,7 +46,6 @@ class TrendingViewModel @Inject constructor(
         _listState = listScrollingState
     }
 
-
     fun refresh() {
         viewModelScope.launch(dispatcher) {
             _trendingUIState.value = TrendingUIState.Loading

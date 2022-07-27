@@ -1,23 +1,9 @@
 package uk.ryanwong.giphytrending.data.repository
 
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import uk.ryanwong.giphytrending.data.source.preferences.PreferencesDataStoreManager
-import javax.inject.Inject
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
 
-/**
- * Class that handles saving and retrieving user preferences
- * The repository caches the value to avoid repeated asynchronous queries
- * Coroutine is used instead of RxJava here
- */
-class UserPreferencesRepository @Inject constructor(private val preferencesDataStoreManager: PreferencesDataStoreManager) {
-
-    // Expose preferences live data
-    val apiMaxEntries = preferencesDataStoreManager.apiMaxEntries
-
-    fun updateApiMax(apiMax: Int) = runBlocking {
-        launch { preferencesDataStoreManager.updateMaxApiEntries(apiMax) }
-    }
-
-    fun getApiMax() = preferencesDataStoreManager.emitMaxApiEntries()
+interface UserPreferencesRepository {
+    fun updateApiMax(apiMax: Int): Job
+    fun getApiMax(): Flow<Int>
 }

@@ -47,7 +47,7 @@ Previously this App used `RxJava`, but it is now rewritten using `Coroutines` be
 * [`Timber`](https://github.com/JakeWharton/timber) - Logging
 * [`LeakCanary`](https://github.com/square/leakcanary) - Memory leak detection
 * [`JUnit 4`](https://github.com/junit-team/junit4) - Tests
-* [`Hamcrest`](http://hamcrest.org/JavaHamcrest/) - Tests
+* [`kotest`](https://kotest.io/) - Tests
 
 ## Improvements:
 
@@ -128,5 +128,5 @@ format.
 This sample App is for demonstrating my coding habit and skills for potential employers. Here is a
 list of things I may further work on, while waiting for my next Android Developer role:
 
-* Test cases - there are none currently
+* Test cases - switching to kotest, and adding new tests bit by bit
 * UI to be rewritten in Jetpack Compose (Major rework)

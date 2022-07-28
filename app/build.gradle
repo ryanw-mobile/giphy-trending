@@ -124,6 +124,12 @@ android {
         includeAndroidResources = true
         returnDefaultValues = true
     }
+    // Kotest
+    android.testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
 }
 
 dependencies {
@@ -194,4 +200,9 @@ dependencies {
 
     // debugImplementation because LeakCanary should only run in debug builds.
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
+
+    // kotest
+    testImplementation "io.kotest:kotest-runner-junit4:5.3.1"
+    testImplementation "io.kotest:kotest-assertions-core:5.3.1"
+
 }

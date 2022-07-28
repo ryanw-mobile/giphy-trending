@@ -20,8 +20,8 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : UserPreferencesRepository {
 
-    override suspend fun setApiMax(apiMax: Int) {
-        withContext(dispatcher) {
+    override suspend fun setApiMax(apiMax: Int): Result<Unit> {
+        return withContext(dispatcher) {
             Result.runCatching {
                 preferencesDataStoreWrapper.setMaxApiEntries(apiMax)
             }.except<CancellationException, _>()

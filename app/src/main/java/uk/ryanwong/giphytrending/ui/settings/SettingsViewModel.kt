@@ -22,14 +22,21 @@ class SettingsViewModel @Inject constructor(
     @MainDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
+    private val _settingsUIState: MutableStateFlow<SettingsUIState> =
+        MutableStateFlow(SettingsUIState.Ready)
+    var settingsUIState: StateFlow<SettingsUIState> = _settingsUIState
+
     private val _apiMaxEntriesProgress: MutableStateFlow<Int> = MutableStateFlow(0)
     var apiMaxEntriesProgress: StateFlow<Int> = _apiMaxEntriesProgress
 
     // The seekbar progress has to deduct the minimum value
     fun getApiMax() {
         viewModelScope.launch(dispatcher) {
-            val apiMax = userPreferencesRepository.getApiMax().getOrNull() ?: BuildConfig.API_MAX_ENTRIES.toInt()
+            val apiMaxResponse = userPreferencesRepository.getApiMax()
+
+            val apiMax = apiMaxResponse.getOrNull() ?: BuildConfig.API_MAX_ENTRIES.toInt()
             _apiMaxEntriesProgress.value = max(apiMax.minus(API_MIN), 0)
+            updateUIState(repositoryResult = apiMaxResponse)
         }
     }
 
@@ -37,7 +44,27 @@ class SettingsViewModel @Inject constructor(
 
     fun setApiMax(maxApiEntries: Int) {
         viewModelScope.launch(dispatcher) {
-            userPreferencesRepository.setApiMax(maxApiEntries.plus(API_MIN))
+            updateUIState(
+                repositoryResult = userPreferencesRepository.setApiMax(
+                    maxApiEntries.plus(
+                        API_MIN
+                    )
+                )
+            )
+        }
+    }
+
+    private fun updateUIState(repositoryResult: Result<*>) {
+        when {
+            repositoryResult.isFailure -> {
+                // TODO: Can have a better Result class and error message.
+                _settingsUIState.value =
+                    SettingsUIState.Error(errMsg = "Error accessing preferences: {${repositoryResult.exceptionOrNull()?.message}")
+                repositoryResult.exceptionOrNull()?.printStackTrace()
+            }
+            repositoryResult.isSuccess -> {
+                _settingsUIState.value = SettingsUIState.Ready
+            }
         }
     }
 }

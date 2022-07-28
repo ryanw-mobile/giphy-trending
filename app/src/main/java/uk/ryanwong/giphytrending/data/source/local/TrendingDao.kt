@@ -9,22 +9,22 @@ import androidx.room.Query
 interface TrendingDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertData(data: TrendingEntity)
+    suspend fun insertData(data: TrendingEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllData(data: List<TrendingEntity>)
+    suspend fun insertAllData(data: List<TrendingEntity>)
 
     @Query("SELECT * FROM trending ORDER BY trending_datetime DESC, import_datetime DESC")
-    fun queryData(): List<TrendingEntity>
+    suspend fun queryData(): List<TrendingEntity>
 
     @Query("DELETE FROM trending")
-    fun clear()
+    suspend fun clear()
 
     // SQLite does not have a boolean data type.
     // Room maps it to an INTEGER column, mapping true to 1 and false to 0.
     @Query("UPDATE trending SET dirty = 1")
-    fun markDirty()
+    suspend fun markDirty()
 
     @Query("DELETE FROM trending WHERE dirty = 1")
-    fun deleteDirty()
+    suspend fun deleteDirty()
 }

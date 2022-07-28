@@ -5,7 +5,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import uk.ryanwong.giphytrending.BuildConfig
-import uk.ryanwong.giphytrending.data.source.local.GiphyDatabase
+import uk.ryanwong.giphytrending.data.source.local.RoomDbDataSource
 import uk.ryanwong.giphytrending.data.source.local.toDomainModelList
 import uk.ryanwong.giphytrending.data.source.local.toTrendingEntityList
 import uk.ryanwong.giphytrending.data.source.network.GiphyApi
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class GiphyRepositoryImpl @Inject constructor(
     private val giphyApiService: GiphyApi,
-    private val giphyDatabase: GiphyDatabase,
+    private val roomDbDataSource: RoomDbDataSource,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : GiphyRepository {
     /**
@@ -35,7 +35,7 @@ class GiphyRepositoryImpl @Inject constructor(
     override suspend fun fetchCachedTrending(): Result<List<GiphyImageItemDomainModel>> {
         return withContext(dispatcher) {
             Result.runCatching {
-                giphyDatabase.trendingDao().queryData().toDomainModelList()
+                roomDbDataSource.queryData().toDomainModelList()
             }.except<CancellationException, _>()
         }
     }
@@ -47,12 +47,11 @@ class GiphyRepositoryImpl @Inject constructor(
         return withContext(dispatcher) {
             try {
                 // Mark existing contents dirty. After successful API call old entries will be removed
-                giphyDatabase.trendingDao().markDirty()
+                roomDbDataSource.markDirty()
                 Timber.v("reloadTrending - mark dirty: success")
 
                 val trendingNetworkResponse = getTrendingFromNetwork(apiMaxEntries)
-                giphyDatabase.trendingDao()
-                    .insertAllData(data = trendingNetworkResponse.trendingData.toTrendingEntityList())
+                roomDbDataSource.insertAllData(data = trendingNetworkResponse.trendingData.toTrendingEntityList())
                 Timber.v("reloadTrending: insertion completed")
 
                 val invalidationResult = invalidateDirtyTrendingDb()
@@ -63,7 +62,7 @@ class GiphyRepositoryImpl @Inject constructor(
                     )
                 } else {
                     Result.success(
-                        value = giphyDatabase.trendingDao().queryData().toDomainModelList()
+                        value = roomDbDataSource.queryData().toDomainModelList()
                     )
                 }
             } catch (cancellationException: CancellationException) {
@@ -87,7 +86,7 @@ class GiphyRepositoryImpl @Inject constructor(
     private suspend fun invalidateDirtyTrendingDb(): Result<Unit> {
         return withContext(dispatcher) {
             Result.runCatching {
-                giphyDatabase.trendingDao().deleteDirty()
+                roomDbDataSource.deleteDirty()
                 Timber.v("invalidateDirtyTrendingDb: success")
             }.except<CancellationException, _>()
         }

@@ -2,19 +2,20 @@ package uk.ryanwong.giphytrending.data.source.local
 
 class MockRoomDbDataSource : RoomDbDataSource {
     override suspend fun insertData(data: TrendingEntity) {
-        TODO("Not yet implemented")
+        mockQueryDataResponse = listOf(data)
     }
 
     override suspend fun insertAllData(data: List<TrendingEntity>) {
-        TODO("Not yet implemented")
+        mockQueryDataResponse = data
     }
 
+    var mockQueryDataResponse: List<TrendingEntity>? = null
     override suspend fun queryData(): List<TrendingEntity> {
-        TODO("Not yet implemented")
+        return mockQueryDataResponse ?: emptyList()
     }
 
     override suspend fun clear() {
-        TODO("Not yet implemented")
+        mockQueryDataResponse = emptyList()
     }
 
     override suspend fun markDirty() {

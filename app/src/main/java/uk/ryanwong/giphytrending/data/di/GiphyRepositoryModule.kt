@@ -7,8 +7,8 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import uk.ryanwong.giphytrending.data.repository.GiphyRepository
 import uk.ryanwong.giphytrending.data.repository.GiphyRepositoryImpl
-import uk.ryanwong.giphytrending.data.source.local.GiphyDatabase
-import uk.ryanwong.giphytrending.data.source.network.GiphyApi
+import uk.ryanwong.giphytrending.data.source.local.RoomDbDataSource
+import uk.ryanwong.giphytrending.data.source.network.NetworkDataSource
 import uk.ryanwong.giphytrending.di.IoDispatcher
 import javax.inject.Singleton
 
@@ -18,13 +18,13 @@ object GiphyRepositoryModule {
     @Singleton
     @Provides
     fun provideGiphyRepository(
-        giphyApiService: GiphyApi,
-        giphyDatabase: GiphyDatabase,
+        networkDataSource: NetworkDataSource,
+        roomDbDataSource: RoomDbDataSource,
         @IoDispatcher dispatcher: CoroutineDispatcher
     ): GiphyRepository {
         return GiphyRepositoryImpl(
-            giphyApiService = giphyApiService,
-            giphyDatabase = giphyDatabase,
+            networkDataSource = networkDataSource,
+            roomDbDataSource = roomDbDataSource,
             dispatcher = dispatcher
         )
     }

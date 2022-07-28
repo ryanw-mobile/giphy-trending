@@ -8,7 +8,7 @@ import uk.ryanwong.giphytrending.BuildConfig
 import uk.ryanwong.giphytrending.data.source.local.RoomDbDataSource
 import uk.ryanwong.giphytrending.data.source.local.toDomainModelList
 import uk.ryanwong.giphytrending.data.source.local.toTrendingEntityList
-import uk.ryanwong.giphytrending.data.source.network.GiphyApi
+import uk.ryanwong.giphytrending.data.source.network.NetworkDataSource
 import uk.ryanwong.giphytrending.data.source.network.model.TrendingNetworkResponse
 import uk.ryanwong.giphytrending.di.IoDispatcher
 import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
@@ -16,7 +16,7 @@ import uk.ryanwong.giphytrending.except
 import javax.inject.Inject
 
 class GiphyRepositoryImpl @Inject constructor(
-    private val giphyApiService: GiphyApi,
+    private val networkDataSource: NetworkDataSource,
     private val roomDbDataSource: RoomDbDataSource,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : GiphyRepository {
@@ -76,9 +76,10 @@ class GiphyRepositoryImpl @Inject constructor(
 
     private suspend fun getTrendingFromNetwork(apiMaxEntries: Int): TrendingNetworkResponse {
         return withContext(dispatcher) {
-            giphyApiService.getTrending(
-                BuildConfig.GIPHY_API_KEY, apiMaxEntries,
-                BuildConfig.API_RATING
+            networkDataSource.getTrending(
+                apiKey = BuildConfig.GIPHY_API_KEY,
+                limit = apiMaxEntries,
+                rating = BuildConfig.API_RATING
             )
         }
     }

@@ -107,14 +107,14 @@ android {
      * Source sets can no longer contain shared roots as this is impossible to represent in the IDE.
      * In order to share sources between test and androidTest we should be able to use test fixtures.
      */
-    testFixtures {
-        enable true
-        androidResources true
-    }
-//    sourceSets {
-//        androidTest.java.srcDirs += "src/sharedTest/java"
-//        test.java.srcDirs += "src/sharedTest/java"
+//    testFixtures {
+//        enable = true
+//        androidResources = true
 //    }
+    sourceSets {
+        // androidTest.java.srcDirs += "src/testFixtures/java"
+        test.java.srcDirs += "src/testFixtures/java"
+    }
     testOptions {
         animationsDisabled = true
     }
@@ -222,5 +222,5 @@ dependencies {
     debugImplementation 'androidx.fragment:fragment-testing:1.5.0'
     // For instrumented tests - with Kotlin
     androidTestImplementation "com.google.dagger:hilt-android-testing:2.42"
-
+    androidTestImplementation 'androidx.test:rules:1.4.0'
 }

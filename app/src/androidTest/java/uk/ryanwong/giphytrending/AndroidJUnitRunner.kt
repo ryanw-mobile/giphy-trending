@@ -3,7 +3,7 @@
  *
  */
 
-package uk.ryanwong.dazn.codechallenge
+package uk.ryanwong.giphytrending
 
 import android.app.Application
 import android.content.Context

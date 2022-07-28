@@ -23,13 +23,8 @@ class TrendingViewModelTest : FreeSpec() {
     private lateinit var dispatcher: TestDispatcher
 
     private class MockParcelable : Parcelable {
-        override fun describeContents(): Int {
-            TODO("Not yet implemented")
-        }
-
-        override fun writeToParcel(p0: Parcel?, p1: Int) {
-            TODO("Not yet implemented")
-        }
+        override fun describeContents(): Int = 1
+        override fun writeToParcel(p0: Parcel?, p1: Int) {}
     }
 
     private val mockGiphyImageItemDomainModelList = listOf(

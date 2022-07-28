@@ -32,8 +32,8 @@ class TrendingViewModel @Inject constructor(
     var trendingList: StateFlow<List<GiphyImageItemDomainModel>> = _trendingList
 
     // This is to maintain the recyclerview scrolling state during list refresh
-    private var _listState: Parcelable? = null
-    val listState: Parcelable? = _listState
+    var listState: Parcelable? = null
+        private set
 
     init {
         viewModelScope.launch(dispatcher) {
@@ -43,7 +43,7 @@ class TrendingViewModel @Inject constructor(
     }
 
     fun saveListState(listScrollingState: Parcelable?) {
-        _listState = listScrollingState
+        listState = listScrollingState
     }
 
     fun refresh() {

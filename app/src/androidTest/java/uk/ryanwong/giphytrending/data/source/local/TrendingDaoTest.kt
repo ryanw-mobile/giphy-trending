@@ -11,6 +11,7 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -34,7 +35,7 @@ class TrendingDaoTest {
 
     // Basic test cases: CRUD usages
     @Test
-    fun emptyDatabase_InsertOne_ReturnOne() {
+    fun emptyDatabase_InsertOne_ReturnOne() = runBlocking {
         // 🔴 Given: Empty database
         trendingDao.queryData() shouldHaveSize 0
 
@@ -46,7 +47,7 @@ class TrendingDaoTest {
     }
 
     @Test
-    fun emptyDatabase_InsertList_ReturnSameList() {
+    fun emptyDatabase_InsertList_ReturnSameList() = runBlocking {
         // 🔴 Given: Empty database
         trendingDao.queryData() shouldHaveSize 0
 
@@ -64,7 +65,7 @@ class TrendingDaoTest {
     }
 
     @Test
-    fun nonEmptyDatabase_UpdateOneRow_ReturnUpdatedList() {
+    fun nonEmptyDatabase_UpdateOneRow_ReturnUpdatedList() = runBlocking {
         // 🔴 Given: database with three TrendingEntity objects
         val testTrendingList = listOf(
             TrendingEntityTestData.case1,
@@ -88,7 +89,7 @@ class TrendingDaoTest {
     }
 
     @Test
-    fun nonemptyDatabase_ClearDatabase_ReturnEmptyList() {
+    fun nonemptyDatabase_ClearDatabase_ReturnEmptyList() = runBlocking {
         // 🔴 Given: database with three TrendingEntity objects
         val testTrendingList = listOf(
             TrendingEntityTestData.case1,
@@ -109,7 +110,7 @@ class TrendingDaoTest {
      * Dirty bit test cases
      */
     @Test
-    fun nonEmptyCleanDatabase_markDirty_ReturnAllDirty() {
+    fun nonEmptyCleanDatabase_markDirty_ReturnAllDirty() = runBlocking {
         // 🔴 Given: database with three TrendingEntity objects, all dirty = false
         val testTrendingList = listOf(
             TrendingEntityTestData.case1,
@@ -135,7 +136,7 @@ class TrendingDaoTest {
     }
 
     @Test
-    fun allDirtyDatabase_deleteDirty_ReturnEmpty() {
+    fun allDirtyDatabase_deleteDirty_ReturnEmpty() = runBlocking {
         // 🔴 Given: database with three TrendingEntity objects, all dirty = true
         val testTrendingList = listOf(
             TrendingEntityTestData.case1,
@@ -158,7 +159,7 @@ class TrendingDaoTest {
     }
 
     @Test
-    fun someDirtyDatabase_deleteDirty_ReturnClean() {
+    fun someDirtyDatabase_deleteDirty_ReturnClean() = runBlocking {
         // 🔴 Given: database with 4 TrendingEntity objects - 3 dirty and 1 clean
         val testTrendingList = listOf(
             TrendingEntityTestData.case1,

@@ -28,7 +28,7 @@ class SettingsViewModelTest : FreeSpec() {
 
     init {
         "setApiMax" - {
-            "should set the settingsUIState = ready if repository returns success" {
+            "should set settingsUIState = ready if repository returns success" {
                 // 🔴 Given
                 setupViewModel()
                 mockUserPreferencesRepository.mockSetApiMaxResponse = Result.success(Unit)
@@ -40,7 +40,7 @@ class SettingsViewModelTest : FreeSpec() {
                 settingsViewModel.settingsUIState.first().shouldBeTypeOf<SettingsUIState.Ready>()
             }
 
-            "should set the settingsUIState = error if repository returns error" {
+            "should set settingsUIState = error if repository returns error" {
                 // 🔴 Given
                 setupViewModel()
                 mockUserPreferencesRepository.mockSetApiMaxResponse =
@@ -56,7 +56,7 @@ class SettingsViewModelTest : FreeSpec() {
 
 
         "getApiMax" - {
-            "should set the settingsUIState = ready if repository returns success" {
+            "should set settingsUIState = ready if repository returns success" {
                 // 🔴 Given
                 setupViewModel()
                 mockUserPreferencesRepository.mockGetApiMaxResponse = Result.success(100)
@@ -92,7 +92,7 @@ class SettingsViewModelTest : FreeSpec() {
                 settingsViewModel.apiMaxEntriesProgress.first() shouldBe 0
             }
 
-            "should set the settingsUIState = error if repository returns error" {
+            "should set settingsUIState = error if repository returns error" {
                 // 🔴 Given
                 setupViewModel()
                 mockUserPreferencesRepository.mockGetApiMaxResponse =
@@ -116,6 +116,22 @@ class SettingsViewModelTest : FreeSpec() {
 
                 // 🟢 Then - not checking error message yet
                 translatedValue shouldBe "150"
+            }
+        }
+
+        "notifyErrorMessageDisplayed" - {
+            "should set settingsUIState = ready" {
+                // 🔴 Given
+                setupViewModel()
+                mockUserPreferencesRepository.mockGetApiMaxResponse =
+                    Result.failure(exception = Exception())
+                settingsViewModel.getApiMax()
+
+                // 🟡 When
+                settingsViewModel.notifyErrorMessageDisplayed()
+
+                // 🟢 Then - not checking error message yet
+                settingsViewModel.settingsUIState.first().shouldBeTypeOf<SettingsUIState.Ready>()
             }
         }
     }

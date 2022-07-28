@@ -1,19 +1,19 @@
 # giphy-trending - Sample Android App for skills demonstration [![Build Status](https://app.bitrise.io/app/776d0675599c4019/status.svg?token=hA6BlwSQNIgkJZy1CnaW9A&branch=master)](https://app.bitrise.io/app/776d0675599c4019)
 
-This is a sample app originally based on
+This is a sample app based on
 the [walk through](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
-by Fahri Can. As I work on the project, the App now has most of the codes rewritten on my own.
+by Fahri Can. As I worked on the project, the App now has most of the code rewritten on my own.
 
 ![Screenshot1](screenshots/screen0.png) ![Screenshot2](screenshots/screen1.png)
 ![Screenshot3](screenshots/screen2.png) ![Screenshot4](screenshots/screen3.png)
 
-This app was first created in Nov 2021. Looking at what I have done now, I found the quality of this App unacceptable, so I have updated again in Jul 2022.
+First created in Nov 2021, looking at what I have done now, I found the quality of this App unacceptable, so I have updated again in Jul 2022.
 
 ## Skills covered:
 
 The Android Development world is currently experiencing a shift of technology stack. Besides
 migrating from Java to Kotlin, we have a choice of Coroutines over RxJava, Hilt over Dagger, and
-JetPack Compose over the traditional XML View layouts.
+JetPack Compose over the traditional XML View layouts. LiveData got replaced by Kotlin Flow quickly this year.
 
 This Sample App is for demonstrating the traditional approach which applies XML UI, `Kotlin Coroutines`, `Kotlin Flow`, 
 `Dagger Hilt`, `PreferencesDataStore`. 
@@ -27,7 +27,7 @@ Previously this App used `RxJava`, but it is now rewritten using `Coroutines` be
 * [`Jetpack Databinding`](https://developer.android.com/jetpack/androidx/releases/databinding)
 * Kotlin Flow (replacing Live Data)
 * Material 3 with light and dark mode theming
-* [Bitrise](https://app.bitrise.io/) - Bitrise (current)
+* [Bitrise](https://app.bitrise.io/) - CI (current)
 * [Travis-CI](https://travis-ci.org/) - CI (previous)
 
 ### Major libraries used

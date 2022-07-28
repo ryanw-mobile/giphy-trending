@@ -103,10 +103,18 @@ android {
                 "-Xjvm-default=all",
         ]
     }
-    sourceSets {
-        androidTest.java.srcDirs += "src/sharedTest/java"
-        test.java.srcDirs += "src/sharedTest/java"
+    /**
+     * Source sets can no longer contain shared roots as this is impossible to represent in the IDE.
+     * In order to share sources between test and androidTest we should be able to use test fixtures.
+     */
+    testFixtures {
+        enable true
+        androidResources true
     }
+//    sourceSets {
+//        androidTest.java.srcDirs += "src/sharedTest/java"
+//        test.java.srcDirs += "src/sharedTest/java"
+//    }
     testOptions {
         animationsDisabled = true
     }

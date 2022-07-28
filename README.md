@@ -7,7 +7,7 @@ by Fahri Can. As I work on the project, the App now has most of the codes rewrit
 ![Screenshot1](screenshots/screen0.png) ![Screenshot2](screenshots/screen1.png)
 ![Screenshot3](screenshots/screen2.png) ![Screenshot4](screenshots/screen3.png)
 
-This app was first created in Nov 2021. Looking back what I have done, I found the quality of this App unacceptable, so it is now being rewritten.
+This app was first created in Nov 2021. Looking at what I have done now, I found the quality of this App unacceptable, so I have updated again in Jul 2022.
 
 ## Skills covered:
 
@@ -18,7 +18,7 @@ JetPack Compose over the traditional XML View layouts.
 This Sample App is for demonstrating the traditional approach which applies XML UI, `Kotlin Coroutines`, `Kotlin Flow`, 
 `Dagger Hilt`, `PreferencesDataStore`. 
 
-Previously this App used `RxJava` but it is now being rewritten using `Coroutines` because it is much more simpler.
+Previously this App used `RxJava`, but it is now rewritten using `Coroutines` because it is much more simpler.
 
 ### High level architecture
 
@@ -27,7 +27,8 @@ Previously this App used `RxJava` but it is now being rewritten using `Coroutine
 * [`Jetpack Databinding`](https://developer.android.com/jetpack/androidx/releases/databinding)
 * Kotlin Flow (replacing Live Data)
 * Material 3 with light and dark mode theming
-* [Travis-CI](https://travis-ci.org/) - CI
+* [Bitrise](https://app.bitrise.io/) - Bitrise (current)
+* [Travis-CI](https://travis-ci.org/) - CI (previous)
 
 ### Major libraries used
 
@@ -127,5 +128,5 @@ format.
 This sample App is for demonstrating my coding habit and skills for potential employers. Here is a
 list of things I may further work on, while waiting for my next Android Developer role:
 
-* More test cases
+* Test cases - there are none currently
 * UI to be rewritten in Jetpack Compose (Major rework)

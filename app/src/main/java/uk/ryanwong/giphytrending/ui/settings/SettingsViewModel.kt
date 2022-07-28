@@ -67,4 +67,8 @@ class SettingsViewModel @Inject constructor(
             }
         }
     }
+
+    fun notifyErrorMessageDisplayed() {
+        _settingsUIState.value = SettingsUIState.Ready
+    }
 }

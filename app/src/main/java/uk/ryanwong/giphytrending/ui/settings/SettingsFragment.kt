@@ -1,5 +1,6 @@
 package uk.ryanwong.giphytrending.ui.settings
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import uk.ryanwong.giphytrending.R
 import uk.ryanwong.giphytrending.databinding.FragmentSettingsBinding
 
 @AndroidEntryPoint
@@ -21,6 +23,8 @@ class SettingsFragment : Fragment() {
 
     private val settingsViewModel: SettingsViewModel by viewModels()
     private lateinit var binding: FragmentSettingsBinding
+    private var errorDialog: AlertDialog? = null
+    private var uiState: SettingsUIState = SettingsUIState.Ready
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,12 +69,43 @@ class SettingsFragment : Fragment() {
     private fun observeStateFlow() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                settingsViewModel.settingsUIState.collect { settingsUIState ->
+                    uiState = settingsUIState
+                    if (settingsUIState is SettingsUIState.Error) {
+                        showErrorDialog(settingsUIState.errMsg)
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 settingsViewModel.apiMaxEntriesProgress.collect { progress ->
                     Timber.v("Update progress bar value from live data: $progress")
                     binding.seekbarApimax.progress = progress
                     binding.seekbarTextlabel.text =
                         settingsViewModel.translateMaxApiEntries(progress)
                 }
+            }
+        }
+    }
+
+    private fun showErrorDialog(errorMessage: String?) {
+        errorMessage?.let {
+            if (errorMessage.isNotBlank()) {
+                // make sure we only show one latest dialog to users for better UX:
+                errorDialog?.dismiss()
+
+                // Show an error dialog
+                errorDialog =
+                    AlertDialog.Builder(requireContext()).apply {
+                        setTitle(getString(R.string.something_went_wrong))
+                        setMessage(errorMessage)
+                        setPositiveButton(getString(R.string.ok)) { _, _ ->
+                            settingsViewModel.notifyErrorMessageDisplayed()
+                        }
+                    }.create()
+                errorDialog?.show()
             }
         }
     }

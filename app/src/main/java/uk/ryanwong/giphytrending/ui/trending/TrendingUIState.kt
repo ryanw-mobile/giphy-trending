@@ -1,4 +1,4 @@
-package uk.ryanwong.giphytrending.ui
+package uk.ryanwong.giphytrending.ui.trending
 
 sealed class TrendingUIState {
     object Ready : TrendingUIState()

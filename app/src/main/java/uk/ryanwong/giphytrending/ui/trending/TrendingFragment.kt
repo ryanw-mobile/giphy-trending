@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 import uk.ryanwong.giphytrending.R
 import uk.ryanwong.giphytrending.databinding.FragmentTrendingBinding
 import uk.ryanwong.giphytrending.ui.GiphyImageItemAdapter
-import uk.ryanwong.giphytrending.ui.TrendingUIState
 import uk.ryanwong.giphytrending.ui.animateDown
 import uk.ryanwong.giphytrending.ui.animateUp
 import uk.ryanwong.giphytrending.ui.setupRecyclerView

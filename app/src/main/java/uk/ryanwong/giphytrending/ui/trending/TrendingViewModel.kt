@@ -14,7 +14,6 @@ import uk.ryanwong.giphytrending.data.repository.GiphyRepository
 import uk.ryanwong.giphytrending.data.repository.UserPreferencesRepository
 import uk.ryanwong.giphytrending.di.MainDispatcher
 import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
-import uk.ryanwong.giphytrending.ui.TrendingUIState
 import javax.inject.Inject
 
 @HiltViewModel

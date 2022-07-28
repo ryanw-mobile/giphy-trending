@@ -18,7 +18,7 @@ private const val API_MIN = 50
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val repository: UserPreferencesRepository,
+    private val userPreferencesRepository: UserPreferencesRepository,
     @MainDispatcher private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -28,7 +28,7 @@ class SettingsViewModel @Inject constructor(
     // The seekbar progress has to deduct the minimum value
     fun getApiMax() {
         viewModelScope.launch(dispatcher) {
-            val apiMax = repository.getApiMax().getOrNull() ?: BuildConfig.API_MAX_ENTRIES.toInt()
+            val apiMax = userPreferencesRepository.getApiMax().getOrNull() ?: BuildConfig.API_MAX_ENTRIES.toInt()
             _apiMaxEntriesProgress.value = max(apiMax.minus(API_MIN), 0)
         }
     }
@@ -37,7 +37,7 @@ class SettingsViewModel @Inject constructor(
 
     fun setApiMax(maxApiEntries: Int) {
         viewModelScope.launch(dispatcher) {
-            repository.setApiMax(maxApiEntries.plus(API_MIN))
+            userPreferencesRepository.setApiMax(maxApiEntries.plus(API_MIN))
         }
     }
 }

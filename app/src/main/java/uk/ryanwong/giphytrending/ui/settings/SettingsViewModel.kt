@@ -45,11 +45,7 @@ class SettingsViewModel @Inject constructor(
     fun setApiMax(maxApiEntries: Int) {
         viewModelScope.launch(dispatcher) {
             updateUIState(
-                repositoryResult = userPreferencesRepository.setApiMax(
-                    maxApiEntries.plus(
-                        API_MIN
-                    )
-                )
+                repositoryResult = userPreferencesRepository.setApiMax(maxApiEntries.plus(API_MIN))
             )
         }
     }

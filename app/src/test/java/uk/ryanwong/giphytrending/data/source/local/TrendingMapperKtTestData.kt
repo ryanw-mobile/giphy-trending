@@ -1,9 +1,217 @@
 package uk.ryanwong.giphytrending.data.source.local
 
+import uk.ryanwong.giphytrending.data.source.network.model.Downsized
+import uk.ryanwong.giphytrending.data.source.network.model.DownsizedLarge
+import uk.ryanwong.giphytrending.data.source.network.model.DownsizedMedium
+import uk.ryanwong.giphytrending.data.source.network.model.DownsizedSmall
+import uk.ryanwong.giphytrending.data.source.network.model.DownsizedStill
+import uk.ryanwong.giphytrending.data.source.network.model.FixedHeight
+import uk.ryanwong.giphytrending.data.source.network.model.FixedHeightDownsampled
+import uk.ryanwong.giphytrending.data.source.network.model.FixedHeightSmall
+import uk.ryanwong.giphytrending.data.source.network.model.FixedHeightSmallStill
+import uk.ryanwong.giphytrending.data.source.network.model.FixedHeightStill
+import uk.ryanwong.giphytrending.data.source.network.model.FixedWidth
+import uk.ryanwong.giphytrending.data.source.network.model.FixedWidthDownsampled
+import uk.ryanwong.giphytrending.data.source.network.model.FixedWidthSmall
+import uk.ryanwong.giphytrending.data.source.network.model.FixedWidthSmallStill
+import uk.ryanwong.giphytrending.data.source.network.model.FixedWidthStill
+import uk.ryanwong.giphytrending.data.source.network.model.Images
+import uk.ryanwong.giphytrending.data.source.network.model.Looping
+import uk.ryanwong.giphytrending.data.source.network.model.Original
+import uk.ryanwong.giphytrending.data.source.network.model.OriginalMp4
+import uk.ryanwong.giphytrending.data.source.network.model.OriginalStill
+import uk.ryanwong.giphytrending.data.source.network.model.Preview
+import uk.ryanwong.giphytrending.data.source.network.model.PreviewGif
+import uk.ryanwong.giphytrending.data.source.network.model.PreviewWebp
+import uk.ryanwong.giphytrending.data.source.network.model.TrendingData
+import uk.ryanwong.giphytrending.data.source.network.model.WStill
 import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
 import java.util.Date
 
 object TrendingMapperKtTestData {
+
+    val mockTrendingData1 = TrendingData(
+        analytics_response_payload = "some-analytics-response-payload",
+        bitly_gif_url = "https://some.url/some-path",
+        bitly_url = "https://some.url/some-path",
+        content_url = "",
+        embed_url = "https://some.url/some-path",
+        id = "5KF7hci72bv2ZbchuT",
+        images = Images(
+            `480w_still` = WStill(
+                height = "362", size = "1749887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            downsized = Downsized(
+                height = "362",
+                size = "1749887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            downsized_large = DownsizedLarge(
+                height = "362",
+                size = "1749887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            downsized_medium = DownsizedMedium(
+                height = "362",
+                size = "1749887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            downsized_small = DownsizedSmall(
+                height = "308",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "103077",
+                width = "408"
+            ),
+            downsized_still = DownsizedStill(
+                height = "362",
+                size = "1749887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            fixed_height = FixedHeight(
+                height = "200",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "101674",
+                size = "500824",
+                url = "https://some.url/some-path",
+                webp = "https://some.url/some-path",
+                webp_size = "227744",
+                width = "265"
+            ),
+            fixed_height_downsampled = FixedHeightDownsampled(
+                height = "200",
+                size = "138015",
+                url = "https://some.url/some-path",
+                webp = "https://some.url/some-path",
+                webp_size = "82652",
+                width = "265"
+            ),
+            fixed_height_small = FixedHeightSmall(
+                height = "100",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "33867",
+                size = "153568",
+                url = "https://some.url/some-path",
+                webp = "https://some.url/some-path",
+                webp_size = "83210",
+                width = "133"
+            ), fixed_height_small_still = FixedHeightSmallStill(
+                height = "100",
+                size = "7243",
+                url = "https://some.url/some-path",
+                width = "133"
+            ),
+            fixed_height_still = FixedHeightStill(
+                height = "200",
+                size = "21239",
+                url = "https://some.url/some-path",
+                width = "265"
+            ),
+            fixed_width = FixedWidth(
+                height = "151",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "65384",
+                size = "317527",
+                url = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/200w.gif",
+                webp = "https://some.url/some-path",
+                webp_size = "153256",
+                width = "200"
+            ),
+            fixed_width_downsampled = FixedWidthDownsampled(
+                height = "151",
+                size = "85434",
+                url = "https://some.url/some-path",
+                webp = "https://some.url/some-path",
+                webp_size = "53034",
+                width = "200"
+            ),
+            fixed_width_small = FixedWidthSmall(
+                height = "76",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "20164",
+                size = "96901",
+                url = "https://some.url/some-path",
+                webp = "https://some.url/some-path",
+                webp_size = "54764",
+                width = "100"
+            ),
+            fixed_width_small_still = FixedWidthSmallStill(
+                height = "76",
+                size = "4747",
+                url = "https://some.url/some-path",
+                width = "100"
+            ),
+            fixed_width_still = FixedWidthStill(
+                height = "151",
+                size = "13975",
+                url = "https://some.url/some-path",
+                width = "200"
+            ),
+            looping = Looping(
+                mp4 = "https://some.url/some-path",
+                mp4_size = "2194531"
+            ),
+            original = Original(
+                frames = "26",
+                hash = "some-hash",
+                height = "362",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "273620",
+                size = "1749887",
+                url = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/giphy.gif",
+                webp = "https://some.url/some-path",
+                webp_size = "455910",
+                width = "480"
+            ),
+            original_mp4 = OriginalMp4(
+                height = "362",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "273620",
+                width = "480"
+            ),
+            original_still = OriginalStill(
+                height = "362",
+                size = "74887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            preview = Preview(
+                height = "152",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "30723",
+                width = "201"
+            ),
+            preview_gif = PreviewGif(
+                height = "72",
+                size = "47647",
+                url = "https://some.url/some-path",
+                width = "95"
+            ),
+            preview_webp = PreviewWebp(
+                height = "106",
+                size = "35810",
+                url = "https://some.url/some-path",
+                width = "140"
+            )
+        ),
+        import_datetime = Date(1635978358000),
+        is_sticker = 0,
+        rating = "g",
+        slug = "moonagedaydream-neon-rated-moonage-daydream-UeaVRMdWRGzvzr62pF",
+        source = "https://some.url/some-path",
+        source_post_url = "https://some.url/some-path",
+        source_tld = "neonrated.com",
+        title = "Chef Cooking GIF by GIPHY Studios Originals",
+        trending_datetime = Date(1636679711000),
+        type = "gif",
+        url = "https://giphy.com/gifs/studiosoriginals-cooking-chef-cook-5KF7hci72bv2ZbchuT",
+        username = "studiosoriginals"
+    )
 
     val mockTrendingEntity1 = TrendingEntity(
         id = "5KF7hci72bv2ZbchuT",
@@ -27,6 +235,189 @@ object TrendingMapperKtTestData {
         username = "studiosoriginals"
     )
 
+    val mockTrendingData2 = TrendingData(
+        analytics_response_payload = "some-analytics-response-payload",
+        bitly_gif_url = "https://some.url/some-path",
+        bitly_url = "https://some.url/some-path",
+        content_url = "",
+        embed_url = "https://some.url/some-path",
+        id = "uaIAIw3ELuk69mhZ5I",
+        images = Images(
+            `480w_still` = WStill(
+                height = "362", size = "1749887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            downsized = Downsized(
+                height = "362",
+                size = "1749887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            downsized_large = DownsizedLarge(
+                height = "362",
+                size = "1749887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            downsized_medium = DownsizedMedium(
+                height = "362",
+                size = "1749887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            downsized_small = DownsizedSmall(
+                height = "308",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "103077",
+                width = "408"
+            ),
+            downsized_still = DownsizedStill(
+                height = "362",
+                size = "1749887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            fixed_height = FixedHeight(
+                height = "200",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "101674",
+                size = "500824",
+                url = "https://some.url/some-path",
+                webp = "https://some.url/some-path",
+                webp_size = "227744",
+                width = "265"
+            ),
+            fixed_height_downsampled = FixedHeightDownsampled(
+                height = "200",
+                size = "138015",
+                url = "https://some.url/some-path",
+                webp = "https://some.url/some-path",
+                webp_size = "82652",
+                width = "265"
+            ),
+            fixed_height_small = FixedHeightSmall(
+                height = "100",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "33867",
+                size = "153568",
+                url = "https://some.url/some-path",
+                webp = "https://some.url/some-path",
+                webp_size = "83210",
+                width = "133"
+            ), fixed_height_small_still = FixedHeightSmallStill(
+                height = "100",
+                size = "7243",
+                url = "https://some.url/some-path",
+                width = "133"
+            ),
+            fixed_height_still = FixedHeightStill(
+                height = "200",
+                size = "21239",
+                url = "https://some.url/some-path",
+                width = "265"
+            ),
+            fixed_width = FixedWidth(
+                height = "151",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "65384",
+                size = "317527",
+                url = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/200w.gif",
+                webp = "https://some.url/some-path",
+                webp_size = "153256",
+                width = "200"
+            ),
+            fixed_width_downsampled = FixedWidthDownsampled(
+                height = "151",
+                size = "85434",
+                url = "https://some.url/some-path",
+                webp = "https://some.url/some-path",
+                webp_size = "53034",
+                width = "200"
+            ),
+            fixed_width_small = FixedWidthSmall(
+                height = "76",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "20164",
+                size = "96901",
+                url = "https://some.url/some-path",
+                webp = "https://some.url/some-path",
+                webp_size = "54764",
+                width = "100"
+            ),
+            fixed_width_small_still = FixedWidthSmallStill(
+                height = "76",
+                size = "4747",
+                url = "https://some.url/some-path",
+                width = "100"
+            ),
+            fixed_width_still = FixedWidthStill(
+                height = "151",
+                size = "13975",
+                url = "https://some.url/some-path",
+                width = "200"
+            ),
+            looping = Looping(
+                mp4 = "https://some.url/some-path",
+                mp4_size = "2194531"
+            ),
+            original = Original(
+                frames = "26",
+                hash = "some-hash",
+                height = "362",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "273620",
+                size = "1749887",
+                url = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/giphy.gif",
+                webp = "https://some.url/some-path",
+                webp_size = "455910",
+                width = "480"
+            ),
+            original_mp4 = OriginalMp4(
+                height = "362",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "273620",
+                width = "480"
+            ),
+            original_still = OriginalStill(
+                height = "362",
+                size = "74887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            preview = Preview(
+                height = "152",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "30723",
+                width = "201"
+            ),
+            preview_gif = PreviewGif(
+                height = "72",
+                size = "47647",
+                url = "https://some.url/some-path",
+                width = "95"
+            ),
+            preview_webp = PreviewWebp(
+                height = "106",
+                size = "35810",
+                url = "https://some.url/some-path",
+                width = "140"
+            )
+        ),
+        import_datetime = Date(1605041010000),
+        is_sticker = 0,
+        rating = "g",
+        slug = "moonagedaydream-neon-rated-moonage-daydream-UeaVRMdWRGzvzr62pF",
+        source = "https://neonrated.com/films/bowie-moonage-daydream",
+        source_post_url = "https://neonrated.com/films/bowie-moonage-daydream",
+        source_tld = "neonrated.com",
+        title = "Joe Biden GIF by Creative Courage",
+        trending_datetime = Date(-62170156725000),
+        type = "gif",
+        url = "https://giphy.com/gifs/creative-courage-vidhyan-as-a-nation-we-have-lot-of-obligations-no-obligation-uaIAIw3ELuk69mhZ5I",
+        username = "creative-courage"
+    )
+
     val mockTrendingEntity2 = TrendingEntity(
         id = "uaIAIw3ELuk69mhZ5I",
         previewUrl = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/200w.gif",
@@ -47,6 +438,189 @@ object TrendingMapperKtTestData {
         title = "Joe Biden GIF by Creative Courage",
         type = "gif",
         username = "creative-courage"
+    )
+
+    val mockTrendingData3 = TrendingData(
+        analytics_response_payload = "some-analytics-response-payload",
+        bitly_gif_url = "https://some.url/some-path",
+        bitly_url = "https://some.url/some-path",
+        content_url = "",
+        embed_url = "https://some.url/some-path",
+        id = "etKSrsbbKbqwW6vzOg",
+        images = Images(
+            `480w_still` = WStill(
+                height = "362", size = "1749887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            downsized = Downsized(
+                height = "362",
+                size = "1749887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            downsized_large = DownsizedLarge(
+                height = "362",
+                size = "1749887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            downsized_medium = DownsizedMedium(
+                height = "362",
+                size = "1749887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            downsized_small = DownsizedSmall(
+                height = "308",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "103077",
+                width = "408"
+            ),
+            downsized_still = DownsizedStill(
+                height = "362",
+                size = "1749887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            fixed_height = FixedHeight(
+                height = "200",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "101674",
+                size = "500824",
+                url = "https://some.url/some-path",
+                webp = "https://some.url/some-path",
+                webp_size = "227744",
+                width = "265"
+            ),
+            fixed_height_downsampled = FixedHeightDownsampled(
+                height = "200",
+                size = "138015",
+                url = "https://some.url/some-path",
+                webp = "https://some.url/some-path",
+                webp_size = "82652",
+                width = "265"
+            ),
+            fixed_height_small = FixedHeightSmall(
+                height = "100",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "33867",
+                size = "153568",
+                url = "https://some.url/some-path",
+                webp = "https://some.url/some-path",
+                webp_size = "83210",
+                width = "133"
+            ), fixed_height_small_still = FixedHeightSmallStill(
+                height = "100",
+                size = "7243",
+                url = "https://some.url/some-path",
+                width = "133"
+            ),
+            fixed_height_still = FixedHeightStill(
+                height = "200",
+                size = "21239",
+                url = "https://some.url/some-path",
+                width = "265"
+            ),
+            fixed_width = FixedWidth(
+                height = "151",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "65384",
+                size = "317527",
+                url = "https://media1.giphy.com/media/etKSrsbbKbqwW6vzOg/200w.gif",
+                webp = "https://some.url/some-path",
+                webp_size = "153256",
+                width = "200"
+            ),
+            fixed_width_downsampled = FixedWidthDownsampled(
+                height = "151",
+                size = "85434",
+                url = "https://some.url/some-path",
+                webp = "https://some.url/some-path",
+                webp_size = "53034",
+                width = "200"
+            ),
+            fixed_width_small = FixedWidthSmall(
+                height = "76",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "20164",
+                size = "96901",
+                url = "https://some.url/some-path",
+                webp = "https://some.url/some-path",
+                webp_size = "54764",
+                width = "100"
+            ),
+            fixed_width_small_still = FixedWidthSmallStill(
+                height = "76",
+                size = "4747",
+                url = "https://some.url/some-path",
+                width = "100"
+            ),
+            fixed_width_still = FixedWidthStill(
+                height = "151",
+                size = "13975",
+                url = "https://some.url/some-path",
+                width = "200"
+            ),
+            looping = Looping(
+                mp4 = "https://some.url/some-path",
+                mp4_size = "2194531"
+            ),
+            original = Original(
+                frames = "26",
+                hash = "some-hash",
+                height = "362",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "273620",
+                size = "1749887",
+                url = "https://media1.giphy.com/media/etKSrsbbKbqwW6vzOg/giphy.gif",
+                webp = "https://some.url/some-path",
+                webp_size = "455910",
+                width = "480"
+            ),
+            original_mp4 = OriginalMp4(
+                height = "362",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "273620",
+                width = "480"
+            ),
+            original_still = OriginalStill(
+                height = "362",
+                size = "74887",
+                url = "https://some.url/some-path",
+                width = "480"
+            ),
+            preview = Preview(
+                height = "152",
+                mp4 = "https://some.url/some-path",
+                mp4_size = "30723",
+                width = "201"
+            ),
+            preview_gif = PreviewGif(
+                height = "72",
+                size = "47647",
+                url = "https://some.url/some-path",
+                width = "95"
+            ),
+            preview_webp = PreviewWebp(
+                height = "106",
+                size = "35810",
+                url = "https://some.url/some-path",
+                width = "140"
+            )
+        ),
+        import_datetime = Date(1636417528000),
+        is_sticker = 0,
+        rating = "g",
+        slug = "moonagedaydream-neon-rated-moonage-daydream-UeaVRMdWRGzvzr62pF",
+        source = "https://neonrated.com/films/bowie-moonage-daydream",
+        source_post_url = "https://neonrated.com/films/bowie-moonage-daydream",
+        source_tld = "neonrated.com",
+        title = "Winner Winner Win GIF by GIPHY Studios Originals",
+        trending_datetime = Date(1636678809000),
+        type = "gif",
+        url = "https://giphy.com/gifs/studiosoriginals-chicken-dinner-winner-etKSrsbbKbqwW6vzOg",
+        username = "studiosoriginals"
     )
 
     val mockTrendingEntity3 = TrendingEntity(

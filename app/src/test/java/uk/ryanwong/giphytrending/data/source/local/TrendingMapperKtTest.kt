@@ -50,6 +50,40 @@ class TrendingMapperKtTest : FreeSpec() {
             }
         }
 
-  
+        "toTrendingEntity" - {
+            "should correctly convert from TrendingData to TrendingEntity" {
+                // 🔴 Given - mockTrendingData1
+
+                // 🟡 When
+                val trendingEntity =
+                    TrendingMapperKtTestData.mockTrendingData1.toTrendingEntity()
+
+                // 🟢 Then
+                trendingEntity shouldBe TrendingMapperKtTestData.mockTrendingEntity1
+            }
+        }
+
+        "toTrendingEntityList" - {
+            "should correctly convert from TrendingData to list of TrendingEntity" {
+                // 🔴 Given -
+                val mockTrendingDataList = listOf(
+                    TrendingMapperKtTestData.mockTrendingData1,
+                    TrendingMapperKtTestData.mockTrendingData2,
+                    TrendingMapperKtTestData.mockTrendingData3
+                )
+                val expectedTrendingEntityList = listOf(
+                    TrendingMapperKtTestData.mockTrendingEntity1,
+                    TrendingMapperKtTestData.mockTrendingEntity2,
+                    TrendingMapperKtTestData.mockTrendingEntity3
+                )
+
+                // 🟡 When
+                val trendingEntityList =
+                    mockTrendingDataList.toTrendingEntityList()
+
+                // 🟢 Then
+                trendingEntityList shouldBe expectedTrendingEntityList
+            }
+        }
     }
 }

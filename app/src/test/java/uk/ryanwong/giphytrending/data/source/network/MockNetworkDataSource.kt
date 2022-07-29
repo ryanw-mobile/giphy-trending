@@ -5,6 +5,7 @@ import uk.ryanwong.giphytrending.data.source.network.model.Pagination
 import uk.ryanwong.giphytrending.data.source.network.model.TrendingNetworkResponse
 
 class MockNetworkDataSource : NetworkDataSource {
+    var apiError: Throwable? = null
     var mockTrendingNetworkResponse: TrendingNetworkResponse? = null
 
     override suspend fun getTrending(
@@ -12,6 +13,7 @@ class MockNetworkDataSource : NetworkDataSource {
         limit: Int,
         rating: String
     ): TrendingNetworkResponse {
+        apiError?.run { throw this }
         return mockTrendingNetworkResponse ?: TrendingNetworkResponse(
             meta = Meta(
                 msg = "some-msg",

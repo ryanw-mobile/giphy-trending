@@ -18,7 +18,7 @@ class GiphyRepositoryImplTest : FreeSpec() {
     private lateinit var giphyRepository: GiphyRepository
     private lateinit var dispatcher: TestDispatcher
     private lateinit var mockRoomDbDataSource: MockRoomDbDataSource
-    private lateinit var mockNetworkDataSource: NetworkDataSource
+    private lateinit var mockNetworkDataSource: MockNetworkDataSource
 
     // 🤦 Greg would say if the data carries no meaning, why not replace them with some-string
     // I'll do that when I have a chance working with you again, but not now 🤷‍
@@ -49,7 +49,7 @@ class GiphyRepositoryImplTest : FreeSpec() {
 
     init {
         "fetchCachedTrending" - {
-            "should return correct list if database query success" - {
+            "should return correct list if database query success" {
                 // 🔴 Given
                 setupRepository()
                 mockRoomDbDataSource.mockQueryDataResponse = mockTrendingEntityList
@@ -61,10 +61,61 @@ class GiphyRepositoryImplTest : FreeSpec() {
                 result.isSuccess shouldBe true
                 result.getOrNull()!! shouldBe mockTrendingEntityList.toDomainModelList()
             }
+
+            "should return failure if database query throws exception" {
+                // 🔴 Given
+                setupRepository()
+                mockRoomDbDataSource.apiError = Exception()
+
+                // 🟡 When
+                val result = giphyRepository.fetchCachedTrending()
+
+                // 🟢 Then
+                result.isFailure shouldBe true
+                result.exceptionOrNull()!! shouldBe Exception()
+            }
         }
 
         "reloadTrending" - {
 
+            "should return correct list if network and database operations all success" {
+                // 🔴 Given
+                setupRepository()
+                mockRoomDbDataSource.mockQueryDataResponse = mockTrendingEntityList
+
+                // 🟡 When
+                val result = giphyRepository.fetchCachedTrending()
+
+                // 🟢 Then
+                result.isSuccess shouldBe true
+                result.getOrNull()!! shouldBe mockTrendingEntityList.toDomainModelList()
+            }
+
+            "should return failure if network call returns an error" {
+                // 🔴 Given
+                setupRepository()
+                mockNetworkDataSource.apiError = Exception()
+
+                // 🟡 When
+                val result = giphyRepository.reloadTrending(apiMaxEntries = 100)
+
+                // 🟢 Then
+                result.isFailure shouldBe true
+                result.exceptionOrNull()!! shouldBe Exception()
+            }
+
+            "should return failure if database operation throws exception" {
+                // 🔴 Given
+                setupRepository()
+                mockRoomDbDataSource.apiError = Exception()
+
+                // 🟡 When
+                val result = giphyRepository.reloadTrending(apiMaxEntries = 100)
+
+                // 🟢 Then
+                result.isFailure shouldBe true
+                result.exceptionOrNull()!! shouldBe Exception()
+            }
         }
     }
 }

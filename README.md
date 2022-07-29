@@ -129,7 +129,6 @@ This sample App is for demonstrating my coding habit and skills for potential em
 list of things I may further work on, while waiting for my next Android Developer role:
 
 * Fix bitrise build
-* Fix Dao tests
 * Fix sharedTest (now testFixtures) folder
 * UI to be rewritten in Jetpack Compose (Major rework)
 * UI test / Integration tests (on hold due to the Jetpack Compose plan)

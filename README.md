@@ -63,7 +63,7 @@ more production-ready.
 * A dedicated Domain Model was added to separate the Network Data Model
 * Introduced copy image link, and open Giphy page on browser functions
 * Added user customisable API limit
-* Added test cases
+* Added test cases - currently there are 27 unit tests and 7 instrumented tests
 
 ## Requirements
 
@@ -128,5 +128,8 @@ format.
 This sample App is for demonstrating my coding habit and skills for potential employers. Here is a
 list of things I may further work on, while waiting for my next Android Developer role:
 
-* Test cases - switching to kotest, and adding new tests bit by bit
+* Fix bitrise build
+* Fix Dao tests
+* Fix sharedTest (now testFixtures) folder
 * UI to be rewritten in Jetpack Compose (Major rework)
+* UI test / Integration tests (on hold due to the Jetpack Compose plan)

@@ -28,7 +28,7 @@ Previously this App used `RxJava`, but it is now rewritten using `Coroutines` be
 * Kotlin Flow (replacing Live Data)
 * Material 3 with light and dark mode theming
 * [Bitrise](https://app.bitrise.io/) - CI (current)
-* [Travis-CI](https://travis-ci.org/) - CI (previous)
+* [Travis-CI](https://travis-ci.org/) - CI (previously)
 
 ### Major libraries used
 
@@ -128,7 +128,6 @@ format.
 This sample App is for demonstrating my coding habit and skills for potential employers. Here is a
 list of things I may further work on, while waiting for my next Android Developer role:
 
-* Clean up unused API attributes to simplify the network model
 * Fix sharedTest (now testFixtures) folder
 * UI to be rewritten in Jetpack Compose (Major rework)
 * UI test / Integration tests (on hold due to the Jetpack Compose plan)

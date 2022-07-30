@@ -14,8 +14,19 @@ android {
     }
 
     def isRunningOnTravis = System.getenv("CI") == "true"
+    def isRunningOnBitrise = System.getenv("BITRISE") == "true"
 
-    if (isRunningOnTravis) {
+    if (isRunningOnBitrise) {
+        // configure keystore
+        signingConfigs.release.storeFile = file(System.getenv("BITRISEIO_ANDROID_KEYSTORE_URL"))
+        signingConfigs.release.storePassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
+        signingConfigs.release.keyAlias = System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
+        signingConfigs.release.keyPassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+
+        // Extra keys attached in the keystore.properties
+        defaultConfig.buildConfigField 'String', 'GIPHY_API_KEY', System.getenv("giphyApiKey")
+
+    } else if (isRunningOnTravis) {
         // configure keystore
         signingConfigs.release.storeFile = file("../secure.keystore")
         signingConfigs.release.storePassword = System.getenv("storePass")

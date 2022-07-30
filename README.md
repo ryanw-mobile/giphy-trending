@@ -128,7 +128,7 @@ format.
 This sample App is for demonstrating my coding habit and skills for potential employers. Here is a
 list of things I may further work on, while waiting for my next Android Developer role:
 
-* Fix bitrise build
+* Clean up unused API attributes to simplify the network model
 * Fix sharedTest (now testFixtures) folder
 * UI to be rewritten in Jetpack Compose (Major rework)
 * UI test / Integration tests (on hold due to the Jetpack Compose plan)

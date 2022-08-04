@@ -7,7 +7,9 @@ import androidx.datastore.preferences.preferencesDataStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import uk.ryanwong.giphytrending.data.source.preferences.PreferencesDataStoreWrapper
 import uk.ryanwong.giphytrending.data.source.preferences.PreferencesDataStoreWrapperImpl
@@ -20,10 +22,10 @@ val Context.userDataStore: DataStore<Preferences> by preferencesDataStore(
 )
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 object PreferencesDataStoreWrapperModule {
 
-    @Singleton
+    @ViewModelScoped
     @Provides
     fun provideDataStorePreferences(
         @ApplicationContext applicationContext: Context
@@ -31,7 +33,7 @@ object PreferencesDataStoreWrapperModule {
         return applicationContext.userDataStore
     }
 
-    @Singleton
+    @ViewModelScoped
     @Provides
     fun providePreferenceDataStoreWrapper(
         dataStorePreferences: DataStore<Preferences>

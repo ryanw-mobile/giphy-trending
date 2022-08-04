@@ -3,6 +3,8 @@ package uk.ryanwong.giphytrending.data.di
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import uk.ryanwong.giphytrending.data.repository.UserPreferencesRepository
@@ -12,9 +14,9 @@ import uk.ryanwong.giphytrending.di.IoDispatcher
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 object UserPreferencesRepositoryModule {
-    @Singleton
+    @ViewModelScoped
     @Provides
     fun provideUserPreferencesRepository(
         preferencesDataStoreWrapper: PreferencesDataStoreWrapper,

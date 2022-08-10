@@ -15,7 +15,7 @@ import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
 
 
 @ExperimentalCoroutinesApi
-class TrendingViewModelTest : FreeSpec() {
+internal class TrendingViewModelTest : FreeSpec() {
 
     lateinit var trendingViewModel: TrendingViewModel
     lateinit var mockGiphyRepository: MockGiphyRepository

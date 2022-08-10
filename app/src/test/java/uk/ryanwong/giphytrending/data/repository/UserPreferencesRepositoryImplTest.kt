@@ -9,7 +9,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import uk.ryanwong.giphytrending.data.source.preferences.MockPreferencesDataStoreWrapper
 
 @ExperimentalCoroutinesApi
-class UserPreferencesRepositoryImplTest : FreeSpec() {
+internal class UserPreferencesRepositoryImplTest : FreeSpec() {
 
     private lateinit var userPreferencesRepository: UserPreferencesRepository
     private lateinit var dispatcher: TestDispatcher

@@ -10,7 +10,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import uk.ryanwong.giphytrending.data.repository.MockUserPreferencesRepository
 
 @ExperimentalCoroutinesApi
-class SettingsViewModelTest : FreeSpec() {
+internal class SettingsViewModelTest : FreeSpec() {
 
     lateinit var settingsViewModel: SettingsViewModel
     lateinit var mockUserPreferencesRepository: MockUserPreferencesRepository

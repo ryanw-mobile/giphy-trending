@@ -13,7 +13,7 @@ import uk.ryanwong.giphytrending.data.source.network.NetworkDataSource
 import java.util.Date
 
 @ExperimentalCoroutinesApi
-class GiphyRepositoryImplTest : FreeSpec() {
+internal class GiphyRepositoryImplTest : FreeSpec() {
 
     private lateinit var giphyRepository: GiphyRepository
     private lateinit var dispatcher: TestDispatcher

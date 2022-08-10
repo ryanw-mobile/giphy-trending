@@ -8,7 +8,7 @@ import uk.ryanwong.giphytrending.data.source.network.model.TrendingData
 import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
 import java.util.Date
 
-object TrendingMapperKtTestData {
+internal object TrendingMapperKtTestData {
 
     val mockTrendingData1 by lazy {
         TrendingData(

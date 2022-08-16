@@ -67,8 +67,8 @@ class SettingsFragment : Fragment() {
     }
 
     private fun observeStateFlow() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 settingsViewModel.settingsUIState.collect { settingsUIState ->
                     uiState = settingsUIState
                     if (settingsUIState is SettingsUIState.Error) {
@@ -78,8 +78,8 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 settingsViewModel.apiMaxEntriesProgress.collect { progress ->
                     Timber.v("Update progress bar value from live data: $progress")
                     binding.seekbarApimax.progress = progress

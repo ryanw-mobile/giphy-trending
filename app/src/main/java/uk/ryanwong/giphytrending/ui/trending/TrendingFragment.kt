@@ -112,8 +112,8 @@ class TrendingFragment : Fragment() {
     }
 
     private fun observeStateFlow() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 trendingViewModel.trendingUIState.collect { trendingUIState ->
                     uiState = trendingUIState
                     when {
@@ -135,8 +135,8 @@ class TrendingFragment : Fragment() {
             }
         }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 trendingViewModel.trendingList.collect { trendingList ->
                     trendingViewModel.saveListState(binding.recyclerView.layoutManager?.onSaveInstanceState())
                     giphyImageItemAdapter.submitList(trendingList)

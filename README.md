@@ -1,4 +1,4 @@
-# giphy-trending - Sample Android App for skills demonstration [![Build Status](https://app.bitrise.io/app/776d0675599c4019/status.svg?token=hA6BlwSQNIgkJZy1CnaW9A&branch=master)](https://app.bitrise.io/app/776d0675599c4019)
+# giphy-trending - Sample Android App for skills demonstration [![Build Status](https://app.bitrise.io/app/776d0675599c4019/status.svg?token=hA6BlwSQNIgkJZy1CnaW9A&branch=master)](https://app.bitrise.io/app/776d0675599c4019) [![codecov](https://codecov.io/gh/ryanwong-uk/giphy-trending/branch/master/graph/badge.svg?token=J8PHIH3OPU)](https://codecov.io/gh/ryanwong-uk/giphy-trending)
 
 This is a sample app based on
 the [walk through](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)

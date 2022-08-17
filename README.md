@@ -27,8 +27,6 @@ Previously this App used `RxJava`, but it is now rewritten using `Coroutines` be
 * [`Jetpack Databinding`](https://developer.android.com/jetpack/androidx/releases/databinding)
 * Kotlin Flow (replacing Live Data)
 * Material 3 with light and dark mode theming
-* [Bitrise](https://app.bitrise.io/) - CI (current)
-* [Travis-CI](https://travis-ci.org/) - CI (previously)
 
 ### Major libraries used
 
@@ -48,6 +46,10 @@ Previously this App used `RxJava`, but it is now rewritten using `Coroutines` be
 * [`LeakCanary`](https://github.com/square/leakcanary) - Memory leak detection
 * [`JUnit 4`](https://github.com/junit-team/junit4) - Tests
 * [`kotest`](https://kotest.io/) - Tests
+* [Kover](https://github.com/Kotlin/kotlinx-kover) - code coverage
+* [codecov](https://codecov.io/) - code coverage
+* [Bitrise](https://app.bitrise.io/) - CI (current)
+* [Travis-CI](https://travis-ci.org/) - CI (previously)
 
 ## Improvements:
 

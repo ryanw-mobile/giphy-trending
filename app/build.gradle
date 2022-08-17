@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs'
     id 'dagger.hilt.android.plugin'
+    id("org.jetbrains.kotlinx.kover") version "0.5.1"
 }
 
 android {
@@ -232,7 +233,54 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     debugImplementation 'androidx.fragment:fragment-testing:1.5.0'
+
     // For instrumented tests - with Kotlin
     androidTestImplementation "com.google.dagger:hilt-android-testing:2.42"
     androidTestImplementation 'androidx.test:rules:1.4.0'
+}
+
+tasks.koverMergedHtmlReport {
+    excludes = [
+            "uk.ryanwong.giphytrending.data.di.*",
+            "uk.ryanwong.giphytrending.di.*",
+            "uk.ryanwong.giphytrending.data.source.di.*",
+            "uk.ryanwong.giphytrending.databinding.*",
+            "androidx.*",
+            "com.bumptech.glide.*",
+            "dagger.hilt.internal.aggregatedroot.codegen.*",
+            "hilt_aggregated_deps.*",
+            "uk.ryanwong.giphytrending.*.*MembersInjector",
+            "uk.ryanwong.giphytrending.*.*Factory",
+            "uk.ryanwong.giphytrending.*.*HiltModules*",
+            "uk.ryanwong.giphytrending.data.source.local.*_Impl*",
+            "uk.ryanwong.giphytrending.data.source.local.*Impl_Factory",
+            "uk.ryanwong.giphytrending.DataBind*",
+            "uk.ryanwong.giphytrending.BR",
+            "uk.ryanwong.giphytrending.BuildConfig",
+            "uk.ryanwong.giphytrending.Hilt*",
+            "uk.ryanwong.giphytrending.*.Hilt_*"
+    ]
+}
+
+tasks.koverMergedXmlReport {
+    excludes = [
+            "uk.ryanwong.giphytrending.data.di.*",
+            "uk.ryanwong.giphytrending.di.*",
+            "uk.ryanwong.giphytrending.data.source.di.*",
+            "uk.ryanwong.giphytrending.databinding.*",
+            "androidx.*",
+            "com.bumptech.glide.*",
+            "dagger.hilt.internal.aggregatedroot.codegen.*",
+            "hilt_aggregated_deps.*",
+            "uk.ryanwong.giphytrending.*.*MembersInjector",
+            "uk.ryanwong.giphytrending.*.*Factory",
+            "uk.ryanwong.giphytrending.*.*HiltModules*",
+            "uk.ryanwong.giphytrending.data.source.local.*_Impl*",
+            "uk.ryanwong.giphytrending.data.source.local.*Impl_Factory",
+            "uk.ryanwong.giphytrending.DataBind*",
+            "uk.ryanwong.giphytrending.BR",
+            "uk.ryanwong.giphytrending.BuildConfig",
+            "uk.ryanwong.giphytrending.Hilt*",
+            "uk.ryanwong.giphytrending.*.Hilt_*"
+    ]
 }

@@ -86,6 +86,11 @@ android {
                 }
             }
         }
+        benchmark {
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['release']
+            debuggable false
+        }
 
         release {
             shrinkResources true

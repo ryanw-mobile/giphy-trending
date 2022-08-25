@@ -57,7 +57,7 @@ class SettingsFragment : Fragment() {
         })
     }
 
-    
+
     override fun onResume() {
         super.onResume()
         settingsViewModel.getApiMax()

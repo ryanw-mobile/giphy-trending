@@ -45,11 +45,6 @@ class TrendingFragment : Fragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        observeStateFlow()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,6 +52,7 @@ class TrendingFragment : Fragment() {
     ): View {
         _binding = FragmentTrendingBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
+        observeStateFlow()
         return binding.root
     }
 

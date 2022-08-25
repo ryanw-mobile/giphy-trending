@@ -33,6 +33,7 @@ class SettingsFragment : Fragment() {
     ): View {
         binding = FragmentSettingsBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
+        observeStateFlow()
         return binding.root
     }
 
@@ -56,11 +57,7 @@ class SettingsFragment : Fragment() {
         })
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        observeStateFlow()
-    }
-
+    
     override fun onResume() {
         super.onResume()
         settingsViewModel.getApiMax()

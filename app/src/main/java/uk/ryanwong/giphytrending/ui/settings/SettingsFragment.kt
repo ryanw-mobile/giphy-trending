@@ -41,22 +41,21 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.seekbarApimax.setOnSeekBarChangeListener(object :
-            OnSeekBarChangeListener {
-            override fun onProgressChanged(seek: SeekBar, progress: Int, fromUser: Boolean) {
-                // Only text label updated, but not committed to user preferences yet
-                binding.seekbarTextlabel.text =
-                    settingsViewModel.translateMaxApiEntries(seek.progress)
-            }
+                OnSeekBarChangeListener {
+                override fun onProgressChanged(seek: SeekBar, progress: Int, fromUser: Boolean) {
+                    // Only text label updated, but not committed to user preferences yet
+                    binding.seekbarTextlabel.text =
+                        settingsViewModel.translateMaxApiEntries(seek.progress)
+                }
 
-            override fun onStartTrackingTouch(seek: SeekBar) {}
+                override fun onStartTrackingTouch(seek: SeekBar) {}
 
-            override fun onStopTrackingTouch(seek: SeekBar) {
-                Timber.v("final seekbar progress = $seek.progress")
-                settingsViewModel.setApiMax(seek.progress)
-            }
-        })
+                override fun onStopTrackingTouch(seek: SeekBar) {
+                    Timber.v("final seekbar progress = $seek.progress")
+                    settingsViewModel.setApiMax(seek.progress)
+                }
+            })
     }
-
 
     override fun onResume() {
         super.onResume()

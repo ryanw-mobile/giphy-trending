@@ -1,7 +1,7 @@
 package uk.ryanwong.giphytrending.data.source.local
 
 import androidx.room.TypeConverter
-import java.util.*
+import java.util.Date
 
 class Converters {
     // Moshi has set to convert UTC strings to Date objects,

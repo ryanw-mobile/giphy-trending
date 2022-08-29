@@ -13,7 +13,6 @@ import uk.ryanwong.giphytrending.data.repository.MockGiphyRepository
 import uk.ryanwong.giphytrending.data.repository.MockUserPreferencesRepository
 import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
 
-
 @ExperimentalCoroutinesApi
 internal class TrendingViewModelTest : FreeSpec() {
 

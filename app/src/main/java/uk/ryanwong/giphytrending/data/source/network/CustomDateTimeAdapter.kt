@@ -1,9 +1,14 @@
 package uk.ryanwong.giphytrending.data.source.network
 
-import com.squareup.moshi.*
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonQualifier
+import com.squareup.moshi.JsonReader
+import com.squareup.moshi.JsonWriter
+import com.squareup.moshi.Moshi
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 /**
 formats: yyyy-MM-dd, yyyy-MM-dd HH:mm:ss, HH:mm:ss etc

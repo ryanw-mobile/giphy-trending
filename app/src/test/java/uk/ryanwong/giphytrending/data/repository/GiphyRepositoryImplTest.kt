@@ -9,7 +9,6 @@ import uk.ryanwong.giphytrending.data.source.local.MockRoomDbDataSource
 import uk.ryanwong.giphytrending.data.source.local.TrendingEntity
 import uk.ryanwong.giphytrending.data.source.local.toDomainModelList
 import uk.ryanwong.giphytrending.data.source.network.MockNetworkDataSource
-import uk.ryanwong.giphytrending.data.source.network.NetworkDataSource
 import java.util.Date
 
 @ExperimentalCoroutinesApi

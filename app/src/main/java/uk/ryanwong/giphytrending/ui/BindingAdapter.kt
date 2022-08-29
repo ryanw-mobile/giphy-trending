@@ -13,7 +13,6 @@ import androidx.databinding.BindingAdapter
 import com.google.android.material.snackbar.Snackbar
 import uk.ryanwong.giphytrending.R
 
-
 @BindingAdapter("imageUrl")
 fun setImageUrl(imageView: ImageView, src: String?) {
     src?.let {
@@ -63,7 +62,7 @@ fun setClipboardClickable(view: View, src: String?) {
                     )
                     val layoutParams =
                         (snackbar.view.layoutParams as CoordinatorLayout.LayoutParams).apply {
-                            anchorId = R.id.nav_view //Id for your bottomNavBar or TabLayout
+                            anchorId = R.id.nav_view // Id for your bottomNavBar or TabLayout
                             anchorGravity = Gravity.TOP
                             gravity = Gravity.TOP
                         }
@@ -76,7 +75,7 @@ fun setClipboardClickable(view: View, src: String?) {
                 )
                 val layoutParams =
                     (snackbar.view.layoutParams as CoordinatorLayout.LayoutParams).apply {
-                        anchorId = R.id.nav_view //Id for your bottomNavBar or TabLayout
+                        anchorId = R.id.nav_view // Id for your bottomNavBar or TabLayout
                         anchorGravity = Gravity.TOP
                         gravity = Gravity.TOP
                     }

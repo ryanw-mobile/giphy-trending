@@ -144,5 +144,4 @@ private object TrendingDiffCallback : DiffUtil.ItemCallback<GiphyImageItemDomain
     ): Boolean {
         return oldItem == newItem
     }
-
 }

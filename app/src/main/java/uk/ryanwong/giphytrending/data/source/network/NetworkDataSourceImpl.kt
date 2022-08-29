@@ -19,5 +19,4 @@ class NetworkDataSourceImpl @Inject constructor(
             BuildConfig.API_RATING
         )
     }
-
 }

@@ -119,8 +119,8 @@ class TrendingFragment : Fragment() {
                                 animateDown()
                             }
                         }
-                        trendingUIState !is TrendingUIState.Loading
-                                && binding.loadingBar.visibility == View.VISIBLE -> {
+                        trendingUIState !is TrendingUIState.Loading &&
+                            binding.loadingBar.visibility == View.VISIBLE -> {
                             binding.loadingBar.animateUp()
                         }
                         trendingUIState is TrendingUIState.Error -> {

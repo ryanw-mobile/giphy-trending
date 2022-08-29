@@ -10,10 +10,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
-import dagger.hilt.components.SingletonComponent
 import uk.ryanwong.giphytrending.data.source.preferences.PreferencesDataStoreWrapper
 import uk.ryanwong.giphytrending.data.source.preferences.PreferencesDataStoreWrapperImpl
-import javax.inject.Singleton
 
 private const val USER_PREFERENCES_NAME = "user_preferences"
 

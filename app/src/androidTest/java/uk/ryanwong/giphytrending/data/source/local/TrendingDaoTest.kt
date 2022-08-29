@@ -27,7 +27,7 @@ class TrendingDaoTest {
     fun init() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         giphyDatabase = Room.inMemoryDatabaseBuilder(context, GiphyDatabase::class.java)
-            .allowMainThreadQueries() //only for testing
+            .allowMainThreadQueries() // only for testing
             .build()
 
         trendingDao = giphyDatabase.trendingDao()

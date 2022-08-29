@@ -54,7 +54,6 @@ internal class SettingsViewModelTest : FreeSpec() {
             }
         }
 
-
         "getApiMax" - {
             "should set settingsUIState = ready if repository returns success" {
                 // 🔴 Given

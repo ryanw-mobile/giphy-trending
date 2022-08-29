@@ -8,10 +8,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
-import dagger.hilt.components.SingletonComponent
 import uk.ryanwong.giphytrending.BuildConfig
 import uk.ryanwong.giphytrending.data.source.local.GiphyDatabase
-import javax.inject.Singleton
 
 @Module
 @InstallIn(ViewModelComponent::class)

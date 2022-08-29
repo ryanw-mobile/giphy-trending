@@ -18,5 +18,4 @@ class GiphyApplication : Application() {
             plant(Timber.DebugTree())
         }
     }
-
 }

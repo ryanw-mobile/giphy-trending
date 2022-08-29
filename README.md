@@ -7,18 +7,22 @@ by Fahri Can. As I worked on the project, the App now has most of the code rewri
 ![Screenshot1](screenshots/screen0.png) ![Screenshot2](screenshots/screen1.png)
 ![Screenshot3](screenshots/screen2.png) ![Screenshot4](screenshots/screen3.png)
 
-First created in Nov 2021, looking at what I have done now, I found the quality of this App unacceptable, so I have updated again in Jul 2022.
+First created in Nov 2021, looking at what I have done now, I found the quality of this App
+unacceptable, so I have updated again in Jul 2022.
 
 ## Skills covered:
 
 The Android Development world is currently experiencing a shift of technology stack. Besides
 migrating from Java to Kotlin, we have a choice of Coroutines over RxJava, Hilt over Dagger, and
-JetPack Compose over the traditional XML View layouts. LiveData got replaced by Kotlin Flow quickly this year.
+JetPack Compose over the traditional XML View layouts. LiveData got replaced by Kotlin Flow quickly
+this year.
 
-This Sample App is for demonstrating the traditional approach which applies XML UI, `Kotlin Coroutines`, `Kotlin Flow`, 
-`Dagger Hilt`, `PreferencesDataStore`. 
+This Sample App is for demonstrating the traditional approach which applies XML
+UI, `Kotlin Coroutines`, `Kotlin Flow`,
+`Dagger Hilt`, `PreferencesDataStore`.
 
-Previously this App used `RxJava`, but it is now rewritten using `Coroutines` because it is much more simpler.
+Previously this App used `RxJava`, but it is now rewritten using `Coroutines` because it is much
+more simpler.
 
 ### High level architecture
 
@@ -34,7 +38,7 @@ Previously this App used `RxJava`, but it is now rewritten using `Coroutines` be
 * [`Jetpack Navigation`](https://developer.android.com/jetpack/androidx/releases/navigation)
 * [`Jetpack Lifecycle`](https://developer.android.com/jetpack/androidx/releases/lifecycle)
 * [`Jetpack PreferencesDataStore`](https://developer.android.com/jetpack/androidx/releases/datastore)
-* [`Kotlin Coroutines`](https://github.com/Kotlin/kotlinx.coroutines) 
+* [`Kotlin Coroutines`](https://github.com/Kotlin/kotlinx.coroutines)
 * [`Kotlin Flow`](https://kotlinlang.org/docs/flow.html)
 * [`Jetpack Room`](https://developer.android.com/jetpack/androidx/releases/room) - Database
 * [`Retrofit2`](https://square.github.io/retrofit/)
@@ -50,6 +54,8 @@ Previously this App used `RxJava`, but it is now rewritten using `Coroutines` be
 * [codecov](https://codecov.io/) - code coverage
 * [Bitrise](https://app.bitrise.io/) - CI (current)
 * [Travis-CI](https://travis-ci.org/) - CI (previously)
+* [Ktlint Gradle](https://github.com/jlleitschuh/ktlint-gradle) - ktlint plugin to check and apply
+  code autoformat
 
 ## Improvements:
 
@@ -133,4 +139,5 @@ list of things I may further work on, while waiting for my next Android Develope
 * Fix sharedTest (now testFixtures) folder
 * UI to be rewritten in Jetpack Compose (Major rework)
 * UI test / Integration tests (on hold due to the Jetpack Compose plan)
-* Paging - I argued with Greg previously, but finally I agreed that this should be a standard setting for a mid/large size App.
+* Paging - I argued with Greg previously, but finally I agreed that this should be a standard
+  setting for a mid/large size App.

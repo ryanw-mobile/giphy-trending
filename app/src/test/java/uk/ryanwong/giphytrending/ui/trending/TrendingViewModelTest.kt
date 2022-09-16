@@ -23,7 +23,7 @@ internal class TrendingViewModelTest : FreeSpec() {
 
     private class MockParcelable : Parcelable {
         override fun describeContents(): Int = 1
-        override fun writeToParcel(p0: Parcel?, p1: Int) {}
+        override fun writeToParcel(p0: Parcel, p1: Int) {}
     }
 
     private val mockGiphyImageItemDomainModelList = listOf(

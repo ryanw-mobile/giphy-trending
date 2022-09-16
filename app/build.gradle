@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     signingConfigs {
         release
@@ -156,31 +156,31 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-splashscreen:1.0.0-rc01'
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
-    implementation 'com.google.android.material:material:1.7.0-alpha03'
+    implementation 'androidx.core:core-splashscreen:1.0.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.8.0-alpha01'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.10'
 
     def retrofit_version = '2.9.0'
-    def room_version = '2.4.2'
+    def room_version = '2.4.3'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 
     // Android Lifecycle Extensions
-    def lifecycle_version = '2.5.0'
+    def lifecycle_version = '2.5.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation "androidx.activity:activity-ktx:1.5.0"
+    implementation 'androidx.activity:activity-ktx:1.5.1'
     kapt "android.arch.lifecycle:common-java8:1.1.1"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
     // Navigation
     def navigation_version = "2.3.5"
-    implementation "androidx.navigation:navigation-fragment-ktx:2.5.0"
-    implementation "androidx.navigation:navigation-ui-ktx:2.5.0"
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.2'
 
     // Glide for Images
     implementation 'com.github.bumptech.glide:glide:4.13.2'
@@ -193,14 +193,14 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.7'
 
     // Moshi
-    def moshi_version = '1.13.0'
+    def moshi_version = '1.14.0'
     implementation "com.squareup.moshi:moshi:$moshi_version"
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
     implementation "com.squareup.moshi:moshi-adapters:$moshi_version"
 
     // Dagger Hilt
-    implementation 'com.google.dagger:hilt-android:2.43'
-    kapt 'com.google.dagger:hilt-compiler:2.43'
+    implementation 'com.google.dagger:hilt-android:2.43.2'
+    kapt 'com.google.dagger:hilt-compiler:2.43.2'
 
     // Room 2
     implementation "androidx.room:room-runtime:$room_version"
@@ -223,25 +223,25 @@ dependencies {
 
     // testing
     testImplementation 'junit:junit:4.13.2'
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.0"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
     testImplementation "androidx.test:core-ktx:1.4.0"
     testImplementation "androidx.test.ext:junit-ktx:1.1.3"
     testImplementation "androidx.arch.core:core-testing:2.1.0"
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
 
     // kotest
-    testImplementation "io.kotest:kotest-runner-junit5:5.3.1"
-    testImplementation "io.kotest:kotest-assertions-core:5.3.1"
-    testImplementation "io.kotest:kotest-property:5.3.1"
+    testImplementation 'io.kotest:kotest-runner-junit5:5.4.2'
+    testImplementation 'io.kotest:kotest-assertions-core:5.4.2'
+    testImplementation 'io.kotest:kotest-property:5.4.2'
 
-    androidTestImplementation "io.kotest:kotest-assertions-core:5.3.1"
+    androidTestImplementation 'io.kotest:kotest-assertions-core:5.4.2'
     androidTestImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    debugImplementation 'androidx.fragment:fragment-testing:1.5.0'
+    debugImplementation 'androidx.fragment:fragment-testing:1.5.2'
 
     // For instrumented tests - with Kotlin
-    androidTestImplementation "com.google.dagger:hilt-android-testing:2.42"
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.43.2'
     androidTestImplementation 'androidx.test:rules:1.4.0'
 }
 

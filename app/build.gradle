@@ -172,7 +172,7 @@ dependencies {
     // Android Lifecycle Extensions
     def lifecycle_version = '2.5.1'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.activity:activity-ktx:1.5.1'
+    implementation 'androidx.activity:activity-ktx:1.6.1'
     kapt "android.arch.lifecycle:common-java8:1.1.1"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"

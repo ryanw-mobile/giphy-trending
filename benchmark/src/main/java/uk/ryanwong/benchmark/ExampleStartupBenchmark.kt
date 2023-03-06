@@ -1,12 +1,7 @@
 package uk.ryanwong.benchmark
 
-import androidx.benchmark.macro.AudioUnderrunMetric
-import androidx.benchmark.macro.CompilationMode
-import androidx.benchmark.macro.FrameTimingGfxInfoMetric
-import androidx.benchmark.macro.FrameTimingMetric
 import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.StartupTimingMetric
-import androidx.benchmark.macro.TraceSectionMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule

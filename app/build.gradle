@@ -115,11 +115,11 @@ android {
         dataBinding true
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility 11
+        targetCompatibility 11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '11'
         freeCompilerArgs += [
                 "-Xjvm-default=all",
         ]
@@ -163,7 +163,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.7.10'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.8.10'
 
     def retrofit_version = '2.9.0'
     def room_version = '2.5.0'

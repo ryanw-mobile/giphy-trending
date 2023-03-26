@@ -38,7 +38,6 @@ android {
         defaultConfig.buildConfigField(
             "String", "GIPHY_API_KEY", "${System.getenv("giphyApiKey")}"
         )
-
     } else if (isRunningOnTravis) {
         // configure keystore
         signingConfigs.getByName("release").apply {

@@ -5,22 +5,16 @@ plugins {
 
 android {
     namespace = "uk.ryanwong.benchmark"
-
-    compileSdkVersion(33)
+    compileSdk = 33
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    kotlinOptions {
-        jvmTarget = "11"
-        freeCompilerArgs = listOf("-Xjvm-default=all")
-    }
-
     defaultConfig {
-        minSdkVersion(23)
-        targetSdkVersion(32)
+        minSdk = 28
+        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -34,14 +28,19 @@ android {
     }
 
     targetProjectPath = ":app"
+    buildToolsVersion = "33.0.0"
     experimentalProperties["android.experimental.self-instrumenting"] = true
+}
+
+kotlin {
+    jvmToolchain(11)
 }
 
 dependencies {
     implementation("androidx.test.ext:junit:1.1.5")
     implementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("androidx.test.uiautomator:uiautomator:2.2.0")
-    implementation("androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha10")
+    implementation("androidx.benchmark:benchmark-macro-junit4:1.2.0-alpha12")
 }
 
 //androidComponents {

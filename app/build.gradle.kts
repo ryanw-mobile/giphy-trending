@@ -15,7 +15,6 @@ import java.util.Properties
 
 android {
     namespace = "uk.ryanwong.giphytrending"
-
     compileSdk = 33
 
     signingConfigs {
@@ -37,7 +36,7 @@ android {
 
         // Extra keys attached in the keystore.properties
         defaultConfig.buildConfigField(
-            "String", "GIPHY_API_KEY", "\"${System.getenv("giphyApiKey")}\""
+            "String", "GIPHY_API_KEY", "${System.getenv("giphyApiKey")}"
         )
 
     } else if (isRunningOnTravis) {
@@ -51,7 +50,7 @@ android {
 
         // Extra keys attached in the keystore.properties
         defaultConfig.buildConfigField(
-            "String", "GIPHY_API_KEY", "\"${System.getenv("giphyApiKey")}\""
+            "String", "GIPHY_API_KEY", "${System.getenv("giphyApiKey")}"
         )
     } else {
         val keyProps = Properties()
@@ -64,14 +63,14 @@ android {
         }
 
         // Extra keys attached in the keystore.properties
-        defaultConfig.buildConfigField("String", "GIPHY_API_KEY", "\"${keyProps["giphyApiKey"]}\"")
+        defaultConfig.buildConfigField("String", "GIPHY_API_KEY", "${keyProps["giphyApiKey"]}")
     }
 
     defaultConfig {
         applicationId = "uk.ryanwong.giphytrending"
-        minSdk = 21
-        targetSdk = 32
-        versionCode = 5
+        minSdk = 28
+        targetSdk = 33
+        versionCode = 6
         versionName = "1.4.0"
 
         resourceConfigurations += setOf("en")
@@ -108,14 +107,16 @@ android {
                     }
             }
         }
-//        getByName("benchmark") {
-//            isDebuggable = false
-//            isMinifyEnabled = true
-//            isShrinkResources = true
-//            matchingFallbacks.add("release")
-//
-//            signingConfig = signingConfigs.getByName("debug")
-//        }
+        create("benchmark") {
+            initWith(getByName("release"))
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks.add("release")
+        }
+
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -155,11 +156,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
-    kotlinOptions {
-        jvmTarget = "11"
-        freeCompilerArgs += listOf("-Xjvm-default=all")
-    }
-
     sourceSets {
         named("test") {
             java.srcDirs("src/testFixtures/java")
@@ -180,6 +176,11 @@ android {
             )
         }
     }
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+    buildToolsVersion = "33.0.0"
 
     testOptions {
         unitTests {
@@ -187,6 +188,10 @@ android {
             isReturnDefaultValues = true
         }
     }
+}
+
+kotlin {
+    jvmToolchain(11)
 }
 
 dependencies {
@@ -201,12 +206,12 @@ dependencies {
     val roomVersion = "2.5.0"
 
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("androidx.recyclerview:recyclerview:1.3.0")
 
     // Android Lifecycle Extensions
-    val lifecycleVersion = "2.5.1"
+    val lifecycleVersion = "2.6.1"
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.activity:activity-ktx:1.6.1")
+    implementation("androidx.activity:activity-ktx:1.7.0")
     kapt("android.arch.lifecycle:common-java8:1.1.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
@@ -217,8 +222,8 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
 
     // Glide for Images
-    implementation("com.github.bumptech.glide:glide:4.15.0")
-    kapt("com.github.bumptech.glide:compiler:4.15.0")
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    kapt("com.github.bumptech.glide:compiler:4.15.1")
 
     // Retrofit 2
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
@@ -237,7 +242,7 @@ dependencies {
     kapt("com.google.dagger:hilt-compiler:2.45")
 
     // Room 2
-    val room_version = "2.5.0"
+    val room_version = "2.5.1"
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
@@ -273,7 +278,7 @@ dependencies {
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    debugImplementation("androidx.fragment:fragment-testing:1.5.5")
+    debugImplementation("androidx.fragment:fragment-testing:1.5.6")
 
     // For instrumented tests - with Kotlin
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.45")

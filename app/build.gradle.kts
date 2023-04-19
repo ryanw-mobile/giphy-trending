@@ -210,7 +210,7 @@ dependencies {
     // Android Lifecycle Extensions
     val lifecycleVersion = "2.6.1"
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.activity:activity-ktx:1.7.0")
+    implementation("androidx.activity:activity-ktx:1.7.1")
     kapt("android.arch.lifecycle:common-java8:1.1.1")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")

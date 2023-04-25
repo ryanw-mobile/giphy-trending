@@ -10,7 +10,7 @@ import java.util.Properties
     id("androidx.navigation.safeargs")
     id("dagger.hilt.android.plugin")
     id("org.jetbrains.kotlinx.kover") version "0.6.1"
-    id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
+    id("org.jlleitschuh.gradle.ktlint") version "11.3.2"
 }
 
 android {

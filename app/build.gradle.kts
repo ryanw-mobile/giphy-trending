@@ -1,10 +1,10 @@
 import java.io.FileInputStream
+import java.io.InputStreamReader
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Properties
 
-@Suppress("DSL_SCOPE_VIOLATION")
-plugins {
+@Suppress("DSL_SCOPE_VIOLATION") plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.devtools.ksp)
@@ -20,39 +20,45 @@ android {
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     signingConfigs {
-        create("release")
-    }
+        create("release") {
+            val isRunningOnBitrise = System.getenv("BITRISE") == "true"
+            val keystorePropertiesFile = file("../../keystore.properties")
 
-    val isRunningOnBitrise = System.getenv("BITRISE") == "true"
+            if (isRunningOnBitrise || !keystorePropertiesFile.exists()) {
+                keyAlias = System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
+                keyPassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+                storeFile = file(System.getenv("HOME") + "/keystores/release.jks")
+                storePassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
 
-    if (isRunningOnBitrise) {
-        // configure keystore
-        // File Downloaderで指定したパス
-        signingConfigs.getByName("release").apply {
-            storeFile = file(System.getenv("HOME") + "/keystores/release.jks")
-            storePassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
-            keyAlias = System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
-            keyPassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+                // Extra keys attached in the keystore.properties
+                defaultConfig.buildConfigField(
+                    "String",
+                    "GIPHY_API_KEY",
+                    System.getenv("giphyApiKey"),
+                )
+
+            } else {
+                val properties = Properties()
+                InputStreamReader(
+                    FileInputStream(keystorePropertiesFile),
+                    Charsets.UTF_8,
+                ).use { reader ->
+                    properties.load(reader)
+                }
+
+                keyAlias = properties.getProperty("alias")
+                keyPassword = properties.getProperty("pass")
+                storeFile = file(properties.getProperty("store"))
+                storePassword = properties.getProperty("storePass")
+
+                // Extra keys attached in the keystore.properties
+                defaultConfig.buildConfigField(
+                    "String",
+                    "GIPHY_API_KEY",
+                    properties.getProperty("giphyApiKey") ?: "\"\"",
+                )
+            }
         }
-
-        // Extra keys attached in the keystore.properties
-        defaultConfig.buildConfigField(
-            "String",
-            "GIPHY_API_KEY",
-            System.getenv("giphyApiKey"),
-        )
-    } else {
-        val keyProps = Properties()
-        keyProps.load(FileInputStream(file("../../keystore.properties")))
-        signingConfigs.getByName("release").apply {
-            storeFile = file(keyProps["store"].toString())
-            keyAlias = keyProps["alias"].toString()
-            storePassword = keyProps["storePass"].toString()
-            keyPassword = keyProps["pass"].toString()
-        }
-
-        // Extra keys attached in the keystore.properties
-        defaultConfig.buildConfigField("String", "GIPHY_API_KEY", "${keyProps["giphyApiKey"]}")
     }
 
     defaultConfig {
@@ -84,7 +90,6 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
 
-            signingConfig = signingConfigs.getByName("release")
             applicationVariants.all {
                 val variant = this
                 variant.outputs.map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }

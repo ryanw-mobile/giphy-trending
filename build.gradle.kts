@@ -4,15 +4,16 @@ buildscript {
         google()
         mavenCentral()
     }
-    dependencies {
-        classpath("com.android.tools.build:gradle:8.0.0-beta05")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
-        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.5.3")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.45")
+}
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle.kts files
-    }
+plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.hilt.android.plugin) apply false
+    alias(libs.plugins.devtools.ksp) apply false
+    alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.androidx.navigation.safeargs)apply false
 }
 
 tasks.register("clean", Delete::class) {

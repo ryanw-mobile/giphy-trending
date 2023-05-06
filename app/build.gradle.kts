@@ -23,7 +23,6 @@ android {
         create("release")
     }
 
-    val isRunningOnTravis = System.getenv("CI") == "true"
     val isRunningOnBitrise = System.getenv("BITRISE") == "true"
 
     if (isRunningOnBitrise) {
@@ -34,21 +33,6 @@ android {
             storePassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
             keyAlias = System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
             keyPassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
-        }
-
-        // Extra keys attached in the keystore.properties
-        defaultConfig.buildConfigField(
-            "String",
-            "GIPHY_API_KEY",
-            System.getenv("giphyApiKey"),
-        )
-    } else if (isRunningOnTravis) {
-        // configure keystore
-        signingConfigs.getByName("release").apply {
-            storeFile = file("../secure.keystore")
-            storePassword = System.getenv("storePass")
-            keyAlias = System.getenv("alias")
-            keyPassword = System.getenv("pass")
         }
 
         // Extra keys attached in the keystore.properties

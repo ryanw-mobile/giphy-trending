@@ -12,7 +12,7 @@ fun View.animateDown() {
         0F,
         0F,
         -1 * this.getHeight().toFloat(),
-        0F
+        0F,
     ).apply {
         duration = 1000
         fillAfter = true
@@ -25,21 +25,23 @@ fun View.animateUp() {
         0F,
         0F,
         0F,
-        -1 * this.getHeight().toFloat()
+        -1 * this.getHeight().toFloat(),
     ).apply {
         duration = 500
         fillAfter = true
-        setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(p0: Animation?) {
-            }
+        setAnimationListener(
+            object : Animation.AnimationListener {
+                override fun onAnimationStart(p0: Animation?) {
+                }
 
-            override fun onAnimationEnd(p0: Animation?) {
-                this@animateUp.visibility = View.GONE
-            }
+                override fun onAnimationEnd(p0: Animation?) {
+                    this@animateUp.visibility = View.GONE
+                }
 
-            override fun onAnimationRepeat(p0: Animation?) {
-            }
-        })
+                override fun onAnimationRepeat(p0: Animation?) {
+                }
+            },
+        )
     }
     startAnimation(animate)
 }
@@ -50,8 +52,8 @@ fun RecyclerView.setupRecyclerView(): RecyclerView {
     addItemDecoration(
         DividerItemDecoration(
             context,
-            DividerItemDecoration.VERTICAL
-        )
+            DividerItemDecoration.VERTICAL,
+        ),
     )
     return this
 }

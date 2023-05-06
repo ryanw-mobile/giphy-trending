@@ -15,7 +15,7 @@ import javax.inject.Inject
 private const val KEY_API_MAX_ENTRIES = "api_max_entries"
 
 class PreferencesDataStoreWrapperImpl @Inject constructor(
-    private val dataStorePreferences: DataStore<Preferences>
+    private val dataStorePreferences: DataStore<Preferences>,
 ) : PreferencesDataStoreWrapper {
     private val API_MAX_ENTRIES = intPreferencesKey(KEY_API_MAX_ENTRIES)
 

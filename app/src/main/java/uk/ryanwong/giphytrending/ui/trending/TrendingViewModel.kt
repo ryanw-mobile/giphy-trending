@@ -20,7 +20,7 @@ import javax.inject.Inject
 class TrendingViewModel @Inject constructor(
     private val giphyRepository: GiphyRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
-    @MainDispatcher private val dispatcher: CoroutineDispatcher
+    @MainDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _trendingUIState: MutableStateFlow<TrendingUIState> =

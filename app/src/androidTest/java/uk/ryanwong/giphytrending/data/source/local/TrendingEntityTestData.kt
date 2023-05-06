@@ -13,7 +13,7 @@ object TrendingEntityTestData {
             type = "gif",
             username = "studiosoriginals",
             trendingDateTime = Date(1636679711000),
-            importDateTime = Date(1635978358000)
+            importDateTime = Date(1635978358000),
         )
     }
 
@@ -27,7 +27,7 @@ object TrendingEntityTestData {
             type = "gif",
             username = "creative-courage",
             trendingDateTime = Date(-62170156725000),
-            importDateTime = Date(1605041010000)
+            importDateTime = Date(1605041010000),
         )
     }
     val case2Modified by lazy {
@@ -40,7 +40,7 @@ object TrendingEntityTestData {
             type = "gif",
             username = "toferra",
             trendingDateTime = Date(1487871000000),
-            importDateTime = Date(1487870240000)
+            importDateTime = Date(1487870240000),
         )
     }
 
@@ -54,7 +54,7 @@ object TrendingEntityTestData {
             type = "gif",
             username = "studiosoriginals",
             trendingDateTime = Date(1636678809000),
-            importDateTime = Date(1636417528000)
+            importDateTime = Date(1636417528000),
         )
     }
 
@@ -68,7 +68,7 @@ object TrendingEntityTestData {
             type = "gif",
             username = "mumbaiindians",
             trendingDateTime = Date(-62170156725000),
-            importDateTime = Date(1581493566000)
+            importDateTime = Date(1581493566000),
         )
     }
 
@@ -82,7 +82,7 @@ object TrendingEntityTestData {
             type = "gif",
             username = "editingandlayout",
             trendingDateTime = Date(1621233914000),
-            importDateTime = Date(1410285308000)
+            importDateTime = Date(1410285308000),
         )
     }
 
@@ -96,7 +96,7 @@ object TrendingEntityTestData {
             type = "gif",
             username = "toferra",
             trendingDateTime = Date(1487871000000),
-            importDateTime = Date(1487870240000)
+            importDateTime = Date(1487870240000),
         )
     }
 }

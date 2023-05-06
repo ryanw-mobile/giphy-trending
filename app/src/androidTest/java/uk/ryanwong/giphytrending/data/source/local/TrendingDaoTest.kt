@@ -58,7 +58,7 @@ class TrendingDaoTest {
             val testTrendingList = listOf(
                 TrendingEntityTestData.case2,
                 TrendingEntityTestData.case3,
-                TrendingEntityTestData.case4
+                TrendingEntityTestData.case4,
             )
             trendingDao.insertAllData(testTrendingList)
 
@@ -75,7 +75,7 @@ class TrendingDaoTest {
             val testTrendingList = listOf(
                 TrendingEntityTestData.case1,
                 TrendingEntityTestData.case2,
-                TrendingEntityTestData.case3
+                TrendingEntityTestData.case3,
             )
             trendingDao.insertAllData(testTrendingList)
             trendingDao.queryData() shouldHaveSize 3
@@ -101,7 +101,7 @@ class TrendingDaoTest {
             val testTrendingList = listOf(
                 TrendingEntityTestData.case1,
                 TrendingEntityTestData.case2,
-                TrendingEntityTestData.case3
+                TrendingEntityTestData.case3,
             )
             trendingDao.insertAllData(testTrendingList)
             trendingDao.queryData() shouldHaveSize 3
@@ -124,7 +124,7 @@ class TrendingDaoTest {
             val testTrendingList = listOf(
                 TrendingEntityTestData.case1,
                 TrendingEntityTestData.case2,
-                TrendingEntityTestData.case3
+                TrendingEntityTestData.case3,
             )
             trendingDao.insertAllData(testTrendingList)
             val initialList = trendingDao.queryData()
@@ -152,7 +152,7 @@ class TrendingDaoTest {
             val testTrendingList = listOf(
                 TrendingEntityTestData.case1,
                 TrendingEntityTestData.case2,
-                TrendingEntityTestData.case3
+                TrendingEntityTestData.case3,
             )
             trendingDao.insertAllData(testTrendingList)
             trendingDao.markDirty()
@@ -177,7 +177,7 @@ class TrendingDaoTest {
             val testTrendingList = listOf(
                 TrendingEntityTestData.case1,
                 TrendingEntityTestData.case2,
-                TrendingEntityTestData.case3
+                TrendingEntityTestData.case3,
             )
             trendingDao.insertAllData(testTrendingList)
             trendingDao.markDirty()

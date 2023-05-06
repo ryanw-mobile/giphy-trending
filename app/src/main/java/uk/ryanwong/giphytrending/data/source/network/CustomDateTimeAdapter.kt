@@ -34,9 +34,8 @@ class CustomDateTimeAdapter(private val format: String) : JsonAdapter<Date?>() {
         override fun create(
             type: Type,
             annotations: MutableSet<out Annotation>,
-            moshi: Moshi
+            moshi: Moshi,
         ): JsonAdapter<Date?>? {
-
             if (annotations.size <= 1 && type != Date::class.java) return null
 
             val annotation = annotations.iterator().next() as? JsonDateTimeFormat ?: return null

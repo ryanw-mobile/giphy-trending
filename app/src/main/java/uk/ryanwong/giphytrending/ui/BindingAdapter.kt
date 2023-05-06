@@ -58,7 +58,7 @@ fun setClipboardClickable(view: View, src: String?) {
                     val snackbar = Snackbar.make(
                         view,
                         view.context.getString(R.string.clipboard_copied),
-                        Snackbar.LENGTH_LONG
+                        Snackbar.LENGTH_LONG,
                     )
                     val layoutParams =
                         (snackbar.view.layoutParams as CoordinatorLayout.LayoutParams).apply {
@@ -71,7 +71,8 @@ fun setClipboardClickable(view: View, src: String?) {
                 } ?: run {
                 val snackbar = Snackbar.make(
                     view,
-                    view.context.getString(R.string.error_export_clipboard), Snackbar.LENGTH_LONG
+                    view.context.getString(R.string.error_export_clipboard),
+                    Snackbar.LENGTH_LONG,
                 )
                 val layoutParams =
                     (snackbar.view.layoutParams as CoordinatorLayout.LayoutParams).apply {

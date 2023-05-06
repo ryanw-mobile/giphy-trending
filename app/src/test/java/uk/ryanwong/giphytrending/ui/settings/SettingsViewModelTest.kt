@@ -22,7 +22,7 @@ internal class SettingsViewModelTest : FreeSpec() {
 
         settingsViewModel = SettingsViewModel(
             userPreferencesRepository = mockUserPreferencesRepository,
-            dispatcher = dispatcher
+            dispatcher = dispatcher,
         )
     }
 

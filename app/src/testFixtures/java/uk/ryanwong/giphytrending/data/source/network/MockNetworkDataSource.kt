@@ -11,21 +11,21 @@ class MockNetworkDataSource : NetworkDataSource {
     override suspend fun getTrending(
         apiKey: String,
         limit: Int,
-        rating: String
+        rating: String,
     ): TrendingNetworkResponse {
         apiError?.run { throw this }
         return mockTrendingNetworkResponse ?: TrendingNetworkResponse(
             meta = Meta(
                 msg = "some-msg",
                 response_id = "some-response-id",
-                status = 0
+                status = 0,
             ),
             trendingData = emptyList(),
             pagination = Pagination(
                 count = 0,
                 offset = 0,
-                total_count = 0
-            )
+                total_count = 0,
+            ),
         )
     }
 }

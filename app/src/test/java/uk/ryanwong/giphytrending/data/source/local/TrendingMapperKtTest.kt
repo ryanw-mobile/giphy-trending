@@ -34,12 +34,12 @@ internal class TrendingMapperKtTest : FreeSpec() {
                 val trendingEntityList = listOf(
                     TrendingMapperKtTestData.mockTrendingEntity1,
                     TrendingMapperKtTestData.mockTrendingEntity2,
-                    TrendingMapperKtTestData.mockTrendingEntity3
+                    TrendingMapperKtTestData.mockTrendingEntity3,
                 )
                 val expectedGiphyImageItemDomainModelList = listOf(
                     TrendingMapperKtTestData.mockDomainModel1,
                     TrendingMapperKtTestData.mockDomainModel2,
-                    TrendingMapperKtTestData.mockDomainModel3
+                    TrendingMapperKtTestData.mockDomainModel3,
                 )
 
                 // 🟡 When
@@ -69,12 +69,12 @@ internal class TrendingMapperKtTest : FreeSpec() {
                 val mockTrendingDataList = listOf(
                     TrendingMapperKtTestData.mockTrendingData1,
                     TrendingMapperKtTestData.mockTrendingData2,
-                    TrendingMapperKtTestData.mockTrendingData3
+                    TrendingMapperKtTestData.mockTrendingData3,
                 )
                 val expectedTrendingEntityList = listOf(
                     TrendingMapperKtTestData.mockTrendingEntity1,
                     TrendingMapperKtTestData.mockTrendingEntity2,
-                    TrendingMapperKtTestData.mockTrendingEntity3
+                    TrendingMapperKtTestData.mockTrendingEntity3,
                 )
 
                 // 🟡 When

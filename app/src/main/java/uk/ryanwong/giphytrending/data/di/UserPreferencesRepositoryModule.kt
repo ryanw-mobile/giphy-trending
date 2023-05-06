@@ -18,11 +18,11 @@ object UserPreferencesRepositoryModule {
     @Provides
     fun provideUserPreferencesRepository(
         preferencesDataStoreWrapper: PreferencesDataStoreWrapper,
-        @IoDispatcher dispatcher: CoroutineDispatcher
+        @IoDispatcher dispatcher: CoroutineDispatcher,
     ): UserPreferencesRepository {
         return UserPreferencesRepositoryImpl(
             preferencesDataStoreWrapper = preferencesDataStoreWrapper,
-            dispatcher = dispatcher
+            dispatcher = dispatcher,
         )
     }
 }

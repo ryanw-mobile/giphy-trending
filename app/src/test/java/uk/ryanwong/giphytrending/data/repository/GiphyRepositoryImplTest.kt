@@ -31,8 +31,8 @@ internal class GiphyRepositoryImplTest : FreeSpec() {
             type = "gif",
             username = "creative-courage",
             trendingDateTime = Date(-62170156725000),
-            importDateTime = Date(1605041010000)
-        )
+            importDateTime = Date(1605041010000),
+        ),
     )
 
     private fun setupRepository() {
@@ -42,7 +42,7 @@ internal class GiphyRepositoryImplTest : FreeSpec() {
         giphyRepository = GiphyRepositoryImpl(
             networkDataSource = mockNetworkDataSource,
             roomDbDataSource = mockRoomDbDataSource,
-            dispatcher = dispatcher
+            dispatcher = dispatcher,
         )
     }
 

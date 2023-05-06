@@ -3,7 +3,7 @@ package uk.ryanwong.giphytrending.data.source.local
 import javax.inject.Inject
 
 class RoomDbDataSourceImpl @Inject constructor(
-    private val giphyDatabase: GiphyDatabase
+    private val giphyDatabase: GiphyDatabase,
 ) : RoomDbDataSource {
     override suspend fun insertData(data: TrendingEntity) {
         return giphyDatabase.trendingDao().insertData(data = data)

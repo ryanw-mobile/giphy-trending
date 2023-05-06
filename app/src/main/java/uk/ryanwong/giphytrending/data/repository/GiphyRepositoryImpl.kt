@@ -18,7 +18,7 @@ import javax.inject.Inject
 class GiphyRepositoryImpl @Inject constructor(
     private val networkDataSource: NetworkDataSource,
     private val roomDbDataSource: RoomDbDataSource,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : GiphyRepository {
     /**
      * Note:
@@ -58,11 +58,11 @@ class GiphyRepositoryImpl @Inject constructor(
                 if (invalidationResult.isFailure) {
                     // Error propagation is not ideal, but simplified in this demo app. Greg please don't blame me
                     Result.failure(
-                        exception = invalidationResult.exceptionOrNull() ?: UnknownError()
+                        exception = invalidationResult.exceptionOrNull() ?: UnknownError(),
                     )
                 } else {
                     Result.success(
-                        value = roomDbDataSource.queryData().toDomainModelList()
+                        value = roomDbDataSource.queryData().toDomainModelList(),
                     )
                 }
             } catch (cancellationException: CancellationException) {
@@ -79,7 +79,7 @@ class GiphyRepositoryImpl @Inject constructor(
             networkDataSource.getTrending(
                 apiKey = BuildConfig.GIPHY_API_KEY,
                 limit = apiMaxEntries,
-                rating = BuildConfig.API_RATING
+                rating = BuildConfig.API_RATING,
             )
         }
     }

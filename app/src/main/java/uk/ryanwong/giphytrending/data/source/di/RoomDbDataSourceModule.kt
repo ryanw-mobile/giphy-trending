@@ -15,7 +15,7 @@ object RoomDbDataSourceModule {
     @Provides
     @ViewModelScoped
     fun provideRoomDbDataSource(
-        giphyDatabase: GiphyDatabase
+        giphyDatabase: GiphyDatabase,
     ): RoomDbDataSource {
         return RoomDbDataSourceImpl(giphyDatabase = giphyDatabase)
     }

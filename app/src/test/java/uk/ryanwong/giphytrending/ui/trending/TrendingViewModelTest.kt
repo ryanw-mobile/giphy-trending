@@ -34,7 +34,7 @@ internal class TrendingViewModelTest : FreeSpec() {
             webUrl = "some-web-url-1",
             title = "some-title-1",
             type = "some-type-1",
-            username = "some-user-name-1"
+            username = "some-user-name-1",
         ),
         GiphyImageItemDomainModel(
             id = "some-id-2",
@@ -43,8 +43,8 @@ internal class TrendingViewModelTest : FreeSpec() {
             webUrl = "some-web-url-2",
             title = "some-title-2",
             type = "some-type-2",
-            username = "some-user-name-2"
-        )
+            username = "some-user-name-2",
+        ),
     )
 
     private fun setupViewModel() {
@@ -55,7 +55,7 @@ internal class TrendingViewModelTest : FreeSpec() {
         trendingViewModel = TrendingViewModel(
             giphyRepository = mockGiphyRepository,
             userPreferencesRepository = mockUserPreferencesRepository,
-            dispatcher = dispatcher
+            dispatcher = dispatcher,
         )
     }
 

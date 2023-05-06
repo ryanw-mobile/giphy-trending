@@ -5,18 +5,18 @@ import uk.ryanwong.giphytrending.data.source.network.model.TrendingNetworkRespon
 import javax.inject.Inject
 
 class NetworkDataSourceImpl @Inject constructor(
-    private val giphyApiService: GiphyApi
+    private val giphyApiService: GiphyApi,
 ) : NetworkDataSource {
 
     override suspend fun getTrending(
         apiKey: String,
         limit: Int,
-        rating: String
+        rating: String,
     ): TrendingNetworkResponse {
         return giphyApiService.getTrending(
             BuildConfig.GIPHY_API_KEY,
             limit,
-            BuildConfig.API_RATING
+            BuildConfig.API_RATING,
         )
     }
 }

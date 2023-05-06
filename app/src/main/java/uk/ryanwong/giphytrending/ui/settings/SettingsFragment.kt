@@ -29,7 +29,7 @@ class SettingsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentSettingsBinding.inflate(inflater, container, false)
         setHasOptionsMenu(false)
@@ -40,8 +40,8 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.seekbarApimax.setOnSeekBarChangeListener(object :
-                OnSeekBarChangeListener {
+        binding.seekbarApimax.setOnSeekBarChangeListener(
+            object : OnSeekBarChangeListener {
                 override fun onProgressChanged(seek: SeekBar, progress: Int, fromUser: Boolean) {
                     // Only text label updated, but not committed to user preferences yet
                     binding.seekbarTextlabel.text =
@@ -54,7 +54,8 @@ class SettingsFragment : Fragment() {
                     Timber.v("final seekbar progress = $seek.progress")
                     settingsViewModel.setApiMax(seek.progress)
                 }
-            })
+            },
+        )
     }
 
     override fun onResume() {
@@ -93,14 +94,13 @@ class SettingsFragment : Fragment() {
                 errorDialog?.dismiss()
 
                 // Show an error dialog
-                errorDialog =
-                    AlertDialog.Builder(requireContext()).apply {
-                        setTitle(getString(R.string.something_went_wrong))
-                        setMessage(errorMessage)
-                        setPositiveButton(getString(R.string.ok)) { _, _ ->
-                            settingsViewModel.notifyErrorMessageDisplayed()
-                        }
-                    }.create()
+                errorDialog = AlertDialog.Builder(requireContext()).apply {
+                    setTitle(getString(R.string.something_went_wrong))
+                    setMessage(errorMessage)
+                    setPositiveButton(getString(R.string.ok)) { _, _ ->
+                        settingsViewModel.notifyErrorMessageDisplayed()
+                    }
+                }.create()
                 errorDialog?.show()
             }
         }

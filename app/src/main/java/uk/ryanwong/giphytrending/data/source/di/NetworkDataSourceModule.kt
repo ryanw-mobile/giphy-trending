@@ -15,7 +15,7 @@ object NetworkDataSourceModule {
     @Provides
     @ViewModelScoped
     fun provideNetworkDataSource(
-        giphyApiService: GiphyApi
+        giphyApiService: GiphyApi,
     ): NetworkDataSource {
         return NetworkDataSourceImpl(giphyApiService = giphyApiService)
     }

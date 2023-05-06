@@ -10,6 +10,7 @@ import android.widget.ImageView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import uk.ryanwong.giphytrending.R
 
@@ -17,8 +18,7 @@ import uk.ryanwong.giphytrending.R
 fun setImageUrl(imageView: ImageView, src: String?) {
     src?.let {
         val uri = src.toUri().buildUpon().scheme("https").build()
-        GlideApp.with(imageView)
-            .load(uri)
+        Glide.with(imageView).load(uri)
 //            .placeholder(R.drawable.ic_baseline_error_outline_24)
 //            .error(R.drawable.ic_baseline_error_outline_24)
 //            .fallback(R.drawable.ic_baseline_error_outline_24)
@@ -53,25 +53,25 @@ fun setClipboardClickable(view: View, src: String?) {
             val clipboard: ClipboardManager? =
                 view.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
             val clip = ClipData.newPlainText(uri.toString(), uri.toString())
-            clipboard?.setPrimaryClip(clip)
-                .also {
-                    val snackbar = Snackbar.make(
-                        view,
-                        view.context.getString(R.string.clipboard_copied),
-                        Snackbar.LENGTH_LONG
-                    )
-                    val layoutParams =
-                        (snackbar.view.layoutParams as CoordinatorLayout.LayoutParams).apply {
-                            anchorId = R.id.nav_view // Id for your bottomNavBar or TabLayout
-                            anchorGravity = Gravity.TOP
-                            gravity = Gravity.TOP
-                        }
-                    snackbar.view.layoutParams = layoutParams
-                    snackbar.show()
-                } ?: run {
+            clipboard?.setPrimaryClip(clip).also {
                 val snackbar = Snackbar.make(
                     view,
-                    view.context.getString(R.string.error_export_clipboard), Snackbar.LENGTH_LONG
+                    view.context.getString(R.string.clipboard_copied),
+                    Snackbar.LENGTH_LONG,
+                )
+                val layoutParams =
+                    (snackbar.view.layoutParams as CoordinatorLayout.LayoutParams).apply {
+                        anchorId = R.id.nav_view // Id for your bottomNavBar or TabLayout
+                        anchorGravity = Gravity.TOP
+                        gravity = Gravity.TOP
+                    }
+                snackbar.view.layoutParams = layoutParams
+                snackbar.show()
+            } ?: run {
+                val snackbar = Snackbar.make(
+                    view,
+                    view.context.getString(R.string.error_export_clipboard),
+                    Snackbar.LENGTH_LONG,
                 )
                 val layoutParams =
                     (snackbar.view.layoutParams as CoordinatorLayout.LayoutParams).apply {

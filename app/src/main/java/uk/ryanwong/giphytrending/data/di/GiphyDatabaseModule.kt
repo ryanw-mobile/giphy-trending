@@ -20,7 +20,7 @@ object GiphyDatabaseModule {
         return Room.databaseBuilder(
             applicationContext,
             GiphyDatabase::class.java,
-            BuildConfig.DATABASE_NAME
+            BuildConfig.DATABASE_NAME,
         ).fallbackToDestructiveMigration().build()
     }
 }

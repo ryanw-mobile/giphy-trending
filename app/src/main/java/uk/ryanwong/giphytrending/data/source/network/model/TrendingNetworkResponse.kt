@@ -15,7 +15,7 @@ data class TrendingNetworkResponse(
     @Json(name = "data")
     val trendingData: List<TrendingData>,
     val meta: Meta,
-    val pagination: Pagination
+    val pagination: Pagination,
 )
 
 data class TrendingData(
@@ -37,25 +37,25 @@ data class TrendingData(
     val trending_datetime: Date,
     val type: String,
     val url: String,
-    val username: String
+    val username: String,
 )
 
 data class Meta(
     val msg: String,
     val response_id: String,
-    val status: Int
+    val status: Int,
 )
 
 data class Pagination(
     val count: Int,
     val offset: Int,
-    val total_count: Int
+    val total_count: Int,
 )
 
 data class Images(
     val fixed_height: FixedHeight,
     val fixed_width: FixedWidth,
-    val original: Original
+    val original: Original,
 )
 
 data class FixedHeight(
@@ -66,7 +66,7 @@ data class FixedHeight(
     val url: String,
     val webp: String? = null,
     val webp_size: String? = null,
-    val width: String
+    val width: String,
 )
 
 data class FixedWidth(
@@ -77,7 +77,7 @@ data class FixedWidth(
     val url: String,
     val webp: String? = null,
     val webp_size: String? = null,
-    val width: String
+    val width: String,
 )
 
 data class Original(
@@ -90,5 +90,5 @@ data class Original(
     val url: String,
     val webp: String? = null,
     val webp_size: String? = null,
-    val width: String
+    val width: String,
 )

@@ -29,8 +29,9 @@ more simpler.
 * Kotlin
 * MVVM architecture
 * [`Jetpack Databinding`](https://developer.android.com/jetpack/androidx/releases/databinding)
-* Kotlin Flow (replacing Live Data)
+* Kotlin Flow
 * Material 3 with light and dark mode theming
+* Gradle Kotlin DSL and Version Catalog
 
 ### Major libraries used
 

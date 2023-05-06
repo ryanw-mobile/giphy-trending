@@ -19,7 +19,7 @@ private const val API_MIN = 50
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val userPreferencesRepository: UserPreferencesRepository,
-    @MainDispatcher private val dispatcher: CoroutineDispatcher
+    @MainDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _settingsUIState: MutableStateFlow<SettingsUIState> =
@@ -45,7 +45,7 @@ class SettingsViewModel @Inject constructor(
     fun setApiMax(maxApiEntries: Int) {
         viewModelScope.launch(dispatcher) {
             updateUIState(
-                repositoryResult = userPreferencesRepository.setApiMax(maxApiEntries.plus(API_MIN))
+                repositoryResult = userPreferencesRepository.setApiMax(maxApiEntries.plus(API_MIN)),
             )
         }
     }

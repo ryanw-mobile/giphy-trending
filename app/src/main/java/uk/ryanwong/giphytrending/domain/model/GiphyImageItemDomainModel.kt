@@ -7,5 +7,5 @@ data class GiphyImageItemDomainModel(
     val webUrl: String,
     val title: String,
     val type: String,
-    val username: String
+    val username: String,
 )

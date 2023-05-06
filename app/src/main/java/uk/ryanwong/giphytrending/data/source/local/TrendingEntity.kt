@@ -31,5 +31,5 @@ data class TrendingEntity(
     // Every time we overwrite the DB with API data. To remove outdated data in the FB,
     // we use this extra dirty bit approach to simulate synchronization.
     @ColumnInfo(name = "dirty")
-    val dirty: Boolean = false
+    val dirty: Boolean = false,
 )

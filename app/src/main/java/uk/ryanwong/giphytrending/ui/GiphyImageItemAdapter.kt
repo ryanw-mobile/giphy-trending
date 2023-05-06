@@ -10,7 +10,7 @@ import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
 
 class GiphyImageItemAdapter :
     ListAdapter<GiphyImageItemDomainModel, GiphyImageItemAdapter.GiphyImageItemViewHolder>(
-        TrendingDiffCallback
+        TrendingDiffCallback,
     ) {
     /**
      * Called when RecyclerView needs a new [ViewHolder] of the given type to represent
@@ -105,7 +105,7 @@ private object TrendingDiffCallback : DiffUtil.ItemCallback<GiphyImageItemDomain
      */
     override fun areItemsTheSame(
         oldItem: GiphyImageItemDomainModel,
-        newItem: GiphyImageItemDomainModel
+        newItem: GiphyImageItemDomainModel,
     ): Boolean {
         return oldItem === newItem
     }
@@ -140,7 +140,7 @@ private object TrendingDiffCallback : DiffUtil.ItemCallback<GiphyImageItemDomain
      */
     override fun areContentsTheSame(
         oldItem: GiphyImageItemDomainModel,
-        newItem: GiphyImageItemDomainModel
+        newItem: GiphyImageItemDomainModel,
     ): Boolean {
         return oldItem == newItem
     }

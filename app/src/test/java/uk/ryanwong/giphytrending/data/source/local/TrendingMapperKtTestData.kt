@@ -27,7 +27,7 @@ internal object TrendingMapperKtTestData {
                     url = "https://some.url/some-path",
                     webp = "https://some.url/some-path",
                     webp_size = "227744",
-                    width = "265"
+                    width = "265",
                 ),
                 fixed_width = FixedWidth(
                     height = "151",
@@ -37,7 +37,7 @@ internal object TrendingMapperKtTestData {
                     url = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/200w.gif",
                     webp = "https://some.url/some-path",
                     webp_size = "153256",
-                    width = "200"
+                    width = "200",
                 ),
                 original = Original(
                     frames = "26",
@@ -49,8 +49,8 @@ internal object TrendingMapperKtTestData {
                     url = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/giphy.gif",
                     webp = "https://some.url/some-path",
                     webp_size = "455910",
-                    width = "480"
-                )
+                    width = "480",
+                ),
             ),
             import_datetime = Date(1635978358000),
             is_sticker = 0,
@@ -63,7 +63,7 @@ internal object TrendingMapperKtTestData {
             trending_datetime = Date(1636679711000),
             type = "gif",
             url = "https://giphy.com/gifs/studiosoriginals-cooking-chef-cook-5KF7hci72bv2ZbchuT",
-            username = "studiosoriginals"
+            username = "studiosoriginals",
         )
     }
 
@@ -77,7 +77,7 @@ internal object TrendingMapperKtTestData {
             type = "gif",
             username = "studiosoriginals",
             trendingDateTime = Date(1636679711000),
-            importDateTime = Date(1635978358000)
+            importDateTime = Date(1635978358000),
         )
     }
 
@@ -89,7 +89,7 @@ internal object TrendingMapperKtTestData {
             webUrl = "https://giphy.com/gifs/studiosoriginals-cooking-chef-cook-5KF7hci72bv2ZbchuT",
             title = "Chef Cooking GIF by GIPHY Studios Originals",
             type = "gif",
-            username = "studiosoriginals"
+            username = "studiosoriginals",
         )
     }
 
@@ -110,7 +110,7 @@ internal object TrendingMapperKtTestData {
                     url = "https://some.url/some-path",
                     webp = "https://some.url/some-path",
                     webp_size = "227744",
-                    width = "265"
+                    width = "265",
                 ),
                 fixed_width = FixedWidth(
                     height = "151",
@@ -120,7 +120,7 @@ internal object TrendingMapperKtTestData {
                     url = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/200w.gif",
                     webp = "https://some.url/some-path",
                     webp_size = "153256",
-                    width = "200"
+                    width = "200",
                 ),
                 original = Original(
                     frames = "26",
@@ -132,8 +132,8 @@ internal object TrendingMapperKtTestData {
                     url = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/giphy.gif",
                     webp = "https://some.url/some-path",
                     webp_size = "455910",
-                    width = "480"
-                )
+                    width = "480",
+                ),
             ),
             import_datetime = Date(1605041010000),
             is_sticker = 0,
@@ -146,7 +146,7 @@ internal object TrendingMapperKtTestData {
             trending_datetime = Date(-62170156725000),
             type = "gif",
             url = "https://giphy.com/gifs/creative-courage-vidhyan-as-a-nation-we-have-lot-of-obligations-no-obligation-uaIAIw3ELuk69mhZ5I",
-            username = "creative-courage"
+            username = "creative-courage",
         )
     }
 
@@ -160,7 +160,7 @@ internal object TrendingMapperKtTestData {
             type = "gif",
             username = "creative-courage",
             trendingDateTime = Date(-62170156725000),
-            importDateTime = Date(1605041010000)
+            importDateTime = Date(1605041010000),
         )
     }
 
@@ -172,7 +172,7 @@ internal object TrendingMapperKtTestData {
             webUrl = "https://giphy.com/gifs/creative-courage-vidhyan-as-a-nation-we-have-lot-of-obligations-no-obligation-uaIAIw3ELuk69mhZ5I",
             title = "Joe Biden GIF by Creative Courage",
             type = "gif",
-            username = "creative-courage"
+            username = "creative-courage",
         )
     }
 
@@ -193,7 +193,7 @@ internal object TrendingMapperKtTestData {
                     url = "https://some.url/some-path",
                     webp = "https://some.url/some-path",
                     webp_size = "227744",
-                    width = "265"
+                    width = "265",
                 ),
                 fixed_width = FixedWidth(
                     height = "151",
@@ -203,7 +203,7 @@ internal object TrendingMapperKtTestData {
                     url = "https://media1.giphy.com/media/etKSrsbbKbqwW6vzOg/200w.gif",
                     webp = "https://some.url/some-path",
                     webp_size = "153256",
-                    width = "200"
+                    width = "200",
                 ),
                 original = Original(
                     frames = "26",
@@ -215,8 +215,8 @@ internal object TrendingMapperKtTestData {
                     url = "https://media1.giphy.com/media/etKSrsbbKbqwW6vzOg/giphy.gif",
                     webp = "https://some.url/some-path",
                     webp_size = "455910",
-                    width = "480"
-                )
+                    width = "480",
+                ),
             ),
             import_datetime = Date(1636417528000),
             is_sticker = 0,
@@ -229,7 +229,7 @@ internal object TrendingMapperKtTestData {
             trending_datetime = Date(1636678809000),
             type = "gif",
             url = "https://giphy.com/gifs/studiosoriginals-chicken-dinner-winner-etKSrsbbKbqwW6vzOg",
-            username = "studiosoriginals"
+            username = "studiosoriginals",
         )
     }
 
@@ -243,7 +243,7 @@ internal object TrendingMapperKtTestData {
             type = "gif",
             username = "studiosoriginals",
             trendingDateTime = Date(1636678809000),
-            importDateTime = Date(1636417528000)
+            importDateTime = Date(1636417528000),
         )
     }
 
@@ -255,7 +255,7 @@ internal object TrendingMapperKtTestData {
             webUrl = "https://giphy.com/gifs/studiosoriginals-chicken-dinner-winner-etKSrsbbKbqwW6vzOg",
             title = "Winner Winner Win GIF by GIPHY Studios Originals",
             type = "gif",
-            username = "studiosoriginals"
+            username = "studiosoriginals",
         )
     }
 }

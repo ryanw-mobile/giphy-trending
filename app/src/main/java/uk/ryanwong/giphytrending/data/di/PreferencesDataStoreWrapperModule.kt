@@ -16,7 +16,7 @@ import uk.ryanwong.giphytrending.data.source.preferences.PreferencesDataStoreWra
 private const val USER_PREFERENCES_NAME = "user_preferences"
 
 val Context.userDataStore: DataStore<Preferences> by preferencesDataStore(
-    name = USER_PREFERENCES_NAME
+    name = USER_PREFERENCES_NAME,
 )
 
 @Module
@@ -26,7 +26,7 @@ object PreferencesDataStoreWrapperModule {
     @ViewModelScoped
     @Provides
     fun provideDataStorePreferences(
-        @ApplicationContext applicationContext: Context
+        @ApplicationContext applicationContext: Context,
     ): DataStore<Preferences> {
         return applicationContext.userDataStore
     }
@@ -34,7 +34,7 @@ object PreferencesDataStoreWrapperModule {
     @ViewModelScoped
     @Provides
     fun providePreferenceDataStoreWrapper(
-        dataStorePreferences: DataStore<Preferences>
+        dataStorePreferences: DataStore<Preferences>,
     ): PreferencesDataStoreWrapper {
         return PreferencesDataStoreWrapperImpl(dataStorePreferences = dataStorePreferences)
     }

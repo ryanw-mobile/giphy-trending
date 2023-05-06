@@ -9,6 +9,6 @@ interface GiphyApi {
     suspend fun getTrending(
         @Query("api_key") apiKey: String,
         @Query("limit") limit: Int,
-        @Query("rating") rating: String
+        @Query("rating") rating: String,
     ): TrendingNetworkResponse
 }

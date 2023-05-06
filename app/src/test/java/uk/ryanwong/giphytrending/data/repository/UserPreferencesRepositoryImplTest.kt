@@ -20,7 +20,7 @@ internal class UserPreferencesRepositoryImplTest : FreeSpec() {
         mockPreferencesDataStoreWrapper = MockPreferencesDataStoreWrapper()
         userPreferencesRepository = UserPreferencesRepositoryImpl(
             preferencesDataStoreWrapper = mockPreferencesDataStoreWrapper,
-            dispatcher = dispatcher
+            dispatcher = dispatcher,
         )
     }
 

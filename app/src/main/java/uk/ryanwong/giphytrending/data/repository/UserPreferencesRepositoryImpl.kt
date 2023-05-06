@@ -17,7 +17,7 @@ import javax.inject.Inject
  */
 class UserPreferencesRepositoryImpl @Inject constructor(
     private val preferencesDataStoreWrapper: PreferencesDataStoreWrapper,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : UserPreferencesRepository {
 
     override suspend fun setApiMax(apiMax: Int): Result<Unit> {

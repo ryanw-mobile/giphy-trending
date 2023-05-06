@@ -48,7 +48,7 @@ class TrendingFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentTrendingBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)

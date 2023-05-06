@@ -1,74 +1,70 @@
 import java.io.FileInputStream
+import java.io.InputStreamReader
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Properties
 
 @Suppress("DSL_SCOPE_VIOLATION") plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-kapt")
-    id("androidx.navigation.safeargs")
-    id("dagger.hilt.android.plugin")
-    id("org.jetbrains.kotlinx.kover") version "0.6.1"
-    id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.devtools.ksp)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.androidx.navigation.safeargs)
+    alias(libs.plugins.hilt.android.plugin)
+    alias(libs.plugins.kotlinx.kover)
+    alias(libs.plugins.gradle.ktlint)
 }
 
 android {
     namespace = "uk.ryanwong.giphytrending"
-    compileSdk = 33
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     signingConfigs {
-        create("release")
-    }
+        create("release") {
+            val isRunningOnBitrise = System.getenv("BITRISE") == "true"
+            val keystorePropertiesFile = file("../../keystore.properties")
 
-    val isRunningOnTravis = System.getenv("CI") == "true"
-    val isRunningOnBitrise = System.getenv("BITRISE") == "true"
+            if (isRunningOnBitrise || !keystorePropertiesFile.exists()) {
+                keyAlias = System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
+                keyPassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+                storeFile = file(System.getenv("HOME") + "/keystores/release.jks")
+                storePassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
 
-    if (isRunningOnBitrise) {
-        // configure keystore
-        // File Downloaderで指定したパス
-        signingConfigs.getByName("release").apply {
-            storeFile = file(System.getenv("HOME") + "/keystores/release.jks")
-            storePassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
-            keyAlias = System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
-            keyPassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+                // Extra keys attached in the keystore.properties
+                defaultConfig.buildConfigField(
+                    "String",
+                    "GIPHY_API_KEY",
+                    System.getenv("giphyApiKey"),
+                )
+
+            } else {
+                val properties = Properties()
+                InputStreamReader(
+                    FileInputStream(keystorePropertiesFile),
+                    Charsets.UTF_8,
+                ).use { reader ->
+                    properties.load(reader)
+                }
+
+                keyAlias = properties.getProperty("alias")
+                keyPassword = properties.getProperty("pass")
+                storeFile = file(properties.getProperty("store"))
+                storePassword = properties.getProperty("storePass")
+
+                // Extra keys attached in the keystore.properties
+                defaultConfig.buildConfigField(
+                    "String",
+                    "GIPHY_API_KEY",
+                    properties.getProperty("giphyApiKey") ?: "\"\"",
+                )
+            }
         }
-
-        // Extra keys attached in the keystore.properties
-        defaultConfig.buildConfigField(
-            "String", "GIPHY_API_KEY", "${System.getenv("giphyApiKey")}"
-        )
-    } else if (isRunningOnTravis) {
-        // configure keystore
-        signingConfigs.getByName("release").apply {
-            storeFile = file("../secure.keystore")
-            storePassword = System.getenv("storePass")
-            keyAlias = System.getenv("alias")
-            keyPassword = System.getenv("pass")
-        }
-
-        // Extra keys attached in the keystore.properties
-        defaultConfig.buildConfigField(
-            "String", "GIPHY_API_KEY", "${System.getenv("giphyApiKey")}"
-        )
-    } else {
-        val keyProps = Properties()
-        keyProps.load(FileInputStream(file("../../keystore.properties")))
-        signingConfigs.getByName("release").apply {
-            storeFile = file(keyProps["store"].toString())
-            keyAlias = keyProps["alias"].toString()
-            storePassword = keyProps["storePass"].toString()
-            keyPassword = keyProps["pass"].toString()
-        }
-
-        // Extra keys attached in the keystore.properties
-        defaultConfig.buildConfigField("String", "GIPHY_API_KEY", "${keyProps["giphyApiKey"]}")
     }
 
     defaultConfig {
         applicationId = "uk.ryanwong.giphytrending"
-        minSdk = 28
-        targetSdk = 33
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 6
         versionName = "1.4.0"
 
@@ -80,7 +76,7 @@ android {
         }
         // Bundle output filename
         val timestamp = SimpleDateFormat("yyyyMMdd-HHmmss").format(Date())
-        setProperty("archivesBaseName", "giphy-" + versionName + timestamp)
+        setProperty("archivesBaseName", "giphy-$versionName-$timestamp")
 
         // Configurable values - We are able to set different values for each build
         buildConfigField("String", "GIPHY_ENDPOINT", "\"https://api.giphy.com/\"")
@@ -94,7 +90,6 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
 
-            signingConfig = signingConfigs.getByName("release")
             applicationVariants.all {
                 val variant = this
                 variant.outputs.map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
@@ -121,7 +116,8 @@ android {
             isShrinkResources = true
 
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
             )
 
             signingConfig = signingConfigs.getByName("release")
@@ -165,13 +161,16 @@ android {
         animationsDisabled = true
     }
 
-    packagingOptions {
+    packaging {
         resources {
             excludes += listOf(
-                "META-INF/AL2.0", "META-INF/LGPL2.1", "META-INF/licenses/ASM"
+                "META-INF/AL2.0",
+                "META-INF/LGPL2.1",
+                "META-INF/licenses/ASM",
             )
             pickFirsts += listOf(
-                "win32-x86-64/attach_hotspot_windows.dll", "win32-x86/attach_hotspot_windows.dll"
+                "win32-x86-64/attach_hotspot_windows.dll",
+                "win32-x86/attach_hotspot_windows.dll",
             )
         }
     }
@@ -194,94 +193,85 @@ kotlin {
 }
 
 dependencies {
-    implementation("androidx.core:core-splashscreen:1.0.0")
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.8.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.10")
-
-    val retrofitVersion = "2.9.0"
-    val roomVersion = "2.5.0"
-
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation("androidx.recyclerview:recyclerview:1.3.0")
+
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.recyclerview)
 
     // Android Lifecycle Extensions
-    val lifecycleVersion = "2.6.1"
-    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.activity:activity-ktx:1.7.0")
-    kapt("android.arch.lifecycle:common-java8:1.1.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+    implementation(libs.androidx.lifecycle.extensions)
+    implementation(libs.androidx.activity.ktx)
+    kapt(libs.common.java8)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     // Navigation
-    val navigationVersion = "2.3.5"
-    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
-    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.navigation.ui.ktx)
 
     // Glide for Images
-    implementation("com.github.bumptech.glide:glide:4.15.1")
-    kapt("com.github.bumptech.glide:compiler:4.15.1")
+    implementation(libs.glide)
 
     // Retrofit 2
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
-    implementation("com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion")
-    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
+    implementation(libs.retrofit)
+    implementation(libs.converter.moshi)
+    implementation(libs.adapter.rxjava2)
+    implementation(libs.logging.interceptor)
 
     // Moshi
-    val moshi_version = "1.14.0"
-    implementation("com.squareup.moshi:moshi:$moshi_version")
-    implementation("com.squareup.moshi:moshi-kotlin:$moshi_version")
-    implementation("com.squareup.moshi:moshi-adapters:$moshi_version")
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi.adapters)
 
     // Dagger Hilt
-    implementation("com.google.dagger:hilt-android:2.45")
-    kapt("com.google.dagger:hilt-compiler:2.45")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     // Room 2
-    val room_version = "2.5.1"
-    implementation("androidx.room:room-runtime:$room_version")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.lifecycle.extensions)
     // optional - RxJava support for Room
-    implementation("androidx.room:room-ktx:$room_version")
-    kapt("androidx.room:room-compiler:$room_version")
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation(libs.kotlinx.coroutines.android)
 
     // Datastore preferences
-    val datastore_version = "1.0.0"
-    implementation("androidx.datastore:datastore-preferences:$datastore_version")
+    implementation(libs.androidx.datastore.preferences)
 
-    implementation("com.jakewharton.timber:timber:5.0.1")
+    implementation(libs.timber)
 
     // debugImplementation because LeakCanary should only run in debug builds.
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
+    debugImplementation(libs.leakcanary.android)
 
     // testing
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
-    testImplementation("androidx.test:core-ktx:1.5.0")
-    testImplementation("androidx.test.ext:junit-ktx:1.1.5")
-    testImplementation("androidx.arch.core:core-testing:2.2.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.core.ktx)
+    testImplementation(libs.androidx.junit.ktx)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.jetbrains.kotlinx.coroutines.test)
 
     // kotest
-    testImplementation("io.kotest:kotest-runner-junit5:5.5.5")
-    testImplementation("io.kotest:kotest-assertions-core:5.5.5")
-    testImplementation("io.kotest:kotest-property:5.5.5")
+    testImplementation(libs.kotest.runner.junit5)
+    testImplementation(libs.kotest.assertions.core)
+    testImplementation(libs.kotest.property)
 
-    androidTestImplementation("io.kotest:kotest-assertions-core:5.5.5")
-    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    debugImplementation("androidx.fragment:fragment-testing:1.5.6")
+    androidTestImplementation(libs.kotest.assertions.core)
+    androidTestImplementation(libs.jetbrains.kotlinx.coroutines.test)
+    androidTestImplementation(libs.androidx.test.junit4)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    debugImplementation(libs.androidx.fragment.testing)
 
     // For instrumented tests - with Kotlin
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.45")
-    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.androidx.test.rules)
 }
 
 tasks.withType<Test> {
@@ -311,7 +301,7 @@ koverMerged {
                 "uk.ryanwong.giphytrending.BR",
                 "uk.ryanwong.giphytrending.BuildConfig",
                 "uk.ryanwong.giphytrending.Hilt*",
-                "uk.ryanwong.giphytrending.*.Hilt_*"
+                "uk.ryanwong.giphytrending.*.Hilt_*",
             )
         }
     }

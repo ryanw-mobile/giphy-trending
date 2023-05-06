@@ -10,7 +10,7 @@ fun TrendingEntity.toDomainModel() = GiphyImageItemDomainModel(
     webUrl = this.webUrl,
     title = this.title,
     type = this.type,
-    username = this.username
+    username = this.username,
 )
 
 fun List<TrendingEntity>.toDomainModelList() = this.map { it.toDomainModel() }
@@ -24,7 +24,7 @@ fun TrendingData.toTrendingEntity() = TrendingEntity(
     type = this.type,
     username = this.username,
     trendingDateTime = this.trending_datetime,
-    importDateTime = this.import_datetime
+    importDateTime = this.import_datetime,
 )
 
 fun List<TrendingData>.toTrendingEntityList() = this.map { it.toTrendingEntity() }

@@ -20,12 +20,12 @@ object GiphyRepositoryModule {
     fun provideGiphyRepository(
         networkDataSource: NetworkDataSource,
         roomDbDataSource: RoomDbDataSource,
-        @IoDispatcher dispatcher: CoroutineDispatcher
+        @IoDispatcher dispatcher: CoroutineDispatcher,
     ): GiphyRepository {
         return GiphyRepositoryImpl(
             networkDataSource = networkDataSource,
             roomDbDataSource = roomDbDataSource,
-            dispatcher = dispatcher
+            dispatcher = dispatcher,
         )
     }
 }

@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         binding.navView.let {
             NavigationUI.setupWithNavController(
                 it,
-                Navigation.findNavController(this, R.id.nav_host_fragment_activity_main)
+                Navigation.findNavController(this, R.id.nav_host_fragment_activity_main),
             )
         }
     }

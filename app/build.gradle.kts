@@ -4,7 +4,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Properties
 
-@Suppress("DSL_SCOPE_VIOLATION") plugins {
+@Suppress("DSL_SCOPE_VIOLATION")
+plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.devtools.ksp)
@@ -36,7 +37,6 @@ android {
                     "GIPHY_API_KEY",
                     System.getenv("giphyApiKey"),
                 )
-
             } else {
                 val properties = Properties()
                 InputStreamReader(
@@ -144,6 +144,7 @@ android {
 //    }
     buildFeatures {
         dataBinding = true
+        buildConfig = true
     }
 
     compileOptions {
@@ -193,8 +194,6 @@ kotlin {
 }
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -278,12 +277,14 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-koverMerged {
-    enable()
-
-    filters { // common filters for all default Kover tasks
-        classes { // common class filter for all default Kover tasks
-            excludes += listOf(
+/*
+ * Kover configs - Extrememly unhappy with the breaking changes again and again
+ * intentionally ignore this for now.
+ */
+koverReport {
+    filters {
+        excludes {
+            classes(
                 "uk.ryanwong.giphytrending.data.di.*",
                 "uk.ryanwong.giphytrending.di.*",
                 "uk.ryanwong.giphytrending.data.source.di.*",
@@ -306,11 +307,31 @@ koverMerged {
         }
     }
 
-    xmlReport {
-        onCheck.set(true)
-    }
-
-    htmlReport {
-        onCheck.set(true)
+    androidReports("release") {
+        // filters for all report types only of 'release' build type
+        filters {
+            excludes {
+                classes(
+                    "uk.ryanwong.giphytrending.data.di.*",
+                    "uk.ryanwong.giphytrending.di.*",
+                    "uk.ryanwong.giphytrending.data.source.di.*",
+                    "uk.ryanwong.giphytrending.databinding.*",
+                    "androidx.*",
+                    "com.bumptech.glide.*",
+                    "dagger.hilt.internal.aggregatedroot.codegen.*",
+                    "hilt_aggregated_deps.*",
+                    "uk.ryanwong.giphytrending.*.*MembersInjector",
+                    "uk.ryanwong.giphytrending.*.*Factory",
+                    "uk.ryanwong.giphytrending.*.*HiltModules*",
+                    "uk.ryanwong.giphytrending.data.source.local.*_Impl*",
+                    "uk.ryanwong.giphytrending.data.source.local.*Impl_Factory",
+                    "uk.ryanwong.giphytrending.DataBind*",
+                    "uk.ryanwong.giphytrending.BR",
+                    "uk.ryanwong.giphytrending.BuildConfig",
+                    "uk.ryanwong.giphytrending.Hilt*",
+                    "uk.ryanwong.giphytrending.*.Hilt_*",
+                )
+            }
+        }
     }
 }

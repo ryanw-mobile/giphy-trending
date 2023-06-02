@@ -14,6 +14,7 @@ plugins {
     alias(libs.plugins.devtools.ksp) apply false
     alias(libs.plugins.kotlin.kapt) apply false
     alias(libs.plugins.androidx.navigation.safeargs)apply false
+    alias(libs.plugins.kotlinx.kover) apply false
 }
 
 tasks.register("clean", Delete::class) {

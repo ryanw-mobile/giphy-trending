@@ -28,3 +28,5 @@ jobs:
       run: ./gradlew test
       env:
         BITRISE: 'true'
+        giphyApiKey: '"some-api-key"'
+        

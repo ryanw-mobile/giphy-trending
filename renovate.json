@@ -5,6 +5,13 @@
   ],
   "commitMessagePrefix": "[chore] Renovate: ",
   "commitMessageExtra": "{{{currentValue}}} to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}{{prettyNewMajor}}{{else}}{{#if isSingleVersion}}{{prettyNewVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}",
+  "assignAutomerge": false,
+  "reviewers": [
+    "ryanw-mobile"
+  ],
+  "assignees": [
+    "ryanw-mobile"
+  ],
   "packageRules": [
     {
       "matchPackagePatterns": [
@@ -24,5 +31,7 @@
       ],
       "groupName": "kotlin"
     }
-  ]
+  ],
+  "automerge": true,
+  "platformAutomerge": true
 }

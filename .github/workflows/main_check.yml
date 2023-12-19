@@ -34,7 +34,7 @@ jobs:
         run: ./gradlew check --no-daemon
         env:
           BITRISE: 'true'
-          giphyApiKey: ${{ secrets.GIPHYAPIKEY }}
+          GIPHYAPIKEY: ${{ secrets.GIPHYAPIKEY }}
           BITRISEIO_ANDROID_KEYSTORE_ALIAS: ${{ secrets.BITRISEIO_ANDROID_KEYSTORE_ALIAS }}
           BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD: ${{ secrets.BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD }}
           BITRISEIO_ANDROID_KEYSTORE_PASSWORD: ${{ secrets.BITRISEIO_ANDROID_KEYSTORE_PASSWORD }}

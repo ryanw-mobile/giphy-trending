@@ -30,13 +30,6 @@ android {
                 keyPassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
                 storeFile = file(System.getenv("HOME") + "/keystores/release.jks")
                 storePassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
-
-                // Extra keys attached in the keystore.properties
-                defaultConfig.buildConfigField(
-                    "String",
-                    "GIPHY_API_KEY",
-                    System.getenv("giphyApiKey"),
-                )
             } else {
                 val properties = Properties()
                 InputStreamReader(
@@ -50,13 +43,6 @@ android {
                 keyPassword = properties.getProperty("pass")
                 storeFile = file(properties.getProperty("store"))
                 storePassword = properties.getProperty("storePass")
-
-                // Extra keys attached in the keystore.properties
-                defaultConfig.buildConfigField(
-                    "String",
-                    "GIPHY_API_KEY",
-                    properties.getProperty("giphyApiKey") ?: "\"\"",
-                )
             }
         }
     }
@@ -83,6 +69,32 @@ android {
         buildConfigField("String", "DATABASE_NAME", "\"trending.db\"")
         buildConfigField("String", "API_MAX_ENTRIES", "\"100\"")
         buildConfigField("String", "API_RATING", "\"G\"")
+
+        val isRunningOnBitrise = System.getenv("BITRISE") == "true"
+        val keystorePropertiesFile = file("../../keystore.properties")
+        if (isRunningOnBitrise || !keystorePropertiesFile.exists()) {
+            // Extra keys attached in the keystore.properties
+            defaultConfig.buildConfigField(
+                "String",
+                "GIPHY_API_KEY",
+                System.getenv("GIPHYAPIKEY"),
+            )
+        } else {
+            val properties = Properties()
+            InputStreamReader(
+                FileInputStream(keystorePropertiesFile),
+                Charsets.UTF_8,
+            ).use { reader ->
+                properties.load(reader)
+            }
+
+            // Extra keys attached in the keystore.properties
+            defaultConfig.buildConfigField(
+                "String",
+                "GIPHY_API_KEY",
+                properties.getProperty("GIPHYAPIKEY") ?: "\"\"",
+            )
+        }
     }
 
     buildTypes {

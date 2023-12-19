@@ -5,16 +5,16 @@ plugins {
 
 android {
     namespace = "uk.ryanwong.benchmark"
-    compileSdk = 33
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     defaultConfig {
-        minSdk = 28
-        targetSdk = 33
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -28,12 +28,12 @@ android {
     }
 
     targetProjectPath = ":app"
-    buildToolsVersion = "33.0.0"
+    buildToolsVersion =  libs.versions.buildToolsVersion.get()
     experimentalProperties["android.experimental.self-instrumenting"] = true
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
 }
 
 dependencies {

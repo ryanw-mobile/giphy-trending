@@ -148,8 +148,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     sourceSets {
@@ -179,7 +179,7 @@ android {
         includeInApk = false
         includeInBundle = false
     }
-    buildToolsVersion = "33.0.0"
+    buildToolsVersion = libs.versions.buildToolsVersion.get()
 
     testOptions {
         unitTests {
@@ -190,7 +190,7 @@ android {
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
 }
 
 dependencies {

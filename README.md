@@ -140,6 +140,6 @@ list of things I may further work on, while waiting for my next Android Develope
 
 * Fix sharedTest (now testFixtures) folder
 * UI to be rewritten in Jetpack Compose (Major rework)
-* UI test / Integration tests (on hold due to the Jetpack Compose plan)
+* UI test, integration tests, screenshot tests - after migrating to Jetpack Compose
 * Paging - I argued with Greg previously, but finally I agreed that this should be a standard
   setting for a mid/large size App.

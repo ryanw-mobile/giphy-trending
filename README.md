@@ -53,7 +53,8 @@ more simpler.
 * [`kotest`](https://kotest.io/) - Tests
 * [Kover](https://github.com/Kotlin/kotlinx-kover) - code coverage
 * [codecov](https://codecov.io/) - code coverage
-* [Bitrise](https://app.bitrise.io/) - CI (current)
+* [Github Action](https://github.com/features/actions) - CI (current)
+* [Bitrise](https://app.bitrise.io/) - CI (previously)
 * [Travis-CI](https://travis-ci.org/) - CI (previously)
 * [Ktlint Gradle](https://github.com/jlleitschuh/ktlint-gradle) - ktlint plugin to check and apply
   code autoformat

@@ -13,9 +13,9 @@ jobs:
     steps:
       - name: Decode Keystore
         id: decode_keystore
-        uses: timheuer/base64-to-file@v1
+        uses: timheuer/base64-to-file@v1.2
         with:
-          fileName: keystores/release.jks
+          fileName: 'release.jks'
           encodedString: ${{ secrets.KEYSTORE }}
 
       - uses: actions/checkout@v4
@@ -34,6 +34,7 @@ jobs:
         run: ./gradlew check --no-daemon
         env:
           BITRISE: 'true'
+          KEYSTORE_LOCATION: ${{ steps.decode_keystore.outputs.filePath }}
           GIPHYAPIKEY: ${{ secrets.GIPHYAPIKEY }}
           BITRISEIO_ANDROID_KEYSTORE_ALIAS: ${{ secrets.BITRISEIO_ANDROID_KEYSTORE_ALIAS }}
           BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD: ${{ secrets.BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD }}

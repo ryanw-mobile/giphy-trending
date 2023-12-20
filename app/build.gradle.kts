@@ -28,7 +28,7 @@ android {
             if (isRunningOnBitrise || !keystorePropertiesFile.exists()) {
                 keyAlias = System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
                 keyPassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
-                storeFile = file(System.getenv("HOME") + "/keystores/release.jks")
+                storeFile = file(System.getenv("KEYSTORE_LOCATION") + "/release.jks")
                 storePassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
             } else {
                 val properties = Properties()

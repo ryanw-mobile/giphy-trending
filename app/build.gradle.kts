@@ -289,49 +289,14 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-/*
- * Kover configs - Extrememly unhappy with the breaking changes again and again
- * intentionally ignore this for now.
- */
 koverReport {
+    // common filters for all reports of all variants
     filters {
+        // exclusions for reports
         excludes {
+            // excludes class by fully-qualified JVM class name, wildcards '*' and '?' are available
             classes(
-                "uk.ryanwong.giphytrending.data.di.*",
-                "uk.ryanwong.giphytrending.di.*",
-                "uk.ryanwong.giphytrending.data.source.di.*",
-                "uk.ryanwong.giphytrending.databinding.*",
-                "androidx.*",
-                "com.bumptech.glide.*",
-                "dagger.hilt.internal.aggregatedroot.codegen.*",
-                "hilt_aggregated_deps.*",
-                "uk.ryanwong.giphytrending.*.*MembersInjector",
-                "uk.ryanwong.giphytrending.*.*Factory",
-                "uk.ryanwong.giphytrending.*.*HiltModules*",
-                "uk.ryanwong.giphytrending.data.source.local.*_Impl*",
-                "uk.ryanwong.giphytrending.data.source.local.*Impl_Factory",
-                "uk.ryanwong.giphytrending.DataBind*",
-                "uk.ryanwong.giphytrending.BR",
-                "uk.ryanwong.giphytrending.BuildConfig",
-                "uk.ryanwong.giphytrending.Hilt*",
-                "uk.ryanwong.giphytrending.*.Hilt_*",
-            )
-        }
-    }
-
-    androidReports("release") {
-        // filters for all report types only of 'release' build type
-        filters {
-            excludes {
-                classes(
-                    "uk.ryanwong.giphytrending.data.di.*",
-                    "uk.ryanwong.giphytrending.di.*",
-                    "uk.ryanwong.giphytrending.data.source.di.*",
-                    "uk.ryanwong.giphytrending.databinding.*",
-                    "androidx.*",
-                    "com.bumptech.glide.*",
-                    "dagger.hilt.internal.aggregatedroot.codegen.*",
-                    "hilt_aggregated_deps.*",
+                listOf(
                     "uk.ryanwong.giphytrending.*.*MembersInjector",
                     "uk.ryanwong.giphytrending.*.*Factory",
                     "uk.ryanwong.giphytrending.*.*HiltModules*",
@@ -342,8 +307,54 @@ koverReport {
                     "uk.ryanwong.giphytrending.BuildConfig",
                     "uk.ryanwong.giphytrending.Hilt*",
                     "uk.ryanwong.giphytrending.*.Hilt_*",
+                ),
+            )
+            // excludes all classes located in specified package and it subpackages, wildcards '*' and '?' are available
+            packages(
+                listOf(
+                    "uk.ryanwong.giphytrending.data.di.*",
+                    "uk.ryanwong.giphytrending.di.*",
+                    "uk.ryanwong.giphytrending.data.source.di.*",
+                    "uk.ryanwong.giphytrending.databinding.*",
+                    "androidx.*",
+                    "com.bumptech.glide.*",
+                    "dagger.hilt.internal.aggregatedroot.codegen.*",
+                    "hilt_aggregated_deps.*",
+                ),
+            )
+        }
+    }
+
+    androidReports("release") {
+        // filters for all report types only of 'release' build type
+        filters {
+            excludes {
+                classes(
+                    "*Fragment",
+                    "*Fragment\$*",
+                    "*Activity",
+                    "*Activity\$*",
+                    "*.databinding.*",
+                    "*.BuildConfig",
+
+                    // excludes debug classes
+                    "*.DebugUtil",
                 )
             }
+        }
+        //  generate an XML report when running the `check` task
+        xml {
+            onCheck = true
+        }
+
+        //  generate a HTML report when running the `check` task
+        html {
+            onCheck = true
+        }
+
+        //  verify coverage when running the `check` task
+        verify {
+            onCheck = true
         }
     }
 }

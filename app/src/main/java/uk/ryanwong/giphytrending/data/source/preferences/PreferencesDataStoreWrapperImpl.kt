@@ -17,11 +17,11 @@ private const val KEY_API_MAX_ENTRIES = "api_max_entries"
 class PreferencesDataStoreWrapperImpl @Inject constructor(
     private val dataStorePreferences: DataStore<Preferences>,
 ) : PreferencesDataStoreWrapper {
-    private val API_MAX_ENTRIES = intPreferencesKey(KEY_API_MAX_ENTRIES)
+    private val apiMaxEntries = intPreferencesKey(KEY_API_MAX_ENTRIES)
 
     override suspend fun setMaxApiEntries(maxEntries: Int) {
         dataStorePreferences.edit { settings ->
-            settings[API_MAX_ENTRIES] = maxEntries
+            settings[apiMaxEntries] = maxEntries
         }
     }
 
@@ -34,7 +34,7 @@ class PreferencesDataStoreWrapperImpl @Inject constructor(
                 throw exception
             }
         }.map { preferences ->
-            preferences[API_MAX_ENTRIES] ?: BuildConfig.API_MAX_ENTRIES.toInt()
+            preferences[apiMaxEntries] ?: BuildConfig.API_MAX_ENTRIES.toInt()
         }
     }
 }

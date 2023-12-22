@@ -42,9 +42,3 @@ dependencies {
     implementation(libs.androidx.uiautomator)
     implementation(libs.androidx.benchmark.macro.junit4)
 }
-
-//androidComponents {
-//    onVariants(selector().all()) {
-//        enabled.set(buildType == "benchmark")
-//    }
-//}

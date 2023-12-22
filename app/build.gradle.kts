@@ -330,15 +330,15 @@ koverReport {
         filters {
             excludes {
                 classes(
-                    "*Fragment",
-                    "*Fragment\$*",
-                    "*Activity",
-                    "*Activity\$*",
-                    "*.databinding.*",
-                    "*.BuildConfig",
+                    listOf(
+                        "*Fragment",
+                        "*Fragment\$*",
+                        "*Activity",
+                        "*Activity\$*",
 
-                    // excludes debug classes
-                    "*.DebugUtil",
+                        // excludes debug classes
+                        "*.DebugUtil",
+                    ),
                 )
             }
         }

@@ -45,7 +45,7 @@ room = "2.6.1"
 test-rules = "1.5.0"
 test-ext = "1.1.5"
 timber = "5.0.1"
-kotlin = "1.9.21"
+kotlin = "1.9.22"
 # ksp is linked to Kotlin version https://github.com/google/ksp/releases
 devtoolsksp = "1.9.21-1.0.16"
 uiautomator = "2.2.0"

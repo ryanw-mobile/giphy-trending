@@ -75,6 +75,9 @@ more production-ready.
 * Added user customisable API limit
 * Added test cases - currently there are 27 unit tests and 7 instrumented tests
 
+## To-do lists:
+Planned enhancements are now [logged as issues](https://github.com/ryanw-mobile/giphy-trending/issues?q=is%3Aopen+is%3Aissue+label%3Arefactor%2Cfeature%2Cfix%2Ctest).
+
 ## Requirements
 
 * Android Studio Iguana | 2023.2.1 Canary 18
@@ -132,14 +135,3 @@ format.
 
 * The generated apk(s) will be stored under `app/build/outputs/apk/`
 * Other usages can be listed using `./gradelew tasks`
-
-## To-do lists:
-
-This sample App is for demonstrating my coding habit and skills for potential employers. Here is a
-list of things I may further work on, while waiting for my next Android Developer role:
-
-* Fix sharedTest (now testFixtures) folder
-* UI to be rewritten in Jetpack Compose (Major rework)
-* UI test, integration tests, screenshot tests - after migrating to Jetpack Compose
-* Paging - I argued with Greg previously, but finally I agreed that this should be a standard
-  setting for a mid/large size App.

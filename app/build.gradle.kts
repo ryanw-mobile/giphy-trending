@@ -1,18 +1,18 @@
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Properties
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt.android.plugin)
+    alias(libs.plugins.kotlinx.kover)
     alias(libs.plugins.devtools.ksp)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.androidx.navigation.safeargs)
-    alias(libs.plugins.hilt.android.plugin)
-    alias(libs.plugins.kotlinx.kover)
     alias(libs.plugins.gradle.ktlint)
 }
 
@@ -98,13 +98,11 @@ android {
     }
 
     buildTypes {
-        getByName("debug") {
-            isMinifyEnabled = false
-            isShrinkResources = false
-
+        fun setOutputFileName() {
             applicationVariants.all {
                 val variant = this
-                variant.outputs.map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
+                variant.outputs
+                    .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
                     .forEach { output ->
                         val timestamp = SimpleDateFormat("yyyyMMdd-HHmmss").format(Date())
                         val outputFileName =
@@ -113,6 +111,13 @@ android {
                     }
             }
         }
+
+        getByName("debug") {
+            isMinifyEnabled = false
+            isShrinkResources = false
+            setOutputFileName()
+        }
+
         create("benchmark") {
             initWith(getByName("release"))
             isDebuggable = false
@@ -131,18 +136,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
-
             signingConfig = signingConfigs.getByName("release")
-            applicationVariants.all {
-                val variant = this
-                variant.outputs.map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
-                    .forEach { output ->
-                        val timestamp = SimpleDateFormat("yyyyMMdd-HHmmss").format(Date())
-                        val outputFileName =
-                            "giphy-${variant.name}-${variant.versionName}-$timestamp.apk"
-                        output.outputFileName = outputFileName
-                    }
-            }
+            setOutputFileName()
         }
     }
 
@@ -283,6 +278,20 @@ dependencies {
     // For instrumented tests - with Kotlin
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.androidx.test.rules)
+}
+
+configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    android.set(true)
+    ignoreFailures.set(true)
+    reporters {
+        reporter(ReporterType.PLAIN)
+        reporter(ReporterType.CHECKSTYLE)
+        reporter(ReporterType.SARIF)
+    }
+}
+
+tasks.named("preBuild") {
+    dependsOn(tasks.named("ktlintFormat"))
 }
 
 tasks.withType<Test> {

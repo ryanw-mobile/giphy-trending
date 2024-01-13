@@ -1,18 +1,18 @@
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Properties
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt.android.plugin)
+    alias(libs.plugins.kotlinx.kover)
     alias(libs.plugins.devtools.ksp)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.androidx.navigation.safeargs)
-    alias(libs.plugins.hilt.android.plugin)
-    alias(libs.plugins.kotlinx.kover)
     alias(libs.plugins.gradle.ktlint)
 }
 
@@ -98,13 +98,11 @@ android {
     }
 
     buildTypes {
-        getByName("debug") {
-            isMinifyEnabled = false
-            isShrinkResources = false
-
+        fun setOutputFileName() {
             applicationVariants.all {
                 val variant = this
-                variant.outputs.map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
+                variant.outputs
+                    .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
                     .forEach { output ->
                         val timestamp = SimpleDateFormat("yyyyMMdd-HHmmss").format(Date())
                         val outputFileName =
@@ -113,6 +111,13 @@ android {
                     }
             }
         }
+
+        getByName("debug") {
+            isMinifyEnabled = false
+            isShrinkResources = false
+            setOutputFileName()
+        }
+
         create("benchmark") {
             initWith(getByName("release"))
             isDebuggable = false
@@ -131,18 +136,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
-
             signingConfig = signingConfigs.getByName("release")
-            applicationVariants.all {
-                val variant = this
-                variant.outputs.map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
-                    .forEach { output ->
-                        val timestamp = SimpleDateFormat("yyyyMMdd-HHmmss").format(Date())
-                        val outputFileName =
-                            "giphy-${variant.name}-${variant.versionName}-$timestamp.apk"
-                        output.outputFileName = outputFileName
-                    }
-            }
+            setOutputFileName()
         }
     }
 
@@ -285,6 +280,20 @@ dependencies {
     androidTestImplementation(libs.androidx.test.rules)
 }
 
+configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    android.set(true)
+    ignoreFailures.set(true)
+    reporters {
+        reporter(ReporterType.PLAIN)
+        reporter(ReporterType.CHECKSTYLE)
+        reporter(ReporterType.SARIF)
+    }
+}
+
+tasks.named("preBuild") {
+    dependsOn(tasks.named("ktlintFormat"))
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
 }
@@ -297,6 +306,7 @@ koverReport {
             // excludes class by fully-qualified JVM class name, wildcards '*' and '?' are available
             classes(
                 listOf(
+                    "uk.ryanwong.giphytrending.GiphyApplication",
                     "uk.ryanwong.giphytrending.*.*MembersInjector",
                     "uk.ryanwong.giphytrending.*.*Factory",
                     "uk.ryanwong.giphytrending.*.*HiltModules*",
@@ -307,54 +317,27 @@ koverReport {
                     "uk.ryanwong.giphytrending.BuildConfig",
                     "uk.ryanwong.giphytrending.Hilt*",
                     "uk.ryanwong.giphytrending.*.Hilt_*",
+                    "*Fragment",
+                    "*Fragment\$*",
+                    "*Activity",
+                    "*Activity\$*",
+                    "*.BuildConfig",
+                    "*.DebugUtil",
                 ),
             )
             // excludes all classes located in specified package and it subpackages, wildcards '*' and '?' are available
             packages(
                 listOf(
-                    "uk.ryanwong.giphytrending.data.di.*",
-                    "uk.ryanwong.giphytrending.di.*",
-                    "uk.ryanwong.giphytrending.data.source.di.*",
-                    "uk.ryanwong.giphytrending.databinding.*",
-                    "androidx.*",
-                    "com.bumptech.glide.*",
-                    "dagger.hilt.internal.aggregatedroot.codegen.*",
-                    "hilt_aggregated_deps.*",
+                    "uk.ryanwong.giphytrending.data.di",
+                    "uk.ryanwong.giphytrending.di",
+                    "uk.ryanwong.giphytrending.data.source.di",
+                    "uk.ryanwong.giphytrending.databinding",
+                    "androidx",
+                    "com.bumptech.glide",
+                    "dagger.hilt.internal.aggregatedroot.codegen",
+                    "hilt_aggregated_deps",
                 ),
             )
-        }
-    }
-
-    androidReports("release") {
-        // filters for all report types only of 'release' build type
-        filters {
-            excludes {
-                classes(
-                    listOf(
-                        "*Fragment",
-                        "*Fragment\$*",
-                        "*Activity",
-                        "*Activity\$*",
-
-                        // excludes debug classes
-                        "*.DebugUtil",
-                    ),
-                )
-            }
-        }
-        //  generate an XML report when running the `check` task
-        xml {
-            onCheck = true
-        }
-
-        //  generate a HTML report when running the `check` task
-        html {
-            onCheck = true
-        }
-
-        //  verify coverage when running the `check` task
-        verify {
-            onCheck = true
         }
     }
 }

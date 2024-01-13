@@ -306,6 +306,7 @@ koverReport {
             // excludes class by fully-qualified JVM class name, wildcards '*' and '?' are available
             classes(
                 listOf(
+                    "uk.ryanwong.giphytrending.GiphyApplication",
                     "uk.ryanwong.giphytrending.*.*MembersInjector",
                     "uk.ryanwong.giphytrending.*.*Factory",
                     "uk.ryanwong.giphytrending.*.*HiltModules*",
@@ -316,54 +317,27 @@ koverReport {
                     "uk.ryanwong.giphytrending.BuildConfig",
                     "uk.ryanwong.giphytrending.Hilt*",
                     "uk.ryanwong.giphytrending.*.Hilt_*",
+                    "*Fragment",
+                    "*Fragment\$*",
+                    "*Activity",
+                    "*Activity\$*",
+                    "*.BuildConfig",
+                    "*.DebugUtil",
                 ),
             )
             // excludes all classes located in specified package and it subpackages, wildcards '*' and '?' are available
             packages(
                 listOf(
-                    "uk.ryanwong.giphytrending.data.di.*",
-                    "uk.ryanwong.giphytrending.di.*",
-                    "uk.ryanwong.giphytrending.data.source.di.*",
-                    "uk.ryanwong.giphytrending.databinding.*",
-                    "androidx.*",
-                    "com.bumptech.glide.*",
-                    "dagger.hilt.internal.aggregatedroot.codegen.*",
-                    "hilt_aggregated_deps.*",
+                    "uk.ryanwong.giphytrending.data.di",
+                    "uk.ryanwong.giphytrending.di",
+                    "uk.ryanwong.giphytrending.data.source.di",
+                    "uk.ryanwong.giphytrending.databinding",
+                    "androidx",
+                    "com.bumptech.glide",
+                    "dagger.hilt.internal.aggregatedroot.codegen",
+                    "hilt_aggregated_deps",
                 ),
             )
-        }
-    }
-
-    androidReports("release") {
-        // filters for all report types only of 'release' build type
-        filters {
-            excludes {
-                classes(
-                    listOf(
-                        "*Fragment",
-                        "*Fragment\$*",
-                        "*Activity",
-                        "*Activity\$*",
-
-                        // excludes debug classes
-                        "*.DebugUtil",
-                    ),
-                )
-            }
-        }
-        //  generate an XML report when running the `check` task
-        xml {
-            onCheck = true
-        }
-
-        //  generate a HTML report when running the `check` task
-        html {
-            onCheck = true
-        }
-
-        //  verify coverage when running the `check` task
-        verify {
-            onCheck = true
         }
     }
 }

@@ -1,6 +1,6 @@
 [versions]
 # App configurations, not dependencies
-benchmarkMacroJunit4 = "1.2.2"
+benchmarkMacroJunit4 = "1.2.3"
 minSdk = "28"
 targetSdk = "34"
 compileSdk = "34"

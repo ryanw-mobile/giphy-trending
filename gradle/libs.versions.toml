@@ -48,7 +48,7 @@ timber = "5.0.1"
 kotlin = "1.9.22"
 # ksp is linked to Kotlin version https://github.com/google/ksp/releases
 devtoolsksp = "1.9.22-1.0.17"
-uiautomator = "2.2.0"
+uiautomator = "2.3.0"
 
 [libraries]
 adapter-rxjava2 = { module = "com.squareup.retrofit2:adapter-rxjava2", version.ref = "retrofit" }

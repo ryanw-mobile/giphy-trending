@@ -22,15 +22,17 @@ android {
 
     signingConfigs {
         create("release") {
-            val isRunningOnBitrise = System.getenv("BITRISE") == "true"
+            val isRunningOnCI = System.getenv("BITRISE") == "true"
             val keystorePropertiesFile = file("../../keystore.properties")
 
-            if (isRunningOnBitrise || !keystorePropertiesFile.exists()) {
+            if (isRunningOnCI) {
+                println("Signing Config: using environment variables")
                 keyAlias = System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
                 keyPassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
                 storeFile = file(System.getenv("KEYSTORE_LOCATION"))
                 storePassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
-            } else {
+            } else if (keystorePropertiesFile.exists()) {
+                println("Signing Config: using keystore properties")
                 val properties = Properties()
                 InputStreamReader(
                     FileInputStream(keystorePropertiesFile),
@@ -43,6 +45,8 @@ android {
                 keyPassword = properties.getProperty("pass")
                 storeFile = file(properties.getProperty("store"))
                 storePassword = properties.getProperty("storePass")
+            } else {
+                println("Signing Config: skipping signing")
             }
         }
     }
@@ -60,6 +64,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
         // Bundle output filename
         val timestamp = SimpleDateFormat("yyyyMMdd-HHmmss").format(Date())
         setProperty("archivesBaseName", "giphy-$versionName-$timestamp")
@@ -70,16 +75,15 @@ android {
         buildConfigField("String", "API_MAX_ENTRIES", "\"100\"")
         buildConfigField("String", "API_RATING", "\"G\"")
 
-        val isRunningOnBitrise = System.getenv("BITRISE") == "true"
+        val isRunningOnCI = System.getenv("BITRISE") == "true"
         val keystorePropertiesFile = file("../../keystore.properties")
-        if (isRunningOnBitrise || !keystorePropertiesFile.exists()) {
-            // Extra keys attached in the keystore.properties
+        if (isRunningOnCI) {
             defaultConfig.buildConfigField(
                 "String",
                 "GIPHY_API_KEY",
                 System.getenv("GIPHYAPIKEY"),
             )
-        } else {
+        } else if (keystorePropertiesFile.exists()) {
             val properties = Properties()
             InputStreamReader(
                 FileInputStream(keystorePropertiesFile),
@@ -88,11 +92,17 @@ android {
                 properties.load(reader)
             }
 
-            // Extra keys attached in the keystore.properties
             defaultConfig.buildConfigField(
                 "String",
                 "GIPHY_API_KEY",
                 properties.getProperty("GIPHYAPIKEY") ?: "\"\"",
+            )
+        } else {
+            println("Giphy API key not found.")
+            defaultConfig.buildConfigField(
+                "String",
+                "GIPHY_API_KEY",
+                "\"\"",
             )
         }
     }
@@ -106,7 +116,7 @@ android {
                     .forEach { output ->
                         val timestamp = SimpleDateFormat("yyyyMMdd-HHmmss").format(Date())
                         val outputFileName =
-                            "giphy-${variant.name}-${variant.versionName}-$timestamp.apk"
+                            "giphy-${variant.versionName}-$timestamp-${variant.name}.apk"
                         output.outputFileName = outputFileName
                     }
             }
@@ -129,14 +139,20 @@ android {
         }
 
         getByName("release") {
-            isMinifyEnabled = true
             isShrinkResources = true
-
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
+            isMinifyEnabled = true
+            isDebuggable = false
+            setProguardFiles(
+                listOf(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro",
+                ),
             )
-            signingConfig = signingConfigs.getByName("release")
+
+            signingConfigs.getByName("release").keyAlias?.let {
+                signingConfig = signingConfigs.getByName("release")
+            }
+
             setOutputFileName()
         }
     }

@@ -76,24 +76,39 @@ more production-ready.
 * Added test cases - currently there are 27 unit tests and 7 instrumented tests
 
 ## To-do lists:
-Planned enhancements are now [logged as issues](https://github.com/ryanw-mobile/giphy-trending/issues?q=is%3Aopen+is%3Aissue+label%3Arefactor%2Cfeature%2Cfix%2Ctest).
+
+Planned enhancements are
+now [logged as issues](https://github.com/ryanw-mobile/giphy-trending/issues?q=is%3Aopen+is%3Aissue+label%3Arefactor%2Cfeature%2Cfix%2Ctest).
 
 ## Requirements
 
-* Android Studio Iguana | 2023.2.1 Canary 18
+* Android Studio Iguana | 2023.2.1
 * Android device or simulator running Android 9+ (API 28)
 
-## Setting up the keystore
+## Binaries download
 
-* Android keystore is not being stored in this repository. You need your own keystore to generate
+If you want to try out the app without building it, check out
+the [Releases section](https://github.com/ryanw-mobile/giphy-trending/releases) where you can find
+the APK and App Bundles for each major version. A working Giphy API key was applied when building
+the app, therefore you can test it by just installing it.
+
+## Building the App
+
+* To build the app by yourself, you need your own [Giphy API Key](https://developers.giphy.com/)
+*
+
+### Setting up the keystore
+
+Release builds will be signed if either the keystore file or environment variables are set.
+Otherwise, the app will be built unsigned and without the Giphy API key installed, which will not
+pull any data from the endpoint.
+
+### Local
+
+* Android Keystore is not being stored in this repository. You need your own Keystore to generate
   the apk / App Bundle
 
-* You also need to have your own [Giphy API Key](https://developers.giphy.com/)
-
-* To ensure sensitive data are not being pushed to Git by accident, the keystore and its passwords
-  are kept one level up of the project folder, so they are not managed by Git.
-
-* If your project folder is at `/app/giphy-trending/`, the keystore file and `keystore.properties`
+* If your project folder is at `/app/giphy-trending/`, the Keystore file and `keystore.properties`
   should be placed at `/app/`
 
 * The format of `keystore.properties` is:
@@ -105,7 +120,19 @@ Planned enhancements are now [logged as issues](https://github.com/ryanw-mobile/
      giphyApiKey="<your API Key here>"
   ```
 
-## Building the App
+### CI environment
+
+* This project has been configured to build automatically on CI.
+
+* The following environment variables have been set to provide the keystore:
+  ```
+     BITRISE = true
+     HOME = <the home directory of the bitrise environment>
+     BITRISEIO_ANDROID_KEYSTORE_PASSWORD = <your keystore password>
+     BITRISEIO_ANDROID_KEYSTORE_ALIAS = <your keystore alias>
+     BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD = <your keystore private key password>
+     GIPHYAPIKEY= <your API Key>
+  ```
 
 ### Build and install on the connected device
 
@@ -124,14 +151,13 @@ After August 2021, all new apps and games will be required to publish with the A
 format.
 
    ```
-   ./gradlew clean && ./gradlew bundleRelease
+   ./gradlew clean bundleRelease
    ```
 
 ### Build and sign an apk for distribution
 
    ```
-   ./gradlew clean && ./gradlew assembleRelease
+   ./gradlew clean assembleRelease
    ```
 
 * The generated apk(s) will be stored under `app/build/outputs/apk/`
-* Other usages can be listed using `./gradelew tasks`

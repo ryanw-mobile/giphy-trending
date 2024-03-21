@@ -1,4 +1,4 @@
-package uk.ryanwong.giphytrending.data.repository
+package uk.ryanwong.giphytrending.domain.repository
 
 interface UserPreferencesRepository {
     suspend fun setApiMax(apiMax: Int): Result<Unit>

@@ -1,4 +1,4 @@
-package uk.ryanwong.giphytrending.data.source.di
+package uk.ryanwong.giphytrending.di
 
 import dagger.Module
 import dagger.Provides

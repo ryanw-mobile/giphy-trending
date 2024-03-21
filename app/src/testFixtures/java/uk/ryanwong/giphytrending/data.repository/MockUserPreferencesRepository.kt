@@ -1,5 +1,7 @@
 package uk.ryanwong.giphytrending.data.repository
 
+import uk.ryanwong.giphytrending.domain.repository.UserPreferencesRepository
+
 class MockUserPreferencesRepository : UserPreferencesRepository {
 
     private var mockApiMaxResponse = -1

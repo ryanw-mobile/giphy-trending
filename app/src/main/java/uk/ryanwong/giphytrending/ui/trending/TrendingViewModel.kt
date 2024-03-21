@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import uk.ryanwong.giphytrending.BuildConfig
-import uk.ryanwong.giphytrending.data.repository.GiphyRepository
-import uk.ryanwong.giphytrending.data.repository.UserPreferencesRepository
 import uk.ryanwong.giphytrending.di.MainDispatcher
 import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
+import uk.ryanwong.giphytrending.domain.repository.GiphyRepository
+import uk.ryanwong.giphytrending.domain.repository.UserPreferencesRepository
 import javax.inject.Inject
 
 @HiltViewModel

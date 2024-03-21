@@ -1,4 +1,4 @@
-package uk.ryanwong.giphytrending.data.repository
+package uk.ryanwong.giphytrending.domain.repository
 
 import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
 

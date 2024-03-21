@@ -1,6 +1,7 @@
 package uk.ryanwong.giphytrending.data.repository
 
 import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
+import uk.ryanwong.giphytrending.domain.repository.GiphyRepository
 
 class MockGiphyRepository : GiphyRepository {
     var mockFetchCachedTrendingResult: Result<List<GiphyImageItemDomainModel>>? = null

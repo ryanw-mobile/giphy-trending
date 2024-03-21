@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import uk.ryanwong.giphytrending.data.source.preferences.MockPreferencesDataStoreWrapper
+import uk.ryanwong.giphytrending.domain.repository.UserPreferencesRepository
 
 @ExperimentalCoroutinesApi
 internal class UserPreferencesRepositoryImplTest : FreeSpec() {

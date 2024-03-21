@@ -1,4 +1,4 @@
-package uk.ryanwong.giphytrending.data.di
+package uk.ryanwong.giphytrending.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore

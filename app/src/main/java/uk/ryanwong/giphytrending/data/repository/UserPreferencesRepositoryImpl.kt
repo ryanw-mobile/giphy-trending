@@ -7,7 +7,8 @@ import kotlinx.coroutines.withContext
 import uk.ryanwong.giphytrending.BuildConfig
 import uk.ryanwong.giphytrending.data.source.preferences.PreferencesDataStoreWrapper
 import uk.ryanwong.giphytrending.di.IoDispatcher
-import uk.ryanwong.giphytrending.except
+import uk.ryanwong.giphytrending.domain.except
+import uk.ryanwong.giphytrending.domain.repository.UserPreferencesRepository
 import javax.inject.Inject
 
 /**

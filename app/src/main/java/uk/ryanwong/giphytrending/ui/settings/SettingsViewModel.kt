@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import uk.ryanwong.giphytrending.BuildConfig
-import uk.ryanwong.giphytrending.data.repository.UserPreferencesRepository
 import uk.ryanwong.giphytrending.di.MainDispatcher
+import uk.ryanwong.giphytrending.domain.repository.UserPreferencesRepository
 import javax.inject.Inject
 import kotlin.math.max
 

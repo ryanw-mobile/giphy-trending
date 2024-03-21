@@ -1,4 +1,4 @@
-package uk.ryanwong.giphytrending
+package uk.ryanwong.giphytrending.domain
 
 /***
  * Workaround to rethrow CancellationException

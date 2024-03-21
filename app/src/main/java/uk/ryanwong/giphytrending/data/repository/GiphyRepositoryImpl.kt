@@ -11,8 +11,9 @@ import uk.ryanwong.giphytrending.data.source.local.toTrendingEntityList
 import uk.ryanwong.giphytrending.data.source.network.NetworkDataSource
 import uk.ryanwong.giphytrending.data.source.network.model.TrendingNetworkResponse
 import uk.ryanwong.giphytrending.di.IoDispatcher
+import uk.ryanwong.giphytrending.domain.except
 import uk.ryanwong.giphytrending.domain.model.GiphyImageItemDomainModel
-import uk.ryanwong.giphytrending.except
+import uk.ryanwong.giphytrending.domain.repository.GiphyRepository
 import javax.inject.Inject
 
 class GiphyRepositoryImpl @Inject constructor(

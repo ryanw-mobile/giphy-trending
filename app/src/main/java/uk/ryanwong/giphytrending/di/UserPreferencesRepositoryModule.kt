@@ -1,4 +1,4 @@
-package uk.ryanwong.giphytrending.data.di
+package uk.ryanwong.giphytrending.di
 
 import dagger.Module
 import dagger.Provides
@@ -6,10 +6,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
-import uk.ryanwong.giphytrending.data.repository.UserPreferencesRepository
 import uk.ryanwong.giphytrending.data.repository.UserPreferencesRepositoryImpl
 import uk.ryanwong.giphytrending.data.source.preferences.PreferencesDataStoreWrapper
-import uk.ryanwong.giphytrending.di.IoDispatcher
+import uk.ryanwong.giphytrending.domain.repository.UserPreferencesRepository
 
 @Module
 @InstallIn(ViewModelComponent::class)

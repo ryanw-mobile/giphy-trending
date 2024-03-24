@@ -1,28 +1,29 @@
-# giphy-trending - Sample Android App for skills demonstration ![Gradle Build](https://github.com/ryanw-mobile/giphy-trending/actions/workflows/main_build.yml/badge.svg) [![codecov](https://codecov.io/gh/ryanw-mobile/giphy-trending/graph/badge.svg?token=J8PHIH3OPU)](https://codecov.io/gh/ryanw-mobile/giphy-trending)
+# Giphy Trending - Sample Android App ![Gradle Build](https://github.com/ryanw-mobile/giphy-trending/actions/workflows/main_build.yml/badge.svg) [![codecov](https://codecov.io/gh/ryanw-mobile/giphy-trending/graph/badge.svg?token=J8PHIH3OPU)](https://codecov.io/gh/ryanw-mobile/giphy-trending)
 
-This is a sample app based on
-the [walk through](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
-by Fahri Can. As I worked on the project, the App now has most of the code rewritten on my own.
+This sample app was elaborated from the work
+by [Fahri Can](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
+in Nov 2021. I migrated RxJava to Coroutines, and now it is in the process of migrating the XML
+Views to Compose.
+
+### The original XML View version
+
+The XML View version is no longer being maintained. You can check out
+the [XML View version branch](https://github.com/ryanw-mobile/giphy-trending/tree/XmlView) for that.
+It was using XML with Data-binding, which we
+generally believe it to be a bad coding practice by tightly coupling the business logic with the UI.
+
+&nbsp;
 
 ![Screenshot1](screenshots/screen0.png) ![Screenshot2](screenshots/screen1.png)
 ![Screenshot3](screenshots/screen2.png) ![Screenshot4](screenshots/screen3.png)
 
-First created in Nov 2021, looking at what I have done now, I found the quality of this App
-unacceptable, so I have updated again in Jul 2022.
-
 ## Skills covered:
 
-The Android Development world is currently experiencing a shift of technology stack. Besides
-migrating from Java to Kotlin, we have a choice of Coroutines over RxJava, Hilt over Dagger, and
-JetPack Compose over the traditional XML View layouts. LiveData got replaced by Kotlin Flow quickly
-this year.
+This is a typical long-lasting app that the codebase survived a few migrations as new technologies,
+paradigms and libraries evolved. The current target is to migrate this App to Compose, and apply a
+better MVVM with Clean Architecture system design.
 
-This Sample App is for demonstrating the traditional approach which applies XML
-UI, `Kotlin Coroutines`, `Kotlin Flow`,
-`Dagger Hilt`, `PreferencesDataStore`.
-
-Previously this App used `RxJava`, but it is now rewritten using `Coroutines` because it is much
-more simpler.
+&nbsp;
 
 ### High level architecture
 
@@ -32,6 +33,8 @@ more simpler.
 * Kotlin Flow
 * Material 3 with light and dark mode theming
 * Gradle Kotlin DSL and Version Catalog
+
+&nbsp;
 
 ### Major libraries used
 
@@ -59,31 +62,21 @@ more simpler.
 * [Ktlint Gradle](https://github.com/jlleitschuh/ktlint-gradle) - ktlint plugin to check and apply
   code autoformat
 
-## Improvements:
-
-The original sample codes were over simplified. Modifications have been made to make the App look
-more production-ready.
-
-* The UI architecture and list item layout have been redesigned to apply Material 3 specifications
-* The database schema and DAOs have been improved to support more functionalities
-* The RecyclerView has been modified to use ListAdapter, DiffUtils to avoid expensive
-  notifyDataSetChanged()
-* Additional handling done to preserve the scrolling state and avoid flickering during refresh
-* Menu button has been added to allow manual refresh
-* A dedicated Domain Model was added to separate the Network Data Model
-* Introduced copy image link, and open Giphy page on browser functions
-* Added user customisable API limit
-* Added test cases - currently there are 27 unit tests and 7 instrumented tests
+&nbsp;
 
 ## To-do lists:
 
 Planned enhancements are
 now [logged as issues](https://github.com/ryanw-mobile/giphy-trending/issues?q=is%3Aopen+is%3Aissue+label%3Arefactor%2Cfeature%2Cfix%2Ctest).
 
+&nbsp;
+
 ## Requirements
 
 * Android Studio Iguana | 2023.2.1
 * Android device or simulator running Android 9+ (API 28)
+
+&nbsp;
 
 ## Binaries download
 
@@ -92,10 +85,11 @@ the [Releases section](https://github.com/ryanw-mobile/giphy-trending/releases) 
 the APK and App Bundles for each major version. A working Giphy API key was applied when building
 the app, therefore you can test it by just installing it.
 
+&nbsp;
+
 ## Building the App
 
 * To build the app by yourself, you need your own [Giphy API Key](https://developers.giphy.com/)
-*
 
 ### Setting up the keystore
 
@@ -122,7 +116,7 @@ pull any data from the endpoint.
 
 ### CI environment
 
-* This project has been configured to build automatically on CI.
+* This project has been configured to support automated CI builds.
 
 * The following environment variables have been set to provide the keystore:
   ```
@@ -136,28 +130,11 @@ pull any data from the endpoint.
 
 ### Build and install on the connected device
 
-   ```
-   ./gradlew installDebug
-   // or
-   // ./gradlew installRelease
-   ```
+This app has two build variants: `Debug` and `Release`. The most common build commands are:
 
-* Options are: `Debug`, `Release`
-* Debug builds will have an App package name suffix `.debug`
+* `./gradlew clean installDebug`
+* `./gradlew clean instal`
+* `./gradlew clean bundleRelease`
+* `./gradlew clean assembleRelease`
 
-### Build and sign a bundle for distribution
-
-After August 2021, all new apps and games will be required to publish with the Android App Bundle
-format.
-
-   ```
-   ./gradlew clean bundleRelease
-   ```
-
-### Build and sign an apk for distribution
-
-   ```
-   ./gradlew clean assembleRelease
-   ```
-
-* The generated apk(s) will be stored under `app/build/outputs/apk/`
+The generated apk(s) will be stored under `app/build/outputs/`

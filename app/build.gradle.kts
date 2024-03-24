@@ -161,13 +161,18 @@ android {
      * Source sets can no longer contain shared roots as this is impossible to represent in the IDE.
      * In order to share sources between test and androidTest we should be able to use test fixtures.
      */
-//    testFixtures {
-//        enable = true
-//        androidResources = true
-//    }
+    testFixtures {
+        enable = true
+        androidResources = true
+    }
     buildFeatures {
         dataBinding = true
+        compose = true
         buildConfig = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.11"
     }
 
     compileOptions {
@@ -219,8 +224,32 @@ kotlin {
 dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Dagger-Hilt
+    // Hilt does not support ksp yet https://issuetracker.google.com/issues/179057202?pli=1
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
+    kspAndroidTest(libs.hilt.android.compiler)
+    androidTestImplementation(libs.hilt.android.testing)
+
+
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.kotlin.reflect)
     implementation(libs.recyclerview)
@@ -242,17 +271,12 @@ dependencies {
     // Retrofit 2
     implementation(libs.retrofit)
     implementation(libs.converter.moshi)
-    implementation(libs.adapter.rxjava2)
     implementation(libs.logging.interceptor)
 
     // Moshi
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
-
-    // Dagger Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
 
     // Room 2
     implementation(libs.androidx.room.runtime)
@@ -276,7 +300,7 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.core.ktx)
-    testImplementation(libs.androidx.junit.ktx)
+    testImplementation(libs.androidx.junit)
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.jetbrains.kotlinx.coroutines.test)
 
@@ -288,7 +312,6 @@ dependencies {
     androidTestImplementation(libs.kotest.assertions.core)
     androidTestImplementation(libs.jetbrains.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.test.junit4)
-    androidTestImplementation(libs.androidx.test.espresso.core)
     debugImplementation(libs.androidx.fragment.testing)
 
     // For instrumented tests - with Kotlin

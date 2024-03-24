@@ -1,31 +1,55 @@
 package uk.ryanwong.giphytrending
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.Navigation
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import uk.ryanwong.giphytrending.databinding.ActivityMainBinding
+import uk.ryanwong.giphytrending.ui.theme.GiphyTrendingTheme
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Handle the splash screen transition.
         installSplashScreen()
 
-        val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setSupportActionBar(binding.topAppbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+        setContent {
+            val navController = rememberNavController()
 
-        binding.navView.let {
-            NavigationUI.setupWithNavController(
-                it,
-                Navigation.findNavController(this, R.id.nav_host_fragment_activity_main),
-            )
+            GiphyTrendingTheme {
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        NavigationBar {
+                            //       BottomNavigationBar(navController = navController)
+                        }
+                    },
+                ) { padding ->
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        color = MaterialTheme.colorScheme.background,
+                    ) {
+//                        MainScreen(
+//                            modifier = Modifier
+//                                .fillMaxSize()
+//                                .padding(all = 16.dp),
+//                            navController = navController,
+//                        )
+                    }
+                }
+            }
         }
     }
 }

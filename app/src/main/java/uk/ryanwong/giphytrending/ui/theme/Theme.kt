@@ -20,25 +20,63 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80,
+    primary = LightPurple,
+    onPrimary = DarkerPurple,
+    primaryContainer = PinkishWhite,
+    onPrimaryContainer = DarkerPurple,
+    inversePrimary = DeepPurple,
+    secondary = LighterPurple,
+    onSecondary = MediumGrey, // Adjusted for color contrast and readability
+    secondaryContainer = GreyPink, // Adjusted for matching appearance
+    onSecondaryContainer = SoftPink,
+    tertiary = LightestPurple,
+    onTertiary = DarkPurple, // Adjusted for readability
+    tertiaryContainer = MediumGrey, // Adjusted for matching appearance
+    onTertiaryContainer = LightPink,
+    background = NearlyBlack,
+    onBackground = SoftGrey,
+    surface = NearlyBlack,
+    onSurface = SoftGrey,
+    surfaceVariant = MediumGrey,
+    onSurfaceVariant = DarkPinkishGrey,
+    surfaceTint = LightPurple,
+    inverseSurface = SoftGrey,
+    inverseOnSurface = NearlyBlack,
+    error = LightRed,
+    onError = DarkPurple, // Adjusted for readability
+    errorContainer = DeepRed,
+    onErrorContainer = LightRed,
+    outline = DarkerGrey,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-     */
+    primary = DeepPurple,
+    onPrimary = White,
+    primaryContainer = LightPink,
+    onPrimaryContainer = DarkPurple,
+    inversePrimary = LightPurple,
+    secondary = MutedPurple,
+    onSecondary = White,
+    secondaryContainer = SoftPink,
+    onSecondaryContainer = DarkPurple, // Adjusted for readability
+    tertiary = LightestPurple,
+    onTertiary = White,
+    tertiaryContainer = LightPink, // Adjusted for color contrast and readability
+    onTertiaryContainer = DarkPurple, // Adjusted for readability
+    background = VeryLightGrey,
+    onBackground = DarkGrey,
+    surface = VeryLightGrey,
+    onSurface = DarkGrey,
+    surfaceVariant = GreyPink,
+    onSurfaceVariant = MediumGrey,
+    surfaceTint = DeepPurple,
+    inverseSurface = AlmostBlack,
+    inverseOnSurface = LightGrey,
+    error = DeepRed,
+    onError = White,
+    errorContainer = LightRed,
+    onErrorContainer = DarkPurple,
+    outline = DustyPurple,
 )
 
 @Composable

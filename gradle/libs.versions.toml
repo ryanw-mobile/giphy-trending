@@ -47,7 +47,7 @@ test-ext = "1.1.5"
 timber = "5.0.1"
 kotlin = "1.9.23"
 # ksp is linked to Kotlin version https://github.com/google/ksp/releases
-devtoolsksp = "1.9.23-1.0.19"
+devtoolsksp = "1.9.23-1.0.20"
 uiautomator = "2.3.0"
 
 [libraries]

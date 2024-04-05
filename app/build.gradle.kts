@@ -55,6 +55,7 @@ android {
         applicationId = "uk.ryanwong.giphytrending"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
+        buildToolsVersion = libs.versions.buildToolsVersion.get()
         versionCode = 7
         versionName = "1.4.1"
 
@@ -157,14 +158,6 @@ android {
         }
     }
 
-    /**
-     * Source sets can no longer contain shared roots as this is impossible to represent in the IDE.
-     * In order to share sources between test and androidTest we should be able to use test fixtures.
-     */
-    testFixtures {
-        enable = true
-        androidResources = true
-    }
     buildFeatures {
         dataBinding = true
         compose = true
@@ -186,10 +179,6 @@ android {
         }
     }
 
-    testOptions {
-        animationsDisabled = true
-    }
-
     packaging {
         resources {
             excludes += listOf(
@@ -203,17 +192,27 @@ android {
             )
         }
     }
+
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false
     }
-    buildToolsVersion = libs.versions.buildToolsVersion.get()
 
     testOptions {
+        animationsDisabled = true
         unitTests {
             isIncludeAndroidResources = true
             isReturnDefaultValues = true
         }
+    }
+
+    /**
+     * Source sets can no longer contain shared roots as this is impossible to represent in the IDE.
+     * In order to share sources between test and androidTest we should be able to use test fixtures.
+     */
+    testFixtures {
+        enable = true
+        androidResources = true
     }
 }
 

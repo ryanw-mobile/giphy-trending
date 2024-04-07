@@ -7,6 +7,7 @@ package com.rwmobi.giphytrending.ui.destinations.trendinglist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil.ImageLoader
 import com.rwmobi.giphytrending.di.DispatcherModule
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import com.rwmobi.giphytrending.domain.repository.GiphyRepository
@@ -26,6 +27,7 @@ import javax.inject.Inject
 class TrendingViewModel @Inject constructor(
     private val giphyRepository: GiphyRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
+    private val imageLoader: ImageLoader,
     @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<TrendingUIState> = MutableStateFlow(TrendingUIState(isLoading = true))
@@ -104,6 +106,8 @@ class TrendingViewModel @Inject constructor(
             currentUiState.copy(errorMessages = errorMessages)
         }
     }
+
+    fun getImageLoader() = imageLoader
 
     private fun processTrendingList(repositoryResult: Result<List<GiphyImageItem>>, isLoadingDone: Boolean) {
         when {

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,24 +28,25 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.PreviewFontScale
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import coil.ImageLoader
 import coil.compose.AsyncImage
-import coil.decode.GifDecoder
-import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.theme.getDimension
 
 @Composable
 fun GiphyItem(
     modifier: Modifier = Modifier,
     giphyImageItem: GiphyImageItem,
+    imageLoader: ImageLoader,
     onClickToOpen: (String) -> Unit,
     onClickToShare: (String) -> Unit,
 ) {
     val dimension = LocalConfiguration.current.getDimension()
-
     Column(
         modifier = modifier,
     ) {
@@ -69,15 +71,7 @@ fun GiphyItem(
             placeholder = painterResource(R.drawable.ic_baseline_error_outline_24),
             contentDescription = giphyImageItem.title,
             contentScale = ContentScale.FillWidth,
-            imageLoader = ImageLoader.Builder(LocalContext.current.applicationContext)
-                .components {
-                    if (android.os.Build.VERSION.SDK_INT >= 28) {
-                        add(ImageDecoderDecoder.Factory())
-                    } else {
-                        add(GifDecoder.Factory())
-                    }
-                }
-                .build(),
+            imageLoader = imageLoader,
         )
 
         Row(
@@ -124,6 +118,31 @@ fun GiphyItem(
                     contentDescription = stringResource(R.string.content_description_copy_image_link),
                 )
             }
+        }
+    }
+}
+
+@PreviewLightDark
+@PreviewFontScale
+@Composable
+private fun GiphyItemPreview() {
+    GiphyTrendingTheme {
+        Surface {
+            GiphyItem(
+                modifier = Modifier.fillMaxWidth(),
+                giphyImageItem = GiphyImageItem(
+                    id = "MiBE4zcYUZWYmHnsI7",
+                    previewUrl = "https://media4.giphy.com/media/MiBE4zcYUZWYmHnsI7/200w.gif",
+                    imageUrl = "https://media4.giphy.com/media/MiBE4zcYUZWYmHnsI7/giphy.gif",
+                    webUrl = "https://giphy.com/gifs/marchmadness-sports-sport-womens-basketball-MiBE4zcYUZWYmHnsI7",
+                    title = "Womens Basketball Sport GIF by NCAA March Madness",
+                    type = "gif",
+                    username = "marchmadness",
+                ),
+                imageLoader = ImageLoader(LocalContext.current),
+                onClickToShare = {},
+                onClickToOpen = {},
+            )
         }
     }
 }

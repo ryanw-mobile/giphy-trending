@@ -8,9 +8,12 @@ package com.rwmobi.giphytrending.ui.destinations.trendinglist
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -21,21 +24,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.dp
+import coil.ImageLoader
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import com.rwmobi.giphytrending.ui.components.GiphyItem
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.theme.getDimension
-import timber.log.Timber
+import kotlinx.coroutines.delay
 
 @Composable
 fun TrendingListScreen(
     modifier: Modifier = Modifier,
     onShowSnackbar: suspend (String) -> Unit,
+    imageLoader: ImageLoader,
     uiState: TrendingUIState,
     uiEvent: TrendingUIEvent,
 ) {
@@ -57,19 +64,14 @@ fun TrendingListScreen(
                     giphyImageItems = it,
                     isLoading = uiState.isLoading,
                     onRefresh = uiEvent.onRefresh,
-                    onCopyImageUrl = {},
-                    onOpenInBrowser = {},
+                    imageLoader = imageLoader,
+                    onClickToShare = {},
+                    onClickToOpen = {},
                 )
             } else {
                 // show empty screen
             }
         }
-
-//        AnimatedVisibility(visible = uiState.isLoading) {
-//            LoadingOverlay(
-//                modifier = Modifier.fillMaxSize(),
-//            )
-//        }
     }
 }
 
@@ -79,15 +81,16 @@ private fun TrendingList(
     modifier: Modifier = Modifier,
     giphyImageItems: List<GiphyImageItem>,
     isLoading: Boolean,
+    imageLoader: ImageLoader,
     onRefresh: () -> Unit,
-    onCopyImageUrl: (String) -> Unit,
-    onOpenInBrowser: (String) -> Unit,
+    onClickToShare: (String) -> Unit,
+    onClickToOpen: (String) -> Unit,
 ) {
     val dimension = LocalConfiguration.current.getDimension()
     val contentDescriptionTrendingList = stringResource(R.string.content_description_trending_list)
-
     val pullRefreshState = rememberPullToRefreshState()
-    Box(Modifier.nestedScroll(pullRefreshState.nestedScrollConnection)) {
+
+    Box(modifier.nestedScroll(pullRefreshState.nestedScrollConnection)) {
         LazyColumn(
             contentPadding = PaddingValues(vertical = dimension.grid_2),
             modifier = Modifier
@@ -95,14 +98,29 @@ private fun TrendingList(
                 .semantics { contentDescription = contentDescriptionTrendingList },
         ) {
             itemsIndexed(giphyImageItems) { index, giphyImageItem ->
-                GiphyItem(giphyImageItem = giphyImageItem, onClickToOpen = {}, onClickToShare = {})
+                GiphyItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    giphyImageItem = giphyImageItem,
+                    imageLoader = imageLoader,
+                    onClickToOpen = onClickToOpen,
+                    onClickToShare = onClickToShare,
+                )
+
+                if (index < giphyImageItems.lastIndex) {
+                    HorizontalDivider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = dimension.grid_0_5),
+                        thickness = 1.dp,
+                    )
+                }
             }
         }
 
         if (pullRefreshState.isRefreshing) {
             LaunchedEffect(true) {
                 if (!isLoading) {
-                    Timber.d("!!!")
+                    delay(1000) // Trick to let user know work in progress
                     onRefresh()
                 }
             }
@@ -110,10 +128,8 @@ private fun TrendingList(
 
         LaunchedEffect(isLoading) {
             if (!isLoading) {
-                Timber.d("update state to stopRefresh")
                 pullRefreshState.endRefresh()
             } else {
-                Timber.d("update state to startRefresh")
                 pullRefreshState.startRefresh()
             }
         }
@@ -135,8 +151,9 @@ private fun TrendingListPreview() {
                 giphyImageItems = emptyList(),
                 isLoading = false,
                 onRefresh = {},
-                onCopyImageUrl = {},
-                onOpenInBrowser = {},
+                imageLoader = ImageLoader(LocalContext.current),
+                onClickToShare = {},
+                onClickToOpen = {},
             )
         }
     }

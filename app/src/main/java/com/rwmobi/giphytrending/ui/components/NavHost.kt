@@ -35,6 +35,7 @@ fun NavHost(
             TrendingListScreen(
                 modifier = modifier,
                 onShowSnackbar = onShowSnackbar,
+                imageLoader = viewModel.getImageLoader(),
                 uiState = uiState,
                 uiEvent = TrendingUIEvent(
                     onRefresh = { viewModel.refresh() },

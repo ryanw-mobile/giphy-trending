@@ -48,7 +48,7 @@ better MVVM with Clean Architecture system design.
 * [`Retrofit2`](https://square.github.io/retrofit/)
 * [`Moshi`](https://github.com/square/moshi)
 * Splash Screen API
-* [`Glide`](https://github.com/bumptech/glide) - Network images
+* [`Coil`](https://github.com/bumptech/glide) - Network images
 * [`Dagger Hilt`](https://dagger.dev/hilt/) - DI
 * [`Timber`](https://github.com/JakeWharton/timber) - Logging
 * [`LeakCanary`](https://github.com/square/leakcanary) - Memory leak detection

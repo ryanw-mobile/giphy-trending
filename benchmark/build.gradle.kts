@@ -39,6 +39,5 @@ kotlin {
 dependencies {
     implementation(libs.androidx.test.junit4)
     implementation(libs.androidx.espresso.core)
-    implementation(libs.androidx.uiautomator)
     implementation(libs.androidx.benchmark.macro.junit4)
 }

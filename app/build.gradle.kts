@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import java.io.FileInputStream
 import java.io.InputStreamReader
@@ -6,18 +11,16 @@ import java.util.Date
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.hilt.android.plugin)
-    alias(libs.plugins.kotlinx.kover)
-    alias(libs.plugins.devtools.ksp)
-    alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.androidx.navigation.safeargs)
-    alias(libs.plugins.gradle.ktlint)
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.hiltAndroidPlugin)
+    alias(libs.plugins.kotlinxKover)
+    alias(libs.plugins.devtoolsKsp)
+    alias(libs.plugins.gradleKtlint)
 }
 
 android {
-    namespace = "uk.ryanwong.giphytrending"
+    namespace = "com.rwmobi.giphytrending"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     signingConfigs {
@@ -52,7 +55,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "uk.ryanwong.giphytrending"
+        applicationId = "com.rwmobi.giphytrending"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         buildToolsVersion = libs.versions.buildToolsVersion.get()
@@ -61,7 +64,7 @@ android {
 
         resourceConfigurations += setOf("en")
 
-        testInstrumentationRunner = "uk.ryanwong.giphytrending.CustomTestRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -74,17 +77,20 @@ android {
         buildConfigField("String", "GIPHY_ENDPOINT", "\"https://api.giphy.com/\"")
         buildConfigField("String", "DATABASE_NAME", "\"trending.db\"")
         buildConfigField("String", "API_MAX_ENTRIES", "\"100\"")
+        buildConfigField("String", "API_MIN_ENTRIES", "\"25\"")
         buildConfigField("String", "API_RATING", "\"G\"")
 
         val isRunningOnCI = System.getenv("BITRISE") == "true"
         val keystorePropertiesFile = file("../../keystore.properties")
         if (isRunningOnCI) {
+            println("Importing Giphy API Key from environment variable")
             defaultConfig.buildConfigField(
-                "String",
-                "GIPHY_API_KEY",
-                System.getenv("GIPHYAPIKEY"),
+                type = "String",
+                name = "GIPHY_API_KEY",
+                value = System.getenv("GIPHYAPIKEY"),
             )
         } else if (keystorePropertiesFile.exists()) {
+            println("Importing Giphy API Key from keystore")
             val properties = Properties()
             InputStreamReader(
                 FileInputStream(keystorePropertiesFile),
@@ -94,9 +100,9 @@ android {
             }
 
             defaultConfig.buildConfigField(
-                "String",
-                "GIPHY_API_KEY",
-                properties.getProperty("GIPHYAPIKEY") ?: "\"\"",
+                type = "String",
+                name = "GIPHY_API_KEY",
+                value = properties.getProperty("giphyApiKey") ?: "\"\"",
             )
         } else {
             println("Giphy API key not found.")
@@ -158,25 +164,18 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
     buildFeatures {
-        dataBinding = true
         compose = true
         buildConfig = true
     }
 
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.11"
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    sourceSets {
-        named("test") {
-            java.srcDirs("src/testFixtures/java")
-        }
     }
 
     packaging {
@@ -193,9 +192,10 @@ android {
         }
     }
 
-    dependenciesInfo {
-        includeInApk = false
-        includeInBundle = false
+    sourceSets {
+        named("test") {
+            java.srcDirs("src/testFixtures/java")
+        }
     }
 
     testOptions {
@@ -255,7 +255,6 @@ dependencies {
     // Android Lifecycle Extensions
     implementation(libs.androidx.lifecycle.extensions)
     implementation(libs.androidx.activity.ktx)
-    kapt(libs.common.java8)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
@@ -264,7 +263,8 @@ dependencies {
     implementation(libs.androidx.navigation.navigation.ui.ktx)
 
     // Glide for Images
-    implementation(libs.glide)
+    implementation(libs.coil)
+    implementation(libs.coil.gif)
 
     // Retrofit 2
     implementation(libs.retrofit)
@@ -297,7 +297,7 @@ dependencies {
     // testing
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.core.ktx)
+    testImplementation(libs.test.core.ktx)
     testImplementation(libs.androidx.junit)
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.jetbrains.kotlinx.coroutines.test)
@@ -316,7 +316,6 @@ dependencies {
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.androidx.test.rules)
 }
-
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
     android.set(true)
     ignoreFailures.set(true)
@@ -343,17 +342,17 @@ koverReport {
             // excludes class by fully-qualified JVM class name, wildcards '*' and '?' are available
             classes(
                 listOf(
-                    "uk.ryanwong.giphytrending.GiphyApplication",
-                    "uk.ryanwong.giphytrending.*.*MembersInjector",
-                    "uk.ryanwong.giphytrending.*.*Factory",
-                    "uk.ryanwong.giphytrending.*.*HiltModules*",
-                    "uk.ryanwong.giphytrending.data.source.local.*_Impl*",
-                    "uk.ryanwong.giphytrending.data.source.local.*Impl_Factory",
-                    "uk.ryanwong.giphytrending.DataBind*",
-                    "uk.ryanwong.giphytrending.BR",
-                    "uk.ryanwong.giphytrending.BuildConfig",
-                    "uk.ryanwong.giphytrending.Hilt*",
-                    "uk.ryanwong.giphytrending.*.Hilt_*",
+                    "com.rwmobi.giphytrending.GiphyApplication",
+                    "com.rwmobi.giphytrending.*.*MembersInjector",
+                    "com.rwmobi.giphytrending.*.*Factory",
+                    "com.rwmobi.giphytrending.*.*HiltModules*",
+                    "com.rwmobi.giphytrending.data.source.local.*_Impl*",
+                    "com.rwmobi.giphytrending.data.source.local.*Impl_Factory",
+                    "com.rwmobi.giphytrending.DataBind*",
+                    "com.rwmobi.giphytrending.BR",
+                    "com.rwmobi.giphytrending.BuildConfig",
+                    "com.rwmobi.giphytrending.Hilt*",
+                    "com.rwmobi.giphytrending.*.Hilt_*",
                     "*Fragment",
                     "*Fragment\$*",
                     "*Activity",
@@ -365,10 +364,10 @@ koverReport {
             // excludes all classes located in specified package and it subpackages, wildcards '*' and '?' are available
             packages(
                 listOf(
-                    "uk.ryanwong.giphytrending.data.di",
-                    "uk.ryanwong.giphytrending.di",
-                    "uk.ryanwong.giphytrending.data.source.di",
-                    "uk.ryanwong.giphytrending.databinding",
+                    "com.rwmobi.giphytrending.data.di",
+                    "com.rwmobi.giphytrending.di",
+                    "com.rwmobi.giphytrending.data.source.di",
+                    "com.rwmobi.giphytrending.databinding",
                     "androidx",
                     "com.bumptech.glide",
                     "dagger.hilt.internal.aggregatedroot.codegen",

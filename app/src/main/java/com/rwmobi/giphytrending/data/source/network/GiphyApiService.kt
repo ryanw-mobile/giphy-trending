@@ -16,13 +16,7 @@ import java.util.concurrent.TimeUnit
 
 object GiphyApiService {
     private fun createOkHttpClient(): OkHttpClient {
-        /***
-         * Remark: For development purpose we can use the Profiler on Android Studio to inspect the
-         * HTTP traffic, which is more detailed than using HttpLoggingInterceptor.
-         */
-        // val logger = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         return OkHttpClient.Builder()
-            //    .addInterceptor(logger)
             .connectTimeout(15, TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
             .build()
@@ -38,7 +32,6 @@ object GiphyApiService {
         return Retrofit.Builder()
             .client(createOkHttpClient())
             .baseUrl(BuildConfig.GIPHY_ENDPOINT)
-            //      .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
             .create(GiphyApi::class.java)

@@ -6,7 +6,6 @@
 package com.rwmobi.giphytrending.ui.destinations.trendinglist
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,11 +28,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import com.rwmobi.giphytrending.ui.components.GiphyItem
+import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemsProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.theme.getDimension
 import kotlinx.coroutines.delay
@@ -69,7 +70,7 @@ fun TrendingListScreen(
                     onClickToOpen = {},
                 )
             } else {
-                // show empty screen
+                // TODO: show empty screen
             }
         }
     }
@@ -92,7 +93,6 @@ private fun TrendingList(
 
     Box(modifier.nestedScroll(pullRefreshState.nestedScrollConnection)) {
         LazyColumn(
-            contentPadding = PaddingValues(vertical = dimension.grid_2),
             modifier = Modifier
                 .fillMaxSize()
                 .semantics { contentDescription = contentDescriptionTrendingList },
@@ -143,12 +143,14 @@ private fun TrendingList(
 
 @PreviewLightDark
 @Composable
-private fun TrendingListPreview() {
+private fun TrendingListPreview(
+    @PreviewParameter(GiphyImageItemsProvider::class) giphyImageItems: List<GiphyImageItem>,
+) {
     GiphyTrendingTheme {
         Surface {
             TrendingList(
                 modifier = Modifier.fillMaxSize(),
-                giphyImageItems = emptyList(),
+                giphyImageItems = giphyImageItems,
                 isLoading = false,
                 onRefresh = {},
                 imageLoader = ImageLoader(LocalContext.current),

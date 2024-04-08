@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "uk.ryanwong.benchmark"
+    namespace = "uk.rwmobi.benchmark"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     compileOptions {

@@ -3,6 +3,6 @@
  * https://github.com/ryanw-mobile
  */
 
-package com.rwmobi.giphytrending.ui.models
+package com.rwmobi.giphytrending.ui.model
 
 data class ErrorMessage(val id: Long, val message: String)

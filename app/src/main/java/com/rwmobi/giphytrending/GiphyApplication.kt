@@ -6,7 +6,6 @@
 package com.rwmobi.giphytrending
 
 import android.app.Application
-import com.squareup.leakcanary.core.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import timber.log.Timber.Forest.plant

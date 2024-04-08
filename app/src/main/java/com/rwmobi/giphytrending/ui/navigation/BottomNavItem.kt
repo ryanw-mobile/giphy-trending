@@ -3,7 +3,7 @@
  * https://github.com/ryanw-mobile
  */
 
-package com.rwmobi.giphytrending.ui.models
+package com.rwmobi.giphytrending.ui.navigation
 
 import com.rwmobi.giphytrending.R
 

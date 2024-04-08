@@ -5,7 +5,7 @@
 
 package com.rwmobi.giphytrending.ui.destinations.settings
 
-import com.rwmobi.giphytrending.ui.models.ErrorMessage
+import com.rwmobi.giphytrending.ui.model.ErrorMessage
 
 data class SettingsUIState(
     val apiMaxEntries: Int? = null,

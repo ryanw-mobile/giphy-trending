@@ -3,13 +3,14 @@
  * https://github.com/ryanw-mobile
  */
 
-package com.rwmobi.giphytrending.ui.destinations.settings
+package com.rwmobi.giphytrending.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rwmobi.giphytrending.di.DispatcherModule
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
-import com.rwmobi.giphytrending.ui.models.ErrorMessage
+import com.rwmobi.giphytrending.ui.destinations.settings.SettingsUIState
+import com.rwmobi.giphytrending.ui.model.ErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow

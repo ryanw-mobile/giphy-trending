@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.PreviewFontScale
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.navigation.compose.rememberNavController
 import com.rwmobi.giphytrending.R
+import com.rwmobi.giphytrending.ui.navigation.NavHost
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

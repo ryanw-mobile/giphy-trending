@@ -6,7 +6,7 @@
 package com.rwmobi.giphytrending.ui.destinations.trendinglist
 
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
-import com.rwmobi.giphytrending.ui.models.ErrorMessage
+import com.rwmobi.giphytrending.ui.model.ErrorMessage
 
 data class TrendingUIState(
     val giphyImageItems: List<GiphyImageItem>? = null,

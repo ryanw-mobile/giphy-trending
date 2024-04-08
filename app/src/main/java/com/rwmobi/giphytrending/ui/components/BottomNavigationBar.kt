@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.rwmobi.giphytrending.ui.models.BottomNavItem
+import com.rwmobi.giphytrending.ui.navigation.BottomNavItem
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 
 @Composable

@@ -1,7 +1,7 @@
 package com.rwmobi.giphytrending.ui.settings
 
 import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
-import com.rwmobi.giphytrending.ui.destinations.settings.SettingsViewModel
+import com.rwmobi.giphytrending.ui.viewmodel.SettingsViewModel
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.Dispatchers

@@ -3,7 +3,7 @@
  * https://github.com/ryanw-mobile
  */
 
-package com.rwmobi.giphytrending.ui.components
+package com.rwmobi.giphytrending.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,10 +16,10 @@ import androidx.navigation.compose.composable
 import com.rwmobi.giphytrending.BuildConfig
 import com.rwmobi.giphytrending.ui.destinations.settings.SettingsScreen
 import com.rwmobi.giphytrending.ui.destinations.settings.SettingsUIEvent
-import com.rwmobi.giphytrending.ui.destinations.settings.SettingsViewModel
 import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingListScreen
 import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingUIEvent
-import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingViewModel
+import com.rwmobi.giphytrending.ui.viewmodel.SettingsViewModel
+import com.rwmobi.giphytrending.ui.viewmodel.TrendingViewModel
 
 @Composable
 fun NavHost(

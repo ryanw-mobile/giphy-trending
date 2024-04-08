@@ -59,8 +59,8 @@ android {
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         buildToolsVersion = libs.versions.buildToolsVersion.get()
-        versionCode = 7
-        versionName = "1.4.1"
+        versionCode = 8
+        versionName = "2.0.0"
 
         resourceConfigurations += setOf("en")
 

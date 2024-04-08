@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import java.io.FileInputStream
 import java.io.InputStreamReader
@@ -6,18 +11,16 @@ import java.util.Date
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.hilt.android.plugin)
-    alias(libs.plugins.kotlinx.kover)
-    alias(libs.plugins.devtools.ksp)
-    alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.androidx.navigation.safeargs)
-    alias(libs.plugins.gradle.ktlint)
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.hiltAndroidPlugin)
+    alias(libs.plugins.kotlinxKover)
+    alias(libs.plugins.devtoolsKsp)
+    alias(libs.plugins.gradleKtlint)
 }
 
 android {
-    namespace = "uk.ryanwong.giphytrending"
+    namespace = "com.rwmobi.giphytrending"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     signingConfigs {
@@ -52,15 +55,16 @@ android {
     }
 
     defaultConfig {
-        applicationId = "uk.ryanwong.giphytrending"
+        applicationId = "com.rwmobi.giphytrending"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 7
-        versionName = "1.4.1"
+        buildToolsVersion = libs.versions.buildToolsVersion.get()
+        versionCode = 8
+        versionName = "2.0.0"
 
         resourceConfigurations += setOf("en")
 
-        testInstrumentationRunner = "uk.ryanwong.giphytrending.CustomTestRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -73,17 +77,20 @@ android {
         buildConfigField("String", "GIPHY_ENDPOINT", "\"https://api.giphy.com/\"")
         buildConfigField("String", "DATABASE_NAME", "\"trending.db\"")
         buildConfigField("String", "API_MAX_ENTRIES", "\"100\"")
+        buildConfigField("String", "API_MIN_ENTRIES", "\"25\"")
         buildConfigField("String", "API_RATING", "\"G\"")
 
         val isRunningOnCI = System.getenv("BITRISE") == "true"
         val keystorePropertiesFile = file("../../keystore.properties")
         if (isRunningOnCI) {
+            println("Importing Giphy API Key from environment variable")
             defaultConfig.buildConfigField(
-                "String",
-                "GIPHY_API_KEY",
-                System.getenv("GIPHYAPIKEY"),
+                type = "String",
+                name = "GIPHY_API_KEY",
+                value = System.getenv("GIPHYAPIKEY"),
             )
         } else if (keystorePropertiesFile.exists()) {
+            println("Importing Giphy API Key from keystore")
             val properties = Properties()
             InputStreamReader(
                 FileInputStream(keystorePropertiesFile),
@@ -93,9 +100,9 @@ android {
             }
 
             defaultConfig.buildConfigField(
-                "String",
-                "GIPHY_API_KEY",
-                properties.getProperty("GIPHYAPIKEY") ?: "\"\"",
+                type = "String",
+                name = "GIPHY_API_KEY",
+                value = properties.getProperty("giphyApiKey") ?: "\"\"",
             )
         } else {
             println("Giphy API key not found.")
@@ -157,32 +164,18 @@ android {
         }
     }
 
-    /**
-     * Source sets can no longer contain shared roots as this is impossible to represent in the IDE.
-     * In order to share sources between test and androidTest we should be able to use test fixtures.
-     */
-//    testFixtures {
-//        enable = true
-//        androidResources = true
-//    }
-    buildFeatures {
-        dataBinding = true
-        buildConfig = true
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    sourceSets {
-        named("test") {
-            java.srcDirs("src/testFixtures/java")
-        }
+    buildFeatures {
+        compose = true
+        buildConfig = true
     }
 
-    testOptions {
-        animationsDisabled = true
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.11"
     }
 
     packaging {
@@ -198,17 +191,28 @@ android {
             )
         }
     }
-    dependenciesInfo {
-        includeInApk = false
-        includeInBundle = false
+
+    sourceSets {
+        named("test") {
+            java.srcDirs("src/testFixtures/java")
+        }
     }
-    buildToolsVersion = libs.versions.buildToolsVersion.get()
 
     testOptions {
+        animationsDisabled = true
         unitTests {
             isIncludeAndroidResources = true
             isReturnDefaultValues = true
         }
+    }
+
+    /**
+     * Source sets can no longer contain shared roots as this is impossible to represent in the IDE.
+     * In order to share sources between test and androidTest we should be able to use test fixtures.
+     */
+    testFixtures {
+        enable = true
+        androidResources = true
     }
 }
 
@@ -219,40 +223,48 @@ kotlin {
 dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.kotlin.reflect)
-    implementation(libs.recyclerview)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Dagger-Hilt
+    // Hilt does not support ksp yet https://issuetracker.google.com/issues/179057202?pli=1
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
+    kspAndroidTest(libs.hilt.android.compiler)
+    androidTestImplementation(libs.hilt.android.testing)
 
     // Android Lifecycle Extensions
-    implementation(libs.androidx.lifecycle.extensions)
-    implementation(libs.androidx.activity.ktx)
-    kapt(libs.common.java8)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
+    // implementation(libs.androidx.lifecycle.extensions)
+    // implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-    // Navigation
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.navigation.ui.ktx)
-
     // Glide for Images
-    implementation(libs.glide)
+    implementation(libs.coil)
+    implementation(libs.coil.gif)
 
     // Retrofit 2
     implementation(libs.retrofit)
     implementation(libs.converter.moshi)
-    implementation(libs.adapter.rxjava2)
     implementation(libs.logging.interceptor)
 
     // Moshi
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
-
-    // Dagger Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
 
     // Room 2
     implementation(libs.androidx.room.runtime)
@@ -275,10 +287,13 @@ dependencies {
     // testing
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.core.ktx)
-    testImplementation(libs.androidx.junit.ktx)
+    testImplementation(libs.test.core.ktx)
+    testImplementation(libs.androidx.junit)
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.jetbrains.kotlinx.coroutines.test)
+
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.mockk.agent)
 
     // kotest
     testImplementation(libs.kotest.runner.junit5)
@@ -288,7 +303,6 @@ dependencies {
     androidTestImplementation(libs.kotest.assertions.core)
     androidTestImplementation(libs.jetbrains.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.test.junit4)
-    androidTestImplementation(libs.androidx.test.espresso.core)
     debugImplementation(libs.androidx.fragment.testing)
 
     // For instrumented tests - with Kotlin
@@ -322,17 +336,17 @@ koverReport {
             // excludes class by fully-qualified JVM class name, wildcards '*' and '?' are available
             classes(
                 listOf(
-                    "uk.ryanwong.giphytrending.GiphyApplication",
-                    "uk.ryanwong.giphytrending.*.*MembersInjector",
-                    "uk.ryanwong.giphytrending.*.*Factory",
-                    "uk.ryanwong.giphytrending.*.*HiltModules*",
-                    "uk.ryanwong.giphytrending.data.source.local.*_Impl*",
-                    "uk.ryanwong.giphytrending.data.source.local.*Impl_Factory",
-                    "uk.ryanwong.giphytrending.DataBind*",
-                    "uk.ryanwong.giphytrending.BR",
-                    "uk.ryanwong.giphytrending.BuildConfig",
-                    "uk.ryanwong.giphytrending.Hilt*",
-                    "uk.ryanwong.giphytrending.*.Hilt_*",
+                    "com.rwmobi.giphytrending.GiphyApplication",
+                    "com.rwmobi.giphytrending.*.*MembersInjector",
+                    "com.rwmobi.giphytrending.*.*Factory",
+                    "com.rwmobi.giphytrending.*.*HiltModules*",
+                    "com.rwmobi.giphytrending.data.source.local.*_Impl*",
+                    "com.rwmobi.giphytrending.data.source.local.*Impl_Factory",
+                    "com.rwmobi.giphytrending.BR",
+                    "com.rwmobi.giphytrending.BuildConfig",
+                    "com.rwmobi.giphytrending.Hilt*",
+                    "com.rwmobi.giphytrending.*.Hilt_*",
+                    "com.rwmobi.giphytrending.ComposableSingletons*",
                     "*Fragment",
                     "*Fragment\$*",
                     "*Activity",
@@ -344,12 +358,13 @@ koverReport {
             // excludes all classes located in specified package and it subpackages, wildcards '*' and '?' are available
             packages(
                 listOf(
-                    "uk.ryanwong.giphytrending.data.di",
-                    "uk.ryanwong.giphytrending.di",
-                    "uk.ryanwong.giphytrending.data.source.di",
-                    "uk.ryanwong.giphytrending.databinding",
+                    "com.rwmobi.giphytrending.di",
+                    "com.rwmobi.giphytrending.ui.components",
+                    "com.rwmobi.giphytrending.ui.destinations",
+                    "com.rwmobi.giphytrending.ui.navigation",
+                    "com.rwmobi.giphytrending.ui.previewparameter",
+                    "com.rwmobi.giphytrending.ui.theme",
                     "androidx",
-                    "com.bumptech.glide",
                     "dagger.hilt.internal.aggregatedroot.codegen",
                     "hilt_aggregated_deps",
                 ),

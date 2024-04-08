@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "uk.ryanwong.benchmark"
+    namespace = "uk.rwmobi.benchmark"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     compileOptions {
@@ -28,7 +28,7 @@ android {
     }
 
     targetProjectPath = ":app"
-    buildToolsVersion =  libs.versions.buildToolsVersion.get()
+    buildToolsVersion = libs.versions.buildToolsVersion.get()
     experimentalProperties["android.experimental.self-instrumenting"] = true
 }
 
@@ -38,7 +38,6 @@ kotlin {
 
 dependencies {
     implementation(libs.androidx.test.junit4)
-    implementation(libs.androidx.test.espresso.core)
-    implementation(libs.androidx.uiautomator)
+    implementation(libs.androidx.espresso.core)
     implementation(libs.androidx.benchmark.macro.junit4)
 }

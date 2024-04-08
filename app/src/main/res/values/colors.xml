@@ -1,62 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2024. Ryan Wong
+  ~ https://github.com/ryanw-mobile
+  -->
+
 <resources>
-    <color name="md_theme_light_primary">#AE177F</color>
-    <color name="md_theme_light_onPrimary">#FFFFFF</color>
-    <color name="md_theme_light_primaryContainer">#FFD8EB</color>
-    <color name="md_theme_light_onPrimaryContainer">#3C0028</color>
-    <color name="md_theme_light_secondary">#725764</color>
-    <color name="md_theme_light_onSecondary">#FFFFFF</color>
-    <color name="md_theme_light_secondaryContainer">#FCD9E8</color>
-    <color name="md_theme_light_onSecondaryContainer">#291620</color>
-    <color name="md_theme_light_tertiary">#6F5D00</color>
-    <color name="md_theme_light_onTertiary">#FFFFFF</color>
-    <color name="md_theme_light_tertiaryContainer">#FFE259</color>
-    <color name="md_theme_light_onTertiaryContainer">#221B00</color>
-    <color name="md_theme_light_error">#BA1B1B</color>
-    <color name="md_theme_light_errorContainer">#FFDAD4</color>
-    <color name="md_theme_light_onError">#FFFFFF</color>
-    <color name="md_theme_light_onErrorContainer">#410001</color>
-    <color name="md_theme_light_background">#FCFCFC</color>
-    <color name="md_theme_light_onBackground">#1F1A1C</color>
-    <color name="md_theme_light_surface">#FCFCFC</color>
-    <color name="md_theme_light_onSurface">#1F1A1C</color>
-    <color name="md_theme_light_surfaceVariant">#F0DEE4</color>
-    <color name="md_theme_light_onSurfaceVariant">#504349</color>
-    <color name="md_theme_light_outline">#827379</color>
-    <color name="md_theme_light_inverseOnSurface">#F9EEF1</color>
-    <color name="md_theme_light_inverseSurface">#342F31</color>
-    <color name="md_theme_light_primaryInverse">#FFAEDA</color>
-    <color name="md_theme_dark_primary">#FFAEDA</color>
-    <color name="md_theme_dark_onPrimary">#610043</color>
-    <color name="md_theme_dark_primaryContainer">#8A0062</color>
-    <color name="md_theme_dark_onPrimaryContainer">#FFD8EB</color>
-    <color name="md_theme_dark_secondary">#DFBDCC</color>
-    <color name="md_theme_dark_onSecondary">#402A35</color>
-    <color name="md_theme_dark_secondaryContainer">#59404C</color>
-    <color name="md_theme_dark_onSecondaryContainer">#FCD9E8</color>
-    <color name="md_theme_dark_tertiary">#E2C640</color>
-    <color name="md_theme_dark_onTertiary">#3A3000</color>
-    <color name="md_theme_dark_tertiaryContainer">#544600</color>
-    <color name="md_theme_dark_onTertiaryContainer">#FFE259</color>
-    <color name="md_theme_dark_error">#FFB4A9</color>
-    <color name="md_theme_dark_errorContainer">#930006</color>
-    <color name="md_theme_dark_onError">#680003</color>
-    <color name="md_theme_dark_onErrorContainer">#FFDAD4</color>
-    <color name="md_theme_dark_background">#1F1A1C</color>
-    <color name="md_theme_dark_onBackground">#EAE0E2</color>
-    <color name="md_theme_dark_surface">#1F1A1C</color>
-    <color name="md_theme_dark_onSurface">#EAE0E2</color>
-    <color name="md_theme_dark_surfaceVariant">#504349</color>
-    <color name="md_theme_dark_onSurfaceVariant">#D3C2C8</color>
-    <color name="md_theme_dark_outline">#9D8D93</color>
-    <color name="md_theme_dark_inverseOnSurface">#1F1A1C</color>
-    <color name="md_theme_dark_inverseSurface">#EAE0E2</color>
-    <color name="md_theme_dark_primaryInverse">#AE177F</color>
-    <color name="seed">#E64CAD</color>
-    <color name="error">#BA1B1B</color>
-    <color name="white_semitrans">#AAFFFFFF</color>
-    <color name="black_semitrans">#AA000000</color>
-    <color name="image_bg_light">#AAAAAA</color>
-    <color name="image_bg_dark">#222222</color>
-    <color name="white">#FFFFFF</color>
+    <color name="windowSplashScreenBackground">#FFFFFF</color>
 </resources>

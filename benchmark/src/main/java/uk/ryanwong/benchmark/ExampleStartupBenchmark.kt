@@ -27,7 +27,7 @@ class ExampleStartupBenchmark {
 
     @Test
     fun startup() = benchmarkRule.measureRepeated(
-        packageName = "uk.ryanwong.giphytrending",
+        packageName = "uk.rwmobi.giphytrending",
         metrics = listOf(StartupTimingMetric()), //, FrameTimingMetric(), TraceSectionMetric(), AudioUnderrunMetric(), ),
         iterations = 5,
         startupMode = StartupMode.COLD

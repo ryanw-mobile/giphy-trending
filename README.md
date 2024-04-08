@@ -1,9 +1,15 @@
-# Giphy Trending - Sample Android App ![Gradle Build](https://github.com/ryanw-mobile/giphy-trending/actions/workflows/main_build.yml/badge.svg) [![codecov](https://codecov.io/gh/ryanw-mobile/giphy-trending/graph/badge.svg?token=J8PHIH3OPU)](https://codecov.io/gh/ryanw-mobile/giphy-trending)
+# Giphy Trending ![Gradle Build](https://github.com/ryanw-mobile/giphy-trending/actions/workflows/main_build.yml/badge.svg) [![codecov](https://codecov.io/gh/ryanw-mobile/giphy-trending/graph/badge.svg?token=J8PHIH3OPU)](https://codecov.io/gh/ryanw-mobile/giphy-trending)
 
-This sample app was elaborated from the work
+This sample Android app was elaborated from the work
 by [Fahri Can](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
-in Nov 2021. I migrated RxJava to Coroutines, and now it is in the process of migrating the XML
-Views to Compose.
+in Nov 2021. I migrated RxJava to Coroutines, and then from XML Views to Jetpack Compose.
+
+<p align="center">
+  <img src="screenshots/screen0.png" width="200" />
+  <img src="screenshots/screen1.png" width="200" />
+  <img src="screenshots/screen2.png" width="200" />
+  <img src="screenshots/screen3.png" width="200" />
+</p>
 
 ### The original XML View version
 
@@ -13,9 +19,6 @@ It was using XML with Data-binding, which we
 generally believe it to be a bad coding practice by tightly coupling the business logic with the UI.
 
 &nbsp;
-
-![Screenshot1](screenshots/screen0.png) ![Screenshot2](screenshots/screen1.png)
-![Screenshot3](screenshots/screen2.png) ![Screenshot4](screenshots/screen3.png)
 
 ## Skills covered:
 
@@ -28,39 +31,47 @@ better MVVM with Clean Architecture system design.
 ### High level architecture
 
 * Kotlin
-* MVVM architecture
-* [`Jetpack Databinding`](https://developer.android.com/jetpack/androidx/releases/databinding)
-* Kotlin Flow
-* Material 3 with light and dark mode theming
+* MVVM & clean architecture
+* Dependency Injection using Dagger Hilt
+* Jetpack Compose - Single Activity
+* Kotlin Coroutines and Flow
+* Material 3 dynamic colour theming supporting light and dark modes
 * Gradle Kotlin DSL and Version Catalog
 
 &nbsp;
 
 ### Major libraries used
 
-* [`Jetpack ConstraintLayout`](https://developer.android.com/jetpack/androidx/releases/constraintlayout)
-* [`Jetpack Navigation`](https://developer.android.com/jetpack/androidx/releases/navigation)
-* [`Jetpack Lifecycle`](https://developer.android.com/jetpack/androidx/releases/lifecycle)
-* [`Jetpack PreferencesDataStore`](https://developer.android.com/jetpack/androidx/releases/datastore)
-* [`Kotlin Coroutines`](https://github.com/Kotlin/kotlinx.coroutines)
-* [`Kotlin Flow`](https://kotlinlang.org/docs/flow.html)
-* [`Jetpack Room`](https://developer.android.com/jetpack/androidx/releases/room) - Database
-* [`Retrofit2`](https://square.github.io/retrofit/)
-* [`Moshi`](https://github.com/square/moshi)
-* Splash Screen API
-* [`Glide`](https://github.com/bumptech/glide) - Network images
-* [`Dagger Hilt`](https://dagger.dev/hilt/) - DI
-* [`Timber`](https://github.com/JakeWharton/timber) - Logging
-* [`LeakCanary`](https://github.com/square/leakcanary) - Memory leak detection
-* [`JUnit 4`](https://github.com/junit-team/junit4) - Tests
-* [`kotest`](https://kotest.io/) - Tests
-* [Kover](https://github.com/Kotlin/kotlinx-kover) - code coverage
+* [Jetpack Compose](https://developer.android.com/jetpack/androidx/releases/compose) - Modern
+  toolkit for building native UI
+* [Jetpack Navigation for Compose](https://developer.android.com/jetpack/androidx/releases/navigation#navigation-compose) -
+  Navigation library for Jetpack Compose applications
+* [Jetpack Lifecycle](https://developer.android.com/jetpack/androidx/releases/lifecycle) -
+  Lifecycle-aware components, including ViewModel support for Jetpack Compose
+* [Jetpack PreferencesDataStore](https://developer.android.com/jetpack/androidx/releases/datastore) -
+  Data storage solution
+* [Kotlin Coroutines](https://github.com/Kotlin/kotlinx.coroutines) - Asynchronous programming
+  with coroutines
+* [Kotlin Flow](https://kotlinlang.org/docs/flow.html) - Reactive streams for Kotlin
+* [Jetpack Room](https://developer.android.com/jetpack/androidx/releases/room) - Database library
+  for local data storage
+* [Retrofit2](https://square.github.io/retrofit/) - HTTP client for Android and Java
+* [Moshi](https://github.com/square/moshi) - Modern JSON library for Android and Java
+* [Splash Screen API](https://developer.android.com/guide/topics/ui/splash-screen) - Official
+  splash screen solution
+* [Coil](https://coil-kt.github.io/coil/) - Image loading library for Android, leveraging Kotlin
+  Coroutines
+* [Dagger Hilt](https://dagger.dev/hilt/) - Dependency injection framework
+* [Timber](https://github.com/JakeWharton/timber) - Logging utility
+* [LeakCanary](https://github.com/square/leakcanary) - Memory leak detection tool
+* `JUnit 4` - Testing framework for Java
+* [kotest](https://kotest.io/) - Powerful, flexible testing library for Kotlin
+* [MockK](https://mockk.io/) - Mocking library for Kotlin
+* [Ktlint Gradle](https://github.com/jlleitschuh/ktlint-gradle) - Plugin for linting and formatting
+  Kotlin code
+* [Kover](https://github.com/Kotlin/kotlinx-kover) - Kotlin code coverage tool
 * [codecov](https://codecov.io/) - code coverage
 * [Github Action](https://github.com/features/actions) - CI (current)
-* [Bitrise](https://app.bitrise.io/) - CI (previously)
-* [Travis-CI](https://travis-ci.org/) - CI (previously)
-* [Ktlint Gradle](https://github.com/jlleitschuh/ktlint-gradle) - ktlint plugin to check and apply
-  code autoformat
 
 &nbsp;
 

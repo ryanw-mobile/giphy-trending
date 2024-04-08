@@ -16,8 +16,8 @@
 
 package uk.ryanwong.giphytrending
 
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HiltTestActivity : AppCompatActivity()
+class HiltTestActivity : ComponentActivity()

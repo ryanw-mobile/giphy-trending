@@ -132,20 +132,24 @@ fun GiphyItem(
 
             Spacer(modifier = Modifier.weight(1.0f))
 
-            IconButton(onClick = { onClickToOpen(giphyImageItem.webUrl) }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_baseline_open_in_browser_24),
-                    contentDescription = stringResource(R.string.content_description_open_in_browser),
-                    tint = LocalContentColor.current.copy(alpha = 0.68f),
-                )
+            if (giphyImageItem.webUrl.isNotEmpty()) {
+                IconButton(onClick = { onClickToOpen(giphyImageItem.webUrl) }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_baseline_open_in_browser_24),
+                        contentDescription = stringResource(R.string.content_description_open_in_browser),
+                        tint = LocalContentColor.current.copy(alpha = 0.68f),
+                    )
+                }
             }
 
-            IconButton(onClick = { onClickToShare(giphyImageItem.webUrl) }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_baseline_content_copy_24),
-                    contentDescription = stringResource(R.string.content_description_copy_image_link),
-                    tint = LocalContentColor.current.copy(alpha = 0.68f),
-                )
+            if (giphyImageItem.imageUrl.isNotEmpty()) {
+                IconButton(onClick = { onClickToShare(giphyImageItem.imageUrl) }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_baseline_content_copy_24),
+                        contentDescription = stringResource(R.string.content_description_copy_image_link),
+                        tint = LocalContentColor.current.copy(alpha = 0.68f),
+                    )
+                }
             }
         }
     }

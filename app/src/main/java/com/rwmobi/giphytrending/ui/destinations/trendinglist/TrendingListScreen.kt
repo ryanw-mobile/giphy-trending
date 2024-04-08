@@ -5,6 +5,8 @@
 
 package com.rwmobi.giphytrending.ui.destinations.trendinglist
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,18 +21,24 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import coil.ImageLoader
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
@@ -58,6 +66,8 @@ fun TrendingListScreen(
         }
     }
 
+    val context = LocalContext.current
+    var clipboardUrl by remember { mutableStateOf("") }
     Box(modifier = modifier) {
         uiState.giphyImageItems?.let {
             if (it.isNotEmpty()) {
@@ -67,12 +77,23 @@ fun TrendingListScreen(
                     isLoading = uiState.isLoading,
                     onRefresh = uiEvent.onRefresh,
                     imageLoader = imageLoader,
-                    onClickToShare = {},
-                    onClickToOpen = {},
+                    onClickToShare = { clipboardUrl = it },
+                    onClickToOpen = { url -> startBrowserActivity(src = url, context = context) },
                 )
             } else {
                 // TODO: show empty screen
             }
+        }
+    }
+
+    val clipboardManager = LocalClipboardManager.current
+    val snackbarText = stringResource(id = R.string.clipboard_copied)
+    LaunchedEffect(clipboardUrl) {
+        if (clipboardUrl.isNotEmpty()) {
+            val uri = clipboardUrl.toUri().buildUpon().scheme("https").build()
+            clipboardManager.setText(AnnotatedString(uri.toString()))
+            onShowSnackbar(snackbarText)
+            clipboardUrl = ""
         }
     }
 }
@@ -141,6 +162,12 @@ private fun TrendingList(
             state = pullRefreshState,
         )
     }
+}
+
+private fun startBrowserActivity(src: String, context: Context) {
+    val uri = src.toUri().buildUpon().scheme("https").build()
+    val intent = Intent(Intent.ACTION_VIEW).setData(uri)
+    context.startActivity(intent)
 }
 
 @PreviewLightDark

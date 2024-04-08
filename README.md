@@ -1,9 +1,15 @@
-# Giphy Trending - Sample Android App ![Gradle Build](https://github.com/ryanw-mobile/giphy-trending/actions/workflows/main_build.yml/badge.svg) [![codecov](https://codecov.io/gh/ryanw-mobile/giphy-trending/graph/badge.svg?token=J8PHIH3OPU)](https://codecov.io/gh/ryanw-mobile/giphy-trending)
+# Giphy Trending ![Gradle Build](https://github.com/ryanw-mobile/giphy-trending/actions/workflows/main_build.yml/badge.svg) [![codecov](https://codecov.io/gh/ryanw-mobile/giphy-trending/graph/badge.svg?token=J8PHIH3OPU)](https://codecov.io/gh/ryanw-mobile/giphy-trending)
 
-This sample app was elaborated from the work
+This sample Android app was elaborated from the work
 by [Fahri Can](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
-in Nov 2021. I migrated RxJava to Coroutines, and now it is in the process of migrating the XML
-Views to Compose.
+in Nov 2021. I migrated RxJava to Coroutines, and then from XML Views to Jetpack Compose.
+
+<p align="center">
+  <img src="screenshots/screen0.png" width="200" />
+  <img src="screenshots/screen1.png" width="200" />
+  <img src="screenshots/screen2.png" width="200" />
+  <img src="screenshots/screen3.png" width="200" />
+</p>
 
 ### The original XML View version
 
@@ -13,13 +19,6 @@ It was using XML with Data-binding, which we
 generally believe it to be a bad coding practice by tightly coupling the business logic with the UI.
 
 &nbsp;
-
-<p align="center">
-  <img src="screenshots/screen0.png" width="200" />
-  <img src="screenshots/screen1.png" width="200" />
-  <img src="screenshots/screen2.png" width="200" />
-  <img src="screenshots/screen3.png" width="200" />
-</p>
 
 ## Skills covered:
 

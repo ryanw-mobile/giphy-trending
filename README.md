@@ -14,8 +14,12 @@ generally believe it to be a bad coding practice by tightly coupling the busines
 
 &nbsp;
 
-![Screenshot1](screenshots/screen0.png) ![Screenshot2](screenshots/screen1.png)
-![Screenshot3](screenshots/screen2.png) ![Screenshot4](screenshots/screen3.png)
+<p align="center">
+  <img src="screenshots/screen0.png" width="200" />
+  <img src="screenshots/screen1.png" width="200" />
+  <img src="screenshots/screen2.png" width="200" />
+  <img src="screenshots/screen3.png" width="200" />
+</p>
 
 ## Skills covered:
 

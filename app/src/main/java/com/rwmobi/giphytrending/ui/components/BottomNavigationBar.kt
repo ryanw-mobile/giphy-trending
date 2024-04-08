@@ -34,6 +34,7 @@ fun BottomNavigationBar(
 ) {
     NavigationBar(
         modifier = modifier,
+        tonalElevation = 8.dp,
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route

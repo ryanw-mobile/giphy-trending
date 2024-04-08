@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -91,7 +92,7 @@ private fun TrendingList(
     val contentDescriptionTrendingList = stringResource(R.string.content_description_trending_list)
     val pullRefreshState = rememberPullToRefreshState()
 
-    Box(modifier.nestedScroll(pullRefreshState.nestedScrollConnection)) {
+    Box(modifier.nestedScroll(connection = pullRefreshState.nestedScrollConnection)) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -112,6 +113,7 @@ private fun TrendingList(
                             .fillMaxWidth()
                             .padding(vertical = dimension.grid_0_5),
                         thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.inverseSurface,
                     )
                 }
             }

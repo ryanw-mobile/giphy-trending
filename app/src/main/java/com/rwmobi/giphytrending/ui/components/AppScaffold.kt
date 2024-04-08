@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewDynamicColors
@@ -37,6 +38,7 @@ import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 fun AppScaffold(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
         modifier = modifier,
@@ -44,9 +46,9 @@ fun AppScaffold(modifier: Modifier = Modifier) {
             TopAppBar(
                 modifier = Modifier.wrapContentHeight(),
                 colors = TopAppBarDefaults.topAppBarColors().copy(
-                    containerColor = MaterialTheme.colorScheme.inversePrimary,
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
                 ),
-                scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+                scrollBehavior = scrollBehavior,
                 title = {
                     Image(
                         modifier = Modifier.fillMaxWidth(),
@@ -74,11 +76,13 @@ fun AppScaffold(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            color = MaterialTheme.colorScheme.background,
+            color = MaterialTheme.colorScheme.surface,
         ) {
             val actionLabel = stringResource(android.R.string.ok)
             NavHost(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .nestedScroll(scrollBehavior.nestedScrollConnection),
                 navController = navController,
                 onShowSnackbar = { errorMessageText ->
                     snackbarHostState.showSnackbar(
@@ -97,7 +101,11 @@ fun AppScaffold(modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     GiphyTrendingTheme {
-        Surface {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize(),
+            color = MaterialTheme.colorScheme.surface,
+        ) {
             AppScaffold(
                 modifier = Modifier.fillMaxSize(),
             )

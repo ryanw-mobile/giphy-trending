@@ -47,7 +47,7 @@ fun AppScaffold(modifier: Modifier = Modifier) {
             TopAppBar(
                 modifier = Modifier.wrapContentHeight(),
                 colors = TopAppBarDefaults.topAppBarColors().copy(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
                 ),
                 scrollBehavior = scrollBehavior,
                 title = {

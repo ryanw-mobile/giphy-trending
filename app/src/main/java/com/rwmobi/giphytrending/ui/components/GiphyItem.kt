@@ -5,6 +5,7 @@
 
 package com.rwmobi.giphytrending.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -77,7 +78,8 @@ fun GiphyItem(
         AsyncImage(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight(),
+                .wrapContentHeight()
+                .background(color = MaterialTheme.colorScheme.surfaceDim.copy(alpha = 0.3f)),
             model = ImageRequest
                 .Builder(LocalContext.current)
                 .data(giphyImageItem.previewUrl)

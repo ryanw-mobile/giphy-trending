@@ -20,71 +20,75 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
-    primary = LightPurple,
-    onPrimary = DarkerPurple,
-    primaryContainer = PinkishWhite,
-    onPrimaryContainer = DarkerPurple,
-    inversePrimary = DeepPurple,
-    secondary = LighterPurple,
-    onSecondary = MediumGrey, // Adjusted for color contrast and readability
-    secondaryContainer = GreyPink, // Adjusted for matching appearance
-    onSecondaryContainer = SoftPink,
-    tertiary = LightestPurple,
-    onTertiary = DarkPurple, // Adjusted for readability
-    tertiaryContainer = MediumGrey, // Adjusted for matching appearance
-    onTertiaryContainer = LightPink,
-    background = NearlyBlack,
-    onBackground = SoftGrey,
-    surface = NearlyBlack,
-    onSurface = SoftGrey,
-    surfaceVariant = MediumGrey,
-    onSurfaceVariant = DarkPinkishGrey,
-    surfaceTint = LightPurple,
-    inverseSurface = SoftGrey,
-    inverseOnSurface = NearlyBlack,
-    error = LightRed,
-    onError = DarkPurple, // Adjusted for readability
-    errorContainer = DeepRed,
-    onErrorContainer = LightRed,
-    outline = DarkerGrey,
+private val LightColors = lightColorScheme(
+    primary = md_theme_light_primary,
+    onPrimary = md_theme_light_onPrimary,
+    primaryContainer = md_theme_light_primaryContainer,
+    onPrimaryContainer = md_theme_light_onPrimaryContainer,
+    secondary = md_theme_light_secondary,
+    onSecondary = md_theme_light_onSecondary,
+    secondaryContainer = md_theme_light_secondaryContainer,
+    onSecondaryContainer = md_theme_light_onSecondaryContainer,
+    tertiary = md_theme_light_tertiary,
+    onTertiary = md_theme_light_onTertiary,
+    tertiaryContainer = md_theme_light_tertiaryContainer,
+    onTertiaryContainer = md_theme_light_onTertiaryContainer,
+    error = md_theme_light_error,
+    errorContainer = md_theme_light_errorContainer,
+    onError = md_theme_light_onError,
+    onErrorContainer = md_theme_light_onErrorContainer,
+    background = md_theme_light_background,
+    onBackground = md_theme_light_onBackground,
+    surface = md_theme_light_surface,
+    onSurface = md_theme_light_onSurface,
+    surfaceVariant = md_theme_light_surfaceVariant,
+    onSurfaceVariant = md_theme_light_onSurfaceVariant,
+    outline = md_theme_light_outline,
+    inverseOnSurface = md_theme_light_inverseOnSurface,
+    inverseSurface = md_theme_light_inverseSurface,
+    inversePrimary = md_theme_light_inversePrimary,
+    surfaceTint = md_theme_light_surfaceTint,
+    outlineVariant = md_theme_light_outlineVariant,
+    scrim = md_theme_light_scrim,
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = DeepPurple,
-    onPrimary = White,
-    primaryContainer = LightPink,
-    onPrimaryContainer = DarkPurple,
-    inversePrimary = LightPurple,
-    secondary = MutedPurple,
-    onSecondary = White,
-    secondaryContainer = SoftPink,
-    onSecondaryContainer = DarkPurple, // Adjusted for readability
-    tertiary = LightestPurple,
-    onTertiary = White,
-    tertiaryContainer = LightPink, // Adjusted for color contrast and readability
-    onTertiaryContainer = DarkPurple, // Adjusted for readability
-    background = VeryLightGrey,
-    onBackground = DarkGrey,
-    surface = VeryLightGrey,
-    onSurface = DarkGrey,
-    surfaceVariant = GreyPink,
-    onSurfaceVariant = MediumGrey,
-    surfaceTint = DeepPurple,
-    inverseSurface = AlmostBlack,
-    inverseOnSurface = LightGrey,
-    error = DeepRed,
-    onError = White,
-    errorContainer = LightRed,
-    onErrorContainer = DarkPurple,
-    outline = DustyPurple,
+private val DarkColors = darkColorScheme(
+    primary = md_theme_dark_primary,
+    onPrimary = md_theme_dark_onPrimary,
+    primaryContainer = md_theme_dark_primaryContainer,
+    onPrimaryContainer = md_theme_dark_onPrimaryContainer,
+    secondary = md_theme_dark_secondary,
+    onSecondary = md_theme_dark_onSecondary,
+    secondaryContainer = md_theme_dark_secondaryContainer,
+    onSecondaryContainer = md_theme_dark_onSecondaryContainer,
+    tertiary = md_theme_dark_tertiary,
+    onTertiary = md_theme_dark_onTertiary,
+    tertiaryContainer = md_theme_dark_tertiaryContainer,
+    onTertiaryContainer = md_theme_dark_onTertiaryContainer,
+    error = md_theme_dark_error,
+    errorContainer = md_theme_dark_errorContainer,
+    onError = md_theme_dark_onError,
+    onErrorContainer = md_theme_dark_onErrorContainer,
+    background = md_theme_dark_background,
+    onBackground = md_theme_dark_onBackground,
+    surface = md_theme_dark_surface,
+    onSurface = md_theme_dark_onSurface,
+    surfaceVariant = md_theme_dark_surfaceVariant,
+    onSurfaceVariant = md_theme_dark_onSurfaceVariant,
+    outline = md_theme_dark_outline,
+    inverseOnSurface = md_theme_dark_inverseOnSurface,
+    inverseSurface = md_theme_dark_inverseSurface,
+    inversePrimary = md_theme_dark_inversePrimary,
+    surfaceTint = md_theme_dark_surfaceTint,
+    outlineVariant = md_theme_dark_outlineVariant,
+    scrim = md_theme_dark_scrim,
 )
 
 @Composable
 fun GiphyTrendingTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit,
 ) {
     val colorScheme = when {
@@ -93,8 +97,8 @@ fun GiphyTrendingTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> DarkColors
+        else -> LightColors
     }
     val view = LocalView.current
     if (!view.isInEditMode) {

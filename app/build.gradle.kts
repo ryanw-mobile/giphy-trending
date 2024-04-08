@@ -247,20 +247,10 @@ dependencies {
     kspAndroidTest(libs.hilt.android.compiler)
     androidTestImplementation(libs.hilt.android.testing)
 
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.kotlin.reflect)
-    implementation(libs.recyclerview)
-
     // Android Lifecycle Extensions
-    implementation(libs.androidx.lifecycle.extensions)
-    implementation(libs.androidx.activity.ktx)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
+    // implementation(libs.androidx.lifecycle.extensions)
+    // implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-
-    // Navigation
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.navigation.ui.ktx)
 
     // Glide for Images
     implementation(libs.coil)
@@ -302,6 +292,9 @@ dependencies {
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.jetbrains.kotlinx.coroutines.test)
 
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.mockk.agent)
+
     // kotest
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.assertions.core)
@@ -316,6 +309,7 @@ dependencies {
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.androidx.test.rules)
 }
+
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
     android.set(true)
     ignoreFailures.set(true)

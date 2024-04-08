@@ -1,36 +1,41 @@
 package com.rwmobi.giphytrending.data.source.preferences
 
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.preferencesOf
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flow
 
 class FakePreferencesDataStoreWrapper : PreferencesDataStoreWrapper {
-    override val preferenceErrors: SharedFlow<Throwable>
-        get() = TODO("Not yet implemented")
+    private val _preferenceErrors = MutableSharedFlow<Throwable>(
+        replay = 0,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST,
+    )
+    override val preferenceErrors: SharedFlow<Throwable> = _preferenceErrors
+
+    // Use a backing field to simulate the preferences storage
+    private var preferencesStorage: Preferences = preferencesOf()
+
+    // Function to manually emit errors for testing error handling
+    suspend fun emitError(exception: Throwable) {
+        _preferenceErrors.emit(exception)
+    }
 
     override fun getDataStoreFlow(): Flow<Preferences> {
-        TODO("Not yet implemented")
+        return flow {
+            emit(preferencesStorage)
+        }
     }
 
     override suspend fun updateIntPreference(key: Preferences.Key<Int>, newValue: Int) {
-        TODO("Not yet implemented")
+        preferencesStorage = preferencesStorage.toMutablePreferences().apply {
+            this[key] = newValue
+        }
     }
 
     override suspend fun clear() {
-        TODO("Not yet implemented")
+        preferencesStorage = preferencesOf()
     }
-
-    var apiError: Throwable? = null
-
-//    override suspend fun setMaxApiEntries(maxEntries: Int) {
-//        apiError?.run { throw this }
-//    }
-//
-//    var mockGetMaxApiEntriesResponse: Flow<Int>? = null
-//    override suspend fun getMaxApiEntries(): Flow<Int> {
-//        apiError?.run { throw this }
-//        return mockGetMaxApiEntriesResponse ?: flowOf(1)
-//    }
-
 }

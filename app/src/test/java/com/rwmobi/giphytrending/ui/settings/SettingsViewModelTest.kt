@@ -1,138 +1,95 @@
 package com.rwmobi.giphytrending.ui.settings
 
-import com.rwmobi.giphytrending.data.repository.MockUserPreferencesRepository
+import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
 import com.rwmobi.giphytrending.ui.destinations.settings.SettingsViewModel
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.types.shouldBeTypeOf
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
 
 @ExperimentalCoroutinesApi
-internal class SettingsViewModelTest : FreeSpec() {
+internal class SettingsViewModelTest : FreeSpec(
+    {
+        lateinit var settingsViewModel: SettingsViewModel
+        lateinit var fakeUserPreferencesRepository: FakeUserPreferencesRepository
+        lateinit var testDispatcher: TestDispatcher
 
-    lateinit var settingsViewModel: SettingsViewModel
-    lateinit var mockUserPreferencesRepository: MockUserPreferencesRepository
-    private lateinit var dispatcher: TestDispatcher
+        beforeTest {
+            testDispatcher = UnconfinedTestDispatcher()
+            Dispatchers.setMain(testDispatcher)
 
-    private fun setupViewModel() {
-        mockUserPreferencesRepository = MockUserPreferencesRepository()
-        dispatcher = UnconfinedTestDispatcher()
+            fakeUserPreferencesRepository = FakeUserPreferencesRepository()
+            settingsViewModel = SettingsViewModel(
+                userPreferencesRepository = fakeUserPreferencesRepository,
+                dispatcher = testDispatcher,
+            )
+        }
 
-        settingsViewModel = SettingsViewModel(
-            userPreferencesRepository = mockUserPreferencesRepository,
-            dispatcher = dispatcher,
-        )
-    }
+        afterTest {
+            Dispatchers.resetMain()
+        }
 
-    init {
-        "setApiMax" - {
-            "should set settingsUIState = ready if repository returns success" {
-                // 🔴 Given
-                setupViewModel()
-                mockUserPreferencesRepository.mockSetApiMaxResponse = Result.success(Unit)
+        "setApiMax updates UI state correctly" - {
+            "when setApiMax is called, it updates apiMaxEntries in the UI state" {
+                // Given
+                val expectedMaxApiEntries = 100
+                // This line directly manipulates the apiMaxEntries state flow in the mock repository
+                fakeUserPreferencesRepository.apiMaxEntries.value = expectedMaxApiEntries
 
-                // 🟡 When
-                settingsViewModel.setApiMax(maxApiEntries = 100)
+                // When
+                settingsViewModel.setApiMax(expectedMaxApiEntries)
+                val uiState = settingsViewModel.uiState.value
 
-                // 🟢 Then
-                settingsViewModel.settingsUIState.first().shouldBeTypeOf<SettingsUIState.Ready>()
-            }
-
-            "should set settingsUIState = error if repository returns error" {
-                // 🔴 Given
-                setupViewModel()
-                mockUserPreferencesRepository.mockSetApiMaxResponse =
-                    Result.failure(exception = Exception())
-
-                // 🟡 When
-                settingsViewModel.setApiMax(maxApiEntries = 100)
-
-                // 🟢 Then - TODO: should also assert error message format
-                settingsViewModel.settingsUIState.first().shouldBeTypeOf<SettingsUIState.Error>()
+                // Then
+                uiState.apiMaxEntries shouldBe expectedMaxApiEntries
+                uiState.isLoading shouldBe false
             }
         }
 
-        "getApiMax" - {
-            "should set settingsUIState = ready if repository returns success" {
-                // 🔴 Given
-                setupViewModel()
-                mockUserPreferencesRepository.mockGetApiMaxResponse = Result.success(100)
+        "Error handling" - {
+            "when an error is emitted, it is added to the UI state" {
+                // Given
+                val errorMessage = "Test error"
+                fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 
-                // 🟡 When
-                settingsViewModel.getApiMax()
+                // Wait for collection
+                runBlocking {
+                    delay(100) // Small delay to ensure flow collects the error
+                }
 
-                // 🟢 Then
-                settingsViewModel.settingsUIState.first().shouldBeTypeOf<SettingsUIState.Ready>()
+                // When
+                val uiState = settingsViewModel.uiState.value
+
+                // Then
+                uiState.errorMessages.size shouldBe 1
+                uiState.errorMessages.first().message shouldBe errorMessage
+                uiState.isLoading shouldBe false
             }
 
-            "should set apiMaxEntriesProgress = adjusted value if repository returns success" {
-                // 🔴 Given
-                setupViewModel()
-                mockUserPreferencesRepository.mockGetApiMaxResponse = Result.success(150)
+            "errorShown removes the error message from the UI state" {
+                // Given
+                val errorMessage = "Test error"
+                fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 
-                // 🟡 When
-                settingsViewModel.getApiMax()
+                // Wait for collection
+                runBlocking {
+                    delay(100) // Small delay to ensure flow collects the error
+                }
 
-                // 🟢 Then
-                settingsViewModel.apiMaxEntriesProgress.first() shouldBe 100
-            }
+                // When
+                val errorId = settingsViewModel.uiState.value.errorMessages.first().id
+                settingsViewModel.errorShown(errorId)
 
-            "should set apiMaxEntriesProgress = 0 if repository returns a value below the set threshold" {
-                // 🔴 Given
-                setupViewModel()
-                mockUserPreferencesRepository.mockGetApiMaxResponse = Result.success(10)
-
-                // 🟡 When
-                settingsViewModel.getApiMax()
-
-                // 🟢 Then
-                settingsViewModel.apiMaxEntriesProgress.first() shouldBe 0
-            }
-
-            "should set settingsUIState = error if repository returns error" {
-                // 🔴 Given
-                setupViewModel()
-                mockUserPreferencesRepository.mockGetApiMaxResponse =
-                    Result.failure(exception = Exception())
-
-                // 🟡 When
-                settingsViewModel.getApiMax()
-
-                // 🟢 Then - not checking error message yet
-                settingsViewModel.settingsUIState.first().shouldBeTypeOf<SettingsUIState.Error>()
+                // Then
+                val uiState = settingsViewModel.uiState.value
+                uiState.errorMessages shouldBe emptyList()
             }
         }
-
-        "translateMaxApiEntries" - {
-            "should return the correct adjusted value in String" {
-                // 🔴 Given
-                setupViewModel()
-
-                // 🟡 When
-                val translatedValue = settingsViewModel.translateMaxApiEntries(value = 100)
-
-                // 🟢 Then - not checking error message yet
-                translatedValue shouldBe "150"
-            }
-        }
-
-        "notifyErrorMessageDisplayed" - {
-            "should set settingsUIState = ready" {
-                // 🔴 Given
-                setupViewModel()
-                mockUserPreferencesRepository.mockGetApiMaxResponse =
-                    Result.failure(exception = Exception())
-                settingsViewModel.getApiMax()
-
-                // 🟡 When
-                settingsViewModel.notifyErrorMessageDisplayed()
-
-                // 🟢 Then - not checking error message yet
-                settingsViewModel.settingsUIState.first().shouldBeTypeOf<SettingsUIState.Ready>()
-            }
-        }
-    }
-}
+    },
+)

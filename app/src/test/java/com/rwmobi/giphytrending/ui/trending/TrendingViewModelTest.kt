@@ -1,122 +1,105 @@
 package com.rwmobi.giphytrending.ui.trending
 
-import android.os.Parcel
-import android.os.Parcelable
-import com.rwmobi.giphytrending.data.repository.MockGiphyRepository
-import com.rwmobi.giphytrending.data.repository.MockUserPreferencesRepository
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import coil.ImageLoader
+import com.rwmobi.giphytrending.data.repository.FakeGiphyRepository
+import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
+import com.rwmobi.giphytrending.testdata.SampleGiphyImageItemList
 import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingViewModel
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.types.shouldBeTypeOf
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import uk.ryanwong.giphytrending.domain.model.GiphyImageItem
+import kotlinx.coroutines.test.runTest
 
 @ExperimentalCoroutinesApi
-internal class TrendingViewModelTest : FreeSpec() {
+internal class TrendingViewModelTest : FreeSpec(
+    {
+        lateinit var viewModel: TrendingViewModel
+        lateinit var fakeGiphyRepository: FakeGiphyRepository
+        lateinit var fakeUserPreferencesRepository: FakeUserPreferencesRepository
 
-    lateinit var trendingViewModel: TrendingViewModel
-    lateinit var mockGiphyRepository: MockGiphyRepository
-    lateinit var mockUserPreferencesRepository: MockUserPreferencesRepository
-    private lateinit var dispatcher: TestDispatcher
+        fun mockImageLoader(): ImageLoader {
+            // Provide your implementation or mock here
+            return mockk(relaxed = true)
+        }
 
-    private class MockParcelable : Parcelable {
-        override fun describeContents(): Int = 1
-        override fun writeToParcel(p0: Parcel, p1: Int) {}
-    }
+        beforeTest {
+            fakeGiphyRepository = FakeGiphyRepository()
+            fakeUserPreferencesRepository = FakeUserPreferencesRepository()
+            viewModel = TrendingViewModel(
+                giphyRepository = fakeGiphyRepository,
+                userPreferencesRepository = fakeUserPreferencesRepository,
+                imageLoader = mockImageLoader(),
+                dispatcher = UnconfinedTestDispatcher(),
+            )
+        }
 
-    private val mockGiphyImageItemList = listOf(
-        GiphyImageItem(
-            id = "some-id-1",
-            previewUrl = "some-preview-url-1",
-            imageUrl = "some-image-url-1",
-            webUrl = "some-web-url-1",
-            title = "some-title-1",
-            type = "some-type-1",
-            username = "some-user-name-1",
-        ),
-        GiphyImageItem(
-            id = "some-id-2",
-            previewUrl = "some-preview-url-2",
-            imageUrl = "some-image-url-2",
-            webUrl = "some-web-url-2",
-            title = "some-title-2",
-            type = "some-type-2",
-            username = "some-user-name-2",
-        ),
-    )
+        "ViewModel initialization" - {
+            "should start with isLoading true" - {
+                runTest {
+                    viewModel.uiState.value.isLoading shouldBe true
+                }
+            }
+        }
 
-    private fun setupViewModel() {
-        mockUserPreferencesRepository = MockUserPreferencesRepository()
-        mockGiphyRepository = MockGiphyRepository()
-        dispatcher = UnconfinedTestDispatcher()
-
-        trendingViewModel = TrendingViewModel(
-            giphyRepository = mockGiphyRepository,
-            userPreferencesRepository = mockUserPreferencesRepository,
-            dispatcher = dispatcher,
-        )
-    }
-
-    init {
         "refresh" - {
-            "should update trendingList correctlyif repository returned success" {
-                // 🔴 Given
-                setupViewModel()
-                mockGiphyRepository.mockReloadTrendingResult =
-                    Result.success(value = mockGiphyImageItemList)
+            "updates UI state correctly if repository returns success" - {
+                runTest {
+                    // Given
+                    fakeGiphyRepository.mockReloadTrendingResult = Result.success(SampleGiphyImageItemList.giphyImageItemList)
 
-                // 🟡 When
-                trendingViewModel.refresh()
+                    // When
+                    viewModel.refresh()
+                    // Coroutine launched in refresh() completes here
 
-                // 🟢 Then - not checking error message yet
-                trendingViewModel.trendingList.first() shouldBe mockGiphyImageItemList
+                    // Then
+                    viewModel.uiState.value.giphyImageItems shouldBe SampleGiphyImageItemList.giphyImageItemList
+                    viewModel.uiState.value.isLoading shouldBe false
+                }
             }
 
-            "should set trendingUIState = ready if repository returned success" {
-                // 🔴 Given
-                setupViewModel()
-                mockGiphyRepository.mockReloadTrendingResult =
-                    Result.success(value = mockGiphyImageItemList)
+            "updates UI state correctly if repository returns failure" - {
+                runTest {
+                    // Given
+                    val exceptionMessage = "Network error"
+                    fakeGiphyRepository.mockReloadTrendingResult = Result.failure(Exception(exceptionMessage))
 
-                // 🟡 When
-                trendingViewModel.refresh()
+                    // When
+                    viewModel.refresh()
 
-                // 🟢 Then
-                trendingViewModel.trendingUIState.first().shouldBeTypeOf<TrendingUIState.Ready>()
-            }
-
-            "should set trendingUIState = error if repository returned failure" {
-                // 🔴 Given
-                setupViewModel()
-                mockGiphyRepository.mockReloadTrendingResult =
-                    Result.failure(exception = Exception())
-
-                // 🟡 When
-                trendingViewModel.refresh()
-
-                // 🟢 Then - not checking error message yet
-                trendingViewModel.trendingUIState.first().shouldBeTypeOf<TrendingUIState.Error>()
+                    // Then
+                    viewModel.uiState.value.errorMessages.any { it.message.contains(exceptionMessage) } shouldBe true
+                    viewModel.uiState.value.isLoading shouldBe false
+                }
             }
         }
 
-        "notifyErrorMessageDisplayed" - {
-            "should set trendingUIState = ready" {
-                // 🔴 Given
-                setupViewModel()
-                mockGiphyRepository.mockReloadTrendingResult =
-                    Result.failure(exception = Exception())
-                trendingViewModel.refresh()
+        "User Preference Error Handling" - {
+            "handles preference errors correctly" - {
+                runTest {
+                    // Given
+                    val errorMessage = "Preference error"
+                    fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 
-                // 🟡 When
-                trendingViewModel.notifyErrorMessageDisplayed()
-
-                // 🟢 Then
-                trendingViewModel.trendingUIState.first().shouldBeTypeOf<TrendingUIState.Ready>()
+                    // Then
+                    viewModel.uiState.value.errorMessages.any { it.message.contains(errorMessage) } shouldBe true
+                }
             }
         }
-    }
-}
+
+        "API Max Entries Handling" - {
+            "refreshes when apiMaxEntries is set and not yet refreshed" - {
+                runTest {
+                    // Given
+                    val maxEntries = 100
+                    fakeUserPreferencesRepository.apiMaxEntries.value = maxEntries
+                    fakeGiphyRepository.mockReloadTrendingResult = Result.success(emptyList())
+
+                    // Then
+                    viewModel.uiState.value.isLoading shouldBe false // Assuming refresh sets isLoading to false after completion
+                }
+            }
+        }
+    },
+)

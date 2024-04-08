@@ -1,8 +1,8 @@
 package com.rwmobi.giphytrending.data.source.network
 
-import uk.ryanwong.giphytrending.data.source.network.model.Meta
-import uk.ryanwong.giphytrending.data.source.network.model.Pagination
-import uk.ryanwong.giphytrending.data.source.network.model.TrendingNetworkResponse
+import com.rwmobi.giphytrending.data.source.network.model.Meta
+import com.rwmobi.giphytrending.data.source.network.model.Pagination
+import com.rwmobi.giphytrending.data.source.network.model.TrendingNetworkResponse
 
 class FakeNetworkDataSource : NetworkDataSource {
     var apiError: Throwable? = null

@@ -14,15 +14,12 @@ import java.util.Date
 
 @ExperimentalCoroutinesApi
 internal class GiphyRepositoryImplTest : FreeSpec() {
-
     private lateinit var giphyRepository: GiphyRepository
     private lateinit var dispatcher: TestDispatcher
     private lateinit var fakeRoomDbDataSource: FakeRoomDbDataSource
     private lateinit var fakeNetworkDataSource: FakeNetworkDataSource
 
-    // 🤦 Greg would say if the data carries no meaning, why not replace them with some-string
-    // I'll do that when I have a chance working with you again, but not now 🤷‍
-    private val mockTrendingEntityList = listOf(
+    private val sampleTrendingEntityList = listOf(
         TrendingEntity(
             id = "uaIAIw3ELuk69mhZ5I",
             previewUrl = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/200w.gif",
@@ -52,14 +49,14 @@ internal class GiphyRepositoryImplTest : FreeSpec() {
             "should return correct list if database query success" {
                 // 🔴 Given
                 setupRepository()
-                fakeRoomDbDataSource.mockQueryDataResponse = mockTrendingEntityList
+                fakeRoomDbDataSource.mockQueryDataResponse = sampleTrendingEntityList
 
                 // 🟡 When
                 val result = giphyRepository.fetchCachedTrending()
 
                 // 🟢 Then
                 result.isSuccess shouldBe true
-                result.getOrNull()!! shouldBe mockTrendingEntityList.toDomainModelList()
+                result.getOrNull()!! shouldBe sampleTrendingEntityList.toDomainModelList()
             }
 
             "should return failure if database query throws exception" {
@@ -81,14 +78,14 @@ internal class GiphyRepositoryImplTest : FreeSpec() {
             "should return correct list if network and database operations all success" {
                 // 🔴 Given
                 setupRepository()
-                fakeRoomDbDataSource.mockQueryDataResponse = mockTrendingEntityList
+                fakeRoomDbDataSource.mockQueryDataResponse = sampleTrendingEntityList
 
                 // 🟡 When
                 val result = giphyRepository.fetchCachedTrending()
 
                 // 🟢 Then
                 result.isSuccess shouldBe true
-                result.getOrNull()!! shouldBe mockTrendingEntityList.toDomainModelList()
+                result.getOrNull()!! shouldBe sampleTrendingEntityList.toDomainModelList()
             }
 
             "should return failure if network call returns an error" {

@@ -20,11 +20,10 @@ generally believe it to be a bad coding practice by tightly coupling the busines
 
 &nbsp;
 
-## Skills covered:
+## Skills covered
 
 This is a typical long-lasting app that the codebase survived a few migrations as new technologies,
-paradigms and libraries evolved. The current target is to migrate this App to Compose, and apply a
-better MVVM with Clean Architecture system design.
+paradigms and libraries evolved. The current target is to make this App in Compose supporting multiple screen sizes.
 
 &nbsp;
 
@@ -75,7 +74,13 @@ better MVVM with Clean Architecture system design.
 
 &nbsp;
 
-## To-do lists:
+## Contribution invitation
+
+For this being a demo app, you are more than welcomed to join either helping to clear some of the pending tasks, or improve the app. Contact me if you are interested.
+
+&nbsp;
+
+## To-do lists
 
 Planned enhancements are
 now [logged as issues](https://github.com/ryanw-mobile/giphy-trending/issues?q=is%3Aopen+is%3Aissue+label%3Arefactor%2Cfeature%2Cfix%2Ctest).

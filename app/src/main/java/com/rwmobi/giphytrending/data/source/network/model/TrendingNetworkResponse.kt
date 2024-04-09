@@ -5,6 +5,7 @@
 
 package com.rwmobi.giphytrending.data.source.network.model
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 import java.util.Date
 
@@ -16,6 +17,7 @@ import java.util.Date
  * Otherwise in a real project once we know what's required, we don't have to keep so much,
  * as they will be thrown away at the time we convert it to domain model anyway.
  */
+@Keep
 data class TrendingNetworkResponse(
     @Json(name = "data")
     val trendingData: List<TrendingData>,
@@ -23,6 +25,7 @@ data class TrendingNetworkResponse(
     val pagination: Pagination,
 )
 
+@Keep
 data class TrendingData(
     val analytics_response_payload: String,
     val bitly_gif_url: String,
@@ -45,24 +48,28 @@ data class TrendingData(
     val username: String,
 )
 
+@Keep
 data class Meta(
     val msg: String,
     val response_id: String,
     val status: Int,
 )
 
+@Keep
 data class Pagination(
     val count: Int,
     val offset: Int,
     val total_count: Int,
 )
 
+@Keep
 data class Images(
     val fixed_height: FixedHeight,
     val fixed_width: FixedWidth,
     val original: Original,
 )
 
+@Keep
 data class FixedHeight(
     val height: String,
     val mp4: String? = null,
@@ -74,6 +81,7 @@ data class FixedHeight(
     val width: String,
 )
 
+@Keep
 data class FixedWidth(
     val height: String,
     val mp4: String? = null,
@@ -85,6 +93,7 @@ data class FixedWidth(
     val width: String,
 )
 
+@Keep
 data class Original(
     val frames: String,
     val hash: String,

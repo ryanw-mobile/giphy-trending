@@ -53,9 +53,9 @@ fun GiphyItem(
     modifier: Modifier = Modifier,
     giphyImageItem: GiphyImageItem,
     imageLoader: ImageLoader,
-    onClickToDownload: (String) -> Unit,
-    onClickToOpen: (String) -> Unit,
-    onClickToShare: (String) -> Unit,
+    onClickToDownload: (imageUrl: String) -> Unit,
+    onClickToOpen: (url: String) -> Unit,
+    onClickToShare: (url: String) -> Unit,
 ) {
     val dimension = LocalConfiguration.current.getDimension()
     Column(
@@ -133,7 +133,7 @@ fun GiphyItem(
 
             Spacer(modifier = Modifier.weight(1.0f))
 
-            if (giphyImageItem.webUrl.isNotEmpty()) {
+            if (giphyImageItem.imageUrl.isNotEmpty()) {
                 IconButton(onClick = { onClickToDownload(giphyImageItem.imageUrl) }) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_file_download_24),

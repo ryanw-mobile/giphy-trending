@@ -22,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,8 +45,10 @@ import com.rwmobi.giphytrending.ui.components.GiphyItem
 import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemsProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.theme.getDimension
+import com.rwmobi.giphytrending.ui.utils.downloadImageUsingMediaStore
 import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun TrendingListScreen(
@@ -68,6 +71,7 @@ fun TrendingListScreen(
     val context = LocalContext.current
     var clipboardUrl by remember { mutableStateOf("") }
     val dimension = LocalConfiguration.current.getDimension()
+    val coroutineScope = rememberCoroutineScope()
 
     Box(modifier = modifier) {
         uiState.giphyImageItems?.let { giphyImageItems ->
@@ -82,8 +86,14 @@ fun TrendingListScreen(
                         modifier = Modifier.fillMaxWidth(),
                         giphyImageItem = giphyImageItem,
                         imageLoader = imageLoader,
-                        onClickToDownload = { },
-                        onClickToOpen = { url -> context.startBrowserActivity(src = url) },
+                        onClickToDownload = { url ->
+                            if (!context.downloadImageUsingMediaStore(imageUrl = url)) {
+                                coroutineScope.launch {
+                                    onShowSnackbar(context.getString(R.string.failed_to_download_file))
+                                }
+                            }
+                        },
+                        onClickToOpen = { url -> context.startBrowserActivity(url = url) },
                         onClickToShare = { clipboardUrl = it },
                     )
 
@@ -134,7 +144,7 @@ private fun TrendingList(
                 .semantics { contentDescription = contentDescriptionTrendingList },
         ) {
             itemsIndexed(giphyImageItems) { index, giphyImageItem ->
-                listItemLayout
+                listItemLayout(index, giphyImageItem)
             }
         }
 

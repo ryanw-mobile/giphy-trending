@@ -20,4 +20,8 @@
     <string name="content_description_trending_list">Trending List</string>
     <string name="content_description_open_in_browser">Open in browser</string>
     <string name="content_description_copy_image_link">Copy image link</string>
+    <string name="content_description_download_image">Download image</string>
+    <string name="download">Download</string>
+    <string name="downloading_image">Downloading image...</string>
+    <string name="failed_to_download_file">Failed to download file.</string>
 </resources>

@@ -17,9 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -53,8 +50,9 @@ fun GiphyItem(
     modifier: Modifier = Modifier,
     giphyImageItem: GiphyImageItem,
     imageLoader: ImageLoader,
-    onClickToOpen: (String) -> Unit,
-    onClickToShare: (String) -> Unit,
+    onClickToDownload: (imageUrl: String) -> Unit,
+    onClickToOpen: (url: String) -> Unit,
+    onClickToShare: (url: String) -> Unit,
 ) {
     val dimension = LocalConfiguration.current.getDimension()
     Column(
@@ -132,24 +130,28 @@ fun GiphyItem(
 
             Spacer(modifier = Modifier.weight(1.0f))
 
+            if (giphyImageItem.imageUrl.isNotEmpty()) {
+                IconButtonWithToolTip(
+                    tooltipText = stringResource(R.string.content_description_download_image),
+                    painter = painterResource(id = R.drawable.baseline_file_download_24),
+                    onClick = { onClickToDownload(giphyImageItem.imageUrl) },
+                )
+            }
+
             if (giphyImageItem.webUrl.isNotEmpty()) {
-                IconButton(onClick = { onClickToOpen(giphyImageItem.webUrl) }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_baseline_open_in_browser_24),
-                        contentDescription = stringResource(R.string.content_description_open_in_browser),
-                        tint = LocalContentColor.current.copy(alpha = 0.68f),
-                    )
-                }
+                IconButtonWithToolTip(
+                    tooltipText = stringResource(R.string.content_description_open_in_browser),
+                    painter = painterResource(id = R.drawable.ic_baseline_open_in_browser_24),
+                    onClick = { onClickToOpen(giphyImageItem.webUrl) },
+                )
             }
 
             if (giphyImageItem.imageUrl.isNotEmpty()) {
-                IconButton(onClick = { onClickToShare(giphyImageItem.imageUrl) }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_baseline_content_copy_24),
-                        contentDescription = stringResource(R.string.content_description_copy_image_link),
-                        tint = LocalContentColor.current.copy(alpha = 0.68f),
-                    )
-                }
+                IconButtonWithToolTip(
+                    tooltipText = stringResource(R.string.content_description_copy_image_link),
+                    painter = painterResource(id = R.drawable.ic_baseline_content_copy_24),
+                    onClick = { onClickToShare(giphyImageItem.imageUrl) },
+                )
             }
         }
     }
@@ -167,6 +169,7 @@ private fun GiphyItemPreview(
                 modifier = Modifier.fillMaxWidth(),
                 giphyImageItem = giphyImageItem,
                 imageLoader = ImageLoader(LocalContext.current),
+                onClickToDownload = {},
                 onClickToShare = {},
                 onClickToOpen = {},
             )

@@ -5,6 +5,7 @@
 
 package com.rwmobi.giphytrending.ui.navigation
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -27,13 +28,17 @@ fun NavHost(
     navController: NavHostController,
     onShowSnackbar: suspend (String) -> Unit,
 ) {
-    NavHost(navController = navController, startDestination = "trendingList") {
+    NavHost(
+        modifier = modifier,
+        navController = navController,
+        startDestination = "trendingList",
+    ) {
         composable(route = "trendingList") {
             val viewModel: TrendingViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             TrendingListScreen(
-                modifier = modifier,
+                modifier = Modifier.fillMaxSize(),
                 onShowSnackbar = onShowSnackbar,
                 imageLoader = viewModel.getImageLoader(),
                 uiState = uiState,
@@ -48,7 +53,7 @@ fun NavHost(
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             SettingsScreen(
-                modifier = modifier,
+                modifier = Modifier.fillMaxSize(),
                 apiMinEntries = BuildConfig.API_MIN_ENTRIES.toInt(),
                 apiMaxEntries = BuildConfig.API_MAX_ENTRIES.toInt(),
                 onShowSnackbar = onShowSnackbar,

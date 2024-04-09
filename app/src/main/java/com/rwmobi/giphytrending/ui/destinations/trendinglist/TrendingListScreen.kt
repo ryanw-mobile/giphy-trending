@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +44,7 @@ import coil.ImageLoader
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import com.rwmobi.giphytrending.ui.components.GiphyItem
+import com.rwmobi.giphytrending.ui.components.NoDataScreen
 import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemsProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.theme.getDimension
@@ -50,6 +53,7 @@ import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TrendingListScreen(
     modifier: Modifier = Modifier,
@@ -70,47 +74,58 @@ fun TrendingListScreen(
 
     val context = LocalContext.current
     var clipboardUrl by remember { mutableStateOf("") }
-    val dimension = LocalConfiguration.current.getDimension()
     val coroutineScope = rememberCoroutineScope()
+    val pullRefreshState = rememberPullToRefreshState()
 
-    Box(modifier = modifier) {
+    fun downloadImage(imageUrl: String) {
+        if (!context.downloadImageUsingMediaStore(imageUrl = imageUrl)) {
+            coroutineScope.launch {
+                onShowSnackbar(context.getString(R.string.failed_to_download_file))
+            }
+        }
+    }
+
+    Box(modifier = modifier.nestedScroll(connection = pullRefreshState.nestedScrollConnection)) {
         uiState.giphyImageItems?.let { giphyImageItems ->
             if (giphyImageItems.isNotEmpty()) {
                 TrendingList(
                     modifier = Modifier.fillMaxSize(),
                     giphyImageItems = giphyImageItems,
-                    isLoading = uiState.isLoading,
-                    onRefresh = uiEvent.onRefresh,
-                ) { index, giphyImageItem ->
-                    GiphyItem(
-                        modifier = Modifier.fillMaxWidth(),
-                        giphyImageItem = giphyImageItem,
-                        imageLoader = imageLoader,
-                        onClickToDownload = { url ->
-                            if (!context.downloadImageUsingMediaStore(imageUrl = url)) {
-                                coroutineScope.launch {
-                                    onShowSnackbar(context.getString(R.string.failed_to_download_file))
-                                }
-                            }
-                        },
-                        onClickToOpen = { url -> context.startBrowserActivity(url = url) },
-                        onClickToShare = { clipboardUrl = it },
-                    )
-
-                    if (index < giphyImageItems.lastIndex) {
-                        HorizontalDivider(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = dimension.grid_0_5),
-                            thickness = 1.dp,
-                            color = MaterialTheme.colorScheme.inverseSurface,
-                        )
-                    }
-                }
+                    imageLoader = imageLoader,
+                    onClickToDownload = { imageUrl -> downloadImage(imageUrl = imageUrl) },
+                    onClickToOpen = { url -> context.startBrowserActivity(url = url) },
+                    onClickToShare = { url -> clipboardUrl = url },
+                )
             } else if (!uiState.isLoading) {
-                // TODO: show empty screen
+                NoDataScreen(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()), // to support pull to refresh
+                )
             }
         }
+
+        if (pullRefreshState.isRefreshing) {
+            LaunchedEffect(true) {
+                if (!uiState.isLoading) {
+                    delay(1000) // Trick to let user know work in progress
+                    uiEvent.onRefresh()
+                }
+            }
+        }
+
+        LaunchedEffect(uiState.isLoading) {
+            if (!uiState.isLoading) {
+                pullRefreshState.endRefresh()
+            } else {
+                pullRefreshState.startRefresh()
+            }
+        }
+
+        PullToRefreshContainer(
+            modifier = Modifier.align(Alignment.TopCenter),
+            state = pullRefreshState,
+        )
     }
 
     val clipboardManager = LocalClipboardManager.current
@@ -125,50 +140,43 @@ fun TrendingListScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TrendingList(
     modifier: Modifier = Modifier,
+    imageLoader: ImageLoader,
     giphyImageItems: List<GiphyImageItem>,
-    isLoading: Boolean,
-    onRefresh: () -> Unit,
-    listItemLayout: @Composable (index: Int, giphyImageItem: GiphyImageItem) -> Unit,
+    onClickToDownload: (imageUrl: String) -> Unit,
+    onClickToShare: (Url: String) -> Unit,
+    onClickToOpen: (Url: String) -> Unit,
 ) {
+    val dimension = LocalConfiguration.current.getDimension()
     val contentDescriptionTrendingList = stringResource(R.string.content_description_trending_list)
-    val pullRefreshState = rememberPullToRefreshState()
 
-    Box(modifier.nestedScroll(connection = pullRefreshState.nestedScrollConnection)) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .semantics { contentDescription = contentDescriptionTrendingList },
-        ) {
-            itemsIndexed(giphyImageItems) { index, giphyImageItem ->
-                listItemLayout(index, giphyImageItem)
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize()
+            .semantics { contentDescription = contentDescriptionTrendingList },
+    ) {
+        itemsIndexed(giphyImageItems) { index, giphyImageItem ->
+            GiphyItem(
+                modifier = Modifier.fillMaxWidth(),
+                giphyImageItem = giphyImageItem,
+                imageLoader = imageLoader,
+                onClickToDownload = { onClickToDownload(it) },
+                onClickToOpen = { onClickToOpen(it) },
+                onClickToShare = { onClickToShare(it) },
+            )
+
+            if (index < giphyImageItems.lastIndex) {
+                HorizontalDivider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = dimension.grid_0_5),
+                    thickness = 1.dp,
+                    color = MaterialTheme.colorScheme.inverseSurface,
+                )
             }
         }
-
-        if (pullRefreshState.isRefreshing) {
-            LaunchedEffect(true) {
-                if (!isLoading) {
-                    delay(1000) // Trick to let user know work in progress
-                    onRefresh()
-                }
-            }
-        }
-
-        LaunchedEffect(isLoading) {
-            if (!isLoading) {
-                pullRefreshState.endRefresh()
-            } else {
-                pullRefreshState.startRefresh()
-            }
-        }
-
-        PullToRefreshContainer(
-            modifier = Modifier.align(Alignment.TopCenter),
-            state = pullRefreshState,
-        )
     }
 }
 
@@ -185,6 +193,28 @@ private fun TrendingListScreenPreview(
                 imageLoader = ImageLoader(LocalContext.current),
                 uiState = TrendingUIState(
                     giphyImageItems = giphyImageItems,
+                    isLoading = false,
+                ),
+                uiEvent = TrendingUIEvent(
+                    onRefresh = {},
+                    onErrorShown = {},
+                ),
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun TrendingListScreenNoDataPreview() {
+    GiphyTrendingTheme {
+        Surface {
+            TrendingListScreen(
+                modifier = Modifier.fillMaxSize(),
+                onShowSnackbar = {},
+                imageLoader = ImageLoader(LocalContext.current),
+                uiState = TrendingUIState(
+                    giphyImageItems = emptyList(),
                     isLoading = false,
                 ),
                 uiEvent = TrendingUIEvent(

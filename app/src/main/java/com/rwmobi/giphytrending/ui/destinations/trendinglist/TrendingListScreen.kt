@@ -5,8 +5,6 @@
 
 package com.rwmobi.giphytrending.ui.destinations.trendinglist
 
-import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -46,6 +44,7 @@ import com.rwmobi.giphytrending.ui.components.GiphyItem
 import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemsProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.theme.getDimension
+import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
 import kotlinx.coroutines.delay
 
 @Composable
@@ -68,19 +67,37 @@ fun TrendingListScreen(
 
     val context = LocalContext.current
     var clipboardUrl by remember { mutableStateOf("") }
+    val dimension = LocalConfiguration.current.getDimension()
+
     Box(modifier = modifier) {
-        uiState.giphyImageItems?.let {
-            if (it.isNotEmpty()) {
+        uiState.giphyImageItems?.let { giphyImageItems ->
+            if (giphyImageItems.isNotEmpty()) {
                 TrendingList(
                     modifier = Modifier.fillMaxSize(),
-                    giphyImageItems = it,
+                    giphyImageItems = giphyImageItems,
                     isLoading = uiState.isLoading,
                     onRefresh = uiEvent.onRefresh,
-                    imageLoader = imageLoader,
-                    onClickToShare = { clipboardUrl = it },
-                    onClickToOpen = { url -> startBrowserActivity(src = url, context = context) },
-                )
-            } else {
+                ) { index, giphyImageItem ->
+                    GiphyItem(
+                        modifier = Modifier.fillMaxWidth(),
+                        giphyImageItem = giphyImageItem,
+                        imageLoader = imageLoader,
+                        onClickToDownload = { },
+                        onClickToOpen = { url -> context.startBrowserActivity(src = url) },
+                        onClickToShare = { clipboardUrl = it },
+                    )
+
+                    if (index < giphyImageItems.lastIndex) {
+                        HorizontalDivider(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = dimension.grid_0_5),
+                            thickness = 1.dp,
+                            color = MaterialTheme.colorScheme.inverseSurface,
+                        )
+                    }
+                }
+            } else if (!uiState.isLoading) {
                 // TODO: show empty screen
             }
         }
@@ -104,12 +121,9 @@ private fun TrendingList(
     modifier: Modifier = Modifier,
     giphyImageItems: List<GiphyImageItem>,
     isLoading: Boolean,
-    imageLoader: ImageLoader,
     onRefresh: () -> Unit,
-    onClickToShare: (String) -> Unit,
-    onClickToOpen: (String) -> Unit,
+    listItemLayout: @Composable (index: Int, giphyImageItem: GiphyImageItem) -> Unit,
 ) {
-    val dimension = LocalConfiguration.current.getDimension()
     val contentDescriptionTrendingList = stringResource(R.string.content_description_trending_list)
     val pullRefreshState = rememberPullToRefreshState()
 
@@ -120,23 +134,7 @@ private fun TrendingList(
                 .semantics { contentDescription = contentDescriptionTrendingList },
         ) {
             itemsIndexed(giphyImageItems) { index, giphyImageItem ->
-                GiphyItem(
-                    modifier = Modifier.fillMaxWidth(),
-                    giphyImageItem = giphyImageItem,
-                    imageLoader = imageLoader,
-                    onClickToOpen = onClickToOpen,
-                    onClickToShare = onClickToShare,
-                )
-
-                if (index < giphyImageItems.lastIndex) {
-                    HorizontalDivider(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = dimension.grid_0_5),
-                        thickness = 1.dp,
-                        color = MaterialTheme.colorScheme.inverseSurface,
-                    )
-                }
+                listItemLayout
             }
         }
 
@@ -164,27 +162,25 @@ private fun TrendingList(
     }
 }
 
-private fun startBrowserActivity(src: String, context: Context) {
-    val uri = src.toUri().buildUpon().scheme("https").build()
-    val intent = Intent(Intent.ACTION_VIEW).setData(uri)
-    context.startActivity(intent)
-}
-
 @PreviewLightDark
 @Composable
-private fun TrendingListPreview(
+private fun TrendingListScreenPreview(
     @PreviewParameter(GiphyImageItemsProvider::class) giphyImageItems: List<GiphyImageItem>,
 ) {
     GiphyTrendingTheme {
         Surface {
-            TrendingList(
+            TrendingListScreen(
                 modifier = Modifier.fillMaxSize(),
-                giphyImageItems = giphyImageItems,
-                isLoading = false,
-                onRefresh = {},
+                onShowSnackbar = {},
                 imageLoader = ImageLoader(LocalContext.current),
-                onClickToShare = {},
-                onClickToOpen = {},
+                uiState = TrendingUIState(
+                    giphyImageItems = giphyImageItems,
+                    isLoading = false,
+                ),
+                uiEvent = TrendingUIEvent(
+                    onRefresh = {},
+                    onErrorShown = {},
+                ),
             )
         }
     }

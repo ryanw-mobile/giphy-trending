@@ -53,6 +53,7 @@ fun GiphyItem(
     modifier: Modifier = Modifier,
     giphyImageItem: GiphyImageItem,
     imageLoader: ImageLoader,
+    onClickToDownload: (String) -> Unit,
     onClickToOpen: (String) -> Unit,
     onClickToShare: (String) -> Unit,
 ) {
@@ -133,6 +134,16 @@ fun GiphyItem(
             Spacer(modifier = Modifier.weight(1.0f))
 
             if (giphyImageItem.webUrl.isNotEmpty()) {
+                IconButton(onClick = { onClickToDownload(giphyImageItem.imageUrl) }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_file_download_24),
+                        contentDescription = stringResource(R.string.content_description_download_image),
+                        tint = LocalContentColor.current.copy(alpha = 0.68f),
+                    )
+                }
+            }
+
+            if (giphyImageItem.webUrl.isNotEmpty()) {
                 IconButton(onClick = { onClickToOpen(giphyImageItem.webUrl) }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_baseline_open_in_browser_24),
@@ -167,6 +178,7 @@ private fun GiphyItemPreview(
                 modifier = Modifier.fillMaxWidth(),
                 giphyImageItem = giphyImageItem,
                 imageLoader = ImageLoader(LocalContext.current),
+                onClickToDownload = {},
                 onClickToShare = {},
                 onClickToOpen = {},
             )

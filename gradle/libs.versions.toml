@@ -8,7 +8,7 @@ compileSdk = "34"
 buildToolsVersion = "34.0.0"
 
 activityCompose = "1.8.2"
-agp = "8.3.1"
+agp = "8.3.2"
 androidxLifecycleRuntimeCompose = "2.7.0"
 benchmarkMacroJunit4 = "1.2.3"
 coil = "2.6.0"

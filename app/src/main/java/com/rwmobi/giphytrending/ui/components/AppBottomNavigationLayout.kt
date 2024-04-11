@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewDynamicColors
@@ -85,10 +84,9 @@ fun AppBottomNavigationLayout(
         ) {
             val actionLabel = stringResource(android.R.string.ok)
             NavHost(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .nestedScroll(scrollBehavior.nestedScrollConnection),
+                modifier = Modifier.fillMaxSize(),
                 navController = navController,
+                scrollBehavior = scrollBehavior,
                 onShowSnackbar = { errorMessageText ->
                     snackbarHostState.showSnackbar(
                         message = errorMessageText,

@@ -6,9 +6,13 @@
 package com.rwmobi.giphytrending.ui.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -22,10 +26,12 @@ import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingUIEvent
 import com.rwmobi.giphytrending.ui.viewmodel.SettingsViewModel
 import com.rwmobi.giphytrending.ui.viewmodel.TrendingViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    scrollBehavior: TopAppBarScrollBehavior,
     onShowSnackbar: suspend (String) -> Unit,
 ) {
     NavHost(
@@ -38,7 +44,9 @@ fun NavHost(
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             TrendingListScreen(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .nestedScroll(scrollBehavior.nestedScrollConnection),
                 onShowSnackbar = onShowSnackbar,
                 imageLoader = viewModel.getImageLoader(),
                 uiState = uiState,
@@ -47,13 +55,20 @@ fun NavHost(
                     onErrorShown = { viewModel.errorShown(it) },
                 ),
             )
+
+            // Reset the scroll behavior when this composable enters
+            LaunchedEffect(Unit) {
+                scrollBehavior.state.heightOffset = 0f
+            }
         }
         composable(route = "settings") {
             val viewModel: SettingsViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             SettingsScreen(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .nestedScroll(scrollBehavior.nestedScrollConnection),
                 apiMinEntries = BuildConfig.API_MIN_ENTRIES.toInt(),
                 apiMaxEntries = BuildConfig.API_MAX_ENTRIES.toInt(),
                 onShowSnackbar = onShowSnackbar,
@@ -63,6 +78,11 @@ fun NavHost(
                     onErrorShown = { viewModel.errorShown(it) },
                 ),
             )
+
+            // Reset the scroll behavior when this composable enters
+            LaunchedEffect(Unit) {
+                scrollBehavior.state.heightOffset = 0f
+            }
         }
     }
 }

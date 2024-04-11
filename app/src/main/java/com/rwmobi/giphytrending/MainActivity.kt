@@ -53,17 +53,9 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        // tablet portrait
-                        WindowWidthSizeClass.Medium -> {
-                            AppNavigationRailLayout(
-                                modifier = Modifier.fillMaxSize(),
-                                navController = navController,
-                                snackbarHostState = snackbarHostState,
-                            )
-                        }
-
-                        // phone landscape mode
-                        WindowWidthSizeClass.Expanded -> {
+                        WindowWidthSizeClass.Medium, // tablet portrait
+                        WindowWidthSizeClass.Expanded, // phone landscape mode
+                        -> {
                             AppNavigationRailLayout(
                                 modifier = Modifier.fillMaxSize(),
                                 navController = navController,

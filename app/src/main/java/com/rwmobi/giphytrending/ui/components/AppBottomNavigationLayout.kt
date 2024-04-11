@@ -6,13 +6,14 @@
 package com.rwmobi.giphytrending.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -50,7 +51,7 @@ fun AppBottomNavigationLayout(
             TopAppBar(
                 modifier = Modifier.wrapContentHeight(),
                 colors = TopAppBarDefaults.topAppBarColors().copy(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    containerColor = MaterialTheme.colorScheme.background,
                 ),
                 scrollBehavior = scrollBehavior,
                 title = {
@@ -69,33 +70,32 @@ fun AppBottomNavigationLayout(
             )
         },
         bottomBar = {
-            NavigationBar {
-                BottomNavigationBar(
+            Column {
+                HorizontalDivider(
+                    modifier = Modifier.fillMaxWidth(),
+                )
+
+                AppBottomNavigationBar(
                     navController = navController,
                 )
             }
         },
     ) { paddingValues ->
-        Surface(
+        val actionLabel = stringResource(android.R.string.ok)
+        NavHost(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            color = MaterialTheme.colorScheme.surface,
-        ) {
-            val actionLabel = stringResource(android.R.string.ok)
-            NavHost(
-                modifier = Modifier.fillMaxSize(),
-                navController = navController,
-                scrollBehavior = scrollBehavior,
-                onShowSnackbar = { errorMessageText ->
-                    snackbarHostState.showSnackbar(
-                        message = errorMessageText,
-                        actionLabel = actionLabel,
-                        duration = SnackbarDuration.Long,
-                    )
-                },
-            )
-        }
+            navController = navController,
+            scrollBehavior = scrollBehavior,
+            onShowSnackbar = { errorMessageText ->
+                snackbarHostState.showSnackbar(
+                    message = errorMessageText,
+                    actionLabel = actionLabel,
+                    duration = SnackbarDuration.Long,
+                )
+            },
+        )
     }
 }
 
@@ -103,7 +103,7 @@ fun AppBottomNavigationLayout(
 @PreviewDynamicColors
 @PreviewLightDark
 @Composable
-private fun AppBottomNavigationLayoutPreview() {
+private fun Preview() {
     GiphyTrendingTheme {
         Surface(
             modifier = Modifier

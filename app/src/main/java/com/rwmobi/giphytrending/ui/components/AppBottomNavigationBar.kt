@@ -28,13 +28,14 @@ import com.rwmobi.giphytrending.ui.navigation.BottomNavItem
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 
 @Composable
-fun BottomNavigationBar(
+fun AppBottomNavigationBar(
     modifier: Modifier = Modifier,
     navController: NavController,
 ) {
     NavigationBar(
         modifier = modifier,
-        tonalElevation = 8.dp,
+        tonalElevation = 0.dp,
+        containerColor = MaterialTheme.colorScheme.background,
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -73,10 +74,10 @@ fun BottomNavigationBar(
 
 @PreviewLightDark
 @Composable
-private fun BottomNavigationBarPreview() {
+private fun Preview() {
     GiphyTrendingTheme {
         Surface {
-            BottomNavigationBar(
+            AppBottomNavigationBar(
                 modifier = Modifier
                     .wrapContentHeight()
                     .padding(0.dp),

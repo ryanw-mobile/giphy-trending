@@ -1,5 +1,6 @@
 package com.rwmobi.giphytrending.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,6 +17,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -44,13 +46,17 @@ fun AppNavigationRailLayout(
             navController = navController,
         )
 
+        VerticalDivider(
+            modifier = Modifier.fillMaxHeight(),
+        )
+
         Scaffold(
             modifier = modifier,
             topBar = {
                 TopAppBar(
                     modifier = Modifier.wrapContentHeight(),
                     colors = TopAppBarDefaults.topAppBarColors().copy(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        containerColor = MaterialTheme.colorScheme.background,
                     ),
                     scrollBehavior = scrollBehavior,
                     title = {
@@ -69,38 +75,40 @@ fun AppNavigationRailLayout(
                 )
             },
         ) { paddingValues ->
-            Surface(
+            // Note that we take MaxSize and expect individual screens to handle screen size
+            val actionLabel = stringResource(android.R.string.ok)
+            NavHost(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues),
-                color = MaterialTheme.colorScheme.surface,
-            ) {
-                // Note that we take MaxSize and expect individual screens to handle screen size
-                val actionLabel = stringResource(android.R.string.ok)
-                NavHost(
-                    modifier = Modifier.fillMaxSize(),
-                    navController = navController,
-                    scrollBehavior = scrollBehavior,
-                    onShowSnackbar = { errorMessageText ->
-                        snackbarHostState.showSnackbar(
-                            message = errorMessageText,
-                            actionLabel = actionLabel,
-                            duration = SnackbarDuration.Long,
-                        )
-                    },
-                )
-            }
+                navController = navController,
+                scrollBehavior = scrollBehavior,
+                onShowSnackbar = { errorMessageText ->
+                    snackbarHostState.showSnackbar(
+                        message = errorMessageText,
+                        actionLabel = actionLabel,
+                        duration = SnackbarDuration.Long,
+                    )
+                },
+            )
         }
     }
 }
 
 @Preview(
-    name = "Phone - Landscape",
+    name = "Phone - Landscape Light",
     device = "spec:width = 411dp, height = 891dp, orientation = landscape, dpi = 420",
     showSystemUi = true,
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+)
+@Preview(
+    name = "Phone - Landscape Dark",
+    device = "spec:width = 411dp, height = 891dp, orientation = landscape, dpi = 420",
+    showSystemUi = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
 )
 @Composable
-private fun AppNavigationRailLayoutPreview() {
+private fun Preview() {
     GiphyTrendingTheme {
         Surface(
             modifier = Modifier

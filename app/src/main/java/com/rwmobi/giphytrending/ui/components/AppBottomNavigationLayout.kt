@@ -38,7 +38,7 @@ import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppCompactScreen(
+fun AppBottomNavigationLayout(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     snackbarHostState: SnackbarHostState,
@@ -105,14 +105,14 @@ fun AppCompactScreen(
 @PreviewDynamicColors
 @PreviewLightDark
 @Composable
-private fun AppCompactScreenPreview() {
+private fun AppBottomNavigationLayoutPreview() {
     GiphyTrendingTheme {
         Surface(
             modifier = Modifier
                 .fillMaxSize(),
             color = MaterialTheme.colorScheme.surface,
         ) {
-            AppCompactScreen(
+            AppBottomNavigationLayout(
                 modifier = Modifier.fillMaxSize(),
                 navController = rememberNavController(),
                 snackbarHostState = remember { SnackbarHostState() },

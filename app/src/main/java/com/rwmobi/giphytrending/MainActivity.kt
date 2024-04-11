@@ -19,9 +19,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
-import com.rwmobi.giphytrending.ui.components.AppCompactScreen
-import com.rwmobi.giphytrending.ui.components.AppExpandedScreen
-import com.rwmobi.giphytrending.ui.components.AppMediumScreen
+import com.rwmobi.giphytrending.ui.components.AppBottomNavigationLayout
+import com.rwmobi.giphytrending.ui.components.AppNavigationRailLayout
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -47,7 +46,7 @@ class MainActivity : ComponentActivity() {
                     // Select a navigation element based on window size.
                     when (widthSizeClass) {
                         WindowWidthSizeClass.Compact -> {
-                            AppCompactScreen(
+                            AppBottomNavigationLayout(
                                 modifier = Modifier.fillMaxSize(),
                                 navController = navController,
                                 snackbarHostState = snackbarHostState,
@@ -56,7 +55,7 @@ class MainActivity : ComponentActivity() {
 
                         // tablet portrait
                         WindowWidthSizeClass.Medium -> {
-                            AppMediumScreen(
+                            AppNavigationRailLayout(
                                 modifier = Modifier.fillMaxSize(),
                                 navController = navController,
                                 snackbarHostState = snackbarHostState,
@@ -65,7 +64,7 @@ class MainActivity : ComponentActivity() {
 
                         // phone landscape mode
                         WindowWidthSizeClass.Expanded -> {
-                            AppExpandedScreen(
+                            AppNavigationRailLayout(
                                 modifier = Modifier.fillMaxSize(),
                                 navController = navController,
                                 snackbarHostState = snackbarHostState,

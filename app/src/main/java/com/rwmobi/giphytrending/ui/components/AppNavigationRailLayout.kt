@@ -1,13 +1,11 @@
 package com.rwmobi.giphytrending.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -26,7 +24,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.rwmobi.giphytrending.R
@@ -35,7 +32,7 @@ import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppExpandedScreen(
+fun AppNavigationRailLayout(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     snackbarHostState: SnackbarHostState,
@@ -79,27 +76,21 @@ fun AppExpandedScreen(
                     .padding(paddingValues),
                 color = MaterialTheme.colorScheme.surface,
             ) {
-                Row(
+                // Note that we take MaxSize and expect individual screens to handle screen size
+                val actionLabel = stringResource(android.R.string.ok)
+                NavHost(
                     modifier = Modifier
                         .fillMaxSize()
                         .nestedScroll(scrollBehavior.nestedScrollConnection),
-                    horizontalArrangement = Arrangement.Center,
-                ) {
-                    val actionLabel = stringResource(android.R.string.ok)
-                    NavHost(
-                        modifier = Modifier
-                            .width(width = 320.dp)
-                            .fillMaxHeight(),
-                        navController = navController,
-                        onShowSnackbar = { errorMessageText ->
-                            snackbarHostState.showSnackbar(
-                                message = errorMessageText,
-                                actionLabel = actionLabel,
-                                duration = SnackbarDuration.Long,
-                            )
-                        },
-                    )
-                }
+                    navController = navController,
+                    onShowSnackbar = { errorMessageText ->
+                        snackbarHostState.showSnackbar(
+                            message = errorMessageText,
+                            actionLabel = actionLabel,
+                            duration = SnackbarDuration.Long,
+                        )
+                    },
+                )
             }
         }
     }
@@ -111,14 +102,14 @@ fun AppExpandedScreen(
     showSystemUi = true,
 )
 @Composable
-private fun AppExpandedScreenPreview() {
+private fun AppNavigationRailLayoutPreview() {
     GiphyTrendingTheme {
         Surface(
             modifier = Modifier
                 .fillMaxSize(),
             color = MaterialTheme.colorScheme.surface,
         ) {
-            AppExpandedScreen(
+            AppNavigationRailLayout(
                 modifier = Modifier.fillMaxSize(),
                 navController = rememberNavController(),
                 snackbarHostState = remember { SnackbarHostState() },

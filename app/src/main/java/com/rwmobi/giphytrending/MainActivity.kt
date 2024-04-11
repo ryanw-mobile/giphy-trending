@@ -10,28 +10,68 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.rwmobi.giphytrending.ui.components.AppScaffold
+import androidx.navigation.compose.rememberNavController
+import com.rwmobi.giphytrending.ui.components.AppCompactScreen
+import com.rwmobi.giphytrending.ui.components.AppExpandedScreen
+import com.rwmobi.giphytrending.ui.components.AppMediumScreen
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         installSplashScreen()
 
         setContent {
+            val widthSizeClass = calculateWindowSizeClass(this).widthSizeClass
+            val navController = rememberNavController()
+            val snackbarHostState = remember { SnackbarHostState() }
+
             GiphyTrendingTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    AppScaffold(modifier = Modifier.fillMaxSize())
+                    // Select a navigation element based on window size.
+                    when (widthSizeClass) {
+                        WindowWidthSizeClass.Compact -> {
+                            AppCompactScreen(
+                                modifier = Modifier.fillMaxSize(),
+                                navController = navController,
+                                snackbarHostState = snackbarHostState,
+                            )
+                        }
+
+                        // tablet portrait
+                        WindowWidthSizeClass.Medium -> {
+                            AppMediumScreen(
+                                modifier = Modifier.fillMaxSize(),
+                                navController = navController,
+                                snackbarHostState = snackbarHostState,
+                            )
+                        }
+
+                        // phone landscape mode
+                        WindowWidthSizeClass.Expanded -> {
+                            AppExpandedScreen(
+                                modifier = Modifier.fillMaxSize(),
+                                navController = navController,
+                                snackbarHostState = snackbarHostState,
+                            )
+                        }
+                    }
                 }
             }
         }

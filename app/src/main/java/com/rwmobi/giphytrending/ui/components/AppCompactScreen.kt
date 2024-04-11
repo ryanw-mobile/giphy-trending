@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewDynamicColors
 import androidx.compose.ui.tooling.preview.PreviewFontScale
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.navigation.NavHost
@@ -37,9 +38,11 @@ import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppScaffold(modifier: Modifier = Modifier) {
-    val navController = rememberNavController()
-    val snackbarHostState = remember { SnackbarHostState() }
+fun AppCompactScreen(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    snackbarHostState: SnackbarHostState,
+) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     Scaffold(
@@ -102,15 +105,17 @@ fun AppScaffold(modifier: Modifier = Modifier) {
 @PreviewDynamicColors
 @PreviewLightDark
 @Composable
-fun GreetingPreview() {
+private fun AppCompactScreenPreview() {
     GiphyTrendingTheme {
         Surface(
             modifier = Modifier
                 .fillMaxSize(),
             color = MaterialTheme.colorScheme.surface,
         ) {
-            AppScaffold(
+            AppCompactScreen(
                 modifier = Modifier.fillMaxSize(),
+                navController = rememberNavController(),
+                snackbarHostState = remember { SnackbarHostState() },
             )
         }
     }

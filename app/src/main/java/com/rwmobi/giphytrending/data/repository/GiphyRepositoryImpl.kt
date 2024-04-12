@@ -5,14 +5,15 @@
 
 package com.rwmobi.giphytrending.data.repository
 
-import com.rwmobi.giphytrending.BuildConfig
 import com.rwmobi.giphytrending.data.source.local.RoomDbDataSource
 import com.rwmobi.giphytrending.data.source.local.toDomainModelList
 import com.rwmobi.giphytrending.data.source.local.toTrendingEntityList
 import com.rwmobi.giphytrending.data.source.network.NetworkDataSource
 import com.rwmobi.giphytrending.data.source.network.model.TrendingNetworkResponse
+import com.rwmobi.giphytrending.di.GiphyApiKey
 import com.rwmobi.giphytrending.domain.except
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.repository.GiphyRepository
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class GiphyRepositoryImpl @Inject constructor(
     private val networkDataSource: NetworkDataSource,
     private val roomDbDataSource: RoomDbDataSource,
+    @GiphyApiKey private val giphyApiKey: String,
     private val dispatcher: CoroutineDispatcher,
 ) : GiphyRepository {
     override suspend fun fetchCachedTrending(): Result<List<GiphyImageItem>> {
@@ -33,13 +35,13 @@ class GiphyRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun reloadTrending(apiMaxEntries: Int): Result<List<GiphyImageItem>> {
+    override suspend fun reloadTrending(limit: Int, rating: Rating): Result<List<GiphyImageItem>> {
         return withContext(dispatcher) {
             try {
                 roomDbDataSource.markDirty()
                 Timber.tag("refreshTrending").v("Mark dirty: success")
 
-                val trendingNetworkResponse = getTrendingFromNetwork(apiMaxEntries)
+                val trendingNetworkResponse = getTrendingFromNetwork(limit = limit, rating = rating)
                 roomDbDataSource.insertAllData(data = trendingNetworkResponse.trendingData.toTrendingEntityList())
                 Timber.tag("refreshTrending").v("Insertion completed")
 
@@ -62,13 +64,13 @@ class GiphyRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun getTrendingFromNetwork(apiMaxEntries: Int): TrendingNetworkResponse {
+    private suspend fun getTrendingFromNetwork(limit: Int, rating: Rating): TrendingNetworkResponse {
         return withContext(dispatcher) {
             networkDataSource.getTrending(
-                apiKey = BuildConfig.GIPHY_API_KEY,
-                limit = apiMaxEntries,
+                apiKey = giphyApiKey,
+                limit = limit,
                 offset = (0..5).random(), // Eye candie to make every refresh different
-                rating = BuildConfig.API_RATING,
+                rating = rating.apiValue,
             )
         }
     }

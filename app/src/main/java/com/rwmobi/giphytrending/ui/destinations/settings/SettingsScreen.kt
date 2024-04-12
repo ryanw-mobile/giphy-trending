@@ -74,12 +74,12 @@ fun SettingsScreen(
     }
 
     Box(modifier = modifier.verticalScroll(state = rememberScrollState())) {
-        uiState.apiMaxEntries?.let {
+        uiState.apiRequestLimit?.let {
             when (windowSizeClass.widthSizeClass) {
                 WindowWidthSizeClass.Compact -> {
                     Settings(
                         modifier = Modifier.fillMaxSize(),
-                        sliderValue = uiState.apiMaxEntries.toFloat(),
+                        sliderValue = uiState.apiRequestLimit.toFloat(),
                         sliderRange = apiMinEntries.toFloat()..apiMaxEntries.toFloat(),
                         onSliderValueChange = { uiEvent.onUpdateApiMaxEntries(it.toInt()) },
                     )
@@ -93,7 +93,7 @@ fun SettingsScreen(
 
                         Settings(
                             modifier = Modifier.widthIn(max = 500.dp),
-                            sliderValue = uiState.apiMaxEntries.toFloat(),
+                            sliderValue = uiState.apiRequestLimit.toFloat(),
                             sliderRange = apiMinEntries.toFloat()..apiMaxEntries.toFloat(),
                             onSliderValueChange = { uiEvent.onUpdateApiMaxEntries(it.toInt()) },
                         )
@@ -220,7 +220,7 @@ private fun Preview() {
                 apiMinEntries = 25,
                 apiMaxEntries = 250,
                 uiState = SettingsUIState(
-                    apiMaxEntries = 80,
+                    apiRequestLimit = 80,
                     isLoading = false,
                 ),
                 uiEvent = SettingsUIEvent(

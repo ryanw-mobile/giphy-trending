@@ -5,10 +5,12 @@
 
 package com.rwmobi.giphytrending.ui.destinations.settings
 
+import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.ui.model.ErrorMessage
 
 data class SettingsUIState(
-    val apiMaxEntries: Int? = null,
+    val apiRequestLimit: Int? = null,
+    val rating: Rating? = null,
     val isLoading: Boolean = false,
     val errorMessages: List<ErrorMessage> = emptyList(),
 )

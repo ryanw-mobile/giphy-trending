@@ -1,6 +1,7 @@
 package com.rwmobi.giphytrending.data.repository
 
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.repository.GiphyRepository
 
 class FakeGiphyRepository : GiphyRepository {
@@ -9,7 +10,7 @@ class FakeGiphyRepository : GiphyRepository {
         return fakeTrendingResult ?: Result.success(emptyList())
     }
 
-    override suspend fun reloadTrending(apiMaxEntries: Int): Result<List<GiphyImageItem>> {
+    override suspend fun reloadTrending(limit: Int, rating: Rating): Result<List<GiphyImageItem>> {
         return fakeTrendingResult ?: Result.success(emptyList())
     }
 }

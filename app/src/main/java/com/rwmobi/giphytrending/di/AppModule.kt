@@ -12,6 +12,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
+import com.rwmobi.giphytrending.BuildConfig
 import com.rwmobi.giphytrending.data.source.network.GiphyApi
 import com.rwmobi.giphytrending.data.source.network.GiphyApiService
 import dagger.Module
@@ -24,10 +25,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 private const val USER_PREFERENCES_NAME = "user_preferences"
 val Context.userDataStore: DataStore<Preferences> by preferencesDataStore(name = USER_PREFERENCES_NAME)
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class GiphyApiKey
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -68,4 +74,9 @@ object AppModule {
             }
             .build()
     }
+
+    @GiphyApiKey
+    @Singleton
+    @Provides
+    fun provideGiphyApiKey() = BuildConfig.GIPHY_API_KEY
 }

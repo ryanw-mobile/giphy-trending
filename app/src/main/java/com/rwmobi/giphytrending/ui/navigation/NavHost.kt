@@ -79,7 +79,7 @@ fun NavHost(
                 onShowSnackbar = onShowSnackbar,
                 uiState = uiState,
                 uiEvent = SettingsUIEvent(
-                    onUpdateApiMaxEntries = { viewModel.setApiMax(it) },
+                    onUpdateApiMaxEntries = { viewModel.setApiRequestLimit(it) },
                     onErrorShown = { viewModel.errorShown(it) },
                 ),
             )

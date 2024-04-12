@@ -15,7 +15,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -146,8 +145,8 @@ private fun TrendingList(
     imageLoader: ImageLoader,
     giphyImageItems: List<GiphyImageItem>,
     onClickToDownload: (imageUrl: String) -> Unit,
-    onClickToShare: (Url: String) -> Unit,
-    onClickToOpen: (Url: String) -> Unit,
+    onClickToShare: (url: String) -> Unit,
+    onClickToOpen: (url: String) -> Unit,
 ) {
     val dimension = LocalConfiguration.current.getDimension()
     val contentDescriptionTrendingList = stringResource(R.string.content_description_trending_list)
@@ -173,7 +172,6 @@ private fun TrendingList(
                         .fillMaxWidth()
                         .padding(vertical = dimension.grid_0_5),
                     thickness = 1.dp,
-                    color = MaterialTheme.colorScheme.inverseSurface,
                 )
             }
         }
@@ -182,7 +180,7 @@ private fun TrendingList(
 
 @PreviewLightDark
 @Composable
-private fun TrendingListScreenPreview(
+private fun Preview(
     @PreviewParameter(GiphyImageItemsProvider::class) giphyImageItems: List<GiphyImageItem>,
 ) {
     GiphyTrendingTheme {
@@ -206,7 +204,7 @@ private fun TrendingListScreenPreview(
 
 @PreviewLightDark
 @Composable
-private fun TrendingListScreenNoDataPreview() {
+private fun NoDataPreview() {
     GiphyTrendingTheme {
         Surface {
             TrendingListScreen(

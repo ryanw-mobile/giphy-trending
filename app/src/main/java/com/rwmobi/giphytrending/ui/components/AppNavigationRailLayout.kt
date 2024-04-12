@@ -18,6 +18,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.VerticalDivider
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -35,6 +38,7 @@ import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 @Composable
 fun AppNavigationRailLayout(
     modifier: Modifier = Modifier,
+    windowSizeClass: WindowSizeClass,
     navController: NavHostController,
     snackbarHostState: SnackbarHostState,
 ) {
@@ -81,6 +85,7 @@ fun AppNavigationRailLayout(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues),
+                windowsSizeClass = windowSizeClass,
                 navController = navController,
                 scrollBehavior = scrollBehavior,
                 onShowSnackbar = { errorMessageText ->
@@ -95,6 +100,7 @@ fun AppNavigationRailLayout(
     }
 }
 
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Preview(
     name = "Phone - Landscape Light",
     device = "spec:width = 411dp, height = 891dp, orientation = landscape, dpi = 420",
@@ -117,6 +123,7 @@ private fun Preview() {
         ) {
             AppNavigationRailLayout(
                 modifier = Modifier.fillMaxSize(),
+                windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
                 navController = rememberNavController(),
                 snackbarHostState = remember { SnackbarHostState() },
             )

@@ -232,6 +232,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material3.windowsizeclass)
     implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.material3.adaptive.android)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

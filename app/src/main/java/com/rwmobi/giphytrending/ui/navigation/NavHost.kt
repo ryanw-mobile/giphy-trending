@@ -8,6 +8,7 @@ package com.rwmobi.giphytrending.ui.navigation
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,6 +33,7 @@ fun NavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     scrollBehavior: TopAppBarScrollBehavior,
+    windowsSizeClass: WindowSizeClass,
     onShowSnackbar: suspend (String) -> Unit,
 ) {
     NavHost(
@@ -47,6 +49,7 @@ fun NavHost(
                 modifier = Modifier
                     .fillMaxSize()
                     .nestedScroll(scrollBehavior.nestedScrollConnection),
+                windowSizeClass = windowsSizeClass,
                 onShowSnackbar = onShowSnackbar,
                 imageLoader = viewModel.getImageLoader(),
                 uiState = uiState,

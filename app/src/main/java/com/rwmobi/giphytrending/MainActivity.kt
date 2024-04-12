@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         setContent {
-            val widthSizeClass = calculateWindowSizeClass(this).widthSizeClass
+            val windowSizeClass = calculateWindowSizeClass(this)
             val navController = rememberNavController()
             val snackbarHostState = remember { SnackbarHostState() }
 
@@ -44,10 +44,11 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background,
                 ) {
                     // Select a navigation element based on window size.
-                    when (widthSizeClass) {
+                    when (windowSizeClass.widthSizeClass) {
                         WindowWidthSizeClass.Compact -> {
                             AppBottomNavigationLayout(
                                 modifier = Modifier.fillMaxSize(),
+                                windowSizeClass = windowSizeClass,
                                 navController = navController,
                                 snackbarHostState = snackbarHostState,
                             )
@@ -58,6 +59,7 @@ class MainActivity : ComponentActivity() {
                         -> {
                             AppNavigationRailLayout(
                                 modifier = Modifier.fillMaxSize(),
+                                windowSizeClass = windowSizeClass,
                                 navController = navController,
                                 snackbarHostState = snackbarHostState,
                             )

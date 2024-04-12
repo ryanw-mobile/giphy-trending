@@ -73,6 +73,7 @@ fun NavHost(
                 modifier = Modifier
                     .fillMaxSize()
                     .nestedScroll(scrollBehavior.nestedScrollConnection),
+                windowSizeClass = windowsSizeClass,
                 apiMinEntries = BuildConfig.API_MIN_ENTRIES.toInt(),
                 apiMaxEntries = BuildConfig.API_MAX_ENTRIES.toInt(),
                 onShowSnackbar = onShowSnackbar,

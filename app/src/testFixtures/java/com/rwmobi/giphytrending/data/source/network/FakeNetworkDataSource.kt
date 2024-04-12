@@ -17,14 +17,14 @@ class FakeNetworkDataSource : NetworkDataSource {
         return mockTrendingNetworkResponse ?: TrendingNetworkResponse(
             meta = Meta(
                 msg = "some-msg",
-                response_id = "some-response-id",
+                responseId = "some-response-id",
                 status = 0,
             ),
             trendingData = emptyList(),
             pagination = Pagination(
                 count = 0,
                 offset = 0,
-                total_count = 0,
+                totalCount = 0,
             ),
         )
     }

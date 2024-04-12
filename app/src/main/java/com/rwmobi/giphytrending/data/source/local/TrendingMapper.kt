@@ -22,14 +22,14 @@ fun List<TrendingEntity>.toDomainModelList() = this.map { it.toDomainModel() }
 
 fun TrendingData.toTrendingEntity() = TrendingEntity(
     id = this.id,
-    previewUrl = urlCleanUp(this.images.fixed_width.url),
+    previewUrl = urlCleanUp(this.images.fixedWidth.url),
     imageUrl = urlCleanUp(this.images.original.url),
     webUrl = this.url,
     title = this.title,
     type = this.type,
     username = this.username,
-    trendingDateTime = this.trending_datetime,
-    importDateTime = this.import_datetime,
+    trendingDateTime = this.trendingDatetime,
+    importDateTime = this.importDatetime,
 )
 
 fun List<TrendingData>.toTrendingEntityList() = this.map { it.toTrendingEntity() }

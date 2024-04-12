@@ -58,7 +58,7 @@ class UserPreferencesRepositoryImpl @Inject constructor(
                     .collect { prefs ->
                         _userPreferences.update {
                             it.copy(
-                                apiRequestLimit = prefs[prefKeyApiRequestLimit],
+                                apiRequestLimit = prefs[prefKeyApiRequestLimit] ?: ((defaultApiMaxEntries + defaultApiMinEntries) / 2),
                                 rating = Rating.fromApiValue(
                                     apiValue = prefs[prefKeyRating],
                                     defaultValue = Rating.G,

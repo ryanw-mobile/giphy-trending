@@ -65,7 +65,7 @@ class TrendingViewModel @Inject constructor(
                 userPreferencesRepository.userPreferences.collect {
                     userPreferences = it
                     if (userPreferences.isFullyConfigured() && !firstRefreshDone) {
-                        Timber.tag("refresh").v("got apimax entries, force refresh")
+                        Timber.tag("refresh").v("got user preferences, trigger initial refresh")
                         refresh()
                         firstRefreshDone = true
                     }
@@ -95,7 +95,7 @@ class TrendingViewModel @Inject constructor(
 
         if (apiMaxEntries != null && rating != null) {
             viewModelScope.launch(dispatcher) {
-                Timber.tag("refresh").v("Requesting $apiMaxEntries entries from the repository")
+                Timber.tag("refresh").v("Requesting $apiMaxEntries entries with rating = ${rating.apiValue}")
                 processTrendingList(
                     repositoryResult = giphyRepository.reloadTrending(limit = apiMaxEntries, rating = rating),
                     isLoadingDone = true,
@@ -136,7 +136,7 @@ class TrendingViewModel @Inject constructor(
                         giphyImageItems = repositoryResult.getOrNull() ?: emptyList(),
                     )
                 }
-                Timber.tag("processTrendingList").v("Processed ${repositoryResult.getOrNull()?.count() ?: 0} entries")
+                Timber.tag("processTrendingList").v("Processed ${repositoryResult.getOrNull()?.count() ?: 0} entries, isLoading = ${!isLoadingDone}")
             }
         }
     }

@@ -133,7 +133,7 @@ class TrendingViewModel @Inject constructor(
                         giphyImageItems = repositoryResult.getOrNull() ?: emptyList(),
                     )
                 }
-                Timber.tag("processTrendingList").v("processed")
+                Timber.tag("processTrendingList").v("Processed ${repositoryResult.getOrNull()?.count() ?: 0} entries")
             }
         }
     }

@@ -11,6 +11,7 @@ class FakeNetworkDataSource : NetworkDataSource {
     override suspend fun getTrending(
         apiKey: String,
         limit: Int,
+        offset: Int,
         rating: String,
     ): TrendingNetworkResponse {
         apiError?.run { throw this }

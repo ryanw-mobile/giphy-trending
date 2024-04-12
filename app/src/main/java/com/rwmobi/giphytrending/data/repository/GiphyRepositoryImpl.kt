@@ -67,6 +67,7 @@ class GiphyRepositoryImpl @Inject constructor(
             networkDataSource.getTrending(
                 apiKey = BuildConfig.GIPHY_API_KEY,
                 limit = apiMaxEntries,
+                offset = (0..5).random(), // Eye candie to make every refresh different
                 rating = BuildConfig.API_RATING,
             )
         }

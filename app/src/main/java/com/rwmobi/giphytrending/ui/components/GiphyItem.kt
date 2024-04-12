@@ -9,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -95,7 +96,7 @@ fun GiphyItem(
             imageLoader = imageLoader,
         )
 
-        val imageTypeBadgeBackground = MaterialTheme.colorScheme.secondaryContainer
+        val imageTypeBadgeBackground = MaterialTheme.colorScheme.tertiaryContainer
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -117,7 +118,7 @@ fun GiphyItem(
                         },
                     style = MaterialTheme.typography.labelSmall,
                     textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                     maxLines = 1,
                     overflow = TextOverflow.Clip,
                     text = giphyImageItem.type.uppercase(),
@@ -138,6 +139,8 @@ fun GiphyItem(
                         maxLines = 1,
                         text = "@${giphyImageItem.username}",
                     )
+                } else {
+                    Spacer(modifier = Modifier.weight(weight = 1.0f, fill = true))
                 }
             }
 
@@ -171,7 +174,7 @@ fun GiphyItem(
 @PreviewLightDark
 @PreviewFontScale
 @Composable
-private fun GiphyItemPreview(
+private fun Preview(
     @PreviewParameter(GiphyImageItemProvider::class) giphyImageItem: GiphyImageItem,
 ) {
     GiphyTrendingTheme {

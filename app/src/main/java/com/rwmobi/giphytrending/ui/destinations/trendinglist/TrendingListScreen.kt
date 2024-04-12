@@ -93,6 +93,19 @@ fun TrendingListScreen(
                             onClickToShare = { url -> clipboardUrl = url },
                         )
                     }
+
+                    WindowWidthSizeClass.Medium,
+                    WindowWidthSizeClass.Expanded,
+                    -> {
+                        TrendingStaggeredGrid(
+                            modifier = Modifier.fillMaxSize(),
+                            giphyImageItems = giphyImageItems,
+                            imageLoader = imageLoader,
+                            onClickToDownload = { imageUrl -> downloadImage(imageUrl = imageUrl) },
+                            onClickToOpen = { url -> context.startBrowserActivity(url = url) },
+                            onClickToShare = { url -> clipboardUrl = url },
+                        )
+                    }
                 }
             } else if (!uiState.isLoading) {
                 NoDataScreen(

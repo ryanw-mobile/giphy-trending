@@ -62,6 +62,7 @@ fun NavHost(
             // Reset the scroll behavior when this composable enters
             LaunchedEffect(Unit) {
                 scrollBehavior.state.heightOffset = 0f
+                scrollBehavior.state.contentOffset = 0f
             }
         }
         composable(route = "settings") {
@@ -85,6 +86,7 @@ fun NavHost(
             // Reset the scroll behavior when this composable enters
             LaunchedEffect(Unit) {
                 scrollBehavior.state.heightOffset = 0f
+                scrollBehavior.state.contentOffset = 0f
             }
         }
     }

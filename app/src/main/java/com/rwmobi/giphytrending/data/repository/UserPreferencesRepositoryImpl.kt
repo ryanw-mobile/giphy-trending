@@ -57,7 +57,7 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setApiMax(apiMax: Int) {
-        preferencesDataStoreWrapper.updateIntPreference(
+        preferencesDataStoreWrapper.updatePreference(
             key = prefKeyMaxApiEntries,
             newValue = max(min(apiMax, defaultApiMaxEntries), defaultApiMinEntries),
         )

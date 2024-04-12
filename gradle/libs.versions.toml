@@ -37,6 +37,7 @@ legacySupportV4 = "1.0.0"
 lifecycleExtensions = "2.2.0"
 lifecycleRuntimeKtx = "2.7.0"
 loggingInterceptor = "5.0.0-alpha.12"
+material3WindowSizeClass = "1.2.1"
 moshi = "1.15.1"
 mockk = "1.13.10"
 retrofit = "2.11.0"
@@ -45,6 +46,7 @@ testCoreKtx = "1.5.0"
 testExt = "1.1.5"
 testRules = "1.5.0"
 timber = "5.0.1"
+material3AdaptiveAndroid = "1.0.0-alpha06"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -61,6 +63,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-material3-windowsizeclass = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "material3WindowSizeClass" }
 
 androidx-benchmark-macro-junit4 = { module = "androidx.benchmark:benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
@@ -109,6 +112,7 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycleRuntimeCompose" }
 
 leakcanary-android = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
+androidx-material3-adaptive-android = { group = "androidx.compose.material3", name = "material3-adaptive-android", version.ref = "material3AdaptiveAndroid" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

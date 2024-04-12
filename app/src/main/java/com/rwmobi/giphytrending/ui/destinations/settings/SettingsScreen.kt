@@ -10,16 +10,24 @@ import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -39,6 +47,7 @@ import androidx.compose.ui.tooling.preview.PreviewDynamicColors
 import androidx.compose.ui.tooling.preview.PreviewFontScale
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.compose.ui.unit.dp
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.components.LoadingOverlay
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
@@ -47,11 +56,12 @@ import com.rwmobi.giphytrending.ui.theme.getDimension
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
-    onShowSnackbar: suspend (String) -> Unit,
+    windowSizeClass: WindowSizeClass,
     apiMinEntries: Int,
     apiMaxEntries: Int,
     uiState: SettingsUIState,
     uiEvent: SettingsUIEvent,
+    onShowSnackbar: suspend (String) -> Unit,
 ) {
     if (uiState.errorMessages.isNotEmpty()) {
         val errorMessage = remember(uiState) { uiState.errorMessages[0] }
@@ -63,14 +73,35 @@ fun SettingsScreen(
         }
     }
 
-    Box(modifier = modifier) {
+    Box(modifier = modifier.verticalScroll(state = rememberScrollState())) {
         uiState.apiMaxEntries?.let {
-            Settings(
-                modifier = Modifier.fillMaxSize(),
-                sliderValue = uiState.apiMaxEntries.toFloat(),
-                sliderRange = apiMinEntries.toFloat()..apiMaxEntries.toFloat(),
-                onSliderValueChange = { uiEvent.onUpdateApiMaxEntries(it.toInt()) },
-            )
+            when (windowSizeClass.widthSizeClass) {
+                WindowWidthSizeClass.Compact -> {
+                    Settings(
+                        modifier = Modifier.fillMaxSize(),
+                        sliderValue = uiState.apiMaxEntries.toFloat(),
+                        sliderRange = apiMinEntries.toFloat()..apiMaxEntries.toFloat(),
+                        onSliderValueChange = { uiEvent.onUpdateApiMaxEntries(it.toInt()) },
+                    )
+                }
+
+                WindowWidthSizeClass.Medium,
+                WindowWidthSizeClass.Expanded,
+                -> {
+                    Row(modifier = Modifier.fillMaxSize()) {
+                        Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
+
+                        Settings(
+                            modifier = Modifier.widthIn(max = 500.dp),
+                            sliderValue = uiState.apiMaxEntries.toFloat(),
+                            sliderRange = apiMinEntries.toFloat()..apiMaxEntries.toFloat(),
+                            onSliderValueChange = { uiEvent.onUpdateApiMaxEntries(it.toInt()) },
+                        )
+
+                        Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
+                    }
+                }
+            }
         }
 
         AnimatedVisibility(visible = uiState.isLoading) {
@@ -174,19 +205,29 @@ private fun getAnnotatedFootnote(): AnnotatedString {
     }
 }
 
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @PreviewLightDark
 @PreviewFontScale
 @PreviewScreenSizes
 @PreviewDynamicColors
 @Composable
-private fun SettingsPreview() {
+private fun Preview() {
     GiphyTrendingTheme {
         Surface {
-            Settings(
+            SettingsScreen(
                 modifier = Modifier.fillMaxSize(),
-                sliderValue = 50f,
-                sliderRange = 1f..250f,
-                onSliderValueChange = {},
+                windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
+                apiMinEntries = 25,
+                apiMaxEntries = 250,
+                uiState = SettingsUIState(
+                    apiMaxEntries = 80,
+                    isLoading = false,
+                ),
+                uiEvent = SettingsUIEvent(
+                    onErrorShown = {},
+                    onUpdateApiMaxEntries = {},
+                ),
+                onShowSnackbar = {},
             )
         }
     }

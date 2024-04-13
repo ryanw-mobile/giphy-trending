@@ -89,13 +89,13 @@ class TrendingViewModel @Inject constructor(
             return
         }
 
-        // Safe local variables after the check
         _uiState.update { currentUiState ->
             currentUiState.copy(
                 isLoading = true,
             )
         }
 
+        // Safe local variables after the check
         val apiMaxEntries = userPreferences.apiRequestLimit
         val rating = userPreferences.rating
 

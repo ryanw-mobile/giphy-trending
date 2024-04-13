@@ -11,7 +11,8 @@ import com.rwmobi.giphytrending.data.source.local.toTrendingEntityList
 import com.rwmobi.giphytrending.data.source.network.NetworkDataSource
 import com.rwmobi.giphytrending.data.source.network.model.TrendingNetworkResponse
 import com.rwmobi.giphytrending.di.GiphyApiKey
-import com.rwmobi.giphytrending.domain.except
+import com.rwmobi.giphytrending.domain.exceptions.EmptyGiphyAPIKeyException
+import com.rwmobi.giphytrending.domain.exceptions.except
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.repository.GiphyRepository
@@ -36,6 +37,13 @@ class GiphyRepositoryImpl @Inject constructor(
     }
 
     override suspend fun reloadTrending(limit: Int, rating: Rating): Result<List<GiphyImageItem>> {
+        // It won't work without an API Key
+        if (giphyApiKey.isBlank()) {
+            return Result.failure(
+                exception = throw EmptyGiphyAPIKeyException(),
+            )
+        }
+
         return withContext(dispatcher) {
             try {
                 roomDbDataSource.markDirty()

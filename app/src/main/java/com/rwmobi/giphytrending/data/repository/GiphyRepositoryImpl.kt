@@ -56,6 +56,7 @@ class GiphyRepositoryImpl @Inject constructor(
 
                 val invalidationResult = invalidateDirtyTrendingDb()
                 if (invalidationResult.isFailure) {
+                    Timber.tag("invalidationResult").e(invalidationResult.exceptionOrNull())
                     Result.failure(
                         exception = invalidationResult.exceptionOrNull() ?: UnknownError(),
                     )

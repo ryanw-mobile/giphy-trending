@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
 package com.rwmobi.giphytrending.domain.model
 
 import java.util.Locale

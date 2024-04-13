@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
 package com.rwmobi.giphytrending.ui.components
 
 import androidx.compose.material3.ExperimentalMaterial3Api

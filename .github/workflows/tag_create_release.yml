@@ -53,12 +53,6 @@ jobs:
           body: "Description of the release for version ${{ env.version }}"
           commitish: ${{ github.sha }}
 
-      - name: Find Mapping file
-        if: ${{ env.EXPORT_MAPPING == 'true' }}
-        run: |
-          mapping_path=$(find ./app/build/outputs/mapping/release -name "mapping.txt" | head -n 1)
-          echo "mapping_path=$mapping_path" >> $GITHUB_ENV
-
       - name: Upload Release Asset Mapping
         if: ${{ env.EXPORT_MAPPING == 'true' }}
         uses: actions/upload-release-asset@v1
@@ -66,7 +60,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_FOR_RELEASES }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.mapping_path }}
+          asset_path: ./app/build/outputs/mapping/release/mapping.txt
           asset_name: mapping-${{ env.version }}.txt
           asset_content_type: text/plain
 

@@ -25,7 +25,6 @@ import javax.inject.Inject
 class GiphyRepositoryImpl @Inject constructor(
     private val networkDataSource: NetworkDataSource,
     private val roomDbDataSource: RoomDbDataSource,
-    private val giphyApiKey: String = BuildConfig.GIPHY_API_KEY,
     private val dispatcher: CoroutineDispatcher,
 ) : GiphyRepository {
     override suspend fun fetchCachedTrending(): Result<List<GiphyImageItem>> {
@@ -37,7 +36,7 @@ class GiphyRepositoryImpl @Inject constructor(
     }
 
     override suspend fun reloadTrending(limit: Int, rating: Rating): Result<List<GiphyImageItem>> {
-        if (giphyApiKey.isBlank()) {
+        if (BuildConfig.GIPHY_API_KEY.isBlank()) {
             @Suppress("UNREACHABLE_CODE")
             // It won't work without an API Key - CI might pass in nothing
             return Result.failure(
@@ -69,6 +68,7 @@ class GiphyRepositoryImpl @Inject constructor(
                 throw cancellationException
             } catch (ex: Exception) {
                 Timber.tag("refreshTrending").e(ex)
+                Timber.tag("refreshTrending").e("KEY = [${BuildConfig.GIPHY_API_KEY}]")
                 Result.failure(exception = ex)
             }
         }
@@ -77,7 +77,7 @@ class GiphyRepositoryImpl @Inject constructor(
     private suspend fun getTrendingFromNetwork(limit: Int, rating: Rating): TrendingNetworkResponse {
         return withContext(dispatcher) {
             networkDataSource.getTrending(
-                apiKey = giphyApiKey,
+                apiKey = BuildConfig.GIPHY_API_KEY,
                 limit = limit,
                 offset = (0..5).random(), // Eye candie to make every refresh different
                 rating = rating.apiValue,

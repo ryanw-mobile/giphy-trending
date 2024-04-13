@@ -24,13 +24,11 @@ object GiphyRepositoryModule {
     fun provideGiphyRepository(
         networkDataSource: NetworkDataSource,
         roomDbDataSource: RoomDbDataSource,
-        @GiphyApiKey giphyApiKey: String,
         @DispatcherModule.IoDispatcher dispatcher: CoroutineDispatcher,
     ): GiphyRepository {
         return GiphyRepositoryImpl(
             networkDataSource = networkDataSource,
             roomDbDataSource = roomDbDataSource,
-            giphyApiKey = giphyApiKey,
             dispatcher = dispatcher,
         )
     }

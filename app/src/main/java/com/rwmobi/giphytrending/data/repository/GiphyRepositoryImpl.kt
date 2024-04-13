@@ -5,12 +5,12 @@
 
 package com.rwmobi.giphytrending.data.repository
 
+import com.rwmobi.giphytrending.BuildConfig
 import com.rwmobi.giphytrending.data.source.local.RoomDbDataSource
 import com.rwmobi.giphytrending.data.source.local.toDomainModelList
 import com.rwmobi.giphytrending.data.source.local.toTrendingEntityList
 import com.rwmobi.giphytrending.data.source.network.NetworkDataSource
 import com.rwmobi.giphytrending.data.source.network.model.TrendingNetworkResponse
-import com.rwmobi.giphytrending.di.GiphyApiKey
 import com.rwmobi.giphytrending.domain.exceptions.EmptyGiphyAPIKeyException
 import com.rwmobi.giphytrending.domain.exceptions.except
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
@@ -25,7 +25,7 @@ import javax.inject.Inject
 class GiphyRepositoryImpl @Inject constructor(
     private val networkDataSource: NetworkDataSource,
     private val roomDbDataSource: RoomDbDataSource,
-    @GiphyApiKey private val giphyApiKey: String,
+    private val giphyApiKey: String = BuildConfig.GIPHY_API_KEY,
     private val dispatcher: CoroutineDispatcher,
 ) : GiphyRepository {
     override suspend fun fetchCachedTrending(): Result<List<GiphyImageItem>> {
@@ -77,7 +77,7 @@ class GiphyRepositoryImpl @Inject constructor(
     private suspend fun getTrendingFromNetwork(limit: Int, rating: Rating): TrendingNetworkResponse {
         return withContext(dispatcher) {
             networkDataSource.getTrending(
-                apiKey = giphyApiKey,
+                apiKey = "123", // giphyApiKey,
                 limit = limit,
                 offset = (0..5).random(), // Eye candie to make every refresh different
                 rating = rating.apiValue,

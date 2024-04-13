@@ -40,14 +40,6 @@ jobs:
       - name: Extract Version Number
         run: echo "version=${GITHUB_REF#refs/tags/release/}" >> $GITHUB_ENV
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-build-artifacts
-          path: |
-            app/build/outputs/apk/release/*.apk
-            app/build/outputs/bundle/release/*.aab
-
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -60,6 +52,17 @@ jobs:
           prerelease: false
           body: "Description of the release for version ${{ env.version }}"
           commitish: ${{ github.sha }}
+
+      - name: Upload Release Asset Mapping
+        if: ${{ vars.EXPORT_MAPPING == 'true' }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_FOR_RELEASES }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./app/build/outputs/mapping/release/mapping.txt
+          asset_name: mapping-${{ env.version }}.txt
+          asset_content_type: text/plain
 
       - name: Find APK file
         run: |

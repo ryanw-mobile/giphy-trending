@@ -89,21 +89,22 @@ class TrendingViewModel @Inject constructor(
             return
         }
 
-        // Safe local variables after the check
         _uiState.update { currentUiState ->
             currentUiState.copy(
                 isLoading = true,
             )
         }
 
+        // Safe local variables after the check
         val apiMaxEntries = userPreferences.apiRequestLimit
         val rating = userPreferences.rating
 
         if (apiMaxEntries != null && rating != null) {
             viewModelScope.launch(dispatcher) {
                 Timber.tag("refresh").v("Requesting $apiMaxEntries entries with rating = ${rating.apiValue}")
+                val repositoryResult = giphyRepository.reloadTrending(limit = apiMaxEntries, rating = rating)
                 processTrendingList(
-                    repositoryResult = giphyRepository.reloadTrending(limit = apiMaxEntries, rating = rating),
+                    repositoryResult = repositoryResult,
                     isLoadingDone = true,
                 )
             }

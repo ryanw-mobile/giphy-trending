@@ -211,15 +211,6 @@ private fun ItemsToLoad(
         text = stringResource(id = R.string.api_max_description),
     )
 
-    Text(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = dimension.defaultHalfPadding),
-        style = MaterialTheme.typography.bodyMedium,
-        textAlign = TextAlign.Justify,
-        text = stringResource(id = R.string.apimax_desc),
-    )
-
     Spacer(modifier = Modifier.height(height = dimension.defaultHalfPadding))
 
     Slider(
@@ -238,6 +229,15 @@ private fun ItemsToLoad(
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.labelLarge,
         text = "${sliderValue.toInt()}",
+    )
+
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = dimension.defaultHalfPadding),
+        style = MaterialTheme.typography.bodyMedium,
+        textAlign = TextAlign.Justify,
+        text = stringResource(id = R.string.apimax_desc),
     )
 }
 

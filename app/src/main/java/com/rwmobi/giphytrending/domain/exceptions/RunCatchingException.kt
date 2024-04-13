@@ -3,7 +3,7 @@
  * https://github.com/ryanw-mobile
  */
 
-package com.rwmobi.giphytrending.domain
+package com.rwmobi.giphytrending.domain.exceptions
 
 /***
  * Workaround to rethrow CancellationException

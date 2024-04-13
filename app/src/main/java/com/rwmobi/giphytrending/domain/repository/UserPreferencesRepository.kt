@@ -5,12 +5,15 @@
 
 package com.rwmobi.giphytrending.domain.repository
 
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.rwmobi.giphytrending.domain.model.Rating
+import com.rwmobi.giphytrending.domain.model.UserPreferences
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 
 interface UserPreferencesRepository {
-    val apiMaxEntries: MutableStateFlow<Int?>
+    val userPreferences: StateFlow<UserPreferences>
     val preferenceErrors: SharedFlow<Throwable>
 
-    suspend fun setApiMax(apiMax: Int)
+    suspend fun setApiRequestLimit(limit: Int)
+    suspend fun setRating(rating: Rating)
 }

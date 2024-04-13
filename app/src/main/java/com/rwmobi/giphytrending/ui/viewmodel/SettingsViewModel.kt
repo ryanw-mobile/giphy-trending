@@ -8,6 +8,7 @@ package com.rwmobi.giphytrending.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rwmobi.giphytrending.di.DispatcherModule
+import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
 import com.rwmobi.giphytrending.ui.destinations.settings.SettingsUIState
 import com.rwmobi.giphytrending.ui.model.ErrorMessage
@@ -49,11 +50,12 @@ class SettingsViewModel @Inject constructor(
             }
 
             launch {
-                userPreferencesRepository.apiMaxEntries.collect { apiMaxEntries ->
+                userPreferencesRepository.userPreferences.collect { userPreferences ->
                     _uiState.update { currentUiState ->
                         currentUiState.copy(
-                            isLoading = apiMaxEntries == null,
-                            apiMaxEntries = apiMaxEntries,
+                            isLoading = !userPreferences.isFullyConfigured(),
+                            apiRequestLimit = userPreferences.apiRequestLimit,
+                            rating = userPreferences.rating,
                         )
                     }
                 }
@@ -61,15 +63,27 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun setApiMax(maxApiEntries: Int) {
+    fun setApiRequestLimit(limit: Int) {
         viewModelScope.launch(dispatcher) {
             _uiState.update { currentUiState ->
                 currentUiState.copy(
                     isLoading = false,
-                    apiMaxEntries = maxApiEntries,
+                    apiRequestLimit = limit,
                 )
             }
-            userPreferencesRepository.setApiMax(apiMax = maxApiEntries)
+            userPreferencesRepository.setApiRequestLimit(limit = limit)
+        }
+    }
+
+    fun setRating(rating: Rating) {
+        viewModelScope.launch(dispatcher) {
+            _uiState.update { currentUiState ->
+                currentUiState.copy(
+                    isLoading = false,
+                    rating = rating,
+                )
+            }
+            userPreferencesRepository.setRating(rating = rating)
         }
     }
 

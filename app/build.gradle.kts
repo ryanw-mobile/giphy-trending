@@ -78,7 +78,6 @@ android {
         buildConfigField("String", "DATABASE_NAME", "\"trending.db\"")
         buildConfigField("String", "API_MAX_ENTRIES", "\"100\"")
         buildConfigField("String", "API_MIN_ENTRIES", "\"25\"")
-        buildConfigField("String", "API_RATING", "\"G\"")
 
         val isRunningOnCI = System.getenv("BITRISE") == "true"
         val keystorePropertiesFile = file("../../keystore.properties")

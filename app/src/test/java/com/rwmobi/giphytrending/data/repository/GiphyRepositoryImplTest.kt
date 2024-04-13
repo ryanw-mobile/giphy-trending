@@ -4,6 +4,7 @@ import com.rwmobi.giphytrending.data.source.local.FakeRoomDbDataSource
 import com.rwmobi.giphytrending.data.source.local.TrendingEntity
 import com.rwmobi.giphytrending.data.source.local.toDomainModelList
 import com.rwmobi.giphytrending.data.source.network.FakeNetworkDataSource
+import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.repository.GiphyRepository
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
@@ -40,6 +41,7 @@ internal class GiphyRepositoryImplTest : FreeSpec() {
         giphyRepository = GiphyRepositoryImpl(
             networkDataSource = fakeNetworkDataSource,
             roomDbDataSource = fakeRoomDbDataSource,
+            giphyApiKey = "some-api-key",
             dispatcher = dispatcher,
         )
     }
@@ -94,7 +96,7 @@ internal class GiphyRepositoryImplTest : FreeSpec() {
                 fakeNetworkDataSource.apiError = Exception()
 
                 // 🟡 When
-                val result = giphyRepository.reloadTrending(apiMaxEntries = 100)
+                val result = giphyRepository.reloadTrending(limit = 100, rating = Rating.R)
 
                 // 🟢 Then
                 result.isFailure shouldBe true
@@ -107,7 +109,7 @@ internal class GiphyRepositoryImplTest : FreeSpec() {
                 fakeRoomDbDataSource.apiError = Exception()
 
                 // 🟡 When
-                val result = giphyRepository.reloadTrending(apiMaxEntries = 100)
+                val result = giphyRepository.reloadTrending(limit = 100, rating = Rating.R)
 
                 // 🟢 Then
                 result.isFailure shouldBe true

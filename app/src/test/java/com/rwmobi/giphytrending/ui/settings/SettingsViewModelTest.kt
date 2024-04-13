@@ -1,6 +1,8 @@
 package com.rwmobi.giphytrending.ui.settings
 
 import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
+import com.rwmobi.giphytrending.domain.model.Rating
+import com.rwmobi.giphytrending.domain.model.UserPreferences
 import com.rwmobi.giphytrending.ui.viewmodel.SettingsViewModel
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
@@ -39,15 +41,19 @@ internal class SettingsViewModelTest : FreeSpec(
             "when setApiMax is called, it updates apiMaxEntries in the UI state" {
                 // Given
                 val expectedMaxApiEntries = 100
-                // This line directly manipulates the apiMaxEntries state flow in the mock repository
-                fakeUserPreferencesRepository.apiMaxEntries.value = expectedMaxApiEntries
+                fakeUserPreferencesRepository.init(
+                    UserPreferences(
+                        apiRequestLimit = 0,
+                        rating = Rating.G,
+                    ),
+                )
 
                 // When
-                settingsViewModel.setApiMax(expectedMaxApiEntries)
+                settingsViewModel.setApiRequestLimit(expectedMaxApiEntries)
                 val uiState = settingsViewModel.uiState.value
 
                 // Then
-                uiState.apiMaxEntries shouldBe expectedMaxApiEntries
+                uiState.apiRequestLimit shouldBe expectedMaxApiEntries
                 uiState.isLoading shouldBe false
             }
         }

@@ -27,22 +27,32 @@ data class TrendingNetworkResponse(
 
 @Keep
 data class TrendingData(
-    val analytics_response_payload: String,
-    val bitly_gif_url: String,
-    val bitly_url: String,
-    val content_url: String,
-    val embed_url: String,
+    @Json(name = "analytics_response_payload")
+    val analyticsResponsePayload: String,
+    @Json(name = "bitly_gif_url")
+    val bitlyGifUrl: String,
+    @Json(name = "bitly_url")
+    val bitlyUrl: String,
+    @Json(name = "content_url")
+    val contentUrl: String,
+    @Json(name = "embed_url")
+    val embedUrl: String,
     val id: String,
     val images: Images,
-    val import_datetime: Date,
-    val is_sticker: Int,
+    @Json(name = "import_datetime")
+    val importDatetime: Date,
+    @Json(name = "is_sticker")
+    val isSticker: Int,
     val rating: String,
     val slug: String,
     val source: String,
-    val source_post_url: String,
-    val source_tld: String,
+    @Json(name = "source_post_url")
+    val sourcePostUrl: String,
+    @Json(name = "source_tld")
+    val sourceTld: String,
     val title: String,
-    val trending_datetime: Date,
+    @Json(name = "trending_datetime")
+    val trendingDatetime: Date,
     val type: String,
     val url: String,
     val username: String,
@@ -51,7 +61,8 @@ data class TrendingData(
 @Keep
 data class Meta(
     val msg: String,
-    val response_id: String,
+    @Json(name = "response_id")
+    val responseId: String,
     val status: Int,
 )
 
@@ -59,13 +70,16 @@ data class Meta(
 data class Pagination(
     val count: Int,
     val offset: Int,
-    val total_count: Int,
+    @Json(name = "total_count")
+    val totalCount: Int,
 )
 
 @Keep
 data class Images(
-    val fixed_height: FixedHeight,
-    val fixed_width: FixedWidth,
+    @Json(name = "fixed_height")
+    val fixedHeight: FixedHeight,
+    @Json(name = "fixed_width")
+    val fixedWidth: FixedWidth,
     val original: Original,
 )
 
@@ -73,11 +87,13 @@ data class Images(
 data class FixedHeight(
     val height: String,
     val mp4: String? = null,
-    val mp4_size: String? = null,
+    @Json(name = "mp4_size")
+    val mp4Size: String? = null,
     val size: String,
     val url: String,
     val webp: String? = null,
-    val webp_size: String? = null,
+    @Json(name = "webp_size")
+    val webpSize: String? = null,
     val width: String,
 )
 
@@ -85,11 +101,13 @@ data class FixedHeight(
 data class FixedWidth(
     val height: String,
     val mp4: String? = null,
-    val mp4_size: String? = null,
+    @Json(name = "mp4_size")
+    val mp4Size: String? = null,
     val size: String,
     val url: String,
     val webp: String? = null,
-    val webp_size: String? = null,
+    @Json(name = "webp_size")
+    val webpSize: String? = null,
     val width: String,
 )
 
@@ -99,10 +117,12 @@ data class Original(
     val hash: String,
     val height: String,
     val mp4: String? = null,
-    val mp4_size: String? = null,
+    @Json(name = "mp4_size")
+    val mp4Size: String? = null,
     val size: String,
     val url: String,
     val webp: String? = null,
-    val webp_size: String? = null,
+    @Json(name = "webp_size")
+    val webpSize: String? = null,
     val width: String,
 )

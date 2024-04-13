@@ -5,7 +5,6 @@
 
 package com.rwmobi.giphytrending.data.source.network
 
-import com.rwmobi.giphytrending.BuildConfig
 import com.rwmobi.giphytrending.data.source.network.model.TrendingNetworkResponse
 import javax.inject.Inject
 
@@ -16,12 +15,14 @@ class NetworkDataSourceImpl @Inject constructor(
     override suspend fun getTrending(
         apiKey: String,
         limit: Int,
+        offset: Int,
         rating: String,
     ): TrendingNetworkResponse {
         return giphyApiService.getTrending(
-            BuildConfig.GIPHY_API_KEY,
-            limit,
-            BuildConfig.API_RATING,
+            apiKey = apiKey,
+            limit = limit,
+            offset = offset,
+            rating = rating,
         )
     }
 }

@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import com.rwmobi.giphytrending.di.DispatcherModule
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.UserPreferences
 import com.rwmobi.giphytrending.domain.repository.GiphyRepository
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
 import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingUIState
@@ -34,12 +35,11 @@ class TrendingViewModel @Inject constructor(
     private val _uiState: MutableStateFlow<TrendingUIState> = MutableStateFlow(TrendingUIState(isLoading = true))
     var uiState = _uiState.asStateFlow()
 
-    private var apiMaxEntries: Int? = null
+    private var userPreferences: UserPreferences = UserPreferences(apiRequestLimit = null, rating = null)
     private var firstRefreshDone: Boolean = false
 
     init {
         viewModelScope.launch(dispatcher) {
-
             processTrendingList(
                 repositoryResult = giphyRepository.fetchCachedTrending(),
                 isLoadingDone = false,
@@ -62,10 +62,10 @@ class TrendingViewModel @Inject constructor(
             }
 
             launch {
-                userPreferencesRepository.apiMaxEntries.collect {
-                    apiMaxEntries = it
-                    if (it != null && !firstRefreshDone) {
-                        Timber.tag("refresh").v("got apimax entries, force refresh")
+                userPreferencesRepository.userPreferences.collect {
+                    userPreferences = it
+                    if (userPreferences.isFullyConfigured() && !firstRefreshDone) {
+                        Timber.tag("refresh").v("got user preferences, trigger initial refresh")
                         refresh()
                         firstRefreshDone = true
                     }
@@ -75,20 +75,8 @@ class TrendingViewModel @Inject constructor(
     }
 
     fun refresh() {
-        _uiState.update { currentUiState ->
-            currentUiState.copy(
-                isLoading = true,
-            )
-        }
-
-        viewModelScope.launch(dispatcher) {
-            apiMaxEntries?.let {
-                Timber.tag("refresh").v("Requesting $it entries from the repository")
-                processTrendingList(
-                    repositoryResult = giphyRepository.reloadTrending(apiMaxEntries = it),
-                    isLoadingDone = true,
-                )
-            } ?: _uiState.update { currentUiState ->
+        if (!userPreferences.isFullyConfigured()) {
+            _uiState.update { currentUiState ->
                 val errorMessages = currentUiState.errorMessages + ErrorMessage(
                     id = UUID.randomUUID().mostSignificantBits,
                     message = "Unable to access user preferences. Cannot refresh.",
@@ -96,6 +84,27 @@ class TrendingViewModel @Inject constructor(
                 currentUiState.copy(
                     isLoading = false,
                     errorMessages = errorMessages,
+                )
+            }
+            return
+        }
+
+        // Safe local variables after the check
+        _uiState.update { currentUiState ->
+            currentUiState.copy(
+                isLoading = true,
+            )
+        }
+
+        val apiMaxEntries = userPreferences.apiRequestLimit
+        val rating = userPreferences.rating
+
+        if (apiMaxEntries != null && rating != null) {
+            viewModelScope.launch(dispatcher) {
+                Timber.tag("refresh").v("Requesting $apiMaxEntries entries with rating = ${rating.apiValue}")
+                processTrendingList(
+                    repositoryResult = giphyRepository.reloadTrending(limit = apiMaxEntries, rating = rating),
+                    isLoadingDone = true,
                 )
             }
         }
@@ -133,7 +142,7 @@ class TrendingViewModel @Inject constructor(
                         giphyImageItems = repositoryResult.getOrNull() ?: emptyList(),
                     )
                 }
-                Timber.tag("processTrendingList").v("processed")
+                Timber.tag("processTrendingList").v("Processed ${repositoryResult.getOrNull()?.count() ?: 0} entries, isLoading = ${!isLoadingDone}")
             }
         }
     }

@@ -15,7 +15,7 @@ class FakePreferencesDataStoreWrapper : PreferencesDataStoreWrapper {
 
     override fun getDataStoreFlow(): Flow<Preferences> = _preferences
 
-    override suspend fun updateIntPreference(key: Preferences.Key<Int>, newValue: Int) {
+    override suspend fun <T> updatePreference(key: Preferences.Key<T>, newValue: T) {
         _preferences.value = _preferences.value.toMutablePreferences().apply {
             this[key] = newValue
         }

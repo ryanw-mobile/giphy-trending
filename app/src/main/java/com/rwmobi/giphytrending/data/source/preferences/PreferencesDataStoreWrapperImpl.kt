@@ -23,7 +23,7 @@ class PreferencesDataStoreWrapperImpl(
 
     override fun getDataStoreFlow(): Flow<Preferences> = dataStore.data
 
-    override suspend fun updateIntPreference(key: Preferences.Key<Int>, newValue: Int) {
+    override suspend fun <T> updatePreference(key: Preferences.Key<T>, newValue: T) {
         withContext(dispatcher) {
             try {
                 dataStore.edit { mutablePreferences ->

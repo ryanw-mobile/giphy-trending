@@ -1,14 +1,25 @@
 # Giphy Trending ![Gradle Build](https://github.com/ryanw-mobile/giphy-trending/actions/workflows/main_build.yml/badge.svg) [![codecov](https://codecov.io/gh/ryanw-mobile/giphy-trending/graph/badge.svg?token=J8PHIH3OPU)](https://codecov.io/gh/ryanw-mobile/giphy-trending)
 
-This sample Android app was elaborated from the work
+This sample Android app presents the Giphy trending animated gifs for sharing or download. It was elaborated from the work
 by [Fahri Can](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
 in Nov 2021. I migrated RxJava to Coroutines, and then from XML Views to Jetpack Compose.
 
 <p align="center">
-  <img src="screenshots/screen0.png" width="200" />
-  <img src="screenshots/screen1.png" width="200" />
-  <img src="screenshots/screen2.png" width="200" />
-  <img src="screenshots/screen3.png" width="200" />
+  <img src="screenshots/phone_portrait_1_240413.png" width="200" />&nbsp;
+  <img src="screenshots/phone_portrait_2_240413.png" width="200" />&nbsp;
+  <img src="screenshots/fold_portrait_1_240413.png" width="200" />&nbsp;
+  <img src="screenshots/tablet_portrait_1_240413.png" width="200" />
+</p>
+
+<p align="center">
+  <img src="screenshots/fold_landscape_2_240413.png" width="400" />&nbsp;
+  <img src="screenshots/phone_landscape_1_240413.png" width="400" />
+</p>
+
+<p align="center">
+  <img src="screenshots/fold_portrait_2_240413.png" width="200" />&nbsp;
+  <img src="screenshots/fold_landscape_1_240413.png" width="300" />&nbsp;
+  <img src="screenshots/tablet_landscape_1_240413.png" width="300" />
 </p>
 
 ### The original XML View version
@@ -20,21 +31,15 @@ generally believe it to be a bad coding practice by tightly coupling the busines
 
 &nbsp;
 
-## Skills covered
-
-This is a typical long-lasting app that the codebase survived a few migrations as new technologies,
-paradigms and libraries evolved. The current target is to make this App in Compose supporting multiple screen sizes.
-
-&nbsp;
-
 ### High level architecture
 
 * Kotlin
 * MVVM & clean architecture
-* Dependency Injection using Dagger Hilt
 * Jetpack Compose - Single Activity
 * Kotlin Coroutines and Flow
+* Dependency Injection using Dagger Hilt
 * Material 3 dynamic colour theming supporting light and dark modes
+* Dynamic screen layout support using Windows Size Class
 * Gradle Kotlin DSL and Version Catalog
 
 &nbsp;
@@ -76,7 +81,8 @@ paradigms and libraries evolved. The current target is to make this App in Compo
 
 ## Contribution invitation
 
-For this being a demo app, you are more than welcomed to join either helping to clear some of the pending tasks, or improve the app. Contact me if you are interested.
+For this being a demo app, you are more than welcomed to join either helping to clear some of the
+pending tasks, or improve the app. Contact me if you are interested.
 
 &nbsp;
 

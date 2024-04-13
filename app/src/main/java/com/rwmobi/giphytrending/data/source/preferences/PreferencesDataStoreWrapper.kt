@@ -13,7 +13,7 @@ interface PreferencesDataStoreWrapper {
     val preferenceErrors: SharedFlow<Throwable>
     fun getDataStoreFlow(): Flow<Preferences>
 
-    suspend fun updateIntPreference(key: Preferences.Key<Int>, newValue: Int)
+    suspend fun <T> updatePreference(key: Preferences.Key<T>, newValue: T)
 
     suspend fun clear()
 }

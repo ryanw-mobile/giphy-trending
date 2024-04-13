@@ -77,7 +77,7 @@ class GiphyRepositoryImpl @Inject constructor(
     private suspend fun getTrendingFromNetwork(limit: Int, rating: Rating): TrendingNetworkResponse {
         return withContext(dispatcher) {
             networkDataSource.getTrending(
-                apiKey = "123", // giphyApiKey,
+                apiKey = giphyApiKey,
                 limit = limit,
                 offset = (0..5).random(), // Eye candie to make every refresh different
                 rating = rating.apiValue,

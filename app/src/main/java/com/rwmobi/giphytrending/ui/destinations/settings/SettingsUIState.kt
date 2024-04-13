@@ -11,6 +11,6 @@ import com.rwmobi.giphytrending.ui.model.ErrorMessage
 data class SettingsUIState(
     val apiRequestLimit: Int? = null,
     val rating: Rating? = null,
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val errorMessages: List<ErrorMessage> = emptyList(),
 )

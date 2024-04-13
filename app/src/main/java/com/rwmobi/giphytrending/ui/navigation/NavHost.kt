@@ -80,6 +80,7 @@ fun NavHost(
                 uiState = uiState,
                 uiEvent = SettingsUIEvent(
                     onUpdateApiMaxEntries = { viewModel.setApiRequestLimit(it) },
+                    onUpdateRating = { viewModel.setRating(it) },
                     onErrorShown = { viewModel.errorShown(it) },
                 ),
             )

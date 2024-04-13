@@ -5,12 +5,12 @@
 
 package com.rwmobi.giphytrending.data.repository
 
-import com.rwmobi.giphytrending.BuildConfig
 import com.rwmobi.giphytrending.data.source.local.RoomDbDataSource
 import com.rwmobi.giphytrending.data.source.local.toDomainModelList
 import com.rwmobi.giphytrending.data.source.local.toTrendingEntityList
 import com.rwmobi.giphytrending.data.source.network.NetworkDataSource
 import com.rwmobi.giphytrending.data.source.network.model.TrendingNetworkResponse
+import com.rwmobi.giphytrending.di.GiphyApiKey
 import com.rwmobi.giphytrending.domain.exceptions.EmptyGiphyAPIKeyException
 import com.rwmobi.giphytrending.domain.exceptions.except
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
@@ -25,6 +25,7 @@ import javax.inject.Inject
 class GiphyRepositoryImpl @Inject constructor(
     private val networkDataSource: NetworkDataSource,
     private val roomDbDataSource: RoomDbDataSource,
+    @GiphyApiKey private val giphyApiKey: String,
     private val dispatcher: CoroutineDispatcher,
 ) : GiphyRepository {
     override suspend fun fetchCachedTrending(): Result<List<GiphyImageItem>> {
@@ -36,7 +37,7 @@ class GiphyRepositoryImpl @Inject constructor(
     }
 
     override suspend fun reloadTrending(limit: Int, rating: Rating): Result<List<GiphyImageItem>> {
-        if (BuildConfig.GIPHY_API_KEY.isBlank()) {
+        if (giphyApiKey.isBlank()) {
             @Suppress("UNREACHABLE_CODE")
             // It won't work without an API Key - CI might pass in nothing
             return Result.failure(
@@ -68,7 +69,6 @@ class GiphyRepositoryImpl @Inject constructor(
                 throw cancellationException
             } catch (ex: Exception) {
                 Timber.tag("refreshTrending").e(ex)
-                Timber.tag("refreshTrending").e("KEY = [${BuildConfig.GIPHY_API_KEY}]")
                 Result.failure(exception = ex)
             }
         }
@@ -77,7 +77,7 @@ class GiphyRepositoryImpl @Inject constructor(
     private suspend fun getTrendingFromNetwork(limit: Int, rating: Rating): TrendingNetworkResponse {
         return withContext(dispatcher) {
             networkDataSource.getTrending(
-                apiKey = BuildConfig.GIPHY_API_KEY,
+                apiKey = giphyApiKey,
                 limit = limit,
                 offset = (0..5).random(), // Eye candie to make every refresh different
                 rating = rating.apiValue,

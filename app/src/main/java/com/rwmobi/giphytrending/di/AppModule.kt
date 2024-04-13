@@ -12,6 +12,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
+import com.rwmobi.giphytrending.BuildConfig
 import com.rwmobi.giphytrending.data.source.network.GiphyApi
 import com.rwmobi.giphytrending.data.source.network.GiphyApiService
 import dagger.Module
@@ -73,4 +74,9 @@ object AppModule {
             }
             .build()
     }
+
+    @GiphyApiKey
+    @Singleton
+    @Provides
+    fun provideGiphyApiKey() = BuildConfig.GIPHY_API_KEY
 }

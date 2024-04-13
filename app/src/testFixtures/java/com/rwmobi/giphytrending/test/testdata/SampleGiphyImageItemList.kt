@@ -1,4 +1,9 @@
-package com.rwmobi.giphytrending.testdata
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
+package com.rwmobi.giphytrending.test.testdata
 
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 

@@ -40,9 +40,7 @@ class GiphyRepositoryImpl @Inject constructor(
         if (giphyApiKey.isBlank()) {
             @Suppress("UNREACHABLE_CODE")
             // It won't work without an API Key - CI might pass in nothing
-            return Result.failure(
-                exception = throw EmptyGiphyAPIKeyException(),
-            )
+            return Result.failure(exception = EmptyGiphyAPIKeyException())
         }
 
         return withContext(dispatcher) {
@@ -57,13 +55,9 @@ class GiphyRepositoryImpl @Inject constructor(
                 val invalidationResult = invalidateDirtyTrendingDb()
                 if (invalidationResult.isFailure) {
                     Timber.tag("invalidationResult").e(invalidationResult.exceptionOrNull())
-                    Result.failure(
-                        exception = invalidationResult.exceptionOrNull() ?: UnknownError(),
-                    )
+                    Result.failure(exception = invalidationResult.exceptionOrNull() ?: UnknownError())
                 } else {
-                    Result.success(
-                        value = roomDbDataSource.queryData().toDomainModelList(),
-                    )
+                    Result.success(value = roomDbDataSource.queryData().toDomainModelList())
                 }
             } catch (cancellationException: CancellationException) {
                 throw cancellationException

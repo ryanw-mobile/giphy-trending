@@ -40,14 +40,6 @@ jobs:
       - name: Extract Version Number
         run: echo "version=${GITHUB_REF#refs/tags/release/}" >> $GITHUB_ENV
 
-      #      - name: Upload Artifacts
-      #        uses: actions/upload-artifact@v4
-      #        with:
-      #          name: app-build-artifacts
-      #          path: |
-      #            app/build/outputs/apk/release/*.apk
-      #            app/build/outputs/bundle/release/*.aab
-
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -62,13 +54,13 @@ jobs:
           commitish: ${{ github.sha }}
 
       - name: Find Mapping file
-        if: env.EXPORT_MAPPING == 'true'
+        if: EXPORT_MAPPING == 'true'
         run: |
           mapping_path=$(find ./app/build/outputs/mapping/release -name "mapping.txt" | head -n 1)
           echo "mapping_path=$mapping_path" >> $GITHUB_ENV
 
       - name: Upload Release Asset Mapping
-        if: env.EXPORT_MAPPING == 'true'
+        if: EXPORT_MAPPING == 'true'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_FOR_RELEASES }}

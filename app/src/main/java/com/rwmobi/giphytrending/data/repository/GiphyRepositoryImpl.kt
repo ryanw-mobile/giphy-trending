@@ -37,8 +37,9 @@ class GiphyRepositoryImpl @Inject constructor(
     }
 
     override suspend fun reloadTrending(limit: Int, rating: Rating): Result<List<GiphyImageItem>> {
-        // It won't work without an API Key
         if (giphyApiKey.isBlank()) {
+            @Suppress("UNREACHABLE_CODE")
+            // It won't work without an API Key - CI might pass in nothing
             return Result.failure(
                 exception = throw EmptyGiphyAPIKeyException(),
             )

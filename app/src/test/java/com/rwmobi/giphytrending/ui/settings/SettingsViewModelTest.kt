@@ -16,12 +16,12 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 
 @ExperimentalCoroutinesApi
-internal class SettingsViewModelTest : FreeSpec(
-    {
-        lateinit var settingsViewModel: SettingsViewModel
-        lateinit var fakeUserPreferencesRepository: FakeUserPreferencesRepository
-        lateinit var testDispatcher: TestDispatcher
+internal class SettingsViewModelTest : FreeSpec() {
+    private lateinit var settingsViewModel: SettingsViewModel
+    private lateinit var fakeUserPreferencesRepository: FakeUserPreferencesRepository
+    private lateinit var testDispatcher: TestDispatcher
 
+    init {
         beforeTest {
             testDispatcher = UnconfinedTestDispatcher()
             Dispatchers.setMain(testDispatcher)
@@ -37,8 +37,8 @@ internal class SettingsViewModelTest : FreeSpec(
             Dispatchers.resetMain()
         }
 
-        "setApiMax updates UI state correctly" - {
-            "when setApiMax is called, it updates apiMaxEntries in the UI state" {
+        "setApiRequestLimit" - {
+            "when setApiRequestLimit is called, it updates apiRequestLimit in the UI state" {
                 // Given
                 val expectedMaxApiEntries = 100
                 fakeUserPreferencesRepository.init(
@@ -54,6 +54,27 @@ internal class SettingsViewModelTest : FreeSpec(
 
                 // Then
                 uiState.apiRequestLimit shouldBe expectedMaxApiEntries
+                uiState.isLoading shouldBe false
+            }
+        }
+
+        "setRating" - {
+            "when setRating is called, it updates rating in the UI state" {
+                // Given
+                val expectedRating = Rating.R
+                fakeUserPreferencesRepository.init(
+                    UserPreferences(
+                        apiRequestLimit = 0,
+                        rating = Rating.G,
+                    ),
+                )
+
+                // When
+                settingsViewModel.setRating(expectedRating)
+                val uiState = settingsViewModel.uiState.value
+
+                // Then
+                uiState.rating shouldBe expectedRating
                 uiState.isLoading shouldBe false
             }
         }
@@ -97,5 +118,5 @@ internal class SettingsViewModelTest : FreeSpec(
                 uiState.errorMessages shouldBe emptyList()
             }
         }
-    },
-)
+    }
+}

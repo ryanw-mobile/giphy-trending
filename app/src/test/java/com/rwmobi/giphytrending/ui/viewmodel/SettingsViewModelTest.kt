@@ -41,8 +41,8 @@ internal class SettingsViewModelTest : FreeSpec() {
             Dispatchers.resetMain()
         }
 
-        "setApiRequestLimit" - {
-            "when setApiRequestLimit is called, it updates apiRequestLimit in the UI state" {
+        "setApiRequestLimit()" - {
+            "should update apiRequestLimit in UI state and set isLoading to false" {
                 // Given
                 val expectedMaxApiEntries = 100
                 fakeUserPreferencesRepository.init(
@@ -62,8 +62,8 @@ internal class SettingsViewModelTest : FreeSpec() {
             }
         }
 
-        "setRating" - {
-            "when setRating is called, it updates rating in the UI state" {
+        "setRating()" - {
+            "should update the rating in UI state and set isLoading to false" {
                 // Given
                 val expectedRating = Rating.R
                 fakeUserPreferencesRepository.init(
@@ -84,7 +84,7 @@ internal class SettingsViewModelTest : FreeSpec() {
         }
 
         "Error handling" - {
-            "when an error is emitted, it is added to the UI state" {
+            "should add the emitted error to UI state and set isLoading to false" {
                 // Given
                 val errorMessage = "Test error"
                 fakeUserPreferencesRepository.emitError(Exception(errorMessage))
@@ -103,7 +103,7 @@ internal class SettingsViewModelTest : FreeSpec() {
                 uiState.isLoading shouldBe false
             }
 
-            "errorShown removes the error message from the UI state" {
+            "errorShown() should remove the specified error message from UI state" {
                 // Given
                 val errorMessage = "Test error"
                 fakeUserPreferencesRepository.emitError(Exception(errorMessage))

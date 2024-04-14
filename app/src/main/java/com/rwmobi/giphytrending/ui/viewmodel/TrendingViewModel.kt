@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import com.rwmobi.giphytrending.di.DispatcherModule
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
 import com.rwmobi.giphytrending.domain.repository.GiphyRepository
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
@@ -17,6 +18,7 @@ import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingUIState
 import com.rwmobi.giphytrending.ui.model.ErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -30,84 +32,33 @@ class TrendingViewModel @Inject constructor(
     private val giphyRepository: GiphyRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val imageLoader: ImageLoader,
-    @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher,
+    @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.Main,
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<TrendingUIState> = MutableStateFlow(TrendingUIState(isLoading = true))
-    var uiState = _uiState.asStateFlow()
+    val uiState = _uiState.asStateFlow()
 
     private var userPreferences: UserPreferences = UserPreferences(apiRequestLimit = null, rating = null)
     private var firstRefreshDone: Boolean = false
 
     init {
-        viewModelScope.launch(dispatcher) {
-            processTrendingList(
-                repositoryResult = giphyRepository.fetchCachedTrending(),
-                isLoadingDone = false,
-            )
-
-            launch {
-                userPreferencesRepository.preferenceErrors.collect { preferenceErrors ->
-                    Timber.e(preferenceErrors)
-
-                    _uiState.update { currentUiState ->
-                        val errorMessages = currentUiState.errorMessages + ErrorMessage(
-                            id = UUID.randomUUID().mostSignificantBits,
-                            message = preferenceErrors.localizedMessage ?: "Unknown error",
-                        )
-                        currentUiState.copy(
-                            errorMessages = errorMessages,
-                        )
-                    }
-                }
-            }
-
-            launch {
-                userPreferencesRepository.userPreferences.collect {
-                    userPreferences = it
-                    if (userPreferences.isFullyConfigured() && !firstRefreshDone) {
-                        Timber.tag("refresh").v("got user preferences, trigger initial refresh")
-                        refresh()
-                        firstRefreshDone = true
-                    }
-                }
-            }
-        }
+        collectErrors()
+        collectUserPreferences()
     }
 
     fun refresh() {
         if (!userPreferences.isFullyConfigured()) {
-            _uiState.update { currentUiState ->
-                val errorMessages = currentUiState.errorMessages + ErrorMessage(
-                    id = UUID.randomUUID().mostSignificantBits,
-                    message = "Unable to access user preferences. Cannot refresh.",
-                )
-                currentUiState.copy(
-                    isLoading = false,
-                    errorMessages = errorMessages,
-                )
-            }
+            updateUIForError("Unable to access user preferences. Cannot refresh.")
             return
         }
 
-        _uiState.update { currentUiState ->
-            currentUiState.copy(
-                isLoading = true,
-            )
-        }
-
-        // Safe local variables after the check
+        startLoading()
         val apiMaxEntries = userPreferences.apiRequestLimit
         val rating = userPreferences.rating
 
         if (apiMaxEntries != null && rating != null) {
-            viewModelScope.launch(dispatcher) {
-                Timber.tag("refresh").v("Requesting $apiMaxEntries entries with rating = ${rating.apiValue}")
-                val repositoryResult = giphyRepository.reloadTrending(limit = apiMaxEntries, rating = rating)
-                processTrendingList(
-                    repositoryResult = repositoryResult,
-                    isLoadingDone = true,
-                )
-            }
+            loadTrendingData(apiMaxEntries = apiMaxEntries, rating = rating)
+        } else {
+            updateUIForError("Preferences are not fully set.")
         }
     }
 
@@ -120,31 +71,75 @@ class TrendingViewModel @Inject constructor(
 
     fun getImageLoader() = imageLoader
 
-    private fun processTrendingList(repositoryResult: Result<List<GiphyImageItem>>, isLoadingDone: Boolean) {
-        when {
-            repositoryResult.isFailure -> {
-                _uiState.update { currentUiState ->
-                    val errorMessages = currentUiState.errorMessages + ErrorMessage(
-                        id = UUID.randomUUID().mostSignificantBits,
-                        message = "Error getting data: ${repositoryResult.exceptionOrNull()?.message}",
-                    )
-                    currentUiState.copy(
-                        isLoading = !isLoadingDone,
-                        errorMessages = errorMessages,
+    private fun collectErrors() {
+        viewModelScope.launch(dispatcher) {
+            userPreferencesRepository.preferenceErrors.collect { preferenceErrors ->
+                Timber.e(preferenceErrors)
+                _uiState.update {
+                    addErrorMessage(
+                        currentUiState = it,
+                        message = preferenceErrors.localizedMessage ?: "Unknown error",
                     )
                 }
-                Timber.tag("processTrendingList").e(repositoryResult.exceptionOrNull())
-            }
-
-            repositoryResult.isSuccess -> {
-                _uiState.update { currentUiState ->
-                    currentUiState.copy(
-                        isLoading = !isLoadingDone,
-                        giphyImageItems = repositoryResult.getOrNull() ?: emptyList(),
-                    )
-                }
-                Timber.tag("processTrendingList").v("Processed ${repositoryResult.getOrNull()?.count() ?: 0} entries, isLoading = ${!isLoadingDone}")
             }
         }
+    }
+
+    private fun collectUserPreferences() {
+        viewModelScope.launch(dispatcher) {
+            userPreferencesRepository.userPreferences.collect { prefs ->
+                userPreferences = prefs
+                if (userPreferences.isFullyConfigured() && !firstRefreshDone) {
+                    Timber.tag("refresh").v("Got user preferences, trigger initial refresh")
+                    refresh()
+                    firstRefreshDone = true
+                }
+            }
+        }
+    }
+
+    private fun startLoading() {
+        _uiState.update { it.copy(isLoading = true) }
+    }
+
+    private fun updateUIForError(message: String) {
+        _uiState.update {
+            addErrorMessage(
+                currentUiState = it,
+                message = message,
+            )
+        }
+    }
+
+    private fun loadTrendingData(apiMaxEntries: Int, rating: Rating) {
+        viewModelScope.launch(dispatcher) {
+            val repositoryResult = giphyRepository.reloadTrending(limit = apiMaxEntries, rating = rating)
+            processTrendingList(repositoryResult = repositoryResult, isLoadingDone = true)
+        }
+    }
+
+    private fun processTrendingList(repositoryResult: Result<List<GiphyImageItem>>, isLoadingDone: Boolean) {
+        when (repositoryResult.isFailure) {
+            true -> updateUIForError("Error getting data: ${repositoryResult.exceptionOrNull()?.message}")
+            false -> _uiState.update { currentUiState ->
+                currentUiState.copy(
+                    isLoading = !isLoadingDone,
+                    giphyImageItems = repositoryResult.getOrNull() ?: emptyList(),
+                ).also {
+                    Timber.tag("processTrendingList").v("Processed ${repositoryResult.getOrNull()?.count() ?: 0} entries, isLoading = ${!isLoadingDone}")
+                }
+            }
+        }
+    }
+
+    private fun addErrorMessage(currentUiState: TrendingUIState, message: String): TrendingUIState {
+        val newErrorMessage = ErrorMessage(
+            id = UUID.randomUUID().mostSignificantBits,
+            message = message,
+        )
+        return currentUiState.copy(
+            isLoading = false,
+            errorMessages = currentUiState.errorMessages + newErrorMessage,
+        )
     }
 }

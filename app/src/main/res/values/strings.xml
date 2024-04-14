@@ -31,4 +31,8 @@
     <string name="rating_pg">Contains images that are commonly witnessed in a public environment, but not as broadly accepted as appropriate.</string>
     <string name="rating_pg_13">Contains images that are typically not seen unless sought out, but still commonly witnessed.</string>
     <string name="rating_r">Contains images that are typically not seen unless sought out and could be considered alarming if witnessed.</string>
+    <string name="content_description_rating_selector">Rating selector</string>
+    <string name="content_description_select_rating">Select %1$s rating</string>
+    <string name="selected">Selected</string>
+    <string name="not_selected">Not selected</string>
 </resources>

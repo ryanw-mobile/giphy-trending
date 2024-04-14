@@ -43,8 +43,8 @@ internal class UserPreferencesRepositoryImplTest : FreeSpec() {
             fakePreferencesDataStoreWrapper = FakePreferencesDataStoreWrapper()
         }
 
-        "init" - {
-            "when datastore returns exception, it propagates the error" {
+        "Initialization" - {
+            "should propagate an error if the DataStore throws an exception" {
                 // Testing sharedFlow: https://developer.android.com/kotlin/flow/test#continuous-collection
                 runTest(dispatcher) {
                     // Given
@@ -63,7 +63,7 @@ internal class UserPreferencesRepositoryImplTest : FreeSpec() {
                 }
             }
 
-            "when datastore returns empty results, it propagates the default user preferences" {
+            "should use default user preferences if DataStore returns empty results" {
                 // When
                 setupRepository()
 
@@ -74,7 +74,7 @@ internal class UserPreferencesRepositoryImplTest : FreeSpec() {
                 )
             }
 
-            "when datastore returns success result, it propagates the user preferences" {
+            "should reflect user preferences from DataStore values" {
                 // Given
                 fakePreferencesDataStoreWrapper.updatePreference(key = intPreferencesKey(KEY_API_REQUEST_LIMIT), newValue = 100)
                 fakePreferencesDataStoreWrapper.updatePreference(key = stringPreferencesKey(KEY_RATING), newValue = Rating.R.apiValue)
@@ -90,8 +90,8 @@ internal class UserPreferencesRepositoryImplTest : FreeSpec() {
             }
         }
 
-        "setApiRequestLimit" - {
-            "when success, it updates the userPreferences stateFlow" {
+        "Updating preferences" - {
+            "should update apiRequestLimit when setApiRequestLimit is called" {
                 // Given
                 fakePreferencesDataStoreWrapper.updatePreference(key = intPreferencesKey(KEY_API_REQUEST_LIMIT), newValue = 100)
                 fakePreferencesDataStoreWrapper.updatePreference(key = stringPreferencesKey(KEY_RATING), newValue = Rating.R.apiValue)
@@ -106,10 +106,8 @@ internal class UserPreferencesRepositoryImplTest : FreeSpec() {
                     rating = Rating.R,
                 )
             }
-        }
 
-        "setRating" - {
-            "when success, it updates the userPreferences stateFlow" {
+            "should update rating when setRating is called" {
                 // Given
                 fakePreferencesDataStoreWrapper.updatePreference(key = intPreferencesKey(KEY_API_REQUEST_LIMIT), newValue = 100)
                 fakePreferencesDataStoreWrapper.updatePreference(key = stringPreferencesKey(KEY_RATING), newValue = Rating.R.apiValue)

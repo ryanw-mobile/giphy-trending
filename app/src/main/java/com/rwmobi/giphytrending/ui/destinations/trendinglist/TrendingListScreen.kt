@@ -51,7 +51,6 @@ import kotlinx.coroutines.withContext
 fun TrendingListScreen(
     modifier: Modifier = Modifier,
     windowSizeClass: WindowSizeClass,
-    onShowSnackbar: suspend (String) -> Unit,
     imageLoader: ImageLoader,
     uiState: TrendingUIState,
     uiEvent: TrendingUIEvent,
@@ -61,7 +60,7 @@ fun TrendingListScreen(
         val errorMessageText = errorMessage.message
 
         LaunchedEffect(errorMessage.id) {
-            onShowSnackbar(errorMessageText)
+            uiEvent.onShowSnackbar(errorMessageText)
             uiEvent.onErrorShown(errorMessage.id)
         }
     }
@@ -78,7 +77,7 @@ fun TrendingListScreen(
             }
             if (!result) {
                 withContext(Dispatchers.Main) {
-                    onShowSnackbar(context.getString(R.string.failed_to_download_file))
+                    uiEvent.onShowSnackbar(context.getString(R.string.failed_to_download_file))
                 }
             }
         }
@@ -93,9 +92,11 @@ fun TrendingListScreen(
                             modifier = Modifier.fillMaxSize(),
                             giphyImageItems = giphyImageItems,
                             imageLoader = imageLoader,
+                            requestScrollToTop = uiState.requestScrollToTop,
                             onClickToDownload = { imageUrl -> downloadImage(imageUrl = imageUrl) },
                             onClickToOpen = { url -> context.startBrowserActivity(url = url) },
                             onClickToShare = { url -> clipboardHistory.add(url) },
+                            onScrolledToTop = uiEvent.onScrolledToTop,
                         )
                     }
 
@@ -106,9 +107,11 @@ fun TrendingListScreen(
                             modifier = Modifier.fillMaxSize(),
                             giphyImageItems = giphyImageItems,
                             imageLoader = imageLoader,
+                            requestScrollToTop = uiState.requestScrollToTop,
                             onClickToDownload = { imageUrl -> downloadImage(imageUrl = imageUrl) },
                             onClickToOpen = { url -> context.startBrowserActivity(url = url) },
                             onClickToShare = { url -> clipboardHistory.add(url) },
+                            onScrolledToTop = uiEvent.onScrolledToTop,
                         )
                     }
                 }
@@ -150,7 +153,7 @@ fun TrendingListScreen(
         clipboardHistory.lastOrNull()?.let { url ->
             val uri = url.toUri().buildUpon().scheme("https").build()
             clipboardManager.setText(AnnotatedString(uri.toString()))
-            onShowSnackbar(snackbarText)
+            uiEvent.onShowSnackbar(snackbarText)
             clipboardHistory.remove(url) // Remove after processing to avoid re-triggering
         }
     }
@@ -168,7 +171,6 @@ private fun Preview(
             TrendingListScreen(
                 modifier = Modifier.fillMaxSize(),
                 windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
-                onShowSnackbar = {},
                 imageLoader = ImageLoader(LocalContext.current),
                 uiState = TrendingUIState(
                     giphyImageItems = giphyImageItems,
@@ -177,6 +179,8 @@ private fun Preview(
                 uiEvent = TrendingUIEvent(
                     onRefresh = {},
                     onErrorShown = {},
+                    onShowSnackbar = {},
+                    onScrolledToTop = {},
                 ),
             )
         }
@@ -192,7 +196,6 @@ private fun NoDataPreview() {
             TrendingListScreen(
                 modifier = Modifier.fillMaxSize(),
                 windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
-                onShowSnackbar = {},
                 imageLoader = ImageLoader(LocalContext.current),
                 uiState = TrendingUIState(
                     giphyImageItems = emptyList(),
@@ -201,6 +204,8 @@ private fun NoDataPreview() {
                 uiEvent = TrendingUIEvent(
                     onRefresh = {},
                     onErrorShown = {},
+                    onShowSnackbar = {},
+                    onScrolledToTop = {},
                 ),
             )
         }

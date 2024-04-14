@@ -89,6 +89,14 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun requestScrollToTop(enabled: Boolean) {
+        _uiState.update { currentUiState ->
+            currentUiState.copy(
+                requestScrollToTop = enabled,
+            )
+        }
+    }
+
     fun errorShown(errorId: Long) {
         _uiState.update { currentUiState ->
             val errorMessages = currentUiState.errorMessages.filterNot { it.id == errorId }

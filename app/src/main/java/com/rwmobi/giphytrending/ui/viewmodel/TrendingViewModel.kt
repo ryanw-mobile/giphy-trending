@@ -69,6 +69,14 @@ class TrendingViewModel @Inject constructor(
         }
     }
 
+    fun requestScrollToTop(enabled: Boolean) {
+        _uiState.update { currentUiState ->
+            currentUiState.copy(
+                requestScrollToTop = enabled,
+            )
+        }
+    }
+
     fun getImageLoader() = imageLoader
 
     private fun collectErrors() {

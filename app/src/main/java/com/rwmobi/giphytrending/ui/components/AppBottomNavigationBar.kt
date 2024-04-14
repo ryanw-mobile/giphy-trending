@@ -24,13 +24,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.rwmobi.giphytrending.ui.navigation.BottomNavItem
+import com.rwmobi.giphytrending.ui.navigation.AppNavItem
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 
 @Composable
 fun AppBottomNavigationBar(
     modifier: Modifier = Modifier,
     navController: NavController,
+    onCurrentRouteSecondTapped: (item: AppNavItem) -> Unit,
 ) {
     NavigationBar(
         modifier = modifier,
@@ -40,7 +41,7 @@ fun AppBottomNavigationBar(
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
 
-        for (item in BottomNavItem.allItems) {
+        for (item in AppNavItem.allItems) {
             val selected = currentRoute == item.screenRoute
 
             NavigationBarItem(
@@ -51,6 +52,8 @@ fun AppBottomNavigationBar(
                             popUpTo(navController.graph.startDestinationId)
                             launchSingleTop = true
                         }
+                    } else {
+                        onCurrentRouteSecondTapped(item)
                     }
                 },
                 icon = {
@@ -82,6 +85,7 @@ private fun Preview() {
                     .wrapContentHeight()
                     .padding(0.dp),
                 navController = rememberNavController(),
+                onCurrentRouteSecondTapped = {},
             )
         }
     }

@@ -153,6 +153,21 @@ internal class TrendingViewModelTest : FreeSpec() {
             }
         }
 
+        "Handling request scroll to top" - {
+            "should update the requestScrollToTop in UI state" {
+                // Given
+                setupViewModel()
+                val expectedRequestScrollToTop = true
+
+                // When
+                viewModel.requestScrollToTop(enabled = expectedRequestScrollToTop)
+                val uiState = viewModel.uiState.value
+
+                // Then
+                uiState.requestScrollToTop shouldBe expectedRequestScrollToTop
+            }
+        }
+
         "Handling shown errors" - {
             "should remove the specified error message from UIState after being acknowledged" - {
                 // Given

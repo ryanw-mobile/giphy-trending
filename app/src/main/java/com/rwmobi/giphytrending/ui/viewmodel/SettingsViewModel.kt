@@ -65,25 +65,27 @@ class SettingsViewModel @Inject constructor(
 
     fun setApiRequestLimit(limit: Int) {
         viewModelScope.launch(dispatcher) {
+            userPreferencesRepository.setApiRequestLimit(limit = limit)
+
             _uiState.update { currentUiState ->
                 currentUiState.copy(
                     isLoading = false,
                     apiRequestLimit = limit,
                 )
             }
-            userPreferencesRepository.setApiRequestLimit(limit = limit)
         }
     }
 
     fun setRating(rating: Rating) {
         viewModelScope.launch(dispatcher) {
+            userPreferencesRepository.setRating(rating = rating)
+
             _uiState.update { currentUiState ->
                 currentUiState.copy(
                     isLoading = false,
                     rating = rating,
                 )
             }
-            userPreferencesRepository.setRating(rating = rating)
         }
     }
 

@@ -37,7 +37,10 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -45,6 +48,11 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
@@ -148,6 +156,7 @@ private fun Settings(
         modifier = modifier.padding(all = dimension.defaultFullPadding),
     ) {
         ItemsToLoad(
+            modifier = Modifier.fillMaxWidth(),
             dimension = dimension,
             sliderRange = sliderRange,
             sliderValue = sliderValue,
@@ -160,6 +169,7 @@ private fun Settings(
         )
 
         ImageRating(
+            modifier = Modifier.fillMaxWidth(),
             dimension = dimension,
             rating = rating,
             onUpdateRating = onUpdateRating,
@@ -199,101 +209,127 @@ private fun Settings(
 
 @Composable
 private fun ItemsToLoad(
+    modifier: Modifier = Modifier,
     dimension: Dimension,
     sliderRange: ClosedFloatingPointRange<Float>,
     sliderValue: Float,
     onUpdateApiRequestLimit: (Float) -> Unit,
 ) {
-    Text(
-        modifier = Modifier.fillMaxWidth(),
-        style = MaterialTheme.typography.titleMedium,
-        fontWeight = FontWeight.Bold,
-        text = stringResource(id = R.string.api_max_description),
-    )
+    var tempSliderValue by remember { mutableStateOf(sliderValue) }
 
-    Spacer(modifier = Modifier.height(height = dimension.defaultHalfPadding))
+    Column(modifier = modifier) {
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            text = stringResource(id = R.string.api_max_description),
+        )
 
-    Slider(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = dimension.defaultFullPadding),
-        valueRange = sliderRange,
-        value = sliderValue,
-        onValueChange = onUpdateApiRequestLimit,
-    )
+        Spacer(modifier = Modifier.height(height = dimension.defaultHalfPadding))
 
-    Text(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = dimension.defaultFullPadding),
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.labelLarge,
-        text = "${sliderValue.toInt()}",
-    )
+        Slider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = dimension.defaultFullPadding),
+            valueRange = sliderRange,
+            value = tempSliderValue,
+            onValueChange = { tempSliderValue = it },
+            onValueChangeFinished = {
+                // Update the actual value when the user finishes dragging the slider
+                onUpdateApiRequestLimit(tempSliderValue)
+            },
+        )
 
-    Text(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = dimension.defaultHalfPadding),
-        style = MaterialTheme.typography.bodyMedium,
-        textAlign = TextAlign.Justify,
-        text = stringResource(id = R.string.apimax_desc),
-    )
+        Text(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(horizontal = dimension.defaultFullPadding)
+                .align(Alignment.CenterHorizontally),
+            style = MaterialTheme.typography.bodyMedium,
+            text = "${tempSliderValue.toInt()}",
+        )
+
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = dimension.defaultHalfPadding),
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Justify,
+            text = stringResource(id = R.string.apimax_desc),
+        )
+    }
 }
 
 @Composable
 private fun ImageRating(
+    modifier: Modifier = Modifier,
     dimension: Dimension,
     rating: Rating,
     onUpdateRating: (Rating) -> Unit,
 ) {
-    Text(
-        modifier = Modifier.fillMaxWidth(),
-        style = MaterialTheme.typography.titleMedium,
-        fontWeight = FontWeight.Bold,
-        text = stringResource(R.string.rating),
-    )
+    val context = LocalContext.current
 
-    Spacer(modifier = Modifier.height(height = dimension.defaultHalfPadding))
+    Column(modifier = modifier) {
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            text = stringResource(R.string.rating),
+        )
 
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        val currentDensity = LocalDensity.current
-        CompositionLocalProvider(
-            LocalDensity provides Density(currentDensity.density, fontScale = 1f),
+        Spacer(modifier = Modifier.height(height = dimension.defaultHalfPadding))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .semantics {
+                    contentDescription = context.getString(R.string.content_description_rating_selector)
+                },
         ) {
-            for (ratingOption in Rating.entries) {
-                TextButton(
-                    modifier = Modifier
-                        .weight(weight = 1f, fill = true)
-                        .align(alignment = Alignment.CenterVertically),
-                    shape = RectangleShape,
-                    colors = if (ratingOption == rating) ButtonDefaults.buttonColors() else ButtonDefaults.filledTonalButtonColors(),
-                    onClick = { onUpdateRating(ratingOption) },
-                ) {
-                    Text(
-                        modifier = Modifier.wrapContentSize(),
-                        style = MaterialTheme.typography.labelLarge,
-                        text = ratingOption.toString(),
-                    )
-                }
+            val currentDensity = LocalDensity.current
+            CompositionLocalProvider(
+                LocalDensity provides Density(currentDensity.density, fontScale = 1f),
+            ) {
+                for (ratingOption in Rating.entries) {
+                    TextButton(
+                        modifier = Modifier
+                            .weight(weight = 1f, fill = true)
+                            .align(alignment = Alignment.CenterVertically)
+                            .semantics {
+                                role = Role.RadioButton
+                                if (ratingOption == rating) {
+                                    stateDescription = context.getString(R.string.selected)
+                                } else {
+                                    stateDescription = context.getString(R.string.not_selected)
+                                }
+                            },
+                        shape = RectangleShape,
+                        colors = if (ratingOption == rating) ButtonDefaults.buttonColors() else ButtonDefaults.filledTonalButtonColors(),
+                        onClick = { onUpdateRating(ratingOption) },
+                    ) {
+                        Text(
+                            modifier = Modifier.wrapContentSize(),
+                            style = MaterialTheme.typography.labelLarge,
+                            text = ratingOption.toString(),
+                        )
+                    }
 
-                if (ratingOption.ordinal < Rating.entries.lastIndex) {
-                    Spacer(modifier = Modifier.width(width = dimension.grid_0_25))
+                    if (ratingOption.ordinal < Rating.entries.lastIndex) {
+                        Spacer(modifier = Modifier.width(width = dimension.grid_0_25))
+                    }
                 }
             }
         }
-    }
 
-    Text(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = dimension.defaultHalfPadding),
-        style = MaterialTheme.typography.bodyMedium,
-        textAlign = TextAlign.Justify,
-        text = stringResource(getRatingDescriptionRes(rating = rating)),
-    )
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = dimension.defaultHalfPadding),
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Justify,
+            text = stringResource(getRatingDescriptionRes(rating = rating)),
+        )
+    }
 }
 
 @Composable

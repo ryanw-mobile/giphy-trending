@@ -9,7 +9,7 @@ jobs:
     if: "!startsWith(github.head_ref, 'renovate/')"
     steps:
       - name: ChatGTP explain code
-        uses: cirolini/chatgpt-github-actions@v1.3
+        uses: cirolini/chatgpt-github-actions@v1.4
         with:
           openai_api_key: ${{ secrets.openai_api_key }}
           github_token: ${{ secrets.GITHUB_TOKEN }}

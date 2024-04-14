@@ -1,7 +1,7 @@
 [versions]
 # App configurations, not dependencies
-versionCode = "10"
-versionName = "2.1.0"
+versionCode = "11"
+versionName = "2.1.1"
 minSdk = "28"
 targetSdk = "34"
 compileSdk = "34"
@@ -41,6 +41,7 @@ material3WindowSizeClass = "1.2.1"
 moshi = "1.15.1"
 mockk = "1.13.10"
 retrofit = "2.11.0"
+robolectric = "4.12.1"
 room = "2.6.1"
 testCoreKtx = "1.5.0"
 testExt = "1.1.5"
@@ -79,6 +80,7 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converterMoshi" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 test-core-ktx = { module = "androidx.test:core-ktx", version.ref = "testCoreKtx" }
 jetbrains-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "jetbrainsKotlinxCoroutinesTest" }
 androidx-test-junit4 = { group = "androidx.test.ext", name = "junit", version.ref = "testExt" }

@@ -292,6 +292,8 @@ dependencies {
     testImplementation(libs.androidx.junit)
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.jetbrains.kotlinx.coroutines.test)
+    testImplementation(libs.robolectric)
+    testImplementation(kotlin("test"))
 
     testImplementation(libs.mockk.android)
     testImplementation(libs.mockk.agent)
@@ -365,6 +367,7 @@ koverReport {
                     "com.rwmobi.giphytrending.ui.navigation",
                     "com.rwmobi.giphytrending.ui.previewparameter",
                     "com.rwmobi.giphytrending.ui.theme",
+                    "com.rwmobi.giphytrending.ui.utils",
                     "androidx",
                     "dagger.hilt.internal.aggregatedroot.codegen",
                     "hilt_aggregated_deps",

@@ -25,8 +25,8 @@ import javax.inject.Inject
 import kotlin.math.max
 import kotlin.math.min
 
-private const val KEY_API_REQUEST_LIMIT = "limit"
-private const val KEY_RATING = "rating"
+internal const val KEY_API_REQUEST_LIMIT = "limit"
+internal const val KEY_RATING = "rating"
 
 class UserPreferencesRepositoryImpl @Inject constructor(
     private val preferencesDataStoreWrapper: PreferencesDataStoreWrapper,

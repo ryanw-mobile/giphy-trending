@@ -19,11 +19,9 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -43,8 +41,10 @@ import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemsProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.utils.downloadImageUsingMediaStore
 import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,14 +67,19 @@ fun TrendingListScreen(
     }
 
     val context = LocalContext.current
-    var clipboardUrl by remember { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
     val pullRefreshState = rememberPullToRefreshState()
+    val clipboardHistory = remember { mutableStateListOf<String>() }
 
     fun downloadImage(imageUrl: String) {
-        if (!context.downloadImageUsingMediaStore(imageUrl = imageUrl)) {
-            coroutineScope.launch {
-                onShowSnackbar(context.getString(R.string.failed_to_download_file))
+        coroutineScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                context.downloadImageUsingMediaStore(imageUrl)
+            }
+            if (!result) {
+                withContext(Dispatchers.Main) {
+                    onShowSnackbar(context.getString(R.string.failed_to_download_file))
+                }
             }
         }
     }
@@ -90,7 +95,7 @@ fun TrendingListScreen(
                             imageLoader = imageLoader,
                             onClickToDownload = { imageUrl -> downloadImage(imageUrl = imageUrl) },
                             onClickToOpen = { url -> context.startBrowserActivity(url = url) },
-                            onClickToShare = { url -> clipboardUrl = url },
+                            onClickToShare = { url -> clipboardHistory.add(url) },
                         )
                     }
 
@@ -103,7 +108,7 @@ fun TrendingListScreen(
                             imageLoader = imageLoader,
                             onClickToDownload = { imageUrl -> downloadImage(imageUrl = imageUrl) },
                             onClickToOpen = { url -> context.startBrowserActivity(url = url) },
-                            onClickToShare = { url -> clipboardUrl = url },
+                            onClickToShare = { url -> clipboardHistory.add(url) },
                         )
                     }
                 }
@@ -141,12 +146,12 @@ fun TrendingListScreen(
 
     val clipboardManager = LocalClipboardManager.current
     val snackbarText = stringResource(id = R.string.clipboard_copied)
-    LaunchedEffect(clipboardUrl) {
-        if (clipboardUrl.isNotEmpty()) {
-            val uri = clipboardUrl.toUri().buildUpon().scheme("https").build()
+    LaunchedEffect(clipboardHistory.lastOrNull()) {
+        clipboardHistory.lastOrNull()?.let { url ->
+            val uri = url.toUri().buildUpon().scheme("https").build()
             clipboardManager.setText(AnnotatedString(uri.toString()))
             onShowSnackbar(snackbarText)
-            clipboardUrl = ""
+            clipboardHistory.remove(url) // Remove after processing to avoid re-triggering
         }
     }
 }

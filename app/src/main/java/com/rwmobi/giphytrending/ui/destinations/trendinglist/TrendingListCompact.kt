@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -36,17 +38,21 @@ internal fun TrendingListCompact(
     modifier: Modifier = Modifier,
     imageLoader: ImageLoader,
     giphyImageItems: List<GiphyImageItem>,
+    requestScrollToTop: Boolean,
     onClickToDownload: (imageUrl: String) -> Unit,
     onClickToShare: (url: String) -> Unit,
     onClickToOpen: (url: String) -> Unit,
+    onScrolledToTop: () -> Unit,
 ) {
     val dimension = LocalConfiguration.current.getDimension()
     val contentDescriptionTrendingList = stringResource(R.string.content_description_trending_list)
+    val lazyListState = rememberLazyListState()
 
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .semantics { contentDescription = contentDescriptionTrendingList },
+        state = lazyListState,
     ) {
         itemsIndexed(giphyImageItems) { index, giphyImageItem ->
             GiphyItem(
@@ -68,6 +74,13 @@ internal fun TrendingListCompact(
             }
         }
     }
+
+    LaunchedEffect(requestScrollToTop) {
+        if (requestScrollToTop) {
+            lazyListState.scrollToItem(index = 0)
+            onScrolledToTop()
+        }
+    }
 }
 
 @PreviewLightDark
@@ -82,9 +95,11 @@ private fun Preview(
                 modifier = Modifier.fillMaxSize(),
                 imageLoader = ImageLoader(LocalContext.current),
                 giphyImageItems = giphyImageItems,
+                requestScrollToTop = false,
                 onClickToDownload = {},
                 onClickToShare = {},
                 onClickToOpen = {},
+                onScrolledToTop = {},
             )
         }
     }

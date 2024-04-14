@@ -83,36 +83,52 @@ fun SettingsScreen(
     apiMaxEntries: Int,
     uiState: SettingsUIState,
     uiEvent: SettingsUIEvent,
-    onShowSnackbar: suspend (String) -> Unit,
 ) {
     if (uiState.errorMessages.isNotEmpty()) {
         val errorMessage = remember(uiState) { uiState.errorMessages[0] }
         val errorMessageText = errorMessage.message
 
         LaunchedEffect(errorMessage.id) {
-            onShowSnackbar(errorMessageText)
+            uiEvent.onShowSnackbar(errorMessageText)
             uiEvent.onErrorShown(errorMessage.id)
         }
     }
 
-    Box(modifier = modifier.verticalScroll(state = rememberScrollState())) {
+    Box(modifier = modifier) {
         if (uiState.apiRequestLimit != null && uiState.rating != null) {
             when (windowSizeClass.widthSizeClass) {
                 WindowWidthSizeClass.Compact -> {
+                    val scrollState = rememberScrollState()
+
                     Settings(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(state = scrollState),
                         rating = uiState.rating,
                         sliderValue = uiState.apiRequestLimit.toFloat(),
                         sliderRange = apiMinEntries.toFloat()..apiMaxEntries.toFloat(),
                         onUpdateApiRequestLimit = { uiEvent.onUpdateApiMaxEntries(it.toInt()) },
                         onUpdateRating = { uiEvent.onUpdateRating(it) },
                     )
+
+                    LaunchedEffect(uiState.requestScrollToTop) {
+                        if (uiState.requestScrollToTop) {
+                            scrollState.scrollTo(value = 0)
+                            uiEvent.onScrolledToTop()
+                        }
+                    }
                 }
 
                 WindowWidthSizeClass.Medium,
                 WindowWidthSizeClass.Expanded,
                 -> {
-                    Row(modifier = Modifier.fillMaxSize()) {
+                    val scrollState = rememberScrollState()
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(state = scrollState),
+                    ) {
                         Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
 
                         Settings(
@@ -127,6 +143,13 @@ fun SettingsScreen(
                         )
 
                         Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
+                    }
+
+                    LaunchedEffect(uiState.requestScrollToTop) {
+                        if (uiState.requestScrollToTop) {
+                            scrollState.scrollTo(value = 0)
+                            uiEvent.onScrolledToTop()
+                        }
                     }
                 }
             }
@@ -392,8 +415,9 @@ private fun Preview() {
                     onErrorShown = {},
                     onUpdateApiMaxEntries = {},
                     onUpdateRating = {},
+                    onScrolledToTop = {},
+                    onShowSnackbar = {},
                 ),
-                onShowSnackbar = {},
             )
         }
     }

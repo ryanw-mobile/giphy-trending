@@ -32,9 +32,11 @@ import com.rwmobi.giphytrending.ui.viewmodel.TrendingViewModel
 fun NavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    lastDoubleTappedNavItem: AppNavItem?,
     scrollBehavior: TopAppBarScrollBehavior,
-    windowsSizeClass: WindowSizeClass,
+    windowSizeClass: WindowSizeClass,
     onShowSnackbar: suspend (String) -> Unit,
+    onScrolledToTop: (AppNavItem) -> Unit,
 ) {
     NavHost(
         modifier = modifier,
@@ -45,17 +47,25 @@ fun NavHost(
             val viewModel: TrendingViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+            LaunchedEffect(lastDoubleTappedNavItem) {
+                val enabled = lastDoubleTappedNavItem?.equals(AppNavItem.TrendingList) ?: false
+                viewModel.requestScrollToTop(enabled = enabled)
+                scrollBehavior.state.heightOffset = 0f
+                scrollBehavior.state.contentOffset = 0f
+            }
+
             TrendingListScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .nestedScroll(scrollBehavior.nestedScrollConnection),
-                windowSizeClass = windowsSizeClass,
-                onShowSnackbar = onShowSnackbar,
+                windowSizeClass = windowSizeClass,
                 imageLoader = viewModel.getImageLoader(),
                 uiState = uiState,
                 uiEvent = TrendingUIEvent(
                     onRefresh = { viewModel.refresh() },
                     onErrorShown = { viewModel.errorShown(it) },
+                    onScrolledToTop = { onScrolledToTop(AppNavItem.TrendingList) },
+                    onShowSnackbar = onShowSnackbar,
                 ),
             )
 
@@ -69,19 +79,27 @@ fun NavHost(
             val viewModel: SettingsViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+            LaunchedEffect(lastDoubleTappedNavItem) {
+                val enabled = lastDoubleTappedNavItem?.equals(AppNavItem.Settings) ?: false
+                viewModel.requestScrollToTop(enabled = enabled)
+                scrollBehavior.state.heightOffset = 0f
+                scrollBehavior.state.contentOffset = 0f
+            }
+
             SettingsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .nestedScroll(scrollBehavior.nestedScrollConnection),
-                windowSizeClass = windowsSizeClass,
+                windowSizeClass = windowSizeClass,
                 apiMinEntries = BuildConfig.API_MIN_ENTRIES.toInt(),
                 apiMaxEntries = BuildConfig.API_MAX_ENTRIES.toInt(),
-                onShowSnackbar = onShowSnackbar,
                 uiState = uiState,
                 uiEvent = SettingsUIEvent(
                     onUpdateApiMaxEntries = { viewModel.setApiRequestLimit(it) },
                     onUpdateRating = { viewModel.setRating(it) },
                     onErrorShown = { viewModel.errorShown(it) },
+                    onScrolledToTop = { onScrolledToTop(AppNavItem.Settings) },
+                    onShowSnackbar = onShowSnackbar,
                 ),
             )
 

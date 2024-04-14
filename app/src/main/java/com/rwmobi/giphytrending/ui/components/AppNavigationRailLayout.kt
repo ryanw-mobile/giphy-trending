@@ -27,6 +27,7 @@ import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.rwmobi.giphytrending.R
+import com.rwmobi.giphytrending.ui.navigation.AppNavItem
 import com.rwmobi.giphytrending.ui.navigation.NavHost
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 
@@ -48,11 +50,13 @@ fun AppNavigationRailLayout(
     snackbarHostState: SnackbarHostState,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val lastDoubleTappedNavItem = remember { mutableStateOf<AppNavItem?>(null) }
 
     Row(modifier = modifier) {
         AppNavigationRail(
             modifier = Modifier.fillMaxHeight(),
             navController = navController,
+            onCurrentRouteSecondTapped = { lastDoubleTappedNavItem.value = it },
         )
 
         VerticalDivider(
@@ -60,7 +64,7 @@ fun AppNavigationRailLayout(
         )
 
         Scaffold(
-            modifier = modifier,
+            modifier = Modifier.fillMaxSize(),
             topBar = {
                 TopAppBar(
                     modifier = Modifier.wrapContentHeight(),
@@ -90,8 +94,9 @@ fun AppNavigationRailLayout(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues),
-                windowsSizeClass = windowSizeClass,
+                windowSizeClass = windowSizeClass,
                 navController = navController,
+                lastDoubleTappedNavItem = lastDoubleTappedNavItem.value,
                 scrollBehavior = scrollBehavior,
                 onShowSnackbar = { errorMessageText ->
                     snackbarHostState.showSnackbar(
@@ -100,6 +105,7 @@ fun AppNavigationRailLayout(
                         duration = SnackbarDuration.Long,
                     )
                 },
+                onScrolledToTop = { lastDoubleTappedNavItem.value = null },
             )
         }
     }

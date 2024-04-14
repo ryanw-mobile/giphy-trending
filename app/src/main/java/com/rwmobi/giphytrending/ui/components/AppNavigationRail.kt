@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.rwmobi.giphytrending.ui.navigation.BottomNavItem
+import com.rwmobi.giphytrending.ui.navigation.AppNavItem
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.theme.getDimension
 import java.util.Locale
@@ -34,6 +34,7 @@ import java.util.Locale
 fun AppNavigationRail(
     modifier: Modifier = Modifier,
     navController: NavController,
+    onCurrentRouteSecondTapped: (item: AppNavItem) -> Unit,
 ) {
     NavigationRail(
         modifier = modifier,
@@ -44,7 +45,7 @@ fun AppNavigationRail(
 
         Spacer(Modifier.weight(1f))
 
-        for (item in BottomNavItem.allItems) {
+        for (item in AppNavItem.allItems) {
             val selected = currentRoute == item.screenRoute
 
             NavigationRailItem(
@@ -56,6 +57,8 @@ fun AppNavigationRail(
                             popUpTo(navController.graph.startDestinationId)
                             launchSingleTop = true
                         }
+                    } else {
+                        onCurrentRouteSecondTapped(item)
                     }
                 },
                 icon = {
@@ -94,6 +97,7 @@ private fun NavigationRailPreview() {
                     .wrapContentHeight()
                     .padding(0.dp),
                 navController = rememberNavController(),
+                onCurrentRouteSecondTapped = {},
             )
         }
     }

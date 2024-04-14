@@ -12,5 +12,6 @@ data class SettingsUIState(
     val apiRequestLimit: Int? = null,
     val rating: Rating? = null,
     val isLoading: Boolean = true,
+    val requestScrollToTop: Boolean = false,
     val errorMessages: List<ErrorMessage> = emptyList(),
 )

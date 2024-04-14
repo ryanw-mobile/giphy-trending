@@ -10,9 +10,9 @@ jobs:
     steps:
       - name: ChatGPT Review
         uses: magnificode-ltd/chatgpt-code-reviewer@v0.0.8
-        # with:
-        # model: gpt-3.5-turbo
-        # max_tokens: 4096
+        with:
+          model: gpt-3.5-turbo
+          max_tokens: 65536
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.openai_api_key }}

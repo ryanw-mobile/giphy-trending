@@ -1,7 +1,7 @@
 [versions]
 # App configurations, not dependencies
-versionCode = "10"
-versionName = "2.1.0"
+versionCode = "11"
+versionName = "2.1.1"
 minSdk = "28"
 targetSdk = "34"
 compileSdk = "34"

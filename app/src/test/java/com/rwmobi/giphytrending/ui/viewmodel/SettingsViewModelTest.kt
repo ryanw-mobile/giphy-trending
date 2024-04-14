@@ -83,6 +83,20 @@ internal class SettingsViewModelTest : FreeSpec() {
             }
         }
 
+        "requestScrollToTop" - {
+            "should update the requestScrollToTop in UI state" {
+                // Given
+                val expectedRequestScrollToTop = true
+
+                // When
+                settingsViewModel.requestScrollToTop(enabled = expectedRequestScrollToTop)
+                val uiState = settingsViewModel.uiState.value
+
+                // Then
+                uiState.requestScrollToTop shouldBe expectedRequestScrollToTop
+            }
+        }
+
         "Error handling" - {
             "should add the emitted error to UI state and set isLoading to false" {
                 // Given

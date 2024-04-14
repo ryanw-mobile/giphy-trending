@@ -138,6 +138,7 @@ class TrendingViewModel @Inject constructor(
             message = message,
         )
         return currentUiState.copy(
+            isLoading = false,
             errorMessages = currentUiState.errorMessages + newErrorMessage,
         )
     }

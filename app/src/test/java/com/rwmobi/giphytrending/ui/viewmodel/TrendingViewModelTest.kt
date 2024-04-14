@@ -41,14 +41,14 @@ internal class TrendingViewModelTest : FreeSpec() {
             mockImageLoader = mockk(relaxed = true)
         }
 
-        "ViewModel initialization" - {
-            "should start with isLoading true" - {
+        "Initialising ViewModel" - {
+            "should start with isLoading true when initialised" - {
                 setupViewModel()
 
                 viewModel.uiState.value.isLoading shouldBe true
             }
 
-            "updates UI state correctly if repositories return success results" - {
+            "should update UI state to empty and not loading on successful empty data fetch" - {
                 // Given
                 fakeUserPreferencesRepository.init(
                     userPreferences = UserPreferences(
@@ -66,7 +66,7 @@ internal class TrendingViewModelTest : FreeSpec() {
                 viewModel.uiState.value.isLoading shouldBe false
             }
 
-            "updates UI state correctly if giphyRepository returns failure result" - {
+            "should update UI state with error message on data fetch failure" - {
                 // Given
                 fakeUserPreferencesRepository.init(
                     userPreferences = UserPreferences(
@@ -85,8 +85,8 @@ internal class TrendingViewModelTest : FreeSpec() {
             }
         }
 
-        "refresh" - {
-            "updates UI state correctly if repositories return success results" - {
+        "Refreshing data" - {
+            "should update UI with new items from repository successfully" - {
                 // Given
                 fakeUserPreferencesRepository.init(
                     userPreferences = UserPreferences(
@@ -106,7 +106,7 @@ internal class TrendingViewModelTest : FreeSpec() {
                 viewModel.uiState.value.isLoading shouldBe false
             }
 
-            "updates UI state correctly if userPreferences is not fully configured" - {
+            "should display error when user preferences are not fully configured" - {
                 // Given
                 fakeUserPreferencesRepository.init(
                     userPreferences = UserPreferences(
@@ -125,8 +125,8 @@ internal class TrendingViewModelTest : FreeSpec() {
             }
         }
 
-        "User Preference Error Handling" - {
-            "handles preference errors correctly" - {
+        "Handling user preference errors" - {
+            "should correctly add preference error messages to UIState" - {
                 // Given
                 setupViewModel()
                 val errorMessage = "Preference error"
@@ -139,8 +139,8 @@ internal class TrendingViewModelTest : FreeSpec() {
             }
         }
 
-        "getImageLoader" - {
-            "returns the provided ImageLoader object" - {
+        "Retrieving ImageLoader" - {
+            "should return the correct instance of ImageLoader" - {
                 // Given
                 setupViewModel()
                 val expectedImageLoader = mockImageLoader
@@ -153,8 +153,8 @@ internal class TrendingViewModelTest : FreeSpec() {
             }
         }
 
-        "errorShown" - {
-            "removes the error message from the UIState" - {
+        "Handling shown errors" - {
+            "should remove the specified error message from UIState after being acknowledged" - {
                 // Given
                 setupViewModel()
                 fakeUserPreferencesRepository.emitError(Exception("some error message"))

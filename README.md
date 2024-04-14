@@ -1,8 +1,10 @@
 # Giphy Trending ![Gradle Build](https://github.com/ryanw-mobile/giphy-trending/actions/workflows/main_build.yml/badge.svg) [![codecov](https://codecov.io/gh/ryanw-mobile/giphy-trending/graph/badge.svg?token=J8PHIH3OPU)](https://codecov.io/gh/ryanw-mobile/giphy-trending)
 
-This sample Android app presents the Giphy trending animated gifs for sharing or download. It was elaborated from the work
+This sample Android app presents the Giphy trending animated gifs for sharing or download. It was
+elaborated from the work
 by [Fahri Can](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
-in Nov 2021. I migrated RxJava to Coroutines, and then from XML Views to Jetpack Compose.
+in Nov 2021. I migrated the codebase from RxJava to Coroutines, and then from XML Views to Jetpack
+Compose. The current release is very different from the original version.
 
 <p align="center">
   <img src="screenshots/phone_portrait_1_240413.png" width="200" />&nbsp;

@@ -3,7 +3,7 @@
   ~ https://github.com/ryanw-mobile
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Giphy Trending</string>
     <string name="no_giphies_found">There is nothing to display.\nPlease try to refresh.</string>
     <string name="error_export_clipboard">Failed to copy link to clipboard. Please try again.</string>
@@ -15,14 +15,14 @@
     <string name="refresh">Refresh</string>
     <string name="api_max_description">Items to Load</string>
     <string name="apimax_desc">The image list consumes a relatively small amount of data. Images are downloaded only when they become visible on the screen.</string>
-    <string name="acknowledgement_sampleapp">This is a sample App for demonstration purpose.\nSource available at https://github.com/ryanwong-uk/giphy-trending</string>
-    <string name="loading">Loading...</string>
+    <string name="acknowledgement_sampleapp">This is a sample App for demonstration purpose.\nSource available at https://github.com/ryanw-mobile/giphy-trending</string>
+    <string name="loading">Loading…</string>
     <string name="content_description_trending_list">Trending List</string>
     <string name="content_description_open_in_browser">Open in browser</string>
     <string name="content_description_copy_image_link">Copy image link</string>
     <string name="content_description_download_image">Download image</string>
     <string name="download">Download</string>
-    <string name="downloading_image">Downloading image...</string>
+    <string name="downloading_image">Downloading image…</string>
     <string name="failed_to_download_file">Failed to download file.</string>
     <string name="there_is_nothing_to_show_try_pull_to_reload">There is nothing to show.\nTry pull to reload?</string>
     <string name="rating">Image Rating</string>
@@ -33,6 +33,6 @@
     <string name="rating_r">Contains images that are typically not seen unless sought out and could be considered alarming if witnessed.</string>
     <string name="content_description_rating_selector">Rating selector</string>
     <string name="content_description_select_rating">Select %1$s rating</string>
-    <string name="selected">Selected</string>
-    <string name="not_selected">Not selected</string>
+    <string name="selected" tools:override="true">Selected</string>
+    <string name="not_selected" tools:override="true">Not selected</string>
 </resources>

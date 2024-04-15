@@ -1,8 +1,8 @@
 name: Renovate Check
 
 on:
+  merge_group:
   push:
-    merge_group:
     branches:
       - 'renovate/**'
 

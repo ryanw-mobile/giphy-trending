@@ -28,3 +28,4 @@ dependencyResolutionManagement {
 rootProject.name = "Giphy Trending"
 include("app")
 include("benchmark")
+include(":baselineprofile")

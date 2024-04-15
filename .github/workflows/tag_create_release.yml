@@ -28,7 +28,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Gradle build
-        run: ./gradlew bundleRelease assembleRelease --no-daemon
+        run: ./gradlew :app:generateReleaseBaselineProfile bundleRelease assembleRelease --no-daemon
         env:
           BITRISE: 'true'
           GIPHYAPIKEY: ${{ secrets.GIPHYAPIKEY }}

@@ -27,8 +27,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
+      # :app:generateReleaseBaselineProfile  taken out as it's too expensive to run on Github
       - name: Gradle build
-        run: ./gradlew bundleRelease assembleRelease --no-daemon
+        run: ./gradlew :app:bundleRelease :app:assembleRelease --no-daemon
         env:
           BITRISE: 'true'
           GIPHYAPIKEY: ${{ secrets.GIPHYAPIKEY }}

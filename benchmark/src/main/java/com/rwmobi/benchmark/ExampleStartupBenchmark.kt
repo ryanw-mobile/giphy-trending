@@ -1,4 +1,9 @@
-package uk.ryanwong.benchmark
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
+package com.rwmobi.benchmark
 
 import androidx.benchmark.macro.StartupMode
 import androidx.benchmark.macro.StartupTimingMetric
@@ -27,10 +32,10 @@ class ExampleStartupBenchmark {
 
     @Test
     fun startup() = benchmarkRule.measureRepeated(
-        packageName = "uk.rwmobi.giphytrending",
+        packageName = "com.rwmobi.giphytrending",
         metrics = listOf(StartupTimingMetric()), //, FrameTimingMetric(), TraceSectionMetric(), AudioUnderrunMetric(), ),
         iterations = 5,
-        startupMode = StartupMode.COLD
+        startupMode = StartupMode.COLD,
     ) {
         pressHome()
         startActivityAndWait()

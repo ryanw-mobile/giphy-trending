@@ -17,6 +17,7 @@ plugins {
     alias(libs.plugins.kotlinxKover)
     alias(libs.plugins.devtoolsKsp)
     alias(libs.plugins.gradleKtlint)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -232,11 +233,13 @@ dependencies {
     implementation(libs.androidx.material3.windowsizeclass)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.material3.adaptive.android)
+    implementation(libs.androidx.profileinstaller)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    "baselineProfile"(project(":baselineprofile"))
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 

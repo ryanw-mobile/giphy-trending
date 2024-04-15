@@ -47,6 +47,7 @@ generally believe it to be a bad coding practice by tightly coupling the busines
 * Material 3 dynamic colour theming supporting light and dark modes
 * Dynamic screen layout support using Windows Size Class
 * Gradle Kotlin DSL and Version Catalog
+* Macrobenchmark and Baseline Profile
 
 &nbsp;
 

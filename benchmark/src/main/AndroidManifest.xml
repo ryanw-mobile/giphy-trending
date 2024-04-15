@@ -2,6 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <queries>
-        <package android:name="uk.ryanwong.giphytrending" />
+        <package android:name="com.rwmobi.giphytrending" />
     </queries>
 </manifest>

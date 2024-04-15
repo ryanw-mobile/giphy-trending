@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "uk.rwmobi.benchmark"
+    namespace = "com.rwmobi.benchmark"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     compileOptions {
@@ -17,6 +17,7 @@ android {
         targetSdk = libs.versions.targetSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR,DEBUGGABLE"
     }
 
     buildTypes {

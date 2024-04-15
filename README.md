@@ -1,6 +1,10 @@
 # Giphy Trending ![Gradle Build](https://github.com/ryanw-mobile/giphy-trending/actions/workflows/main_build.yml/badge.svg) [![codecov](https://codecov.io/gh/ryanw-mobile/giphy-trending/graph/badge.svg?token=J8PHIH3OPU)](https://codecov.io/gh/ryanw-mobile/giphy-trending)
 
-This sample Android app presents the Giphy trending animated gifs for sharing or download. It was
+This sample Android app presents the Giphy trending animated gifs for sharing or download. 
+
+&nbsp; 
+
+It was
 elaborated from the work
 by [Fahri Can](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
 in Nov 2021. I migrated the codebase from RxJava to Coroutines, and then from XML Views to Jetpack
@@ -43,7 +47,6 @@ generally believe it to be a bad coding practice by tightly coupling the busines
 * Material 3 dynamic colour theming supporting light and dark modes
 * Dynamic screen layout support using Windows Size Class
 * Gradle Kotlin DSL and Version Catalog
-* Github Actions CI/CD with ChatGPT code reviews
 
 &nbsp;
 
@@ -77,8 +80,8 @@ generally believe it to be a bad coding practice by tightly coupling the busines
 * [Ktlint Gradle](https://github.com/jlleitschuh/ktlint-gradle) - Plugin for linting and formatting
   Kotlin code
 * [Kover](https://github.com/Kotlin/kotlinx-kover) - Kotlin code coverage tool
+* [Github Action](https://github.com/features/actions) - CI/CD
 * [codecov](https://codecov.io/) - code coverage
-* [Github Action](https://github.com/features/actions) - CI (current)
 
 &nbsp;
 

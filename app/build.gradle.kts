@@ -200,6 +200,7 @@ android {
 
     testOptions {
         animationsDisabled = true
+
         unitTests {
             isIncludeAndroidResources = true
             isReturnDefaultValues = true
@@ -216,16 +217,22 @@ android {
     }
 }
 
+// JUnit
+// tasks.withType<Test> {
+//    useJUnitPlatform()
+// }
+
 kotlin {
     jvmToolchain(17)
 }
 
 dependencies {
+    "baselineProfile"(project(":baselineprofile"))
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
@@ -235,20 +242,15 @@ dependencies {
     implementation(libs.androidx.material3.adaptive.android)
     implementation(libs.androidx.profileinstaller)
 
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    "baselineProfile"(project(":baselineprofile"))
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    debugImplementation(libs.leakcanary.android)
 
     // Dagger-Hilt
-    // Hilt does not support ksp yet https://issuetracker.google.com/issues/179057202?pli=1
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
     kspAndroidTest(libs.hilt.android.compiler)
-    androidTestImplementation(libs.hilt.android.testing)
 
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
@@ -268,48 +270,34 @@ dependencies {
 
     // Room 2
     implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.legacy.support.v4)
-    implementation(libs.androidx.lifecycle.extensions)
-    // optional - RxJava support for Room
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.lifecycle.extensions)
+
     implementation(libs.kotlinx.coroutines.android)
-
-    // Datastore preferences
     implementation(libs.androidx.datastore.preferences)
-
     implementation(libs.timber)
-
-    // debugImplementation because LeakCanary should only run in debug builds.
-    debugImplementation(libs.leakcanary.android)
 
     // testing
     testImplementation(libs.junit)
-    testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.androidx.test.core.ktx)
-    testImplementation(libs.androidx.junit)
-    testImplementation(libs.androidx.core.testing)
     testImplementation(libs.jetbrains.kotlinx.coroutines.test)
     testImplementation(libs.robolectric)
-    testImplementation(kotlin("test"))
-
     testImplementation(libs.mockk.android)
-    testImplementation(libs.mockk.agent)
-
-    // kotest
-    testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.assertions.core)
-    testImplementation(libs.kotest.property)
-
-    androidTestImplementation(libs.kotest.assertions.core)
-    androidTestImplementation(libs.jetbrains.kotlinx.coroutines.test)
-    androidTestImplementation(libs.androidx.junit)
-    debugImplementation(libs.androidx.fragment.testing)
 
     // For instrumented tests - with Kotlin
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.kotest.assertions.core)
+    androidTestImplementation(libs.jetbrains.kotlinx.coroutines.test)
+    androidTestImplementation(libs.hilt.android.testing)
 }
 
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
@@ -324,10 +312,6 @@ configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
 
 tasks.named("preBuild") {
     dependsOn(tasks.named("ktlintFormat"))
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
 }
 
 koverReport {

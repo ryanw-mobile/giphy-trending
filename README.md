@@ -1,8 +1,8 @@
 # Giphy Trending ![Gradle Build](https://github.com/ryanw-mobile/giphy-trending/actions/workflows/main_build.yml/badge.svg) [![codecov](https://codecov.io/gh/ryanw-mobile/giphy-trending/graph/badge.svg?token=J8PHIH3OPU)](https://codecov.io/gh/ryanw-mobile/giphy-trending)
 
-This sample Android app presents the Giphy trending animated gifs for sharing or download. 
+This sample Android app presents the Giphy trending animated gifs for sharing or download.
 
-&nbsp; 
+&nbsp;
 
 It was
 elaborated from the work
@@ -75,8 +75,9 @@ generally believe it to be a bad coding practice by tightly coupling the busines
 * [Dagger Hilt](https://dagger.dev/hilt/) - Dependency injection framework
 * [Timber](https://github.com/JakeWharton/timber) - Logging utility
 * [LeakCanary](https://github.com/square/leakcanary) - Memory leak detection tool
-* `JUnit 4` - Testing framework for Java
-* [kotest](https://kotest.io/) - Powerful, flexible testing library for Kotlin
+* `JUnit 4` - Testing framework and runner
+* [Robolectric](https://robolectric.org/) - Testing framework for Android-JVM tests
+* [kotest](https://kotest.io/) - We use the assertion library only, not the runner
 * [MockK](https://mockk.io/) - Mocking library for Kotlin
 * [Ktlint Gradle](https://github.com/jlleitschuh/ktlint-gradle) - Plugin for linting and formatting
   Kotlin code

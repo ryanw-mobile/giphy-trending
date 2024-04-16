@@ -1,5 +1,11 @@
-package com.rwmobi.giphytrending.data.source.local
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
 
+package com.rwmobi.giphytrending.test.testdata
+
+import com.rwmobi.giphytrending.data.source.local.TrendingEntity
 import com.rwmobi.giphytrending.data.source.network.model.FixedHeight
 import com.rwmobi.giphytrending.data.source.network.model.FixedWidth
 import com.rwmobi.giphytrending.data.source.network.model.Images
@@ -8,9 +14,9 @@ import com.rwmobi.giphytrending.data.source.network.model.TrendingData
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import java.util.Date
 
-internal object TrendingMapperKtTestData {
+internal object SampleTrendingMapper {
 
-    val mockTrendingData1 by lazy {
+    val sampleTrendingData1 by lazy {
         TrendingData(
             analyticsResponsePayload = "some-analytics-response-payload",
             bitlyGifUrl = "https://some.url/some-path",
@@ -67,7 +73,7 @@ internal object TrendingMapperKtTestData {
         )
     }
 
-    val mockTrendingEntity1 by lazy {
+    val sampleTrendingEntity1 by lazy {
         TrendingEntity(
             id = "5KF7hci72bv2ZbchuT",
             previewUrl = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/200w.gif",
@@ -81,7 +87,7 @@ internal object TrendingMapperKtTestData {
         )
     }
 
-    val mockDomainModel1 by lazy {
+    val sampleDomainModel1 by lazy {
         GiphyImageItem(
             id = "5KF7hci72bv2ZbchuT",
             previewUrl = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/200w.gif",
@@ -93,7 +99,7 @@ internal object TrendingMapperKtTestData {
         )
     }
 
-    val mockTrendingData2 by lazy {
+    val sampleTrendingData2 by lazy {
         TrendingData(
             analyticsResponsePayload = "some-analytics-response-payload",
             bitlyGifUrl = "https://some.url/some-path",
@@ -150,7 +156,7 @@ internal object TrendingMapperKtTestData {
         )
     }
 
-    val mockTrendingEntity2 by lazy {
+    val sampleTrendingEntity2 by lazy {
         TrendingEntity(
             id = "uaIAIw3ELuk69mhZ5I",
             previewUrl = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/200w.gif",
@@ -164,7 +170,7 @@ internal object TrendingMapperKtTestData {
         )
     }
 
-    val mockDomainModel2 by lazy {
+    val sampleDomainModel2 by lazy {
         GiphyImageItem(
             id = "uaIAIw3ELuk69mhZ5I",
             previewUrl = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/200w.gif",
@@ -176,7 +182,7 @@ internal object TrendingMapperKtTestData {
         )
     }
 
-    val mockTrendingData3 by lazy {
+    val sampleTrendingData3 by lazy {
         TrendingData(
             analyticsResponsePayload = "some-analytics-response-payload",
             bitlyGifUrl = "https://some.url/some-path",
@@ -233,7 +239,7 @@ internal object TrendingMapperKtTestData {
         )
     }
 
-    val mockTrendingEntity3 by lazy {
+    val sampleTrendingEntity3 by lazy {
         TrendingEntity(
             "etKSrsbbKbqwW6vzOg",
             previewUrl = "https://media1.giphy.com/media/etKSrsbbKbqwW6vzOg/200w.gif",
@@ -247,7 +253,7 @@ internal object TrendingMapperKtTestData {
         )
     }
 
-    val mockDomainModel3 by lazy {
+    val sampleDomainModel3 by lazy {
         GiphyImageItem(
             "etKSrsbbKbqwW6vzOg",
             previewUrl = "https://media1.giphy.com/media/etKSrsbbKbqwW6vzOg/200w.gif",

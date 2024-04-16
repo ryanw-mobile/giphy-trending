@@ -235,7 +235,6 @@ dependencies {
     implementation(libs.androidx.material3.adaptive.android)
     implementation(libs.androidx.profileinstaller)
 
-    androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
@@ -251,9 +250,6 @@ dependencies {
     kspAndroidTest(libs.hilt.android.compiler)
     androidTestImplementation(libs.hilt.android.testing)
 
-    // Android Lifecycle Extensions
-    // implementation(libs.androidx.lifecycle.extensions)
-    // implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     // Glide for Images
@@ -291,7 +287,7 @@ dependencies {
     // testing
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.test.core.ktx)
+    testImplementation(libs.androidx.test.core.ktx)
     testImplementation(libs.androidx.junit)
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.jetbrains.kotlinx.coroutines.test)
@@ -308,7 +304,7 @@ dependencies {
 
     androidTestImplementation(libs.kotest.assertions.core)
     androidTestImplementation(libs.jetbrains.kotlinx.coroutines.test)
-    androidTestImplementation(libs.androidx.test.junit4)
+    androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.fragment.testing)
 
     // For instrumented tests - with Kotlin

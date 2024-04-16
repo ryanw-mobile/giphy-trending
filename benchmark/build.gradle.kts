@@ -38,7 +38,7 @@ kotlin {
 }
 
 dependencies {
-    implementation(libs.androidx.test.junit4)
+    implementation(libs.androidx.junit)
     implementation(libs.androidx.espresso.core)
     implementation(libs.androidx.benchmark.macro.junit4)
 }

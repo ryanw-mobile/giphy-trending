@@ -1,8 +1,14 @@
-package com.rwmobi.giphytrending.data.source.local
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
 
+package com.rwmobi.giphytrending.test.testdata
+
+import com.rwmobi.giphytrending.data.source.local.TrendingEntity
 import java.util.Date
 
-object TrendingEntityTestData {
+object SampleTrendingEntity {
     val case1 by lazy {
         TrendingEntity(
             id = "5KF7hci72bv2ZbchuT",

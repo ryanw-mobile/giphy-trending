@@ -1,10 +1,10 @@
 package com.rwmobi.giphytrending.data.source.local
 
 import android.content.Context
+import android.os.Build
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.MediumTest
+import com.rwmobi.giphytrending.test.testdata.SampleTrendingEntity
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.collections.shouldContainExactly
@@ -16,15 +16,17 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
-@RunWith(AndroidJUnit4::class)
-@MediumTest
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.P])
 class TrendingDaoTest {
     private lateinit var giphyDatabase: GiphyDatabase
     private lateinit var trendingDao: TrendingDao
 
     @Before
-    fun init() {
+    fun setup() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         giphyDatabase = Room.inMemoryDatabaseBuilder(context, GiphyDatabase::class.java)
             .allowMainThreadQueries() // only for testing
@@ -33,36 +35,35 @@ class TrendingDaoTest {
         trendingDao = giphyDatabase.trendingDao()
     }
 
+    @After
+    fun teardown() {
+        giphyDatabase.close()
+    }
+
     // Basic test cases: CRUD usages
     @Test
     fun emptyDatabase_InsertOne_ReturnOne() {
         runBlocking {
-            // 🔴 Given: Empty database
             trendingDao.queryData() shouldHaveSize 0
 
-            // 🟡 When: Insert one TrendingEntity
-            trendingDao.insertData(TrendingEntityTestData.case1)
+            trendingDao.insertData(SampleTrendingEntity.case1)
 
-            // 🟢 Then: Database should have one row returned
-            trendingDao.queryData() shouldContainExactly (listOf(TrendingEntityTestData.case1))
+            trendingDao.queryData() shouldContainExactly (listOf(SampleTrendingEntity.case1))
         }
     }
 
     @Test
     fun emptyDatabase_InsertList_ReturnSameList() {
         runBlocking {
-            // 🔴 Given: Empty database
             trendingDao.queryData() shouldHaveSize 0
 
-            // 🟡 When: Insert a list of 3 TrendingEntity objects
             val testTrendingList = listOf(
-                TrendingEntityTestData.case2,
-                TrendingEntityTestData.case3,
-                TrendingEntityTestData.case4,
+                SampleTrendingEntity.case2,
+                SampleTrendingEntity.case3,
+                SampleTrendingEntity.case4,
             )
             trendingDao.insertAllData(testTrendingList)
 
-            // 🟢 Then: Database should have three row returned
             // Note: The order may not be the same due to sorting
             trendingDao.queryData() shouldContainAll (testTrendingList)
         }
@@ -71,45 +72,38 @@ class TrendingDaoTest {
     @Test
     fun nonEmptyDatabase_UpdateOneRow_ReturnUpdatedList() {
         runBlocking {
-            // 🔴 Given: database with three TrendingEntity objects
             val testTrendingList = listOf(
-                TrendingEntityTestData.case1,
-                TrendingEntityTestData.case2,
-                TrendingEntityTestData.case3,
+                SampleTrendingEntity.case1,
+                SampleTrendingEntity.case2,
+                SampleTrendingEntity.case3,
             )
             trendingDao.insertAllData(testTrendingList)
             trendingDao.queryData() shouldHaveSize 3
 
-            // 🟡 When: insert a modified version of case 2 with same ID
-            trendingDao.insertData(TrendingEntityTestData.case2Modified)
+            trendingDao.insertData(SampleTrendingEntity.case2Modified)
 
-            // 🟢 Then: Database should have three row returned
-            // containing case1, case2Modified, and case 3
             val trendingList = trendingDao.queryData()
             trendingList shouldHaveSize 3
-            trendingList shouldContain TrendingEntityTestData.case1
-            trendingList shouldNotContain TrendingEntityTestData.case2
-            trendingList shouldContain TrendingEntityTestData.case2Modified
-            trendingList shouldContain TrendingEntityTestData.case3
+            trendingList shouldContain SampleTrendingEntity.case1
+            trendingList shouldNotContain SampleTrendingEntity.case2
+            trendingList shouldContain SampleTrendingEntity.case2Modified
+            trendingList shouldContain SampleTrendingEntity.case3
         }
     }
 
     @Test
     fun nonemptyDatabase_ClearDatabase_ReturnEmptyList() {
         runBlocking {
-            // 🔴 Given: database with three TrendingEntity objects
             val testTrendingList = listOf(
-                TrendingEntityTestData.case1,
-                TrendingEntityTestData.case2,
-                TrendingEntityTestData.case3,
+                SampleTrendingEntity.case1,
+                SampleTrendingEntity.case2,
+                SampleTrendingEntity.case3,
             )
             trendingDao.insertAllData(testTrendingList)
             trendingDao.queryData() shouldHaveSize 3
 
-            // 🟡 When: Clear the database
             trendingDao.clear()
 
-            // 🟢 Then: Database should have zero rows returned
             trendingDao.queryData() shouldHaveSize 0
         }
     }
@@ -120,11 +114,10 @@ class TrendingDaoTest {
     @Test
     fun nonEmptyCleanDatabase_markDirty_ReturnAllDirty() {
         runBlocking {
-            // 🔴 Given: database with three TrendingEntity objects, all dirty = false
             val testTrendingList = listOf(
-                TrendingEntityTestData.case1,
-                TrendingEntityTestData.case2,
-                TrendingEntityTestData.case3,
+                SampleTrendingEntity.case1,
+                SampleTrendingEntity.case2,
+                SampleTrendingEntity.case3,
             )
             trendingDao.insertAllData(testTrendingList)
             val initialList = trendingDao.queryData()
@@ -133,10 +126,8 @@ class TrendingDaoTest {
             initialList[1].dirty shouldBe false
             initialList[2].dirty shouldBe false
 
-            // 🟡 When: mark database dirty
             trendingDao.markDirty()
 
-            // 🟢 Then: Database should have all rows marked dirty
             val trendingList = trendingDao.queryData()
             trendingList shouldHaveSize 3
             trendingList[0].dirty shouldBe true
@@ -148,11 +139,10 @@ class TrendingDaoTest {
     @Test
     fun allDirtyDatabase_deleteDirty_ReturnEmpty() {
         runBlocking {
-            // 🔴 Given: database with three TrendingEntity objects, all dirty = true
             val testTrendingList = listOf(
-                TrendingEntityTestData.case1,
-                TrendingEntityTestData.case2,
-                TrendingEntityTestData.case3,
+                SampleTrendingEntity.case1,
+                SampleTrendingEntity.case2,
+                SampleTrendingEntity.case3,
             )
             trendingDao.insertAllData(testTrendingList)
             trendingDao.markDirty()
@@ -162,10 +152,8 @@ class TrendingDaoTest {
             initialList[1].dirty shouldBe true
             initialList[2].dirty shouldBe true
 
-            // 🟡 When: delete dirty rows
             trendingDao.deleteDirty()
 
-            // 🟢 Then: Database should return empty list
             trendingDao.queryData() shouldHaveSize 0
         }
     }
@@ -173,27 +161,19 @@ class TrendingDaoTest {
     @Test
     fun someDirtyDatabase_deleteDirty_ReturnClean() {
         runBlocking {
-            // 🔴 Given: database with 4 TrendingEntity objects - 3 dirty and 1 clean
             val testTrendingList = listOf(
-                TrendingEntityTestData.case1,
-                TrendingEntityTestData.case2,
-                TrendingEntityTestData.case3,
+                SampleTrendingEntity.case1,
+                SampleTrendingEntity.case2,
+                SampleTrendingEntity.case3,
             )
             trendingDao.insertAllData(testTrendingList)
             trendingDao.markDirty()
-            trendingDao.insertData(TrendingEntityTestData.case4)
+            trendingDao.insertData(SampleTrendingEntity.case4)
             trendingDao.queryData() shouldHaveSize 4
 
-            // 🟡 When: delete dirty rows
             trendingDao.deleteDirty()
 
-            // 🟢 Then: Database should remain 1 clean row
-            trendingDao.queryData() shouldContainExactly (listOf(TrendingEntityTestData.case4))
+            trendingDao.queryData() shouldContainExactly (listOf(SampleTrendingEntity.case4))
         }
-    }
-
-    @After
-    fun cleanUp() {
-        giphyDatabase.close()
     }
 }

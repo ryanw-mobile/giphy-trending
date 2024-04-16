@@ -5,7 +5,7 @@ import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 
-internal class TrendingMapperKtTest : FreeSpec() {
+internal class TrendingMapperTest : FreeSpec() {
     /***
      * These tests are to make sure we preserve the exact object conversion.
      * When tests found broken, it suggested that we might have to check if the changes are intended.

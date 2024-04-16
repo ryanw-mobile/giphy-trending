@@ -217,11 +217,6 @@ android {
     }
 }
 
-// JUnit
-// tasks.withType<Test> {
-//    useJUnitPlatform()
-// }
-
 kotlin {
     jvmToolchain(17)
 }

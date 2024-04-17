@@ -54,7 +54,10 @@ internal fun TrendingListCompact(
             .semantics { contentDescription = contentDescriptionTrendingList },
         state = lazyListState,
     ) {
-        itemsIndexed(giphyImageItems) { index, giphyImageItem ->
+        itemsIndexed(
+            items = giphyImageItems,
+            key = { _, giphyImageItem -> giphyImageItem.id },
+        ) { index, giphyImageItem ->
             GiphyItem(
                 modifier = Modifier.fillMaxWidth(),
                 giphyImageItem = giphyImageItem,

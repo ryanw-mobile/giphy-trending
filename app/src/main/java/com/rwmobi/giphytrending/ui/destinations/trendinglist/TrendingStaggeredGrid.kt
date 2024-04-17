@@ -60,7 +60,10 @@ internal fun TrendingStaggeredGrid(
         columns = StaggeredGridCells.Adaptive(minSize = 320.dp),
         contentPadding = PaddingValues(all = dimension.defaultHalfPadding),
     ) {
-        itemsIndexed(giphyImageItems) { _, giphyImageItem ->
+        itemsIndexed(
+            items = giphyImageItems,
+            key = { _, giphyImageItem -> giphyImageItem.id },
+        ) { _, giphyImageItem ->
             Card(
                 modifier = Modifier
                     .padding(all = dimension.defaultHalfPadding)

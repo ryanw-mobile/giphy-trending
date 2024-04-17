@@ -23,15 +23,15 @@ class FakeNetworkDataSource : NetworkDataSource {
         apiError?.run { throw this }
         return mockTrendingNetworkResponseDto ?: TrendingNetworkResponseDto(
             metaDto = MetaDto(
-                msg = "some-msg",
-                responseId = "some-response-id",
-                status = 0,
+                msg = "OK",
+                responseId = "g52knjbgx1u2x935oeod0s77dq4wd8dozlcs1xgm",
+                status = 200,
             ),
             trendingData = emptyList(),
             pagination = PaginationDto(
-                count = 0,
+                count = 50,
                 offset = 0,
-                totalCount = 0,
+                totalCount = 2809,
             ),
         )
     }

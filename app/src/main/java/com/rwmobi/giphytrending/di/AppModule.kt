@@ -9,9 +9,6 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import coil.ImageLoader
-import coil.decode.GifDecoder
-import coil.decode.ImageDecoderDecoder
 import com.rwmobi.giphytrending.BuildConfig
 import com.rwmobi.giphytrending.data.source.network.GiphyApi
 import com.rwmobi.giphytrending.data.source.network.GiphyApiService
@@ -59,20 +56,6 @@ object AppModule {
     @Provides
     fun provideApi(): GiphyApi {
         return GiphyApiService.getClient()
-    }
-
-    @Singleton
-    @Provides
-    fun provideCoilImageLoader(@ApplicationContext context: Context): ImageLoader {
-        return ImageLoader.Builder(context)
-            .components {
-                if (android.os.Build.VERSION.SDK_INT >= 28) {
-                    add(ImageDecoderDecoder.Factory())
-                } else {
-                    add(GifDecoder.Factory())
-                }
-            }
-            .build()
     }
 
     @GiphyApiKey

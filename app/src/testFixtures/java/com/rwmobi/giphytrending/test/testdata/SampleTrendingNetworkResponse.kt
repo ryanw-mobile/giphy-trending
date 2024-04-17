@@ -16,7 +16,7 @@ import com.rwmobi.giphytrending.data.source.network.dto.TrendingNetworkResponseD
 import java.util.Date
 
 object SampleTrendingNetworkResponse {
-    val jobBidenResponse = TrendingNetworkResponseDto(
+    val singleResponse = TrendingNetworkResponseDto(
         metaDto = MetaDto(
             msg = "some-msg",
             responseId = "some-response-id",

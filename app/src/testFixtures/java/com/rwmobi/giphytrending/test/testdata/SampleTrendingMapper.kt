@@ -15,8 +15,7 @@ import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import java.util.Date
 
 internal object SampleTrendingMapper {
-
-    val sampleTrendingDataDto1 by lazy {
+    val sampleTrendingDataDto1 =
         TrendingDataDto(
             analyticsResponsePayload = "some-analytics-response-payload",
             bitlyGifUrl = "https://some.url/some-path",
@@ -71,9 +70,8 @@ internal object SampleTrendingMapper {
             url = "https://giphy.com/gifs/studiosoriginals-cooking-chef-cook-5KF7hci72bv2ZbchuT",
             username = "studiosoriginals",
         )
-    }
 
-    val sampleTrendingEntity1 by lazy {
+    val sampleTrendingEntity1 =
         TrendingEntity(
             id = "5KF7hci72bv2ZbchuT",
             previewUrl = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/200w.gif",
@@ -85,9 +83,8 @@ internal object SampleTrendingMapper {
             trendingDateTime = Date(1636679711000),
             importDateTime = Date(1635978358000),
         )
-    }
 
-    val sampleDomainModel1 by lazy {
+    val sampleDomainModel1 =
         GiphyImageItem(
             id = "5KF7hci72bv2ZbchuT",
             previewUrl = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/200w.gif",
@@ -97,9 +94,8 @@ internal object SampleTrendingMapper {
             type = "gif",
             username = "studiosoriginals",
         )
-    }
 
-    val sampleTrendingDataDto2 by lazy {
+    val sampleTrendingDataDto2 =
         TrendingDataDto(
             analyticsResponsePayload = "some-analytics-response-payload",
             bitlyGifUrl = "https://some.url/some-path",
@@ -154,9 +150,8 @@ internal object SampleTrendingMapper {
             url = "https://giphy.com/gifs/creative-courage-vidhyan-as-a-nation-we-have-lot-of-obligations-no-obligation-uaIAIw3ELuk69mhZ5I",
             username = "creative-courage",
         )
-    }
 
-    val sampleTrendingEntity2 by lazy {
+    val sampleTrendingEntity2 =
         TrendingEntity(
             id = "uaIAIw3ELuk69mhZ5I",
             previewUrl = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/200w.gif",
@@ -168,9 +163,8 @@ internal object SampleTrendingMapper {
             trendingDateTime = Date(-62170156725000),
             importDateTime = Date(1605041010000),
         )
-    }
 
-    val sampleDomainModel2 by lazy {
+    val sampleDomainModel2 =
         GiphyImageItem(
             id = "uaIAIw3ELuk69mhZ5I",
             previewUrl = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/200w.gif",
@@ -180,9 +174,8 @@ internal object SampleTrendingMapper {
             type = "gif",
             username = "creative-courage",
         )
-    }
 
-    val sampleTrendingDataDto3 by lazy {
+    val sampleTrendingDataDto3 =
         TrendingDataDto(
             analyticsResponsePayload = "some-analytics-response-payload",
             bitlyGifUrl = "https://some.url/some-path",
@@ -237,9 +230,8 @@ internal object SampleTrendingMapper {
             url = "https://giphy.com/gifs/studiosoriginals-chicken-dinner-winner-etKSrsbbKbqwW6vzOg",
             username = "studiosoriginals",
         )
-    }
 
-    val sampleTrendingEntity3 by lazy {
+    val sampleTrendingEntity3 =
         TrendingEntity(
             "etKSrsbbKbqwW6vzOg",
             previewUrl = "https://media1.giphy.com/media/etKSrsbbKbqwW6vzOg/200w.gif",
@@ -251,9 +243,8 @@ internal object SampleTrendingMapper {
             trendingDateTime = Date(1636678809000),
             importDateTime = Date(1636417528000),
         )
-    }
 
-    val sampleDomainModel3 by lazy {
+    val sampleDomainModel3 =
         GiphyImageItem(
             "etKSrsbbKbqwW6vzOg",
             previewUrl = "https://media1.giphy.com/media/etKSrsbbKbqwW6vzOg/200w.gif",
@@ -263,5 +254,4 @@ internal object SampleTrendingMapper {
             type = "gif",
             username = "studiosoriginals",
         )
-    }
 }

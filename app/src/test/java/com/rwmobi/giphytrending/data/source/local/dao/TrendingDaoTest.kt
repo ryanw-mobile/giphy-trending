@@ -17,7 +17,7 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.shouldBe
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -48,19 +48,18 @@ class TrendingDaoTest {
 
     // Basic test cases: CRUD usages
     @Test
-    fun emptyDatabase_InsertOne_ReturnOne() {
-        runBlocking {
+    fun emptyDatabase_InsertOne_ReturnOne() =
+        runTest {
             trendingDao.queryData() shouldHaveSize 0
 
             trendingDao.insertData(SampleTrendingEntity.case1)
 
             trendingDao.queryData() shouldContainExactly (listOf(SampleTrendingEntity.case1))
         }
-    }
 
     @Test
-    fun emptyDatabase_InsertList_ReturnSameList() {
-        runBlocking {
+    fun emptyDatabase_InsertList_ReturnSameList() =
+        runTest {
             trendingDao.queryData() shouldHaveSize 0
 
             val testTrendingList = listOf(
@@ -73,11 +72,10 @@ class TrendingDaoTest {
             // Note: The order may not be the same due to sorting
             trendingDao.queryData() shouldContainAll (testTrendingList)
         }
-    }
 
     @Test
-    fun nonEmptyDatabase_UpdateOneRow_ReturnUpdatedList() {
-        runBlocking {
+    fun nonEmptyDatabase_UpdateOneRow_ReturnUpdatedList() =
+        runTest {
             val testTrendingList = listOf(
                 SampleTrendingEntity.case1,
                 SampleTrendingEntity.case2,
@@ -95,11 +93,10 @@ class TrendingDaoTest {
             trendingList shouldContain SampleTrendingEntity.case2Modified
             trendingList shouldContain SampleTrendingEntity.case3
         }
-    }
 
     @Test
-    fun nonemptyDatabase_ClearDatabase_ReturnEmptyList() {
-        runBlocking {
+    fun nonemptyDatabase_ClearDatabase_ReturnEmptyList() =
+        runTest {
             val testTrendingList = listOf(
                 SampleTrendingEntity.case1,
                 SampleTrendingEntity.case2,
@@ -112,14 +109,13 @@ class TrendingDaoTest {
 
             trendingDao.queryData() shouldHaveSize 0
         }
-    }
 
     /***
      * Dirty bit test cases
      */
     @Test
-    fun nonEmptyCleanDatabase_markDirty_ReturnAllDirty() {
-        runBlocking {
+    fun nonEmptyCleanDatabase_markDirty_ReturnAllDirty() =
+        runTest {
             val testTrendingList = listOf(
                 SampleTrendingEntity.case1,
                 SampleTrendingEntity.case2,
@@ -140,11 +136,10 @@ class TrendingDaoTest {
             trendingList[1].dirty shouldBe true
             trendingList[2].dirty shouldBe true
         }
-    }
 
     @Test
-    fun allDirtyDatabase_deleteDirty_ReturnEmpty() {
-        runBlocking {
+    fun allDirtyDatabase_deleteDirty_ReturnEmpty() =
+        runTest {
             val testTrendingList = listOf(
                 SampleTrendingEntity.case1,
                 SampleTrendingEntity.case2,
@@ -162,11 +157,10 @@ class TrendingDaoTest {
 
             trendingDao.queryData() shouldHaveSize 0
         }
-    }
 
     @Test
-    fun someDirtyDatabase_deleteDirty_ReturnClean() {
-        runBlocking {
+    fun someDirtyDatabase_deleteDirty_ReturnClean() =
+        runTest {
             val testTrendingList = listOf(
                 SampleTrendingEntity.case1,
                 SampleTrendingEntity.case2,
@@ -181,5 +175,4 @@ class TrendingDaoTest {
 
             trendingDao.queryData() shouldContainExactly (listOf(SampleTrendingEntity.case4))
         }
-    }
 }

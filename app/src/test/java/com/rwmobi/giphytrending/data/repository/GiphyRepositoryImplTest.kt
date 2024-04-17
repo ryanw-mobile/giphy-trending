@@ -42,12 +42,12 @@ class GiphyRepositoryImplTest {
     @Test
     fun `fetchCachedTrending should return correct list if database query success`() = runTest {
         setupRepository()
-        fakeRoomDbDataSource.mockQueryDataResponse = SampleTrendingEntityList.jobBidenEntity
+        fakeRoomDbDataSource.mockQueryDataResponse = SampleTrendingEntityList.singleEntityList
 
         val result = giphyRepository.fetchCachedTrending()
 
         result.isSuccess shouldBe true
-        result.getOrNull() shouldBe SampleTrendingEntityList.jobBidenEntity.asGiphyImageItem()
+        result.getOrNull() shouldBe SampleTrendingEntityList.singleEntityList.asGiphyImageItem()
     }
 
     @Test
@@ -64,13 +64,13 @@ class GiphyRepositoryImplTest {
     @Test
     fun `reloadTrending should return correct list if network and database operations all success`() = runTest {
         setupRepository()
-        fakeNetworkDataSource.mockTrendingNetworkResponseDto = SampleTrendingNetworkResponse.jobBidenResponse
-        fakeRoomDbDataSource.mockQueryDataResponse = SampleTrendingEntityList.jobBidenEntity
+        fakeNetworkDataSource.mockTrendingNetworkResponseDto = SampleTrendingNetworkResponse.singleResponse
+        fakeRoomDbDataSource.mockQueryDataResponse = SampleTrendingEntityList.singleEntityList
 
         val result = giphyRepository.reloadTrending(limit = 100, rating = Rating.R)
 
         result.isSuccess shouldBe true
-        result.getOrNull() shouldBe SampleTrendingEntityList.jobBidenEntity.asGiphyImageItem()
+        result.getOrNull() shouldBe SampleTrendingEntityList.singleEntityList.asGiphyImageItem()
     }
 
     @Test

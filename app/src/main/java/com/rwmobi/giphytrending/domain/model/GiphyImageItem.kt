@@ -8,6 +8,8 @@ package com.rwmobi.giphytrending.domain.model
 data class GiphyImageItem(
     val id: String,
     val previewUrl: String,
+    val previewHeight: Int,
+    val previewWidth: Int,
     val imageUrl: String,
     val webUrl: String,
     val title: String,

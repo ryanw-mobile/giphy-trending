@@ -14,6 +14,8 @@ class GiphyImageItemProvider : PreviewParameterProvider<GiphyImageItem> {
             GiphyImageItem(
                 id = "MiBE4zcYUZWYmHnsI7",
                 previewUrl = "https://media4.giphy.com/media/MiBE4zcYUZWYmHnsI7/200w.gif",
+                previewHeight = 280,
+                previewWidth = 480,
                 imageUrl = "https://media4.giphy.com/media/MiBE4zcYUZWYmHnsI7/giphy.gif",
                 webUrl = "https://giphy.com/gifs/marchmadness-sports-sport-womens-basketball-MiBE4zcYUZWYmHnsI7",
                 title = "Womens Basketball Sport GIF by NCAA March Madness",

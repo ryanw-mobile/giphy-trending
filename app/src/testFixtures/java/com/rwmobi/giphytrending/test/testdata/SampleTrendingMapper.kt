@@ -25,29 +25,29 @@ internal object SampleTrendingMapper {
             id = "5KF7hci72bv2ZbchuT",
             images = Images(
                 fixedHeight = FixedHeight(
-                    height = "200",
+                    height = "360",
                     mp4 = "https://some.url/some-path",
                     mp4Size = "101674",
                     size = "500824",
                     url = "https://some.url/some-path",
                     webp = "https://some.url/some-path",
                     webpSize = "227744",
-                    width = "265",
+                    width = "480",
                 ),
                 fixedWidth = FixedWidth(
-                    height = "151",
+                    height = "360",
                     mp4 = "https://some.url/some-path",
                     mp4Size = "65384",
                     size = "317527",
                     url = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/200w.gif",
                     webp = "https://some.url/some-path",
                     webpSize = "153256",
-                    width = "200",
+                    width = "480",
                 ),
                 original = Original(
                     frames = "26",
                     hash = "some-hash",
-                    height = "362",
+                    height = "360",
                     mp4 = "https://some.url/some-path",
                     mp4Size = "273620",
                     size = "1749887",
@@ -75,6 +75,8 @@ internal object SampleTrendingMapper {
         TrendingEntity(
             id = "5KF7hci72bv2ZbchuT",
             previewUrl = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/200w.gif",
+            previewWidth = 480,
+            previewHeight = 360,
             imageUrl = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/giphy.gif",
             webUrl = "https://giphy.com/gifs/studiosoriginals-cooking-chef-cook-5KF7hci72bv2ZbchuT",
             title = "Chef Cooking GIF by GIPHY Studios Originals",
@@ -88,6 +90,8 @@ internal object SampleTrendingMapper {
         GiphyImageItem(
             id = "5KF7hci72bv2ZbchuT",
             previewUrl = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/200w.gif",
+            previewWidth = 480,
+            previewHeight = 360,
             imageUrl = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/giphy.gif",
             webUrl = "https://giphy.com/gifs/studiosoriginals-cooking-chef-cook-5KF7hci72bv2ZbchuT",
             title = "Chef Cooking GIF by GIPHY Studios Originals",
@@ -115,14 +119,14 @@ internal object SampleTrendingMapper {
                     width = "265",
                 ),
                 fixedWidth = FixedWidth(
-                    height = "151",
+                    height = "480",
                     mp4 = "https://some.url/some-path",
                     mp4Size = "65384",
                     size = "317527",
                     url = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/200w.gif",
                     webp = "https://some.url/some-path",
                     webpSize = "153256",
-                    width = "200",
+                    width = "480",
                 ),
                 original = Original(
                     frames = "26",
@@ -155,6 +159,8 @@ internal object SampleTrendingMapper {
         TrendingEntity(
             id = "uaIAIw3ELuk69mhZ5I",
             previewUrl = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/200w.gif",
+            previewWidth = 480,
+            previewHeight = 480,
             imageUrl = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/giphy.gif",
             webUrl = "https://giphy.com/gifs/creative-courage-vidhyan-as-a-nation-we-have-lot-of-obligations-no-obligation-uaIAIw3ELuk69mhZ5I",
             title = "Joe Biden GIF by Creative Courage",
@@ -168,6 +174,8 @@ internal object SampleTrendingMapper {
         GiphyImageItem(
             id = "uaIAIw3ELuk69mhZ5I",
             previewUrl = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/200w.gif",
+            previewWidth = 480,
+            previewHeight = 480,
             imageUrl = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/giphy.gif",
             webUrl = "https://giphy.com/gifs/creative-courage-vidhyan-as-a-nation-we-have-lot-of-obligations-no-obligation-uaIAIw3ELuk69mhZ5I",
             title = "Joe Biden GIF by Creative Courage",
@@ -195,14 +203,14 @@ internal object SampleTrendingMapper {
                     width = "265",
                 ),
                 fixedWidth = FixedWidth(
-                    height = "151",
+                    height = "480",
                     mp4 = "https://some.url/some-path",
                     mp4Size = "65384",
                     size = "317527",
                     url = "https://media1.giphy.com/media/etKSrsbbKbqwW6vzOg/200w.gif",
                     webp = "https://some.url/some-path",
                     webpSize = "153256",
-                    width = "200",
+                    width = "480",
                 ),
                 original = Original(
                     frames = "26",
@@ -233,8 +241,10 @@ internal object SampleTrendingMapper {
 
     val sampleTrendingEntity3 =
         TrendingEntity(
-            "etKSrsbbKbqwW6vzOg",
+            id = "etKSrsbbKbqwW6vzOg",
             previewUrl = "https://media1.giphy.com/media/etKSrsbbKbqwW6vzOg/200w.gif",
+            previewWidth = 480,
+            previewHeight = 480,
             imageUrl = "https://media1.giphy.com/media/etKSrsbbKbqwW6vzOg/giphy.gif",
             webUrl = "https://giphy.com/gifs/studiosoriginals-chicken-dinner-winner-etKSrsbbKbqwW6vzOg",
             title = "Winner Winner Win GIF by GIPHY Studios Originals",
@@ -246,8 +256,10 @@ internal object SampleTrendingMapper {
 
     val sampleDomainModel3 =
         GiphyImageItem(
-            "etKSrsbbKbqwW6vzOg",
+            id = "etKSrsbbKbqwW6vzOg",
             previewUrl = "https://media1.giphy.com/media/etKSrsbbKbqwW6vzOg/200w.gif",
+            previewWidth = 480,
+            previewHeight = 480,
             imageUrl = "https://media1.giphy.com/media/etKSrsbbKbqwW6vzOg/giphy.gif",
             webUrl = "https://giphy.com/gifs/studiosoriginals-chicken-dinner-winner-etKSrsbbKbqwW6vzOg",
             title = "Winner Winner Win GIF by GIPHY Studios Originals",

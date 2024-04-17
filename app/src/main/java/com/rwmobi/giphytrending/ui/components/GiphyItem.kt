@@ -81,7 +81,7 @@ fun GiphyItem(
         AsyncImage(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
+                .aspectRatio(ratio = (giphyImageItem.previewWidth / giphyImageItem.previewHeight.toFloat()))
                 .background(color = MaterialTheme.colorScheme.surfaceDim.copy(alpha = 0.3f)),
             model = ImageRequest
                 .Builder(LocalContext.current)

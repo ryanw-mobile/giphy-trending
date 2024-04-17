@@ -7,8 +7,8 @@ package com.rwmobi.giphytrending.di
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.rwmobi.giphytrending.data.source.preferences.PreferencesDataStoreWrapper
 import com.rwmobi.giphytrending.data.source.preferences.PreferencesDataStoreWrapperImpl
+import com.rwmobi.giphytrending.data.source.preferences.interfaces.PreferencesDataStoreWrapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

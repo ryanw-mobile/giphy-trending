@@ -8,15 +8,18 @@ package com.rwmobi.giphytrending.data.source.preferences
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import com.rwmobi.giphytrending.data.source.preferences.interfaces.PreferencesDataStoreWrapper
+import com.rwmobi.giphytrending.di.DispatcherModule
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class PreferencesDataStoreWrapperImpl(
+class PreferencesDataStoreWrapperImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>,
-    private val dispatcher: CoroutineDispatcher,
+    @DispatcherModule.IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : PreferencesDataStoreWrapper {
     private val _preferenceErrors = MutableSharedFlow<Throwable>()
     override val preferenceErrors = _preferenceErrors.asSharedFlow()

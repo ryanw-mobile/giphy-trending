@@ -3,7 +3,7 @@
  * https://github.com/ryanw-mobile
  */
 
-package com.rwmobi.giphytrending.data.source.local
+package com.rwmobi.giphytrending.data.source.local.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

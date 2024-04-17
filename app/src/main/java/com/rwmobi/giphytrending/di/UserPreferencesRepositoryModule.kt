@@ -6,7 +6,7 @@
 package com.rwmobi.giphytrending.di
 
 import com.rwmobi.giphytrending.data.repository.UserPreferencesRepositoryImpl
-import com.rwmobi.giphytrending.data.source.preferences.PreferencesDataStoreWrapper
+import com.rwmobi.giphytrending.data.source.preferences.interfaces.PreferencesDataStoreWrapper
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
 import dagger.Module
 import dagger.Provides

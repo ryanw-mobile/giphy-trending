@@ -1,28 +1,34 @@
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
 package com.rwmobi.giphytrending.data.source.network
 
-import com.rwmobi.giphytrending.data.source.network.model.Meta
-import com.rwmobi.giphytrending.data.source.network.model.Pagination
-import com.rwmobi.giphytrending.data.source.network.model.TrendingNetworkResponse
+import com.rwmobi.giphytrending.data.source.network.dto.MetaDto
+import com.rwmobi.giphytrending.data.source.network.dto.PaginationDto
+import com.rwmobi.giphytrending.data.source.network.dto.TrendingNetworkResponseDto
+import com.rwmobi.giphytrending.data.source.network.interfaces.NetworkDataSource
 
 class FakeNetworkDataSource : NetworkDataSource {
     var apiError: Throwable? = null
-    var mockTrendingNetworkResponse: TrendingNetworkResponse? = null
+    var mockTrendingNetworkResponseDto: TrendingNetworkResponseDto? = null
 
     override suspend fun getTrending(
         apiKey: String,
         limit: Int,
         offset: Int,
         rating: String,
-    ): TrendingNetworkResponse {
+    ): TrendingNetworkResponseDto {
         apiError?.run { throw this }
-        return mockTrendingNetworkResponse ?: TrendingNetworkResponse(
-            meta = Meta(
+        return mockTrendingNetworkResponseDto ?: TrendingNetworkResponseDto(
+            metaDto = MetaDto(
                 msg = "some-msg",
                 responseId = "some-response-id",
                 status = 0,
             ),
             trendingData = emptyList(),
-            pagination = Pagination(
+            pagination = PaginationDto(
                 count = 0,
                 offset = 0,
                 totalCount = 0,

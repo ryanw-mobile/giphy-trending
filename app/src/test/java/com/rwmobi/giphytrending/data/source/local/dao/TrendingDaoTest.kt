@@ -1,9 +1,15 @@
-package com.rwmobi.giphytrending.data.source.local
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
+package com.rwmobi.giphytrending.data.source.local.dao
 
 import android.content.Context
 import android.os.Build
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import com.rwmobi.giphytrending.data.source.local.GiphyDatabase
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingEntity
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainAll

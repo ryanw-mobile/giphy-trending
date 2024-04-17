@@ -1,6 +1,12 @@
-import com.rwmobi.giphytrending.data.repository.GiphyRepositoryImpl
-import com.rwmobi.giphytrending.data.source.local.FakeRoomDbDataSource
-import com.rwmobi.giphytrending.data.source.local.toDomainModelList
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
+package com.rwmobi.giphytrending.data.repository
+
+import com.rwmobi.giphytrending.data.source.local.FakeDatabaseDataSource
+import com.rwmobi.giphytrending.data.source.local.mappers.asGiphyImageItem
 import com.rwmobi.giphytrending.data.source.network.FakeNetworkDataSource
 import com.rwmobi.giphytrending.domain.exceptions.EmptyGiphyAPIKeyException
 import com.rwmobi.giphytrending.domain.model.Rating
@@ -18,16 +24,16 @@ import org.junit.Test
 class GiphyRepositoryImplTest {
     private lateinit var giphyRepository: GiphyRepository
     private lateinit var dispatcher: TestDispatcher
-    private lateinit var fakeRoomDbDataSource: FakeRoomDbDataSource
+    private lateinit var fakeRoomDbDataSource: FakeDatabaseDataSource
     private lateinit var fakeNetworkDataSource: FakeNetworkDataSource
 
     private fun setupRepository(giphyApiKey: String = "some-api-key") {
         dispatcher = UnconfinedTestDispatcher()
-        fakeRoomDbDataSource = FakeRoomDbDataSource()
+        fakeRoomDbDataSource = FakeDatabaseDataSource()
         fakeNetworkDataSource = FakeNetworkDataSource()
         giphyRepository = GiphyRepositoryImpl(
             networkDataSource = fakeNetworkDataSource,
-            roomDbDataSource = fakeRoomDbDataSource,
+            databaseDataSource = fakeRoomDbDataSource,
             giphyApiKey = giphyApiKey,
             dispatcher = dispatcher,
         )
@@ -41,7 +47,7 @@ class GiphyRepositoryImplTest {
         val result = giphyRepository.fetchCachedTrending()
 
         result.isSuccess shouldBe true
-        result.getOrNull() shouldBe SampleTrendingEntityList.jobBidenEntity.toDomainModelList()
+        result.getOrNull() shouldBe SampleTrendingEntityList.jobBidenEntity.asGiphyImageItem()
     }
 
     @Test
@@ -58,13 +64,13 @@ class GiphyRepositoryImplTest {
     @Test
     fun `reloadTrending should return correct list if network and database operations all success`() = runTest {
         setupRepository()
-        fakeNetworkDataSource.mockTrendingNetworkResponse = SampleTrendingNetworkResponse.jobBidenResponse
+        fakeNetworkDataSource.mockTrendingNetworkResponseDto = SampleTrendingNetworkResponse.jobBidenResponse
         fakeRoomDbDataSource.mockQueryDataResponse = SampleTrendingEntityList.jobBidenEntity
 
         val result = giphyRepository.reloadTrending(limit = 100, rating = Rating.R)
 
         result.isSuccess shouldBe true
-        result.getOrNull() shouldBe SampleTrendingEntityList.jobBidenEntity.toDomainModelList()
+        result.getOrNull() shouldBe SampleTrendingEntityList.jobBidenEntity.asGiphyImageItem()
     }
 
     @Test

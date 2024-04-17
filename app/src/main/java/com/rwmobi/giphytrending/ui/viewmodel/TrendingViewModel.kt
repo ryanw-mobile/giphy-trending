@@ -18,7 +18,6 @@ import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingUIState
 import com.rwmobi.giphytrending.ui.model.ErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -32,7 +31,7 @@ class TrendingViewModel @Inject constructor(
     private val giphyRepository: GiphyRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val imageLoader: ImageLoader,
-    @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.Main,
+    @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<TrendingUIState> = MutableStateFlow(TrendingUIState(isLoading = true))
     val uiState = _uiState.asStateFlow()

@@ -6,8 +6,8 @@
 package com.rwmobi.giphytrending.di
 
 import com.rwmobi.giphytrending.data.source.network.GiphyApi
-import com.rwmobi.giphytrending.data.source.network.NetworkDataSource
-import com.rwmobi.giphytrending.data.source.network.NetworkDataSourceImpl
+import com.rwmobi.giphytrending.data.source.network.RetrofitNetworkDataSource
+import com.rwmobi.giphytrending.data.source.network.interfaces.NetworkDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,6 +22,6 @@ object NetworkDataSourceModule {
     fun provideNetworkDataSource(
         giphyApiService: GiphyApi,
     ): NetworkDataSource {
-        return NetworkDataSourceImpl(giphyApiService = giphyApiService)
+        return RetrofitNetworkDataSource(giphyApiService = giphyApiService)
     }
 }

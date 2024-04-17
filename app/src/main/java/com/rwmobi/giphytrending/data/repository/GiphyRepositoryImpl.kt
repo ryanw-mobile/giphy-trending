@@ -5,11 +5,12 @@
 
 package com.rwmobi.giphytrending.data.repository
 
-import com.rwmobi.giphytrending.data.source.local.RoomDbDataSource
-import com.rwmobi.giphytrending.data.source.local.toDomainModelList
-import com.rwmobi.giphytrending.data.source.local.toTrendingEntityList
-import com.rwmobi.giphytrending.data.source.network.NetworkDataSource
-import com.rwmobi.giphytrending.data.source.network.model.TrendingNetworkResponse
+import com.rwmobi.giphytrending.data.source.local.interfaces.DatabaseDataSource
+import com.rwmobi.giphytrending.data.source.local.mappers.asGiphyImageItem
+import com.rwmobi.giphytrending.data.source.local.mappers.asTrendingEntity
+import com.rwmobi.giphytrending.data.source.network.dto.TrendingNetworkResponseDto
+import com.rwmobi.giphytrending.data.source.network.interfaces.NetworkDataSource
+import com.rwmobi.giphytrending.di.DispatcherModule
 import com.rwmobi.giphytrending.di.GiphyApiKey
 import com.rwmobi.giphytrending.domain.exceptions.EmptyGiphyAPIKeyException
 import com.rwmobi.giphytrending.domain.exceptions.except
@@ -24,14 +25,14 @@ import javax.inject.Inject
 
 class GiphyRepositoryImpl @Inject constructor(
     private val networkDataSource: NetworkDataSource,
-    private val roomDbDataSource: RoomDbDataSource,
+    private val databaseDataSource: DatabaseDataSource,
     @GiphyApiKey private val giphyApiKey: String,
-    private val dispatcher: CoroutineDispatcher,
+    @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher, // Data source will use IODispatcher
 ) : GiphyRepository {
     override suspend fun fetchCachedTrending(): Result<List<GiphyImageItem>> {
         return withContext(dispatcher) {
             Result.runCatching {
-                roomDbDataSource.queryData().toDomainModelList()
+                databaseDataSource.queryData().asGiphyImageItem()
             }.except<CancellationException, _>()
         }
     }
@@ -45,11 +46,11 @@ class GiphyRepositoryImpl @Inject constructor(
 
         return withContext(dispatcher) {
             try {
-                roomDbDataSource.markDirty()
+                databaseDataSource.markDirty()
                 Timber.tag("refreshTrending").v("Mark dirty: success")
 
                 val trendingNetworkResponse = getTrendingFromNetwork(limit = limit, rating = rating)
-                roomDbDataSource.insertAllData(data = trendingNetworkResponse.trendingData.toTrendingEntityList())
+                databaseDataSource.insertAllData(data = trendingNetworkResponse.trendingData.asTrendingEntity())
                 Timber.tag("refreshTrending").v("Insertion completed")
 
                 val invalidationResult = invalidateDirtyTrendingDb()
@@ -57,7 +58,7 @@ class GiphyRepositoryImpl @Inject constructor(
                     Timber.tag("invalidationResult").e(invalidationResult.exceptionOrNull())
                     Result.failure(exception = invalidationResult.exceptionOrNull() ?: UnknownError())
                 } else {
-                    Result.success(value = roomDbDataSource.queryData().toDomainModelList())
+                    Result.success(value = databaseDataSource.queryData().asGiphyImageItem())
                 }
             } catch (cancellationException: CancellationException) {
                 throw cancellationException
@@ -68,7 +69,7 @@ class GiphyRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun getTrendingFromNetwork(limit: Int, rating: Rating): TrendingNetworkResponse {
+    private suspend fun getTrendingFromNetwork(limit: Int, rating: Rating): TrendingNetworkResponseDto {
         return withContext(dispatcher) {
             networkDataSource.getTrending(
                 apiKey = giphyApiKey,
@@ -82,7 +83,7 @@ class GiphyRepositoryImpl @Inject constructor(
     private suspend fun invalidateDirtyTrendingDb(): Result<Unit> {
         return withContext(dispatcher) {
             Result.runCatching {
-                roomDbDataSource.deleteDirty()
+                databaseDataSource.deleteDirty()
                 Timber.tag("invalidateDirtyTrendingDb").v("success")
             }.except<CancellationException, _>()
         }

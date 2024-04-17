@@ -6,8 +6,8 @@
 package com.rwmobi.giphytrending.di
 
 import com.rwmobi.giphytrending.data.repository.GiphyRepositoryImpl
-import com.rwmobi.giphytrending.data.source.local.RoomDbDataSource
-import com.rwmobi.giphytrending.data.source.network.NetworkDataSource
+import com.rwmobi.giphytrending.data.source.local.interfaces.DatabaseDataSource
+import com.rwmobi.giphytrending.data.source.network.interfaces.NetworkDataSource
 import com.rwmobi.giphytrending.domain.repository.GiphyRepository
 import dagger.Module
 import dagger.Provides
@@ -23,13 +23,13 @@ object GiphyRepositoryModule {
     @Provides
     fun provideGiphyRepository(
         networkDataSource: NetworkDataSource,
-        roomDbDataSource: RoomDbDataSource,
+        databaseDataSource: DatabaseDataSource,
         @GiphyApiKey giphyApiKey: String,
         @DispatcherModule.IoDispatcher dispatcher: CoroutineDispatcher,
     ): GiphyRepository {
         return GiphyRepositoryImpl(
             networkDataSource = networkDataSource,
-            roomDbDataSource = roomDbDataSource,
+            databaseDataSource = databaseDataSource,
             giphyApiKey = giphyApiKey,
             dispatcher = dispatcher,
         )

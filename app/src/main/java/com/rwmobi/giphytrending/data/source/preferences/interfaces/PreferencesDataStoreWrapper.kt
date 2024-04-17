@@ -3,7 +3,7 @@
  * https://github.com/ryanw-mobile
  */
 
-package com.rwmobi.giphytrending.data.source.preferences
+package com.rwmobi.giphytrending.data.source.preferences.interfaces
 
 import androidx.datastore.preferences.core.Preferences
 import kotlinx.coroutines.flow.Flow

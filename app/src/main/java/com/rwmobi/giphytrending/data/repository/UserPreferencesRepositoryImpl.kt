@@ -8,7 +8,7 @@ package com.rwmobi.giphytrending.data.repository
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.rwmobi.giphytrending.BuildConfig
-import com.rwmobi.giphytrending.data.source.preferences.PreferencesDataStoreWrapper
+import com.rwmobi.giphytrending.data.source.preferences.interfaces.PreferencesDataStoreWrapper
 import com.rwmobi.giphytrending.di.DispatcherModule
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
@@ -33,7 +33,7 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     private val defaultApiMinEntries: Int = BuildConfig.API_MIN_ENTRIES.toInt(),
     private val defaultApiMaxEntries: Int = BuildConfig.API_MAX_ENTRIES.toInt(),
     externalCoroutineScope: CoroutineScope,
-    @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher,
+    @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher, // data source will use IODispatcher
 ) : UserPreferencesRepository {
     private val prefKeyApiRequestLimit = intPreferencesKey(KEY_API_REQUEST_LIMIT)
     private val prefKeyRating = stringPreferencesKey(KEY_RATING)

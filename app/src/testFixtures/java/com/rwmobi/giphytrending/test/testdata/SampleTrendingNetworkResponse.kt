@@ -18,9 +18,9 @@ import java.util.Date
 object SampleTrendingNetworkResponse {
     val singleResponse = TrendingNetworkResponseDto(
         metaDto = MetaDto(
-            msg = "some-msg",
-            responseId = "some-response-id",
-            status = 0,
+            msg = "OK",
+            responseId = "g52knjbgx1u2x935oeod0s77dq4wd8dozlcs1xgm",
+            status = 200,
         ),
         trendingData = listOf(
             TrendingDataDto(
@@ -79,9 +79,9 @@ object SampleTrendingNetworkResponse {
             ),
         ),
         pagination = PaginationDto(
-            count = 0,
+            count = 1,
             offset = 0,
-            totalCount = 0,
+            totalCount = 1,
         ),
     )
 }

@@ -17,8 +17,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -40,11 +43,13 @@ fun AppBottomNavigationBar(
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
+        val context = LocalContext.current
 
         for (item in AppNavItem.allItems) {
             val selected = currentRoute == item.screenRoute
 
             NavigationBarItem(
+                modifier = Modifier.semantics { contentDescription = context.getString(item.titleResId) },
                 selected = selected,
                 onClick = {
                     if (!selected) {

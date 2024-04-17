@@ -15,21 +15,21 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
 class FakePreferencesDataStoreWrapper : PreferencesDataStoreWrapper {
-    private val _preferences = MutableStateFlow<Preferences>(emptyPreferences())
+    private val preferences = MutableStateFlow<Preferences>(emptyPreferences())
 
     private val _preferenceErrors = MutableSharedFlow<Throwable>()
     override val preferenceErrors: SharedFlow<Throwable> = _preferenceErrors.asSharedFlow()
 
-    override fun getDataStoreFlow(): Flow<Preferences> = _preferences
+    override fun getDataStoreFlow(): Flow<Preferences> = preferences
 
     override suspend fun <T> updatePreference(key: Preferences.Key<T>, newValue: T) {
-        _preferences.value = _preferences.value.toMutablePreferences().apply {
+        preferences.value = preferences.value.toMutablePreferences().apply {
             this[key] = newValue
         }
     }
 
     override suspend fun clear() {
-        _preferences.value = emptyPreferences()
+        preferences.value = emptyPreferences()
     }
 
     suspend fun emitError(exception: Throwable) {

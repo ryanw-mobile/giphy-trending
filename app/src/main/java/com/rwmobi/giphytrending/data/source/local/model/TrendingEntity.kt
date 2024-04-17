@@ -17,6 +17,10 @@ data class TrendingEntity(
     val id: String,
     @ColumnInfo(name = "preview_url")
     val previewUrl: String,
+    @ColumnInfo(name = "preview_height")
+    val previewHeight: Int,
+    @ColumnInfo(name = "preview_width")
+    val previewWidth: Int,
     @ColumnInfo(name = "image_url")
     val imageUrl: String,
     @ColumnInfo(name = "web_url")

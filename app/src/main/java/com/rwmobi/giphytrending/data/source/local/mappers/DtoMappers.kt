@@ -11,6 +11,8 @@ import com.rwmobi.giphytrending.data.source.network.dto.TrendingDataDto
 fun TrendingDataDto.asTrendingEntity() = TrendingEntity(
     id = this.id,
     previewUrl = urlCleanUp(this.images.fixedWidth.url),
+    previewHeight = this.images.fixedWidth.height.toInt(),
+    previewWidth = this.images.fixedWidth.width.toInt(),
     imageUrl = urlCleanUp(this.images.original.url),
     webUrl = this.url,
     title = this.title,

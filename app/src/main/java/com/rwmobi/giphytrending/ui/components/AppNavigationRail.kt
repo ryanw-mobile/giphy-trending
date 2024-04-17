@@ -56,7 +56,6 @@ fun AppNavigationRail(
                 modifier = Modifier
                     .padding(vertical = dimension.defaultFullPadding)
                     .semantics { contentDescription = context.getString(item.titleResId) },
-
                 selected = selected,
                 onClick = {
                     if (!selected) {

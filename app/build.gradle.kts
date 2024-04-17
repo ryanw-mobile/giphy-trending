@@ -130,8 +130,10 @@ android {
         }
 
         getByName("debug") {
+            applicationIdSuffix = ".debug"
             isMinifyEnabled = false
             isShrinkResources = false
+            isDebuggable = true
             setOutputFileName()
         }
 

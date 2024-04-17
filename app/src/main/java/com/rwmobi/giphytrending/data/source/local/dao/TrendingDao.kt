@@ -3,16 +3,16 @@
  * https://github.com/ryanw-mobile
  */
 
-package com.rwmobi.giphytrending.data.source.local
+package com.rwmobi.giphytrending.data.source.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
 
 @Dao
 interface TrendingDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertData(data: TrendingEntity)
 

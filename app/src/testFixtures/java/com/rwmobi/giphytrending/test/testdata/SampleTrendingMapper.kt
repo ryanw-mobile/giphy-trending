@@ -5,19 +5,19 @@
 
 package com.rwmobi.giphytrending.test.testdata
 
-import com.rwmobi.giphytrending.data.source.local.TrendingEntity
-import com.rwmobi.giphytrending.data.source.network.model.FixedHeight
-import com.rwmobi.giphytrending.data.source.network.model.FixedWidth
-import com.rwmobi.giphytrending.data.source.network.model.Images
-import com.rwmobi.giphytrending.data.source.network.model.Original
-import com.rwmobi.giphytrending.data.source.network.model.TrendingData
+import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
+import com.rwmobi.giphytrending.data.source.network.dto.FixedHeight
+import com.rwmobi.giphytrending.data.source.network.dto.FixedWidth
+import com.rwmobi.giphytrending.data.source.network.dto.Images
+import com.rwmobi.giphytrending.data.source.network.dto.Original
+import com.rwmobi.giphytrending.data.source.network.dto.TrendingDataDto
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import java.util.Date
 
 internal object SampleTrendingMapper {
 
-    val sampleTrendingData1 by lazy {
-        TrendingData(
+    val sampleTrendingDataDto1 by lazy {
+        TrendingDataDto(
             analyticsResponsePayload = "some-analytics-response-payload",
             bitlyGifUrl = "https://some.url/some-path",
             bitlyUrl = "https://some.url/some-path",
@@ -99,8 +99,8 @@ internal object SampleTrendingMapper {
         )
     }
 
-    val sampleTrendingData2 by lazy {
-        TrendingData(
+    val sampleTrendingDataDto2 by lazy {
+        TrendingDataDto(
             analyticsResponsePayload = "some-analytics-response-payload",
             bitlyGifUrl = "https://some.url/some-path",
             bitlyUrl = "https://some.url/some-path",
@@ -182,8 +182,8 @@ internal object SampleTrendingMapper {
         )
     }
 
-    val sampleTrendingData3 by lazy {
-        TrendingData(
+    val sampleTrendingDataDto3 by lazy {
+        TrendingDataDto(
             analyticsResponsePayload = "some-analytics-response-payload",
             bitlyGifUrl = "https://some.url/some-path",
             bitlyUrl = "https://some.url/some-path",

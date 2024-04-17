@@ -3,9 +3,11 @@
  * https://github.com/ryanw-mobile
  */
 
-package com.rwmobi.giphytrending.data.source.local
+package com.rwmobi.giphytrending.data.source.local.interfaces
 
-interface RoomDbDataSource {
+import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
+
+interface DatabaseDataSource {
     suspend fun insertData(data: TrendingEntity)
     suspend fun insertAllData(data: List<TrendingEntity>)
     suspend fun queryData(): List<TrendingEntity>

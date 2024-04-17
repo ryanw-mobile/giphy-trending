@@ -5,11 +5,13 @@
 
 package com.rwmobi.giphytrending.data.source.local
 
+import com.rwmobi.giphytrending.data.source.local.interfaces.DatabaseDataSource
+import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
 import javax.inject.Inject
 
-class RoomDbDataSourceImpl @Inject constructor(
+class RoomDatabaseDataSource @Inject constructor(
     private val giphyDatabase: GiphyDatabase,
-) : RoomDbDataSource {
+) : DatabaseDataSource {
     override suspend fun insertData(data: TrendingEntity) {
         return giphyDatabase.trendingDao().insertData(data = data)
     }

@@ -6,8 +6,8 @@
 package com.rwmobi.giphytrending.di
 
 import com.rwmobi.giphytrending.data.source.local.GiphyDatabase
-import com.rwmobi.giphytrending.data.source.local.RoomDbDataSource
-import com.rwmobi.giphytrending.data.source.local.RoomDbDataSourceImpl
+import com.rwmobi.giphytrending.data.source.local.RoomDatabaseDataSource
+import com.rwmobi.giphytrending.data.source.local.interfaces.DatabaseDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +21,7 @@ object RoomDbDataSourceModule {
     @Provides
     fun provideRoomDbDataSource(
         giphyDatabase: GiphyDatabase,
-    ): RoomDbDataSource {
-        return RoomDbDataSourceImpl(giphyDatabase = giphyDatabase)
+    ): DatabaseDataSource {
+        return RoomDatabaseDataSource(giphyDatabase = giphyDatabase)
     }
 }

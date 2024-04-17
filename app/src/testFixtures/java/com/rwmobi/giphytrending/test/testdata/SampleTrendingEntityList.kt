@@ -5,7 +5,7 @@
 
 package com.rwmobi.giphytrending.test.testdata
 
-import com.rwmobi.giphytrending.data.source.local.TrendingEntity
+import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
 import java.util.Date
 
 object SampleTrendingEntityList {

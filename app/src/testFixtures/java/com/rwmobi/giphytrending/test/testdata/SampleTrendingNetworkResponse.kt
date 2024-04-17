@@ -5,25 +5,25 @@
 
 package com.rwmobi.giphytrending.test.testdata
 
-import com.rwmobi.giphytrending.data.source.network.model.FixedHeight
-import com.rwmobi.giphytrending.data.source.network.model.FixedWidth
-import com.rwmobi.giphytrending.data.source.network.model.Images
-import com.rwmobi.giphytrending.data.source.network.model.Meta
-import com.rwmobi.giphytrending.data.source.network.model.Original
-import com.rwmobi.giphytrending.data.source.network.model.Pagination
-import com.rwmobi.giphytrending.data.source.network.model.TrendingData
-import com.rwmobi.giphytrending.data.source.network.model.TrendingNetworkResponse
+import com.rwmobi.giphytrending.data.source.network.dto.FixedHeight
+import com.rwmobi.giphytrending.data.source.network.dto.FixedWidth
+import com.rwmobi.giphytrending.data.source.network.dto.Images
+import com.rwmobi.giphytrending.data.source.network.dto.MetaDto
+import com.rwmobi.giphytrending.data.source.network.dto.Original
+import com.rwmobi.giphytrending.data.source.network.dto.PaginationDto
+import com.rwmobi.giphytrending.data.source.network.dto.TrendingDataDto
+import com.rwmobi.giphytrending.data.source.network.dto.TrendingNetworkResponseDto
 import java.util.Date
 
 object SampleTrendingNetworkResponse {
-    val jobBidenResponse = TrendingNetworkResponse(
-        meta = Meta(
+    val jobBidenResponse = TrendingNetworkResponseDto(
+        metaDto = MetaDto(
             msg = "some-msg",
             responseId = "some-response-id",
             status = 0,
         ),
         trendingData = listOf(
-            TrendingData(
+            TrendingDataDto(
                 analyticsResponsePayload = "",
                 bitlyGifUrl = "",
                 bitlyUrl = "",
@@ -78,7 +78,7 @@ object SampleTrendingNetworkResponse {
                 username = "creative-courage",
             ),
         ),
-        pagination = Pagination(
+        pagination = PaginationDto(
             count = 0,
             offset = 0,
             totalCount = 0,

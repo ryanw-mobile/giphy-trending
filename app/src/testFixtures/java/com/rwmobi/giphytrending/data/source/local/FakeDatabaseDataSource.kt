@@ -1,6 +1,14 @@
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
 package com.rwmobi.giphytrending.data.source.local
 
-class FakeRoomDbDataSource : RoomDbDataSource {
+import com.rwmobi.giphytrending.data.source.local.interfaces.DatabaseDataSource
+import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
+
+class FakeDatabaseDataSource : DatabaseDataSource {
     var apiError: Throwable? = null
 
     override suspend fun insertData(data: TrendingEntity) {

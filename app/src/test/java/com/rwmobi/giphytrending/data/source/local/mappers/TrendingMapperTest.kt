@@ -1,4 +1,9 @@
-package com.rwmobi.giphytrending.data.source.local
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
+package com.rwmobi.giphytrending.data.source.local.mappers
 
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingMapper
 import io.kotest.matchers.collections.shouldContainExactly
@@ -13,7 +18,7 @@ internal class TrendingMapperTest {
 
     @Test
     fun `toDomainModel should correctly convert from TrendingEntity to GiphyImageItemDomainModel`() {
-        val giphyImageItemDomainModel = SampleTrendingMapper.sampleTrendingEntity1.toDomainModel()
+        val giphyImageItemDomainModel = SampleTrendingMapper.sampleTrendingEntity1.asGiphyImageItem()
         giphyImageItemDomainModel shouldBe SampleTrendingMapper.sampleDomainModel1
     }
 
@@ -30,23 +35,23 @@ internal class TrendingMapperTest {
             SampleTrendingMapper.sampleDomainModel3,
         )
 
-        val giphyImageItemDomainModelList = trendingEntityList.toDomainModelList()
+        val giphyImageItemDomainModelList = trendingEntityList.asGiphyImageItem()
 
         giphyImageItemDomainModelList shouldContainExactly expectedGiphyImageItemDomainModelList
     }
 
     @Test
     fun `toTrendingEntity should correctly convert from TrendingData to TrendingEntity`() {
-        val trendingEntity = SampleTrendingMapper.sampleTrendingData1.toTrendingEntity()
+        val trendingEntity = SampleTrendingMapper.sampleTrendingDataDto1.asTrendingEntity()
         trendingEntity shouldBe SampleTrendingMapper.sampleTrendingEntity1
     }
 
     @Test
     fun `toTrendingEntityList should correctly convert from TrendingData to list of TrendingEntity`() {
         val mockTrendingDataList = listOf(
-            SampleTrendingMapper.sampleTrendingData1,
-            SampleTrendingMapper.sampleTrendingData2,
-            SampleTrendingMapper.sampleTrendingData3,
+            SampleTrendingMapper.sampleTrendingDataDto1,
+            SampleTrendingMapper.sampleTrendingDataDto2,
+            SampleTrendingMapper.sampleTrendingDataDto3,
         )
         val expectedTrendingEntityList = listOf(
             SampleTrendingMapper.sampleTrendingEntity1,
@@ -54,7 +59,7 @@ internal class TrendingMapperTest {
             SampleTrendingMapper.sampleTrendingEntity3,
         )
 
-        val trendingEntityList = mockTrendingDataList.toTrendingEntityList()
+        val trendingEntityList = mockTrendingDataList.asTrendingEntity()
 
         trendingEntityList shouldBe expectedTrendingEntityList
     }

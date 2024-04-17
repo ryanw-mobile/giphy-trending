@@ -5,10 +5,11 @@
 
 package com.rwmobi.giphytrending.data.source.network
 
-import com.rwmobi.giphytrending.data.source.network.model.TrendingNetworkResponse
+import com.rwmobi.giphytrending.data.source.network.dto.TrendingNetworkResponseDto
+import com.rwmobi.giphytrending.data.source.network.interfaces.NetworkDataSource
 import javax.inject.Inject
 
-class NetworkDataSourceImpl @Inject constructor(
+class RetrofitNetworkDataSource @Inject constructor(
     private val giphyApiService: GiphyApi,
 ) : NetworkDataSource {
 
@@ -17,7 +18,7 @@ class NetworkDataSourceImpl @Inject constructor(
         limit: Int,
         offset: Int,
         rating: String,
-    ): TrendingNetworkResponse {
+    ): TrendingNetworkResponseDto {
         return giphyApiService.getTrending(
             apiKey = apiKey,
             limit = limit,

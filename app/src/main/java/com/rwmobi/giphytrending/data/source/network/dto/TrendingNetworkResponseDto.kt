@@ -3,7 +3,7 @@
  * https://github.com/ryanw-mobile
  */
 
-package com.rwmobi.giphytrending.data.source.network.model
+package com.rwmobi.giphytrending.data.source.network.dto
 
 import androidx.annotation.Keep
 import com.squareup.moshi.Json
@@ -18,15 +18,17 @@ import java.util.Date
  * as they will be thrown away at the time we convert it to domain model anyway.
  */
 @Keep
-data class TrendingNetworkResponse(
+data class TrendingNetworkResponseDto(
     @Json(name = "data")
-    val trendingData: List<TrendingData>,
-    val meta: Meta,
-    val pagination: Pagination,
+    val trendingData: List<TrendingDataDto>,
+    @Json(name = "meta")
+    val metaDto: MetaDto,
+    @Json(name = "pagination")
+    val pagination: PaginationDto,
 )
 
 @Keep
-data class TrendingData(
+data class TrendingDataDto(
     @Json(name = "analytics_response_payload")
     val analyticsResponsePayload: String,
     @Json(name = "bitly_gif_url")
@@ -56,22 +58,6 @@ data class TrendingData(
     val type: String,
     val url: String,
     val username: String,
-)
-
-@Keep
-data class Meta(
-    val msg: String,
-    @Json(name = "response_id")
-    val responseId: String,
-    val status: Int,
-)
-
-@Keep
-data class Pagination(
-    val count: Int,
-    val offset: Int,
-    @Json(name = "total_count")
-    val totalCount: Int,
 )
 
 @Keep

@@ -10,8 +10,9 @@ import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import com.rwmobi.giphytrending.di.DispatcherModule
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
-import com.rwmobi.giphytrending.domain.repository.TrendingRepository
+import com.rwmobi.giphytrending.domain.repository.SearchRepository
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
 import com.rwmobi.giphytrending.ui.destinations.search.SearchUIState
 import com.rwmobi.giphytrending.ui.model.ErrorMessage
@@ -27,7 +28,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val giphyRepository: TrendingRepository,
+    private val searchRepository: SearchRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val imageLoader: ImageLoader,
     @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher,
@@ -44,8 +45,24 @@ class SearchViewModel @Inject constructor(
     }
 
     fun search(keyword: String?) {
+        _uiState.update { currentUiState ->
+            currentUiState.copy(
+                keyword = keyword ?: "",
+            )
+        }
+
         if (!userPreferences.isFullyConfigured()) {
             updateUIForError("Unable to access user preferences. Cannot refresh.")
+            return
+        }
+
+        if (keyword.isNullOrBlank()) {
+            _uiState.update { currentUiState ->
+                currentUiState.copy(
+                    giphyImageItems = null,
+                    isLoading = false,
+                )
+            }
             return
         }
 
@@ -53,11 +70,11 @@ class SearchViewModel @Inject constructor(
         val apiMaxEntries = userPreferences.apiRequestLimit
         val rating = userPreferences.rating
 
-//        if (apiMaxEntries != null && rating != null) {
-//            loadTrendingData(apiMaxEntries = apiMaxEntries, rating = rating)
-//        } else {
-//            updateUIForError("Preferences are not fully set.")
-//        }
+        if (apiMaxEntries != null && rating != null) {
+            startNewSearch(keyword = keyword, apiMaxEntries = apiMaxEntries, rating = rating)
+        } else {
+            updateUIForError("Preferences are not fully set.")
+        }
     }
 
     fun errorShown(errorId: Long) {
@@ -122,22 +139,22 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-//    private fun loadTrendingData(apiMaxEntries: Int, rating: Rating) {
-//        viewModelScope.launch(dispatcher) {
-//            val repositoryResult = giphyRepository.reloadTrending(limit = apiMaxEntries, rating = rating)
-//            processTrendingList(repositoryResult = repositoryResult, isLoadingDone = true)
-//        }
-//    }
+    private fun startNewSearch(keyword: String?, apiMaxEntries: Int, rating: Rating) {
+        viewModelScope.launch(dispatcher) {
+            val searchResult = searchRepository.search(keyword = keyword, limit = apiMaxEntries, rating = rating)
+            processTrendingList(repositoryResult = searchResult)
+        }
+    }
 
-    private fun processTrendingList(repositoryResult: Result<List<GiphyImageItem>>, isLoadingDone: Boolean) {
+    private fun processTrendingList(repositoryResult: Result<List<GiphyImageItem>>) {
         when (repositoryResult.isFailure) {
             true -> updateUIForError("Error getting data: ${repositoryResult.exceptionOrNull()?.message}")
             false -> _uiState.update { currentUiState ->
                 currentUiState.copy(
-                    isLoading = !isLoadingDone,
+                    isLoading = false,
                     giphyImageItems = repositoryResult.getOrNull() ?: emptyList(),
                 ).also {
-                    Timber.tag("processTrendingList").v("Processed ${repositoryResult.getOrNull()?.count() ?: 0} entries, isLoading = ${!isLoadingDone}")
+                    Timber.tag("processTrendingList").v("Processed ${repositoryResult.getOrNull()?.count() ?: 0} entries")
                 }
             }
         }

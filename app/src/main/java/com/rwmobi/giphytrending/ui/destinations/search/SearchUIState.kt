@@ -9,6 +9,7 @@ import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import com.rwmobi.giphytrending.ui.model.ErrorMessage
 
 data class SearchUIState(
+    val keyword: String = "",
     // ⚠️ null and empty can be handled differently by the UI
     val giphyImageItems: List<GiphyImageItem>? = null,
     val isLoading: Boolean = true,

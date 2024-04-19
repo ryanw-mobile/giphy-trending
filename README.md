@@ -171,21 +171,28 @@ The generated apk(s) will be stored under `app/build/outputs/`
 
 &nbsp;
 
-### Licence
+### License
+
+#### Attribution-NonCommercial (CC BY-NC 4.0)
 
 Nothing is free in this world. RW MobiMedia UK Limited, a fully tax-paying entity in the UK,
-sponsors the infrastructure and development costs.
+sponsors the infrastructure and development costs of this project. 
 
 Copyright 2024 RW MobiMedia UK Limited
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. To view a copy of this license, visit [http://creativecommons.org/licenses/by-nc/4.0/](http://creativecommons.org/licenses/by-nc/4.0/) or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
-       http://www.apache.org/licenses/LICENSE-2.0
+#### Conditions
+Under the terms of this license, you are free to:
+- **Share** — copy and redistribute the material in any medium or format.
+- **Adapt** — remix, transform, and build upon the material.
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+The licensing terms include the following stipulations:
+- **Attribution** — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+- **NonCommercial** — You may not use the material for commercial purposes. Any commercial use is strictly prohibited without prior permission from RW MobiMedia UK Limited.
+
+#### Disclaimer
+This work is provided "as is" without any warranties, and the licensing coverage is only applicable as long as the distribution or use is for non-commercial purposes.
+
+#### Further Enquiries
+For permissions beyond the scope of this license, please contact RW MobiMedia UK Limited.

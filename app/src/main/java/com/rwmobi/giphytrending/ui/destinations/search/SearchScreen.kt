@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -25,6 +26,7 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
@@ -37,6 +39,7 @@ import com.rwmobi.giphytrending.ui.components.NoDataScreen
 import com.rwmobi.giphytrending.ui.components.SearchTextField
 import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingListCompact
 import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingStaggeredGrid
+import com.rwmobi.giphytrending.ui.theme.getDimension
 import com.rwmobi.giphytrending.ui.utils.downloadImage
 import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
 import kotlinx.coroutines.launch
@@ -60,6 +63,7 @@ fun SearchScreen(
     }
 
     val context = LocalContext.current
+    val dimension = LocalConfiguration.current.getDimension()
     val coroutineScope = rememberCoroutineScope()
     val clipboardHistory = remember { mutableStateListOf<String>() }
     val focusManager: FocusManager = LocalFocusManager.current
@@ -78,7 +82,9 @@ fun SearchScreen(
             modifier = Modifier.fillMaxSize(),
         ) {
             SearchTextField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = dimension.defaultHalfPadding),
                 keyword = uiState.keyword,
                 focusManager = focusManager,
                 onClearKeyword = uiEvent.onClearKeyword,

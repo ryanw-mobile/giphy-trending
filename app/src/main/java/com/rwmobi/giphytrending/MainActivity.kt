@@ -8,7 +8,10 @@ package com.rwmobi.giphytrending
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
@@ -29,7 +32,7 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        enableEdgeToEdge()
         installSplashScreen()
 
         setContent {
@@ -40,14 +43,18 @@ class MainActivity : ComponentActivity() {
             GiphyTrendingTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .safeDrawingPadding()
+                        .fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
                     // Select a navigation element based on window size.
                     when (windowSizeClass.widthSizeClass) {
                         WindowWidthSizeClass.Compact -> {
                             AppBottomNavigationLayout(
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .imePadding(),
                                 windowSizeClass = windowSizeClass,
                                 navController = navController,
                                 snackbarHostState = snackbarHostState,
@@ -58,7 +65,9 @@ class MainActivity : ComponentActivity() {
                         WindowWidthSizeClass.Expanded, // phone landscape mode
                         -> {
                             AppNavigationRailLayout(
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .imePadding(),
                                 windowSizeClass = windowSizeClass,
                                 navController = navController,
                                 snackbarHostState = snackbarHostState,

@@ -64,7 +64,7 @@ fun AppBottomNavigationBar(
                 },
                 icon = {
                     Icon(
-                        painter = painterResource(id = item.iconResId),
+                        painter = painterResource(id = if (selected) item.iconFocusedResId else item.iconDefaultResId),
                         contentDescription = null,
                         tint = if (selected) MaterialTheme.colorScheme.tertiary else LocalContentColor.current,
                     )

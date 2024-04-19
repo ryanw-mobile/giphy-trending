@@ -35,4 +35,5 @@
     <string name="content_description_select_rating">Select %1$s rating</string>
     <string name="selected" tools:override="true">Selected</string>
     <string name="not_selected" tools:override="true">Not selected</string>
+    <string name="search">Search</string>
 </resources>

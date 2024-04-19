@@ -37,8 +37,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.rwmobi.giphytrending.R
+import com.rwmobi.giphytrending.ui.navigation.AppNavHost
 import com.rwmobi.giphytrending.ui.navigation.AppNavItem
-import com.rwmobi.giphytrending.ui.navigation.NavHost
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -90,7 +90,7 @@ fun AppNavigationRailLayout(
         ) { paddingValues ->
             // Note that we take MaxSize and expect individual screens to handle screen size
             val actionLabel = stringResource(android.R.string.ok)
-            NavHost(
+            AppNavHost(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues),

@@ -39,12 +39,9 @@ import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import com.rwmobi.giphytrending.ui.components.NoDataScreen
 import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemsProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
-import com.rwmobi.giphytrending.ui.utils.downloadImageUsingMediaStore
+import com.rwmobi.giphytrending.ui.utils.downloadImage
 import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,19 +67,6 @@ fun TrendingListScreen(
     val pullRefreshState = rememberPullToRefreshState()
     val clipboardHistory = remember { mutableStateListOf<String>() }
 
-    fun downloadImage(imageUrl: String) {
-        coroutineScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                context.downloadImageUsingMediaStore(imageUrl)
-            }
-            if (!result) {
-                withContext(Dispatchers.Main) {
-                    uiEvent.onShowSnackbar(context.getString(R.string.failed_to_download_file))
-                }
-            }
-        }
-    }
-
     Box(modifier = modifier.nestedScroll(connection = pullRefreshState.nestedScrollConnection)) {
         uiState.giphyImageItems?.let { giphyImageItems ->
             if (giphyImageItems.isNotEmpty()) {
@@ -93,7 +77,14 @@ fun TrendingListScreen(
                             giphyImageItems = giphyImageItems,
                             imageLoader = imageLoader,
                             requestScrollToTop = uiState.requestScrollToTop,
-                            onClickToDownload = { imageUrl -> downloadImage(imageUrl = imageUrl) },
+                            onClickToDownload = { imageUrl ->
+                                downloadImage(
+                                    imageUrl = imageUrl,
+                                    coroutineScope = coroutineScope,
+                                    context = context,
+                                    onError = { uiEvent.onShowSnackbar(context.getString(R.string.failed_to_download_file)) },
+                                )
+                            },
                             onClickToOpen = { url -> context.startBrowserActivity(url = url) },
                             onClickToShare = { url -> clipboardHistory.add(url) },
                             onScrolledToTop = uiEvent.onScrolledToTop,
@@ -108,7 +99,14 @@ fun TrendingListScreen(
                             giphyImageItems = giphyImageItems,
                             imageLoader = imageLoader,
                             requestScrollToTop = uiState.requestScrollToTop,
-                            onClickToDownload = { imageUrl -> downloadImage(imageUrl = imageUrl) },
+                            onClickToDownload = { imageUrl ->
+                                downloadImage(
+                                    imageUrl = imageUrl,
+                                    coroutineScope = coroutineScope,
+                                    context = context,
+                                    onError = { uiEvent.onShowSnackbar(context.getString(R.string.failed_to_download_file)) },
+                                )
+                            },
                             onClickToOpen = { url -> context.startBrowserActivity(url = url) },
                             onClickToShare = { url -> clipboardHistory.add(url) },
                             onScrolledToTop = uiEvent.onScrolledToTop,

@@ -20,16 +20,19 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.rwmobi.giphytrending.BuildConfig
+import com.rwmobi.giphytrending.ui.destinations.search.SearchScreen
+import com.rwmobi.giphytrending.ui.destinations.search.SearchUIEvent
 import com.rwmobi.giphytrending.ui.destinations.settings.SettingsScreen
 import com.rwmobi.giphytrending.ui.destinations.settings.SettingsUIEvent
 import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingListScreen
 import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingUIEvent
+import com.rwmobi.giphytrending.ui.viewmodel.SearchViewModel
 import com.rwmobi.giphytrending.ui.viewmodel.SettingsViewModel
 import com.rwmobi.giphytrending.ui.viewmodel.TrendingViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NavHost(
+fun AppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     lastDoubleTappedNavItem: AppNavItem?,
@@ -38,6 +41,11 @@ fun NavHost(
     onShowSnackbar: suspend (String) -> Unit,
     onScrolledToTop: (AppNavItem) -> Unit,
 ) {
+    fun resetScrollBehavior() {
+        scrollBehavior.state.heightOffset = 0f
+        scrollBehavior.state.contentOffset = 0f
+    }
+
     NavHost(
         modifier = modifier,
         navController = navController,
@@ -50,8 +58,9 @@ fun NavHost(
             LaunchedEffect(lastDoubleTappedNavItem) {
                 val enabled = lastDoubleTappedNavItem?.equals(AppNavItem.TrendingList) ?: false
                 viewModel.requestScrollToTop(enabled = enabled)
-                scrollBehavior.state.heightOffset = 0f
-                scrollBehavior.state.contentOffset = 0f
+                if (enabled) {
+                    resetScrollBehavior()
+                }
             }
 
             TrendingListScreen(
@@ -71,10 +80,45 @@ fun NavHost(
 
             // Reset the scroll behavior when this composable enters
             LaunchedEffect(Unit) {
-                scrollBehavior.state.heightOffset = 0f
-                scrollBehavior.state.contentOffset = 0f
+                resetScrollBehavior()
             }
         }
+
+        composable(route = "search") {
+            val viewModel: SearchViewModel = hiltViewModel()
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            LaunchedEffect(lastDoubleTappedNavItem) {
+                val enabled = lastDoubleTappedNavItem?.equals(AppNavItem.Search) ?: false
+                viewModel.requestScrollToTop(enabled = enabled)
+                if (enabled) {
+                    resetScrollBehavior()
+                }
+            }
+
+            SearchScreen(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .nestedScroll(scrollBehavior.nestedScrollConnection),
+                windowSizeClass = windowSizeClass,
+                imageLoader = viewModel.getImageLoader(),
+                uiState = uiState,
+                uiEvent = SearchUIEvent(
+                    onClearKeyword = { viewModel.clearKeyword() },
+                    onUpdateKeyword = { viewModel.updateKeyword(it) },
+                    onSearch = { viewModel.search() },
+                    onErrorShown = { viewModel.errorShown(it) },
+                    onScrolledToTop = { onScrolledToTop(AppNavItem.Search) },
+                    onShowSnackbar = onShowSnackbar,
+                ),
+            )
+
+            // Reset the scroll behavior when this composable enters
+            LaunchedEffect(Unit) {
+                resetScrollBehavior()
+            }
+        }
+
         composable(route = "settings") {
             val viewModel: SettingsViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -82,8 +126,9 @@ fun NavHost(
             LaunchedEffect(lastDoubleTappedNavItem) {
                 val enabled = lastDoubleTappedNavItem?.equals(AppNavItem.Settings) ?: false
                 viewModel.requestScrollToTop(enabled = enabled)
-                scrollBehavior.state.heightOffset = 0f
-                scrollBehavior.state.contentOffset = 0f
+                if (enabled) {
+                    resetScrollBehavior()
+                }
             }
 
             SettingsScreen(
@@ -105,8 +150,7 @@ fun NavHost(
 
             // Reset the scroll behavior when this composable enters
             LaunchedEffect(Unit) {
-                scrollBehavior.state.heightOffset = 0f
-                scrollBehavior.state.contentOffset = 0f
+                resetScrollBehavior()
             }
         }
     }

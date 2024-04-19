@@ -16,19 +16,19 @@ import com.rwmobi.giphytrending.domain.exceptions.EmptyGiphyAPIKeyException
 import com.rwmobi.giphytrending.domain.exceptions.except
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import com.rwmobi.giphytrending.domain.model.Rating
-import com.rwmobi.giphytrending.domain.repository.GiphyRepository
+import com.rwmobi.giphytrending.domain.repository.TrendingRepository
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
-class GiphyRepositoryImpl @Inject constructor(
+class TrendyRepositoryImpl @Inject constructor(
     private val networkDataSource: NetworkDataSource,
     private val databaseDataSource: DatabaseDataSource,
     @GiphyApiKey private val giphyApiKey: String,
     @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher, // Data source will use IODispatcher
-) : GiphyRepository {
+) : TrendingRepository {
     override suspend fun fetchCachedTrending(): Result<List<GiphyImageItem>> {
         return withContext(dispatcher) {
             Result.runCatching {

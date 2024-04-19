@@ -12,9 +12,9 @@ import com.rwmobi.giphytrending.di.DispatcherModule
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
-import com.rwmobi.giphytrending.domain.repository.TrendingRepository
+import com.rwmobi.giphytrending.domain.repository.SearchRepository
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
-import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingUIState
+import com.rwmobi.giphytrending.ui.destinations.search.SearchUIState
 import com.rwmobi.giphytrending.ui.model.ErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -27,35 +27,59 @@ import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class TrendingViewModel @Inject constructor(
-    private val trendingRepository: TrendingRepository,
+class SearchViewModel @Inject constructor(
+    private val searchRepository: SearchRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val imageLoader: ImageLoader,
     @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
-    private val _uiState: MutableStateFlow<TrendingUIState> = MutableStateFlow(TrendingUIState(isLoading = true))
+    // API returns HTTP 414 if query string longer than this
+    private val keywordMaxLength = 50
+    private val _uiState: MutableStateFlow<SearchUIState> = MutableStateFlow(
+        SearchUIState(
+            isLoading = true,
+            keywordMaxLength = keywordMaxLength,
+        ),
+    )
     val uiState = _uiState.asStateFlow()
 
     private var userPreferences: UserPreferences = UserPreferences(apiRequestLimit = null, rating = null)
-    private var firstRefreshDone: Boolean = false
+    private var initialisationDone: Boolean = false
+    private var keyword: String = ""
 
     init {
         collectErrors()
         collectUserPreferences()
     }
 
-    fun refresh() {
-        if (!userPreferences.isFullyConfigured()) {
-            updateUIForError("Unable to access user preferences. Cannot refresh.")
-            return
-        }
+    fun updateKeyword(keyword: String?) {
+        // caller is not allowed to feed us null value, which is reserved to the ViewModel
+        this.keyword = keyword?.take(keywordMaxLength) ?: ""
 
+        _uiState.update { currentUiState ->
+            currentUiState.copy(
+                keyword = this.keyword,
+            )
+        }
+    }
+
+    fun clearKeyword() {
+        keyword = ""
+
+        _uiState.update { currentUiState ->
+            currentUiState.copy(
+                keyword = keyword,
+            )
+        }
+    }
+
+    fun search() {
         startLoading()
         val apiMaxEntries = userPreferences.apiRequestLimit
         val rating = userPreferences.rating
 
         if (apiMaxEntries != null && rating != null) {
-            loadTrendingData(apiMaxEntries = apiMaxEntries, rating = rating)
+            startNewSearch(keyword = keyword, apiMaxEntries = apiMaxEntries, rating = rating)
         } else {
             updateUIForError("Preferences are not fully set.")
         }
@@ -96,10 +120,15 @@ class TrendingViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
             userPreferencesRepository.userPreferences.collect { prefs ->
                 userPreferences = prefs
-                if (userPreferences.isFullyConfigured() && !firstRefreshDone) {
-                    Timber.tag("refresh").v("Got user preferences, trigger initial refresh")
-                    refresh()
-                    firstRefreshDone = true
+                if (userPreferences.isFullyConfigured() && !initialisationDone) {
+                    _uiState.update { currentUiState ->
+                        currentUiState.copy(
+                            isLoading = false,
+                        ).also {
+                            Timber.tag("refresh").v("Got user preferences")
+                        }
+                    }
+                    initialisationDone = true
                 }
             }
         }
@@ -118,28 +147,28 @@ class TrendingViewModel @Inject constructor(
         }
     }
 
-    private fun loadTrendingData(apiMaxEntries: Int, rating: Rating) {
+    private fun startNewSearch(keyword: String?, apiMaxEntries: Int, rating: Rating) {
         viewModelScope.launch(dispatcher) {
-            val repositoryResult = trendingRepository.reloadTrending(limit = apiMaxEntries, rating = rating)
-            processTrendingList(repositoryResult = repositoryResult, isLoadingDone = true)
+            val searchResult = searchRepository.search(keyword = keyword, limit = apiMaxEntries, rating = rating)
+            processTrendingList(repositoryResult = searchResult)
         }
     }
 
-    private fun processTrendingList(repositoryResult: Result<List<GiphyImageItem>>, isLoadingDone: Boolean) {
+    private fun processTrendingList(repositoryResult: Result<List<GiphyImageItem>>) {
         when (repositoryResult.isFailure) {
             true -> updateUIForError("Error getting data: ${repositoryResult.exceptionOrNull()?.message}")
             false -> _uiState.update { currentUiState ->
                 currentUiState.copy(
-                    isLoading = !isLoadingDone,
+                    isLoading = false,
                     giphyImageItems = repositoryResult.getOrNull() ?: emptyList(),
                 ).also {
-                    Timber.tag("processTrendingList").v("Processed ${repositoryResult.getOrNull()?.count() ?: 0} entries, isLoading = ${!isLoadingDone}")
+                    Timber.tag("processTrendingList").v("Processed ${repositoryResult.getOrNull()?.count() ?: 0} entries")
                 }
             }
         }
     }
 
-    private fun addErrorMessage(currentUiState: TrendingUIState, message: String): TrendingUIState {
+    private fun addErrorMessage(currentUiState: SearchUIState, message: String): SearchUIState {
         val newErrorMessage = ErrorMessage(
             id = UUID.randomUUID().mostSignificantBits,
             message = message,

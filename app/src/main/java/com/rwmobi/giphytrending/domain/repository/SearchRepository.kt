@@ -8,8 +8,7 @@ package com.rwmobi.giphytrending.domain.repository
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import com.rwmobi.giphytrending.domain.model.Rating
 
-interface GiphyRepository {
+interface SearchRepository {
 
-    suspend fun fetchCachedTrending(): Result<List<GiphyImageItem>>
-    suspend fun reloadTrending(limit: Int, rating: Rating): Result<List<GiphyImageItem>>
+    suspend fun search(keyword: String?, limit: Int, rating: Rating): Result<List<GiphyImageItem>>
 }

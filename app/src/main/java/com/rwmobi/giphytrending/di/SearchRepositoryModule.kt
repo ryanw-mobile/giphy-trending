@@ -5,10 +5,9 @@
 
 package com.rwmobi.giphytrending.di
 
-import com.rwmobi.giphytrending.data.repository.GiphyRepositoryImpl
-import com.rwmobi.giphytrending.data.source.local.interfaces.DatabaseDataSource
+import com.rwmobi.giphytrending.data.repository.SearchRepositoryImpl
 import com.rwmobi.giphytrending.data.source.network.interfaces.NetworkDataSource
-import com.rwmobi.giphytrending.domain.repository.GiphyRepository
+import com.rwmobi.giphytrending.domain.repository.SearchRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,18 +17,16 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object GiphyRepositoryModule {
+object SearchRepositoryModule {
     @ViewModelScoped
     @Provides
-    fun provideGiphyRepository(
+    fun provideSearchRepository(
         networkDataSource: NetworkDataSource,
-        databaseDataSource: DatabaseDataSource,
         @GiphyApiKey giphyApiKey: String,
         @DispatcherModule.IoDispatcher dispatcher: CoroutineDispatcher,
-    ): GiphyRepository {
-        return GiphyRepositoryImpl(
+    ): SearchRepository {
+        return SearchRepositoryImpl(
             networkDataSource = networkDataSource,
-            databaseDataSource = databaseDataSource,
             giphyApiKey = giphyApiKey,
             dispatcher = dispatcher,
         )

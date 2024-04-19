@@ -9,6 +9,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -65,6 +66,7 @@ fun AppBottomNavigationBar(
                     Icon(
                         painter = painterResource(id = item.iconResId),
                         contentDescription = null,
+                        tint = if (selected) MaterialTheme.colorScheme.tertiary else LocalContentColor.current,
                     )
                 },
                 label = {

@@ -1,11 +1,14 @@
 # Giphy Trending ![Gradle Build](https://github.com/ryanw-mobile/giphy-trending/actions/workflows/main_build.yml/badge.svg) [![codecov](https://codecov.io/gh/ryanw-mobile/giphy-trending/graph/badge.svg?token=J8PHIH3OPU)](https://codecov.io/gh/ryanw-mobile/giphy-trending)
 
-This sample Android app presents the Giphy trending animated gifs for sharing or download.
+This sample Android app presents the Giphy trending animated gifs for sharing or download. You can
+now also search animated gifs by keyword.
 
 &nbsp;
 
-It was elaborated from the work by [Fahri Can](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
-in Nov 2021. I migrated the codebase from RxJava to Coroutines, and then from XML Views to Jetpack Compose. The current release is completely different from the original version after these years.
+It was elaborated from the work
+by [Fahri Can](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
+in Nov 2021. I migrated the codebase from RxJava to Coroutines, and then from XML Views to Jetpack
+Compose. The current release is completely different from the original version after these years.
 
 <p align="center">
   <img src="screenshots/phone_portrait_1_240413.png" width="200" />&nbsp;
@@ -170,18 +173,19 @@ The generated apk(s) will be stored under `app/build/outputs/`
 
 ### Licence
 
-Nothing is free in this world. RW MobiMedia UK Limited, a fully tax-paying entity in the UK, sponsors the infrastructure and development costs.
+Nothing is free in this world. RW MobiMedia UK Limited, a fully tax-paying entity in the UK,
+sponsors the infrastructure and development costs.
 
-   Copyright 2024 RW MobiMedia UK Limited
+Copyright 2024 RW MobiMedia UK Limited
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
        http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

@@ -33,39 +33,47 @@ class SearchViewModel @Inject constructor(
     private val imageLoader: ImageLoader,
     @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
-    private val _uiState: MutableStateFlow<SearchUIState> = MutableStateFlow(SearchUIState(isLoading = true))
+    // API returns HTTP 414 if query string longer than this
+    private val keywordMaxLength = 50
+    private val _uiState: MutableStateFlow<SearchUIState> = MutableStateFlow(
+        SearchUIState(
+            isLoading = true,
+            keywordMaxLength = keywordMaxLength,
+        ),
+    )
     val uiState = _uiState.asStateFlow()
 
     private var userPreferences: UserPreferences = UserPreferences(apiRequestLimit = null, rating = null)
     private var initialisationDone: Boolean = false
+    private var keyword: String = ""
 
     init {
         collectErrors()
         collectUserPreferences()
     }
 
-    fun search(keyword: String?) {
+    fun updateKeyword(keyword: String?) {
+        // caller is not allowed to feed us null value, which is reserved to the ViewModel
+        this.keyword = keyword?.take(keywordMaxLength) ?: ""
+
         _uiState.update { currentUiState ->
             currentUiState.copy(
-                keyword = keyword ?: "",
+                keyword = this.keyword,
             )
         }
+    }
 
-        if (!userPreferences.isFullyConfigured()) {
-            updateUIForError("Unable to access user preferences. Cannot refresh.")
-            return
+    fun clearKeyword() {
+        keyword = ""
+
+        _uiState.update { currentUiState ->
+            currentUiState.copy(
+                keyword = keyword,
+            )
         }
+    }
 
-        if (keyword.isNullOrBlank()) {
-            _uiState.update { currentUiState ->
-                currentUiState.copy(
-                    giphyImageItems = null,
-                    isLoading = false,
-                )
-            }
-            return
-        }
-
+    fun search() {
         startLoading()
         val apiMaxEntries = userPreferences.apiRequestLimit
         val rating = userPreferences.rating

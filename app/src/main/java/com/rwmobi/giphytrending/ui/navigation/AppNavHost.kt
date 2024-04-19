@@ -104,7 +104,9 @@ fun AppNavHost(
                 imageLoader = viewModel.getImageLoader(),
                 uiState = uiState,
                 uiEvent = SearchUIEvent(
-                    onSearch = { viewModel.search(it) },
+                    onClearKeyword = { viewModel.clearKeyword() },
+                    onUpdateKeyword = { viewModel.updateKeyword(it) },
+                    onSearch = { viewModel.search() },
                     onErrorShown = { viewModel.errorShown(it) },
                     onScrolledToTop = { onScrolledToTop(AppNavItem.Search) },
                     onShowSnackbar = onShowSnackbar,

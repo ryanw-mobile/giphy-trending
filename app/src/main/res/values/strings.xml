@@ -36,4 +36,5 @@
     <string name="selected" tools:override="true">Selected</string>
     <string name="not_selected" tools:override="true">Not selected</string>
     <string name="search">Search</string>
+    <string name="content_description_clear_search_keyword">Clear search keyword</string>
 </resources>

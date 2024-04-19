@@ -12,7 +12,7 @@ import com.rwmobi.giphytrending.di.DispatcherModule
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
-import com.rwmobi.giphytrending.domain.repository.GiphyRepository
+import com.rwmobi.giphytrending.domain.repository.TrendingRepository
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
 import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingUIState
 import com.rwmobi.giphytrending.ui.model.ErrorMessage
@@ -28,7 +28,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TrendingViewModel @Inject constructor(
-    private val giphyRepository: GiphyRepository,
+    private val trendingRepository: TrendingRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val imageLoader: ImageLoader,
     @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher,
@@ -120,7 +120,7 @@ class TrendingViewModel @Inject constructor(
 
     private fun loadTrendingData(apiMaxEntries: Int, rating: Rating) {
         viewModelScope.launch(dispatcher) {
-            val repositoryResult = giphyRepository.reloadTrending(limit = apiMaxEntries, rating = rating)
+            val repositoryResult = trendingRepository.reloadTrending(limit = apiMaxEntries, rating = rating)
             processTrendingList(repositoryResult = repositoryResult, isLoadingDone = true)
         }
     }

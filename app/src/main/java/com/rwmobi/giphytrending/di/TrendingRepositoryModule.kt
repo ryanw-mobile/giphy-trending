@@ -8,7 +8,7 @@ package com.rwmobi.giphytrending.di
 import com.rwmobi.giphytrending.data.repository.TrendyRepositoryImpl
 import com.rwmobi.giphytrending.data.source.local.interfaces.DatabaseDataSource
 import com.rwmobi.giphytrending.data.source.network.interfaces.NetworkDataSource
-import com.rwmobi.giphytrending.domain.repository.GiphyRepository
+import com.rwmobi.giphytrending.domain.repository.TrendingRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,15 +18,15 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object GiphyRepositoryModule {
+object TrendingRepositoryModule {
     @ViewModelScoped
     @Provides
-    fun provideGiphyRepository(
+    fun provideTrendingRepository(
         networkDataSource: NetworkDataSource,
         databaseDataSource: DatabaseDataSource,
         @GiphyApiKey giphyApiKey: String,
         @DispatcherModule.IoDispatcher dispatcher: CoroutineDispatcher,
-    ): GiphyRepository {
+    ): TrendingRepository {
         return TrendyRepositoryImpl(
             networkDataSource = networkDataSource,
             databaseDataSource = databaseDataSource,

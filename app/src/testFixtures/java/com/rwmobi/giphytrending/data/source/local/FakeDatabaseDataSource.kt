@@ -10,26 +10,26 @@ import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
 
 class FakeDatabaseDataSource : DatabaseDataSource {
     var apiError: Throwable? = null
+    var queryDataResponse: List<TrendingEntity>? = null
 
     override suspend fun insertData(data: TrendingEntity) {
         apiError?.run { throw this }
-        mockQueryDataResponse = listOf(data)
+        queryDataResponse = listOf(data)
     }
 
     override suspend fun insertAllData(data: List<TrendingEntity>) {
         apiError?.run { throw this }
-        mockQueryDataResponse = data
+        queryDataResponse = data
     }
 
-    var mockQueryDataResponse: List<TrendingEntity>? = null
     override suspend fun queryData(): List<TrendingEntity> {
         apiError?.run { throw this }
-        return mockQueryDataResponse ?: emptyList()
+        return queryDataResponse ?: emptyList()
     }
 
     override suspend fun clear() {
         apiError?.run { throw this }
-        mockQueryDataResponse = emptyList()
+        queryDataResponse = emptyList()
     }
 
     override suspend fun markDirty() {

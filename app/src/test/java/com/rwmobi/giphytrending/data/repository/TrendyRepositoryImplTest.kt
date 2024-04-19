@@ -10,7 +10,7 @@ import com.rwmobi.giphytrending.data.source.local.mappers.asGiphyImageItem
 import com.rwmobi.giphytrending.data.source.network.FakeNetworkDataSource
 import com.rwmobi.giphytrending.domain.exceptions.EmptyGiphyAPIKeyException
 import com.rwmobi.giphytrending.domain.model.Rating
-import com.rwmobi.giphytrending.domain.repository.GiphyRepository
+import com.rwmobi.giphytrending.domain.repository.TrendingRepository
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingEntityList
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingNetworkResponse
 import io.kotest.matchers.shouldBe
@@ -22,7 +22,7 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class TrendyRepositoryImplTest {
-    private lateinit var giphyRepository: GiphyRepository
+    private lateinit var trendingRepository: TrendingRepository
     private lateinit var dispatcher: TestDispatcher
     private lateinit var fakeRoomDbDataSource: FakeDatabaseDataSource
     private lateinit var fakeNetworkDataSource: FakeNetworkDataSource
@@ -31,7 +31,7 @@ class TrendyRepositoryImplTest {
         dispatcher = UnconfinedTestDispatcher()
         fakeRoomDbDataSource = FakeDatabaseDataSource()
         fakeNetworkDataSource = FakeNetworkDataSource()
-        giphyRepository = TrendyRepositoryImpl(
+        trendingRepository = TrendyRepositoryImpl(
             networkDataSource = fakeNetworkDataSource,
             databaseDataSource = fakeRoomDbDataSource,
             giphyApiKey = giphyApiKey,
@@ -42,9 +42,9 @@ class TrendyRepositoryImplTest {
     @Test
     fun `fetchCachedTrending should return correct list if database query success`() = runTest {
         setupRepository()
-        fakeRoomDbDataSource.mockQueryDataResponse = SampleTrendingEntityList.singleEntityList
+        fakeRoomDbDataSource.queryDataResponse = SampleTrendingEntityList.singleEntityList
 
-        val result = giphyRepository.fetchCachedTrending()
+        val result = trendingRepository.fetchCachedTrending()
 
         result.isSuccess shouldBe true
         result.getOrNull() shouldBe SampleTrendingEntityList.singleEntityList.asGiphyImageItem()
@@ -55,7 +55,7 @@ class TrendyRepositoryImplTest {
         setupRepository()
         fakeRoomDbDataSource.apiError = Exception()
 
-        val result = giphyRepository.fetchCachedTrending()
+        val result = trendingRepository.fetchCachedTrending()
 
         result.isFailure shouldBe true
         result.exceptionOrNull() shouldBe Exception()
@@ -64,10 +64,10 @@ class TrendyRepositoryImplTest {
     @Test
     fun `reloadTrending should return correct list if network and database operations all success`() = runTest {
         setupRepository()
-        fakeNetworkDataSource.mockTrendingNetworkResponseDto = SampleTrendingNetworkResponse.singleResponse
-        fakeRoomDbDataSource.mockQueryDataResponse = SampleTrendingEntityList.singleEntityList
+        fakeNetworkDataSource.trendingNetworkResponseDto = SampleTrendingNetworkResponse.singleResponse
+        fakeRoomDbDataSource.queryDataResponse = SampleTrendingEntityList.singleEntityList
 
-        val result = giphyRepository.reloadTrending(limit = 100, rating = Rating.R)
+        val result = trendingRepository.reloadTrending(limit = 100, rating = Rating.R)
 
         result.isSuccess shouldBe true
         result.getOrNull() shouldBe SampleTrendingEntityList.singleEntityList.asGiphyImageItem()
@@ -78,7 +78,7 @@ class TrendyRepositoryImplTest {
         setupRepository(giphyApiKey = "")
         fakeNetworkDataSource.apiError = Exception()
 
-        val result = giphyRepository.reloadTrending(limit = 100, rating = Rating.R)
+        val result = trendingRepository.reloadTrending(limit = 100, rating = Rating.R)
 
         result.isFailure shouldBe true
         result.exceptionOrNull() shouldBe EmptyGiphyAPIKeyException()
@@ -89,7 +89,7 @@ class TrendyRepositoryImplTest {
         setupRepository()
         fakeNetworkDataSource.apiError = Exception()
 
-        val result = giphyRepository.reloadTrending(limit = 100, rating = Rating.R)
+        val result = trendingRepository.reloadTrending(limit = 100, rating = Rating.R)
 
         result.isFailure shouldBe true
         result.exceptionOrNull() shouldBe Exception()
@@ -100,7 +100,7 @@ class TrendyRepositoryImplTest {
         setupRepository()
         fakeRoomDbDataSource.apiError = Exception()
 
-        val result = giphyRepository.reloadTrending(limit = 100, rating = Rating.R)
+        val result = trendingRepository.reloadTrending(limit = 100, rating = Rating.R)
 
         result.isFailure shouldBe true
         result.exceptionOrNull() shouldBe Exception()

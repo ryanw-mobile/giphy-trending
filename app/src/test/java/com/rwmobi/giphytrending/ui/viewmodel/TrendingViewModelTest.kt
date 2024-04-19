@@ -6,7 +6,7 @@
 package com.rwmobi.giphytrending.ui.viewmodel
 
 import coil.ImageLoader
-import com.rwmobi.giphytrending.data.repository.FakeGiphyRepository
+import com.rwmobi.giphytrending.data.repository.FakeTrendingRepository
 import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
@@ -25,13 +25,13 @@ import org.junit.Test
 internal class TrendingViewModelTest {
 
     private lateinit var viewModel: TrendingViewModel
-    private lateinit var fakeGiphyRepository: FakeGiphyRepository
+    private lateinit var fakeGiphyRepository: FakeTrendingRepository
     private lateinit var fakeUserPreferencesRepository: FakeUserPreferencesRepository
     private lateinit var mockImageLoader: ImageLoader
 
     private fun setupViewModel() {
         viewModel = TrendingViewModel(
-            giphyRepository = fakeGiphyRepository,
+            trendingRepository = fakeGiphyRepository,
             userPreferencesRepository = fakeUserPreferencesRepository,
             imageLoader = mockImageLoader,
             dispatcher = UnconfinedTestDispatcher(),
@@ -40,7 +40,7 @@ internal class TrendingViewModelTest {
 
     @Before
     fun setUp() {
-        fakeGiphyRepository = FakeGiphyRepository()
+        fakeGiphyRepository = FakeTrendingRepository()
         fakeUserPreferencesRepository = FakeUserPreferencesRepository()
         mockImageLoader = mockk(relaxed = true)
     }
@@ -60,7 +60,7 @@ internal class TrendingViewModelTest {
                 rating = Rating.G,
             ),
         )
-        fakeGiphyRepository.fakeTrendingResult = Result.success(emptyList())
+        fakeGiphyRepository.trendingResult = Result.success(emptyList())
 
         // When
         setupViewModel()
@@ -79,7 +79,7 @@ internal class TrendingViewModelTest {
                 rating = Rating.G,
             ),
         )
-        fakeGiphyRepository.fakeTrendingResult = Result.failure(Exception("some error message"))
+        fakeGiphyRepository.trendingResult = Result.failure(Exception("some error message"))
 
         // When
         setupViewModel()
@@ -98,11 +98,11 @@ internal class TrendingViewModelTest {
                 rating = Rating.G,
             ),
         )
-        fakeGiphyRepository.fakeTrendingResult = Result.success(emptyList())
+        fakeGiphyRepository.trendingResult = Result.success(emptyList())
         setupViewModel()
 
         // When
-        fakeGiphyRepository.fakeTrendingResult = Result.success(SampleGiphyImageItemList.giphyImageItemList)
+        fakeGiphyRepository.trendingResult = Result.success(SampleGiphyImageItemList.giphyImageItemList)
         viewModel.refresh()
 
         // Then

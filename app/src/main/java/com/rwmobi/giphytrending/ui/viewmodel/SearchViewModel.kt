@@ -11,7 +11,7 @@ import coil.ImageLoader
 import com.rwmobi.giphytrending.di.DispatcherModule
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import com.rwmobi.giphytrending.domain.model.UserPreferences
-import com.rwmobi.giphytrending.domain.repository.GiphyRepository
+import com.rwmobi.giphytrending.domain.repository.TrendingRepository
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
 import com.rwmobi.giphytrending.ui.destinations.search.SearchUIState
 import com.rwmobi.giphytrending.ui.model.ErrorMessage
@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val giphyRepository: GiphyRepository,
+    private val giphyRepository: TrendingRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
     private val imageLoader: ImageLoader,
     @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher,

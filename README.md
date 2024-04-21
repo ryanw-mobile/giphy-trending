@@ -10,23 +10,14 @@ by [Fahri Can](https://medium.com/codex/android-tutorial-part-1-using-room-with-
 in Nov 2021. I migrated the codebase from RxJava to Coroutines, and then from XML Views to Jetpack
 Compose. The current release is completely different from the original version after these years.
 
-<p align="center">
-  <img src="screenshots/phone_portrait_1_240413.png" width="200" />&nbsp;
-  <img src="screenshots/phone_portrait_2_240413.png" width="200" />&nbsp;
-  <img src="screenshots/fold_portrait_1_240413.png" width="200" />&nbsp;
-  <img src="screenshots/tablet_portrait_1_240413.png" width="200" />
-</p>
+&nbsp;
 
 <p align="center">
-  <img src="screenshots/fold_landscape_2_240413.png" width="400" />&nbsp;
-  <img src="screenshots/phone_landscape_1_240413.png" width="400" />
+  <img src="screenshots/240422_animated_screenshot.gif" width="400" />&nbsp;
+  <img src="screenshots/240422_github_social_preview.png" width="400" />
 </p>
 
-<p align="center">
-  <img src="screenshots/fold_portrait_2_240413.png" width="200" />&nbsp;
-  <img src="screenshots/fold_landscape_1_240413.png" width="300" />&nbsp;
-  <img src="screenshots/tablet_landscape_1_240413.png" width="300" />
-</p>
+&nbsp;
 
 ### The original XML View version
 

@@ -13,8 +13,8 @@ Compose. The current release is completely different from the original version a
 &nbsp;
 
 <p align="center">
-  <img src="screenshots/240422_animated_screenshot.gif" width="400" />&nbsp;
-  <img src="screenshots/240422_github_social_preview.png" width="400" />
+  <img src="screenshots/240422_animated_screenshot.gif" width="600" /><br/>
+  <img src="screenshots/240422_github_social_preview.png" width="600" />
 </p>
 
 &nbsp;

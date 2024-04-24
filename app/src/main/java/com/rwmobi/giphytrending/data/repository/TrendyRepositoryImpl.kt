@@ -27,7 +27,7 @@ class TrendyRepositoryImpl @Inject constructor(
     private val networkDataSource: NetworkDataSource,
     private val databaseDataSource: DatabaseDataSource,
     @GiphyApiKey private val giphyApiKey: String,
-    @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher, // Data source will use IODispatcher
+    @DispatcherModule.IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : TrendingRepository {
     override suspend fun fetchCachedTrending(): Result<List<GiphyImageItem>> {
         return withContext(dispatcher) {

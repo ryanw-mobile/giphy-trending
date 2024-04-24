@@ -33,7 +33,7 @@ sealed class AppNavItem(var screenRoute: String, @StringRes var titleResId: Int,
     )
 
     companion object {
-        val allItems: List<AppNavItem>
+        val navigationBarItems: List<AppNavItem>
             get() = listOf(TrendingList, Search, Settings)
     }
 }

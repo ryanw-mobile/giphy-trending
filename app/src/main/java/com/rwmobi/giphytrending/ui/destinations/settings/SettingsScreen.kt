@@ -30,9 +30,6 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -74,11 +71,12 @@ import com.rwmobi.giphytrending.ui.components.LoadingOverlay
 import com.rwmobi.giphytrending.ui.theme.Dimension
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.theme.getDimension
+import com.rwmobi.giphytrending.ui.utils.getPreviewWindowSizeClass
 
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
-    windowSizeClass: WindowSizeClass,
+    isLargeScreen: Boolean,
     apiMinEntries: Int,
     apiMaxEntries: Int,
     uiState: SettingsUIState,
@@ -96,14 +94,40 @@ fun SettingsScreen(
 
     Box(modifier = modifier) {
         if (uiState.apiRequestLimit != null && uiState.rating != null) {
-            when (windowSizeClass.widthSizeClass) {
-                WindowWidthSizeClass.Compact -> {
-                    val scrollState = rememberScrollState()
+            if (!isLargeScreen) {
+                val scrollState = rememberScrollState()
+
+                Settings(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(state = scrollState),
+                    rating = uiState.rating,
+                    sliderValue = uiState.apiRequestLimit.toFloat(),
+                    sliderRange = apiMinEntries.toFloat()..apiMaxEntries.toFloat(),
+                    onUpdateApiRequestLimit = { uiEvent.onUpdateApiMaxEntries(it.toInt()) },
+                    onUpdateRating = { uiEvent.onUpdateRating(it) },
+                )
+
+                LaunchedEffect(uiState.requestScrollToTop) {
+                    if (uiState.requestScrollToTop) {
+                        scrollState.scrollTo(value = 0)
+                        uiEvent.onScrolledToTop()
+                    }
+                }
+            } else {
+                val scrollState = rememberScrollState()
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(state = scrollState),
+                ) {
+                    Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
 
                     Settings(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(state = scrollState),
+                            .widthIn(max = 500.dp)
+                            .fillMaxHeight(),
                         rating = uiState.rating,
                         sliderValue = uiState.apiRequestLimit.toFloat(),
                         sliderRange = apiMinEntries.toFloat()..apiMaxEntries.toFloat(),
@@ -111,45 +135,13 @@ fun SettingsScreen(
                         onUpdateRating = { uiEvent.onUpdateRating(it) },
                     )
 
-                    LaunchedEffect(uiState.requestScrollToTop) {
-                        if (uiState.requestScrollToTop) {
-                            scrollState.scrollTo(value = 0)
-                            uiEvent.onScrolledToTop()
-                        }
-                    }
+                    Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
                 }
 
-                WindowWidthSizeClass.Medium,
-                WindowWidthSizeClass.Expanded,
-                -> {
-                    val scrollState = rememberScrollState()
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(state = scrollState),
-                    ) {
-                        Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
-
-                        Settings(
-                            modifier = Modifier
-                                .widthIn(max = 500.dp)
-                                .fillMaxHeight(),
-                            rating = uiState.rating,
-                            sliderValue = uiState.apiRequestLimit.toFloat(),
-                            sliderRange = apiMinEntries.toFloat()..apiMaxEntries.toFloat(),
-                            onUpdateApiRequestLimit = { uiEvent.onUpdateApiMaxEntries(it.toInt()) },
-                            onUpdateRating = { uiEvent.onUpdateRating(it) },
-                        )
-
-                        Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
-                    }
-
-                    LaunchedEffect(uiState.requestScrollToTop) {
-                        if (uiState.requestScrollToTop) {
-                            scrollState.scrollTo(value = 0)
-                            uiEvent.onScrolledToTop()
-                        }
+                LaunchedEffect(uiState.requestScrollToTop) {
+                    if (uiState.requestScrollToTop) {
+                        scrollState.scrollTo(value = 0)
+                        uiEvent.onScrolledToTop()
                     }
                 }
             }
@@ -392,7 +384,6 @@ private fun getRatingDescriptionRes(rating: Rating): Int {
     }
 }
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @PreviewLightDark
 @PreviewFontScale
 @PreviewScreenSizes
@@ -403,7 +394,7 @@ private fun Preview() {
         Surface {
             SettingsScreen(
                 modifier = Modifier.fillMaxSize(),
-                windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
+                isLargeScreen = getPreviewWindowSizeClass().widthSizeClass != WindowWidthSizeClass.Compact,
                 apiMinEntries = 25,
                 apiMaxEntries = 250,
                 uiState = SettingsUIState(

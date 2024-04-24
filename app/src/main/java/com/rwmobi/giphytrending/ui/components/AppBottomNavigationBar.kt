@@ -46,7 +46,7 @@ fun AppBottomNavigationBar(
         val currentRoute = navBackStackEntry?.destination?.route
         val context = LocalContext.current
 
-        for (item in AppNavItem.allItems) {
+        for (item in AppNavItem.navigationBarItems) {
             val selected = currentRoute == item.screenRoute
 
             NavigationBarItem(

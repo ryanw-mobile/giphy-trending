@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -35,10 +33,9 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.core.net.toUri
 import coil.ImageLoader
 import com.rwmobi.giphytrending.R
+import com.rwmobi.giphytrending.ui.components.GiphyStaggeredGrid
 import com.rwmobi.giphytrending.ui.components.NoDataScreen
 import com.rwmobi.giphytrending.ui.components.SearchTextField
-import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingListCompact
-import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingStaggeredGrid
 import com.rwmobi.giphytrending.ui.theme.getDimension
 import com.rwmobi.giphytrending.ui.utils.downloadImage
 import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
@@ -47,8 +44,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
-    windowSizeClass: WindowSizeClass,
     imageLoader: ImageLoader,
+    useCardLayout: Boolean,
     uiState: SearchUIState,
     uiEvent: SearchUIEvent,
 ) {
@@ -94,49 +91,24 @@ fun SearchScreen(
 
             uiState.giphyImageItems?.let { giphyImageItems ->
                 if (giphyImageItems.isNotEmpty()) {
-                    when (windowSizeClass.widthSizeClass) {
-                        WindowWidthSizeClass.Compact -> {
-                            TrendingListCompact(
-                                modifier = Modifier.fillMaxSize(),
-                                giphyImageItems = giphyImageItems,
-                                imageLoader = imageLoader,
-                                requestScrollToTop = uiState.requestScrollToTop,
-                                onClickToDownload = { imageUrl ->
-                                    downloadImage(
-                                        imageUrl = imageUrl,
-                                        coroutineScope = coroutineScope,
-                                        context = context,
-                                        onError = { uiEvent.onShowSnackbar(context.getString(R.string.failed_to_download_file)) },
-                                    )
-                                },
-                                onClickToOpen = { url -> context.startBrowserActivity(url = url) },
-                                onClickToShare = { url -> clipboardHistory.add(url) },
-                                onScrolledToTop = uiEvent.onScrolledToTop,
+                    GiphyStaggeredGrid(
+                        modifier = Modifier.fillMaxSize(),
+                        giphyImageItems = giphyImageItems,
+                        useCardLayout = useCardLayout,
+                        imageLoader = imageLoader,
+                        requestScrollToTop = uiState.requestScrollToTop,
+                        onClickToDownload = { imageUrl ->
+                            downloadImage(
+                                imageUrl = imageUrl,
+                                coroutineScope = coroutineScope,
+                                context = context,
+                                onError = { uiEvent.onShowSnackbar(context.getString(R.string.failed_to_download_file)) },
                             )
-                        }
-
-                        WindowWidthSizeClass.Medium,
-                        WindowWidthSizeClass.Expanded,
-                        -> {
-                            TrendingStaggeredGrid(
-                                modifier = Modifier.fillMaxSize(),
-                                giphyImageItems = giphyImageItems,
-                                imageLoader = imageLoader,
-                                requestScrollToTop = uiState.requestScrollToTop,
-                                onClickToDownload = { imageUrl ->
-                                    downloadImage(
-                                        imageUrl = imageUrl,
-                                        coroutineScope = coroutineScope,
-                                        context = context,
-                                        onError = { uiEvent.onShowSnackbar(context.getString(R.string.failed_to_download_file)) },
-                                    )
-                                },
-                                onClickToOpen = { url -> context.startBrowserActivity(url = url) },
-                                onClickToShare = { url -> clipboardHistory.add(url) },
-                                onScrolledToTop = uiEvent.onScrolledToTop,
-                            )
-                        }
-                    }
+                        },
+                        onClickToOpen = { url -> context.startBrowserActivity(url = url) },
+                        onClickToShare = { url -> clipboardHistory.add(url) },
+                        onScrolledToTop = uiEvent.onScrolledToTop,
+                    )
                 } else if (!uiState.isLoading) {
                     NoDataScreen(
                         modifier = Modifier

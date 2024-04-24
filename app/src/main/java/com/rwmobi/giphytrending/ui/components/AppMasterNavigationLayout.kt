@@ -5,8 +5,8 @@
 
 package com.rwmobi.giphytrending.ui.components
 
-import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -23,9 +24,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.VerticalDivider
-import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,17 +33,39 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.navigation.AppNavHost
 import com.rwmobi.giphytrending.ui.navigation.AppNavItem
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
+import com.rwmobi.giphytrending.ui.utils.getPreviewWindowSizeClass
+
+private enum class NavigationLayoutType {
+    BottomNavigation,
+    NavigationRail,
+    FullScreen,
+}
+
+private fun calculateNavigationLayout(windowWidthSizeClass: WindowWidthSizeClass): NavigationLayoutType {
+    return when (windowWidthSizeClass) {
+        WindowWidthSizeClass.Compact -> {
+            NavigationLayoutType.BottomNavigation
+        }
+
+        else -> {
+            // WindowWidthSizeClass.Medium, -- tablet portrait
+            // WindowWidthSizeClass.Expanded, -- phone landscape mode
+            NavigationLayoutType.NavigationRail
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppNavigationRailLayout(
+fun AppMasterNavigationLayout(
     modifier: Modifier = Modifier,
     windowSizeClass: WindowSizeClass,
     navController: NavHostController,
@@ -51,17 +73,20 @@ fun AppNavigationRailLayout(
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val lastDoubleTappedNavItem = remember { mutableStateOf<AppNavItem?>(null) }
+    val navigationLayoutType = calculateNavigationLayout(windowWidthSizeClass = windowSizeClass.widthSizeClass)
 
     Row(modifier = modifier) {
-        AppNavigationRail(
-            modifier = Modifier.fillMaxHeight(),
-            navController = navController,
-            onCurrentRouteSecondTapped = { lastDoubleTappedNavItem.value = it },
-        )
+        if (navigationLayoutType == NavigationLayoutType.NavigationRail) {
+            AppNavigationRail(
+                modifier = Modifier.fillMaxHeight(),
+                navController = navController,
+                onCurrentRouteSecondTapped = { lastDoubleTappedNavItem.value = it },
+            )
 
-        VerticalDivider(
-            modifier = Modifier.fillMaxHeight(),
-        )
+            VerticalDivider(
+                modifier = Modifier.fillMaxHeight(),
+            )
+        }
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -87,6 +112,20 @@ fun AppNavigationRailLayout(
                     hostState = snackbarHostState,
                 )
             },
+            bottomBar = {
+                if (navigationLayoutType == NavigationLayoutType.BottomNavigation) {
+                    Column {
+                        HorizontalDivider(
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+
+                        AppBottomNavigationBar(
+                            navController = navController,
+                            onCurrentRouteSecondTapped = { lastDoubleTappedNavItem.value = it },
+                        )
+                    }
+                }
+            },
         ) { paddingValues ->
             // Note that we take MaxSize and expect individual screens to handle screen size
             val actionLabel = stringResource(android.R.string.ok)
@@ -94,7 +133,7 @@ fun AppNavigationRailLayout(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues),
-                windowSizeClass = windowSizeClass,
+                isLargeScreen = navigationLayoutType == NavigationLayoutType.NavigationRail,
                 navController = navController,
                 lastDoubleTappedNavItem = lastDoubleTappedNavItem.value,
                 scrollBehavior = scrollBehavior,
@@ -111,19 +150,8 @@ fun AppNavigationRailLayout(
     }
 }
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
-@Preview(
-    name = "Phone - Landscape Light",
-    device = "spec:width = 411dp, height = 891dp, orientation = landscape, dpi = 420",
-    showSystemUi = true,
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-)
-@Preview(
-    name = "Phone - Landscape Dark",
-    device = "spec:width = 411dp, height = 891dp, orientation = landscape, dpi = 420",
-    showSystemUi = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-)
+@PreviewLightDark
+@PreviewScreenSizes
 @Composable
 private fun Preview() {
     GiphyTrendingTheme {
@@ -132,9 +160,9 @@ private fun Preview() {
                 .fillMaxSize(),
             color = MaterialTheme.colorScheme.surface,
         ) {
-            AppNavigationRailLayout(
+            AppMasterNavigationLayout(
                 modifier = Modifier.fillMaxSize(),
-                windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
+                windowSizeClass = getPreviewWindowSizeClass(),
                 navController = rememberNavController(),
                 snackbarHostState = remember { SnackbarHostState() },
             )

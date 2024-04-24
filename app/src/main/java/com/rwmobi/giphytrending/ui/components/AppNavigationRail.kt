@@ -50,7 +50,7 @@ fun AppNavigationRail(
 
         Spacer(Modifier.weight(1f))
 
-        for (item in AppNavItem.allItems) {
+        for (item in AppNavItem.navigationBarItems) {
             val selected = currentRoute == item.screenRoute
 
             NavigationRailItem(

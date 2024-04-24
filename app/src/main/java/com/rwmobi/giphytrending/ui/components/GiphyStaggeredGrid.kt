@@ -3,9 +3,8 @@
  * https://github.com/ryanw-mobile
  */
 
-package com.rwmobi.giphytrending.ui.destinations.trendinglist
+package com.rwmobi.giphytrending.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,8 +13,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,17 +29,17 @@ import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
-import com.rwmobi.giphytrending.ui.components.GiphyItem
 import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemsProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.theme.getDimension
 
 @Composable
-internal fun TrendingStaggeredGrid(
+internal fun GiphyStaggeredGrid(
     modifier: Modifier = Modifier,
     imageLoader: ImageLoader,
     giphyImageItems: List<GiphyImageItem>,
     requestScrollToTop: Boolean,
+    useCardLayout: Boolean,
     onClickToDownload: (imageUrl: String) -> Unit,
     onClickToShare: (url: String) -> Unit,
     onClickToOpen: (url: String) -> Unit,
@@ -51,6 +48,13 @@ internal fun TrendingStaggeredGrid(
     val dimension = LocalConfiguration.current.getDimension()
     val contentDescriptionTrendingList = stringResource(R.string.content_description_trending_list)
     val lazyStaggeredGridState = rememberLazyStaggeredGridState()
+
+    LaunchedEffect(requestScrollToTop) {
+        if (requestScrollToTop) {
+            lazyStaggeredGridState.scrollToItem(index = 0)
+            onScrolledToTop()
+        }
+    }
 
     LazyVerticalStaggeredGrid(
         modifier = modifier
@@ -63,30 +67,27 @@ internal fun TrendingStaggeredGrid(
         itemsIndexed(
             items = giphyImageItems,
             key = { _, giphyImageItem -> giphyImageItem.id },
-        ) { _, giphyImageItem ->
-            Card(
-                modifier = Modifier
-                    .padding(all = dimension.defaultHalfPadding)
-                    .background(color = MaterialTheme.colorScheme.surface),
-            ) {
-                GiphyItem(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = dimension.defaultHalfPadding),
+        ) { index, giphyImageItem ->
+            if (useCardLayout) {
+                GiphyItemCard(
+                    modifier = Modifier.padding(all = dimension.defaultHalfPadding),
                     giphyImageItem = giphyImageItem,
+                    imageLoader = imageLoader,
+                    onClickToDownload = onClickToDownload,
+                    onClickToOpen = onClickToOpen,
+                    onClickToShare = onClickToShare,
+                )
+            } else {
+                GiphyItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    giphyImageItem = giphyImageItem,
+                    showBottomDivider = (index < giphyImageItems.lastIndex),
                     imageLoader = imageLoader,
                     onClickToDownload = { onClickToDownload(it) },
                     onClickToOpen = { onClickToOpen(it) },
                     onClickToShare = { onClickToShare(it) },
                 )
             }
-        }
-    }
-
-    LaunchedEffect(requestScrollToTop) {
-        if (requestScrollToTop) {
-            lazyStaggeredGridState.scrollToItem(index = 0)
-            onScrolledToTop()
         }
     }
 }
@@ -99,11 +100,35 @@ private fun Preview(
 ) {
     GiphyTrendingTheme {
         Surface {
-            TrendingStaggeredGrid(
+            GiphyStaggeredGrid(
                 modifier = Modifier.fillMaxSize(),
                 imageLoader = ImageLoader(LocalContext.current),
                 giphyImageItems = giphyImageItems,
                 requestScrollToTop = false,
+                useCardLayout = false,
+                onClickToDownload = {},
+                onClickToShare = {},
+                onClickToOpen = {},
+                onScrolledToTop = {},
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@PreviewFontScale
+@Composable
+private fun PreviewCardLayout(
+    @PreviewParameter(GiphyImageItemsProvider::class) giphyImageItems: List<GiphyImageItem>,
+) {
+    GiphyTrendingTheme {
+        Surface {
+            GiphyStaggeredGrid(
+                modifier = Modifier.fillMaxSize(),
+                imageLoader = ImageLoader(LocalContext.current),
+                giphyImageItems = giphyImageItems,
+                requestScrollToTop = false,
+                useCardLayout = true,
                 onClickToDownload = {},
                 onClickToShare = {},
                 onClickToOpen = {},

@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -41,6 +42,7 @@ import androidx.compose.ui.tooling.preview.PreviewFontScale
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -54,6 +56,7 @@ import com.rwmobi.giphytrending.ui.theme.getDimension
 fun GiphyItem(
     modifier: Modifier = Modifier,
     giphyImageItem: GiphyImageItem,
+    showBottomDivider: Boolean,
     imageLoader: ImageLoader,
     onClickToDownload: (imageUrl: String) -> Unit,
     onClickToOpen: (url: String) -> Unit,
@@ -168,6 +171,15 @@ fun GiphyItem(
                 )
             }
         }
+
+        if (showBottomDivider) {
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = dimension.grid_0_5),
+                thickness = 1.dp,
+            )
+        }
     }
 }
 
@@ -182,6 +194,7 @@ private fun Preview(
             GiphyItem(
                 modifier = Modifier.fillMaxWidth(),
                 giphyImageItem = giphyImageItem,
+                showBottomDivider = false,
                 imageLoader = ImageLoader(LocalContext.current),
                 onClickToDownload = {},
                 onClickToShare = {},

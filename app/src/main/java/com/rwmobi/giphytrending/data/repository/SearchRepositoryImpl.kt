@@ -23,7 +23,7 @@ import javax.inject.Inject
 class SearchRepositoryImpl @Inject constructor(
     private val networkDataSource: NetworkDataSource,
     @GiphyApiKey private val giphyApiKey: String,
-    @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher, // Data source will use IODispatcher
+    @DispatcherModule.IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : SearchRepository {
     override suspend fun search(keyword: String?, limit: Int, rating: Rating): Result<List<GiphyImageItem>> {
         if (giphyApiKey.isBlank()) {

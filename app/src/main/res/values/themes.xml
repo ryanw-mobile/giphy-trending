@@ -12,7 +12,7 @@
         <item name="windowSplashScreenBackground">@color/windowSplashScreenBackground</item>
 
         // Either a drawable or an animated drawable. One of these is required.
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
 
         // Link your original theme here
         <item name="postSplashScreenTheme">@style/Theme.GiphyTrending</item>

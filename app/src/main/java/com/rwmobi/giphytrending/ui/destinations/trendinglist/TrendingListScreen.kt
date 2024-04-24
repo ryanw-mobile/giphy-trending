@@ -11,11 +11,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
-import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,6 +38,7 @@ import com.rwmobi.giphytrending.ui.components.NoDataScreen
 import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemsProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.utils.downloadImage
+import com.rwmobi.giphytrending.ui.utils.getPreviewWindowSizeClass
 import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
 import kotlinx.coroutines.delay
 
@@ -48,7 +46,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun TrendingListScreen(
     modifier: Modifier = Modifier,
-    windowSizeClass: WindowSizeClass,
+    useCardLayout: Boolean,
     imageLoader: ImageLoader,
     uiState: TrendingUIState,
     uiEvent: TrendingUIEvent,
@@ -71,8 +69,6 @@ fun TrendingListScreen(
     Box(modifier = modifier.nestedScroll(connection = pullRefreshState.nestedScrollConnection)) {
         uiState.giphyImageItems?.let { giphyImageItems ->
             if (giphyImageItems.isNotEmpty()) {
-                val useCardLayout = (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact)
-
                 GiphyStaggeredGrid(
                     modifier = Modifier.fillMaxSize(),
                     giphyImageItems = giphyImageItems,
@@ -135,7 +131,6 @@ fun TrendingListScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @PreviewLightDark
 @PreviewScreenSizes
 @Composable
@@ -146,7 +141,7 @@ private fun Preview(
         Surface {
             TrendingListScreen(
                 modifier = Modifier.fillMaxSize(),
-                windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
+                useCardLayout = getPreviewWindowSizeClass().widthSizeClass != WindowWidthSizeClass.Compact,
                 imageLoader = ImageLoader(LocalContext.current),
                 uiState = TrendingUIState(
                     giphyImageItems = giphyImageItems,
@@ -163,7 +158,6 @@ private fun Preview(
     }
 }
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @PreviewLightDark
 @Composable
 private fun NoDataPreview() {
@@ -171,7 +165,7 @@ private fun NoDataPreview() {
         Surface {
             TrendingListScreen(
                 modifier = Modifier.fillMaxSize(),
-                windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
+                useCardLayout = getPreviewWindowSizeClass().widthSizeClass != WindowWidthSizeClass.Compact,
                 imageLoader = ImageLoader(LocalContext.current),
                 uiState = TrendingUIState(
                     giphyImageItems = emptyList(),

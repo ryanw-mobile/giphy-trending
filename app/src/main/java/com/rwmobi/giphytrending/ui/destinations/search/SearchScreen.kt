@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -46,8 +44,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
-    windowSizeClass: WindowSizeClass,
     imageLoader: ImageLoader,
+    useCardLayout: Boolean,
     uiState: SearchUIState,
     uiEvent: SearchUIEvent,
 ) {
@@ -93,8 +91,6 @@ fun SearchScreen(
 
             uiState.giphyImageItems?.let { giphyImageItems ->
                 if (giphyImageItems.isNotEmpty()) {
-                    val useCardLayout = (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact)
-
                     GiphyStaggeredGrid(
                         modifier = Modifier.fillMaxSize(),
                         giphyImageItems = giphyImageItems,

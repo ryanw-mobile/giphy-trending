@@ -30,8 +30,6 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -74,6 +72,7 @@ import com.rwmobi.giphytrending.ui.components.LoadingOverlay
 import com.rwmobi.giphytrending.ui.theme.Dimension
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.theme.getDimension
+import com.rwmobi.giphytrending.ui.utils.getPreviewWindowSizeClass
 
 @Composable
 fun SettingsScreen(
@@ -392,7 +391,6 @@ private fun getRatingDescriptionRes(rating: Rating): Int {
     }
 }
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @PreviewLightDark
 @PreviewFontScale
 @PreviewScreenSizes
@@ -403,7 +401,7 @@ private fun Preview() {
         Surface {
             SettingsScreen(
                 modifier = Modifier.fillMaxSize(),
-                windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
+                windowSizeClass = getPreviewWindowSizeClass(),
                 apiMinEntries = 25,
                 apiMaxEntries = 250,
                 uiState = SettingsUIState(

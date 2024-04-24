@@ -21,8 +21,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +38,7 @@ import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.navigation.AppNavHost
 import com.rwmobi.giphytrending.ui.navigation.AppNavItem
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
+import com.rwmobi.giphytrending.ui.utils.getPreviewWindowSizeClass
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -110,7 +109,6 @@ fun AppBottomNavigationLayout(
     }
 }
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @PreviewFontScale
 @PreviewDynamicColors
 @PreviewLightDark
@@ -124,7 +122,7 @@ private fun Preview() {
         ) {
             AppBottomNavigationLayout(
                 modifier = Modifier.fillMaxSize(),
-                windowSizeClass = currentWindowAdaptiveInfo().windowSizeClass,
+                windowSizeClass = getPreviewWindowSizeClass(),
                 navController = rememberNavController(),
                 snackbarHostState = remember { SnackbarHostState() },
             )

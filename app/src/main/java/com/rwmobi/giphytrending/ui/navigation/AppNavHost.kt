@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -67,7 +68,7 @@ fun AppNavHost(
                 modifier = Modifier
                     .fillMaxSize()
                     .nestedScroll(scrollBehavior.nestedScrollConnection),
-                windowSizeClass = windowSizeClass,
+                useCardLayout = (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact),
                 imageLoader = viewModel.getImageLoader(),
                 uiState = uiState,
                 uiEvent = TrendingUIEvent(
@@ -100,7 +101,7 @@ fun AppNavHost(
                 modifier = Modifier
                     .fillMaxSize()
                     .nestedScroll(scrollBehavior.nestedScrollConnection),
-                windowSizeClass = windowSizeClass,
+                useCardLayout = (windowSizeClass.widthSizeClass != WindowWidthSizeClass.Compact),
                 imageLoader = viewModel.getImageLoader(),
                 uiState = uiState,
                 uiEvent = SearchUIEvent(

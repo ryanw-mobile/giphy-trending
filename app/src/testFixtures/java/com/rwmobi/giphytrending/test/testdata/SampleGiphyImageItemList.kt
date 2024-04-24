@@ -10,6 +10,17 @@ import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 object SampleGiphyImageItemList {
     val giphyImageItemList = listOf(
         GiphyImageItem(
+            id = "MiBE4zcYUZWYmHnsI7",
+            previewUrl = "https://media4.giphy.com/media/MiBE4zcYUZWYmHnsI7/200w.gif",
+            previewHeight = 280,
+            previewWidth = 480,
+            imageUrl = "https://media4.giphy.com/media/MiBE4zcYUZWYmHnsI7/giphy.gif",
+            webUrl = "https://giphy.com/gifs/marchmadness-sports-sport-womens-basketball-MiBE4zcYUZWYmHnsI7",
+            title = "Womens Basketball Sport GIF by NCAA March Madness",
+            type = "gif",
+            username = "marchmadness",
+        ),
+        GiphyImageItem(
             id = "5KF7hci72bv2ZbchuT",
             previewUrl = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/200w.gif",
             previewWidth = 480,

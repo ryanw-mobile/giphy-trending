@@ -71,7 +71,6 @@ internal fun GiphyStaggeredGrid(
             if (useCardLayout) {
                 GiphyItemCard(
                     modifier = Modifier.padding(all = dimension.defaultHalfPadding),
-                    dimension = dimension,
                     giphyImageItem = giphyImageItem,
                     imageLoader = imageLoader,
                     onClickToDownload = onClickToDownload,
@@ -97,6 +96,29 @@ internal fun GiphyStaggeredGrid(
 @PreviewFontScale
 @Composable
 private fun Preview(
+    @PreviewParameter(GiphyImageItemsProvider::class) giphyImageItems: List<GiphyImageItem>,
+) {
+    GiphyTrendingTheme {
+        Surface {
+            GiphyStaggeredGrid(
+                modifier = Modifier.fillMaxSize(),
+                imageLoader = ImageLoader(LocalContext.current),
+                giphyImageItems = giphyImageItems,
+                requestScrollToTop = false,
+                useCardLayout = false,
+                onClickToDownload = {},
+                onClickToShare = {},
+                onClickToOpen = {},
+                onScrolledToTop = {},
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@PreviewFontScale
+@Composable
+private fun PreviewCardLayout(
     @PreviewParameter(GiphyImageItemsProvider::class) giphyImageItems: List<GiphyImageItem>,
 ) {
     GiphyTrendingTheme {

@@ -10,22 +10,32 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.PreviewFontScale
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
-import com.rwmobi.giphytrending.ui.theme.Dimension
+import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemProvider
+import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
+import com.rwmobi.giphytrending.ui.theme.getDimension
 
 @Composable
 fun GiphyItemCard(
     modifier: Modifier = Modifier,
-    dimension: Dimension,
     giphyImageItem: GiphyImageItem,
     imageLoader: ImageLoader,
     onClickToDownload: (imageUrl: String) -> Unit,
     onClickToOpen: (url: String) -> Unit,
     onClickToShare: (url: String) -> Unit,
 ) {
+    val dimension = LocalConfiguration.current.getDimension()
+
     Card(
         modifier = modifier.background(color = MaterialTheme.colorScheme.surface),
     ) {
@@ -40,5 +50,27 @@ fun GiphyItemCard(
             onClickToOpen = { onClickToOpen(it) },
             onClickToShare = { onClickToShare(it) },
         )
+    }
+}
+
+@PreviewLightDark
+@PreviewFontScale
+@Composable
+private fun Preview(
+    @PreviewParameter(GiphyImageItemProvider::class) giphyImageItem: GiphyImageItem,
+) {
+    GiphyTrendingTheme {
+        Surface {
+            GiphyItemCard(
+                modifier = Modifier
+                    .padding(all = 24.dp)
+                    .fillMaxWidth(),
+                giphyImageItem = giphyImageItem,
+                imageLoader = ImageLoader(LocalContext.current),
+                onClickToDownload = {},
+                onClickToShare = {},
+                onClickToOpen = {},
+            )
+        }
     }
 }

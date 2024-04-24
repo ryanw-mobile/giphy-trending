@@ -33,7 +33,7 @@ class UserPreferencesRepositoryImpl @Inject constructor(
     private val defaultApiMinEntries: Int = BuildConfig.API_MIN_ENTRIES.toInt(),
     private val defaultApiMaxEntries: Int = BuildConfig.API_MAX_ENTRIES.toInt(),
     externalCoroutineScope: CoroutineScope,
-    @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher, // data source will use IODispatcher
+    @DispatcherModule.IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : UserPreferencesRepository {
     private val prefKeyApiRequestLimit = intPreferencesKey(KEY_API_REQUEST_LIMIT)
     private val prefKeyRating = stringPreferencesKey(KEY_RATING)

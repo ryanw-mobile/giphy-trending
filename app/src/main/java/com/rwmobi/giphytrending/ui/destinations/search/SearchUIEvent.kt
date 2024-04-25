@@ -6,6 +6,7 @@
 package com.rwmobi.giphytrending.ui.destinations.search
 
 data class SearchUIEvent(
+    val onFetchLastSuccessfulSearch: () -> Unit,
     val onUpdateKeyword: (keyword: String) -> Unit,
     val onClearKeyword: () -> Unit,
     val onSearch: () -> Unit,

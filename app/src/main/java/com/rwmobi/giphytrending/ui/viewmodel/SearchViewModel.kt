@@ -95,6 +95,13 @@ class SearchViewModel @Inject constructor(
         val rating = userPreferences.rating
 
         if (apiMaxEntries != null && rating != null) {
+            // This forces the scrolling to the top of the list
+            _uiState.update { currentUiState ->
+                currentUiState.copy(
+                    isLoading = true,
+                    giphyImageItems = emptyList(),
+                )
+            }
             startNewSearch(keyword = keyword, apiMaxEntries = apiMaxEntries, rating = rating)
         } else {
             updateUIForError("Preferences are not fully set.")

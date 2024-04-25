@@ -11,13 +11,13 @@ import com.rwmobi.giphytrending.data.source.network.interfaces.NetworkDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(SingletonComponent::class)
 object NetworkDataSourceModule {
-    @ViewModelScoped
+    @Singleton
     @Provides
     fun provideNetworkDataSource(
         giphyApiService: GiphyApi,

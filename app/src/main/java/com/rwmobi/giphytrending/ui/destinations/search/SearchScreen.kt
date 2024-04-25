@@ -21,13 +21,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.core.net.toUri
@@ -64,16 +62,13 @@ fun SearchScreen(
     val coroutineScope = rememberCoroutineScope()
     val clipboardHistory = remember { mutableStateListOf<String>() }
     val focusManager: FocusManager = LocalFocusManager.current
-    val nestedScrollConnection = rememberNestedScrollInteropConnection()
 
     Box(
-        modifier = modifier
-            .nestedScroll(connection = nestedScrollConnection)
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onTap = { coroutineScope.launch { focusManager.clearFocus() } },
-                )
-            },
+        modifier = modifier.pointerInput(Unit) {
+            detectTapGestures(
+                onTap = { coroutineScope.launch { focusManager.clearFocus() } },
+            )
+        },
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -120,8 +115,9 @@ fun SearchScreen(
         }
 
         DisposableEffect(true) {
+            uiEvent.onFetchLastSuccessfulSearch()
+
             onDispose {
-                uiEvent.onClearKeyword
                 coroutineScope.launch {
                     focusManager.clearFocus()
                 }

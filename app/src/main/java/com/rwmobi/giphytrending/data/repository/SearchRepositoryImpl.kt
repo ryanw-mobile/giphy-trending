@@ -34,7 +34,7 @@ class SearchRepositoryImpl @Inject constructor(
     @DispatcherModule.IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : SearchRepository {
     private var lastSuccessfulSearchKeyword: String? = null
-    private var lastSuccessfulSearchResults: Result<List<GiphyImageItem>>? = null
+    private var lastSuccessfulSearchResults: List<GiphyImageItem>? = null
 
     override suspend fun search(keyword: String?, limit: Int, rating: Rating): Result<List<GiphyImageItem>> {
         if (giphyApiKey.isBlank()) {
@@ -58,10 +58,9 @@ class SearchRepositoryImpl @Inject constructor(
                     rating = rating.apiValue,
                 )
 
-                Result.success(value = result.trendingData.asTrendingEntity().asGiphyImageItem()).also {
-                    lastSuccessfulSearchKeyword = keyword
-                    lastSuccessfulSearchResults = it
-                }
+                lastSuccessfulSearchKeyword = keyword
+                lastSuccessfulSearchResults = result.trendingData.asTrendingEntity().asGiphyImageItem()
+                Result.success(value = lastSuccessfulSearchResults ?: emptyList())
             } catch (cancellationException: CancellationException) {
                 throw cancellationException
             } catch (ex: Exception) {
@@ -72,5 +71,5 @@ class SearchRepositoryImpl @Inject constructor(
     }
 
     override fun getLastSuccessfulSearchKeyword(): String? = lastSuccessfulSearchKeyword
-    override fun getLastSuccessfulSearchResults(): Result<List<GiphyImageItem>>? = lastSuccessfulSearchResults
+    override fun getLastSuccessfulSearchResults(): List<GiphyImageItem>? = lastSuccessfulSearchResults
 }

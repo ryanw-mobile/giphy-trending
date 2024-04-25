@@ -52,6 +52,22 @@ class SearchViewModel @Inject constructor(
         collectUserPreferences()
     }
 
+    fun fetchLastSuccessfulSearch() {
+        startLoading()
+        viewModelScope.launch(dispatcher) {
+            val lastSearchKeyword = searchRepository.getLastSuccessfulSearchKeyword()
+            val lastSearchResult = searchRepository.getLastSuccessfulSearchResults()
+
+            _uiState.update { currentUiState ->
+                currentUiState.copy(
+                    isLoading = false,
+                    keyword = lastSearchKeyword ?: "",
+                    giphyImageItems = lastSearchResult,
+                )
+            }
+        }
+    }
+
     fun updateKeyword(keyword: String?) {
         // caller is not allowed to feed us null value, which is reserved to the ViewModel
         this.keyword = keyword?.take(keywordMaxLength) ?: ""
@@ -138,15 +154,6 @@ class SearchViewModel @Inject constructor(
         _uiState.update { it.copy(isLoading = true) }
     }
 
-    private fun updateUIForError(message: String) {
-        _uiState.update {
-            addErrorMessage(
-                currentUiState = it,
-                message = message,
-            )
-        }
-    }
-
     private fun startNewSearch(keyword: String?, apiMaxEntries: Int, rating: Rating) {
         viewModelScope.launch(dispatcher) {
             val searchResult = searchRepository.search(keyword = keyword, limit = apiMaxEntries, rating = rating)
@@ -165,6 +172,15 @@ class SearchViewModel @Inject constructor(
                     Timber.tag("processTrendingList").v("Processed ${repositoryResult.getOrNull()?.count() ?: 0} entries")
                 }
             }
+        }
+    }
+
+    private fun updateUIForError(message: String) {
+        _uiState.update {
+            addErrorMessage(
+                currentUiState = it,
+                message = message,
+            )
         }
     }
 

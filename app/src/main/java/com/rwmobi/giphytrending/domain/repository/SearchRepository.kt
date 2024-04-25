@@ -12,5 +12,5 @@ interface SearchRepository {
 
     suspend fun search(keyword: String?, limit: Int, rating: Rating): Result<List<GiphyImageItem>>
     fun getLastSuccessfulSearchKeyword(): String?
-    fun getLastSuccessfulSearchResults(): Result<List<GiphyImageItem>>?
+    fun getLastSuccessfulSearchResults(): List<GiphyImageItem>?
 }

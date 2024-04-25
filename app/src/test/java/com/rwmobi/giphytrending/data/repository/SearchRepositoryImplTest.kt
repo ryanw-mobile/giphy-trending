@@ -125,7 +125,7 @@ class SearchRepositoryImplTest {
         val lastSuccessfulSearchKeyword = searchRepository.getLastSuccessfulSearchKeyword()
         val lastSuccessfulSearchResults = searchRepository.getLastSuccessfulSearchResults()
         lastSuccessfulSearchKeyword shouldBe keyword
-        lastSuccessfulSearchResults?.getOrNull() shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.asTrendingEntity().asGiphyImageItem()
+        lastSuccessfulSearchResults shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.asTrendingEntity().asGiphyImageItem()
     }
 
     @Test
@@ -140,6 +140,6 @@ class SearchRepositoryImplTest {
         val lastSuccessfulSearchKeyword = searchRepository.getLastSuccessfulSearchKeyword()
         val lastSuccessfulSearchResults = searchRepository.getLastSuccessfulSearchResults()
         lastSuccessfulSearchKeyword shouldBe keyword
-        lastSuccessfulSearchResults?.getOrNull() shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.asTrendingEntity().asGiphyImageItem()
+        lastSuccessfulSearchResults shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.asTrendingEntity().asGiphyImageItem()
     }
 }

@@ -76,7 +76,7 @@ internal class SearchViewModelTest {
                 rating = Rating.G,
             ),
         )
-        fakeSearchRepository.searchResult = Result.success(SampleGiphyImageItemList.giphyImageItemList)
+        fakeSearchRepository.setSearchResultForTest(Result.success(SampleGiphyImageItemList.giphyImageItemList))
 
         viewModel.updateKeyword("test")
         viewModel.search()
@@ -112,7 +112,7 @@ internal class SearchViewModelTest {
                 rating = Rating.G,
             ),
         )
-        fakeSearchRepository.searchResult = Result.failure(RuntimeException(errorMessage))
+        fakeSearchRepository.setSearchResultForTest(Result.failure(RuntimeException(errorMessage)))
 
         viewModel.updateKeyword("test")
         viewModel.search()

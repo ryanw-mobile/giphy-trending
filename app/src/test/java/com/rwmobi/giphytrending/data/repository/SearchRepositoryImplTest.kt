@@ -36,10 +36,10 @@ class SearchRepositoryImplTest {
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword: String? = null
 
-        val result = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
+        val searchResult = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
 
-        result.isSuccess shouldBe true
-        result.getOrNull() shouldBe emptyList()
+        searchResult.isSuccess shouldBe true
+        searchResult.getOrNull() shouldBe emptyList()
     }
 
     @Test
@@ -48,10 +48,10 @@ class SearchRepositoryImplTest {
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword: String? = ""
 
-        val result = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
+        val searchResult = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
 
-        result.isSuccess shouldBe true
-        result.getOrNull() shouldBe emptyList()
+        searchResult.isSuccess shouldBe true
+        searchResult.getOrNull() shouldBe emptyList()
     }
 
     @Test
@@ -60,10 +60,10 @@ class SearchRepositoryImplTest {
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword = "     "
 
-        val result = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
+        val searchResult = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
 
-        result.isSuccess shouldBe true
-        result.getOrNull() shouldBe emptyList()
+        searchResult.isSuccess shouldBe true
+        searchResult.getOrNull() shouldBe emptyList()
     }
 
     @Test
@@ -72,10 +72,10 @@ class SearchRepositoryImplTest {
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword = "some keyword"
 
-        val result = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
+        val searchResult = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
 
-        result.isSuccess shouldBe true
-        result.getOrNull() shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.asTrendingEntity().asGiphyImageItem()
+        searchResult.isSuccess shouldBe true
+        searchResult.getOrNull() shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.asTrendingEntity().asGiphyImageItem()
     }
 
     @Test
@@ -83,10 +83,10 @@ class SearchRepositoryImplTest {
         setupRepository(giphyApiKey = "")
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
 
-        val result = searchRepository.search(keyword = "some-keyword", limit = 100, rating = Rating.R)
+        val searchResult = searchRepository.search(keyword = "some-keyword", limit = 100, rating = Rating.R)
 
-        result.isFailure shouldBe true
-        result.exceptionOrNull() shouldBe EmptyGiphyAPIKeyException()
+        searchResult.isFailure shouldBe true
+        searchResult.exceptionOrNull() shouldBe EmptyGiphyAPIKeyException()
     }
 
     @Test
@@ -94,9 +94,52 @@ class SearchRepositoryImplTest {
         setupRepository()
         fakeNetworkDataSource.apiError = Exception()
 
-        val result = searchRepository.search(keyword = "some-keyword", limit = 100, rating = Rating.R)
+        val searchResult = searchRepository.search(keyword = "some-keyword", limit = 100, rating = Rating.R)
 
-        result.isFailure shouldBe true
-        result.exceptionOrNull() shouldBe Exception()
+        searchResult.isFailure shouldBe true
+        searchResult.exceptionOrNull() shouldBe Exception()
+    }
+
+    // lastSuccessfulSearchResults
+    @Test
+    fun `getLastSuccessfulSearchKeyword should return null if no successful search was done`() {
+        setupRepository()
+        val lastSuccessfulSearchKeyword = searchRepository.getLastSuccessfulSearchKeyword()
+        lastSuccessfulSearchKeyword shouldBe null
+    }
+
+    @Test
+    fun `getLastSuccessfulSearchResults should return null if no successful search was done`() {
+        setupRepository()
+        val lastSuccessfulSearchResults = searchRepository.getLastSuccessfulSearchResults()
+        lastSuccessfulSearchResults shouldBe null
+    }
+
+    @Test
+    fun `should return last search keyword and results if a successful search was done`() = runTest {
+        setupRepository()
+        fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
+        val keyword = "some keyword"
+        searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
+
+        val lastSuccessfulSearchKeyword = searchRepository.getLastSuccessfulSearchKeyword()
+        val lastSuccessfulSearchResults = searchRepository.getLastSuccessfulSearchResults()
+        lastSuccessfulSearchKeyword shouldBe keyword
+        lastSuccessfulSearchResults?.getOrNull() shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.asTrendingEntity().asGiphyImageItem()
+    }
+
+    @Test
+    fun `should return last successful search keyword and results if the recent search was failure`() = runTest {
+        setupRepository()
+        fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
+        val keyword = "some keyword"
+        searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
+        fakeNetworkDataSource.apiError = Exception()
+        searchRepository.search(keyword = "failed keyword", limit = 100, rating = Rating.R)
+
+        val lastSuccessfulSearchKeyword = searchRepository.getLastSuccessfulSearchKeyword()
+        val lastSuccessfulSearchResults = searchRepository.getLastSuccessfulSearchResults()
+        lastSuccessfulSearchKeyword shouldBe keyword
+        lastSuccessfulSearchResults?.getOrNull() shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.asTrendingEntity().asGiphyImageItem()
     }
 }

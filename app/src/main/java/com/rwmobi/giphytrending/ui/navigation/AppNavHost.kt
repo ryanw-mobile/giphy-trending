@@ -77,7 +77,6 @@ fun AppNavHost(
                 ),
             )
 
-            // Reset the scroll behavior when this composable enters
             LaunchedEffect(Unit) {
                 resetScrollBehavior()
             }
@@ -103,16 +102,19 @@ fun AppNavHost(
                 imageLoader = viewModel.getImageLoader(),
                 uiState = uiState,
                 uiEvent = SearchUIEvent(
+                    onFetchLastSuccessfulSearch = { viewModel.fetchLastSuccessfulSearch() },
                     onClearKeyword = { viewModel.clearKeyword() },
                     onUpdateKeyword = { viewModel.updateKeyword(it) },
-                    onSearch = { viewModel.search() },
+                    onSearch = {
+                        resetScrollBehavior()
+                        viewModel.search()
+                    },
                     onErrorShown = { viewModel.errorShown(it) },
                     onScrolledToTop = { onScrolledToTop(AppNavItem.Search) },
                     onShowSnackbar = onShowSnackbar,
                 ),
             )
 
-            // Reset the scroll behavior when this composable enters
             LaunchedEffect(Unit) {
                 resetScrollBehavior()
             }
@@ -147,7 +149,6 @@ fun AppNavHost(
                 ),
             )
 
-            // Reset the scroll behavior when this composable enters
             LaunchedEffect(Unit) {
                 resetScrollBehavior()
             }

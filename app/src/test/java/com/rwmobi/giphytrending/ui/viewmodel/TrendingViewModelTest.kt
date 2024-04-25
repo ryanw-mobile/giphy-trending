@@ -59,7 +59,7 @@ internal class TrendingViewModelTest {
                 rating = Rating.G,
             ),
         )
-        fakeTrendingRepository.trendingResult = Result.success(emptyList())
+        fakeTrendingRepository.setTrendingResultForTest(Result.success(emptyList()))
 
         setupViewModel()
 
@@ -76,7 +76,7 @@ internal class TrendingViewModelTest {
                 rating = Rating.G,
             ),
         )
-        fakeTrendingRepository.trendingResult = Result.failure(Exception(errorMessage))
+        fakeTrendingRepository.setTrendingResultForTest(Result.failure(Exception(errorMessage)))
 
         setupViewModel()
 
@@ -92,10 +92,10 @@ internal class TrendingViewModelTest {
                 rating = Rating.G,
             ),
         )
-        fakeTrendingRepository.trendingResult = Result.success(emptyList())
+        fakeTrendingRepository.setTrendingResultForTest(Result.success(emptyList()))
         setupViewModel()
 
-        fakeTrendingRepository.trendingResult = Result.success(SampleGiphyImageItemList.giphyImageItemList)
+        fakeTrendingRepository.setTrendingResultForTest(Result.success(SampleGiphyImageItemList.giphyImageItemList))
         viewModel.refresh()
 
         viewModel.uiState.value.giphyImageItems shouldBe SampleGiphyImageItemList.giphyImageItemList

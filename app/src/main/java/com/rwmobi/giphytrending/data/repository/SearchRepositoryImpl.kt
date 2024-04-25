@@ -20,11 +20,22 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
+/**
+ * While the data layer, including data sources, is responsible for managing the actual storage and retrieval of data,
+ * the repository serves as a boundary between the data layer and the rest of the application.
+ * Storing data in variables within the repository can be seen as a pragmatic approach to caching within the context
+ * of Clean Architecture, providing a balance between simplicity, maintainability, and flexibility.
+ * -- ChatGPT
+ */
+
 class SearchRepositoryImpl @Inject constructor(
     private val networkDataSource: NetworkDataSource,
     @GiphyApiKey private val giphyApiKey: String,
     @DispatcherModule.IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : SearchRepository {
+    private var lastSuccessfulSearchKeyword: String? = null
+    private var lastSuccessfulSearchResults: List<GiphyImageItem>? = null
+
     override suspend fun search(keyword: String?, limit: Int, rating: Rating): Result<List<GiphyImageItem>> {
         if (giphyApiKey.isBlank()) {
             @Suppress("UNREACHABLE_CODE")
@@ -36,7 +47,7 @@ class SearchRepositoryImpl @Inject constructor(
             return Result.success(emptyList())
         }
 
-        // Search changes frequently, we do not cache results
+        // Search changes frequently, we only cache results in memory
         return withContext(dispatcher) {
             try {
                 val result = networkDataSource.getSearch(
@@ -47,7 +58,9 @@ class SearchRepositoryImpl @Inject constructor(
                     rating = rating.apiValue,
                 )
 
-                Result.success(value = result.trendingData.asTrendingEntity().asGiphyImageItem())
+                lastSuccessfulSearchKeyword = keyword
+                lastSuccessfulSearchResults = result.trendingData.asTrendingEntity().asGiphyImageItem()
+                Result.success(value = lastSuccessfulSearchResults ?: emptyList())
             } catch (cancellationException: CancellationException) {
                 throw cancellationException
             } catch (ex: Exception) {
@@ -56,4 +69,7 @@ class SearchRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override fun getLastSuccessfulSearchKeyword(): String? = lastSuccessfulSearchKeyword
+    override fun getLastSuccessfulSearchResults(): List<GiphyImageItem>? = lastSuccessfulSearchResults
 }

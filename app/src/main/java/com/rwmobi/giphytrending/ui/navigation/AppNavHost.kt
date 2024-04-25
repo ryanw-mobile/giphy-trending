@@ -77,7 +77,6 @@ fun AppNavHost(
                 ),
             )
 
-            // Reset the scroll behavior when this composable enters
             LaunchedEffect(Unit) {
                 resetScrollBehavior()
             }
@@ -116,7 +115,6 @@ fun AppNavHost(
                 ),
             )
 
-            // Reset the scroll behavior when this composable enters
             LaunchedEffect(Unit) {
                 resetScrollBehavior()
             }
@@ -151,7 +149,6 @@ fun AppNavHost(
                 ),
             )
 
-            // Reset the scroll behavior when this composable enters
             LaunchedEffect(Unit) {
                 resetScrollBehavior()
             }

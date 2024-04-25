@@ -38,17 +38,45 @@ internal class SearchViewModelTest {
         )
     }
 
+    // fetchLastSuccessfulSearch
+    @Test
+    fun `fetchLastSuccessfulSearch should update UIState correctly if repository return something`() = runTest {
+        val lastSuccessfulSearchKeyword = "last serach keyword"
+        val lastSuccessfulSearchResult = SampleGiphyImageItemList.giphyImageItemList
+        fakeSearchRepository.setLastSuccessfulSearchKeywordForTest(lastSuccessfulSearchKeyword)
+        fakeSearchRepository.setLastSuccessfulSearchResultsForTest(lastSuccessfulSearchResult)
+
+        viewModel.fetchLastSuccessfulSearch()
+
+        with(viewModel.uiState.value) {
+            isLoading shouldBe false
+            keyword shouldBe lastSuccessfulSearchKeyword
+            giphyImageItems shouldContainExactlyInAnyOrder lastSuccessfulSearchResult
+        }
+    }
+
+    @Test
+    fun `fetchLastSuccessfulSearch should update UIState with default values if repository return null`() = runTest {
+        viewModel.fetchLastSuccessfulSearch()
+
+        with(viewModel.uiState.value) {
+            isLoading shouldBe false
+            keyword shouldBe ""
+            giphyImageItems shouldBe null
+        }
+    }
+
     @Test
     fun `updateKeyword should update keyword correctly`() = runTest {
         val keyword = "some search keyword"
         viewModel.updateKeyword(keyword)
-        assert(viewModel.uiState.value.keyword == keyword)
+        viewModel.uiState.value.keyword shouldBe keyword
     }
 
     @Test
     fun `updateKeyword should handle null input by clearing keyword`() = runTest {
         viewModel.updateKeyword(null)
-        assert(viewModel.uiState.value.keyword.isEmpty())
+        viewModel.uiState.value.keyword.isEmpty() shouldBe true
     }
 
     @Test
@@ -65,7 +93,7 @@ internal class SearchViewModelTest {
     fun `clearKeyword should reset keyword state`() = runTest {
         viewModel.updateKeyword("test")
         viewModel.clearKeyword()
-        assert(viewModel.uiState.value.keyword.isEmpty())
+        viewModel.uiState.value.keyword.isEmpty() shouldBe true
     }
 
     @Test

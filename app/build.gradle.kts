@@ -65,7 +65,7 @@ android {
 
         resourceConfigurations += setOf("en")
 
-        testInstrumentationRunner = "com.rwmobi.giphytrending.ui.utils.CustomTestRunner"
+        testInstrumentationRunner = "com.rwmobi.giphytrending.ui.test.CustomTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }

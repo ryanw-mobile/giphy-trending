@@ -3,7 +3,7 @@
  * https://github.com/ryanw-mobile
  */
 
-package com.rwmobi.giphytrending.ui.utils
+package com.rwmobi.giphytrending.ui.test
 
 import android.content.Context
 import android.graphics.Color

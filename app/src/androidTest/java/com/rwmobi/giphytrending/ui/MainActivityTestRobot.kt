@@ -17,7 +17,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.printToLog
 import com.rwmobi.giphytrending.R
-import com.rwmobi.giphytrending.ui.utils.withRole
+import com.rwmobi.giphytrending.ui.test.GiphyTrendingTestRule
+import com.rwmobi.giphytrending.ui.test.withRole
 
 internal class MainActivityTestRobot(
     private val composeTestRule: GiphyTrendingTestRule,

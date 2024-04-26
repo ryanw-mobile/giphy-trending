@@ -7,7 +7,7 @@ package com.rwmobi.giphytrending.di
 
 import android.content.Context
 import coil.ImageLoader
-import com.rwmobi.giphytrending.ui.utils.FakeImageLoader
+import com.rwmobi.giphytrending.ui.test.FakeImageLoader
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.android.qualifiers.ApplicationContext

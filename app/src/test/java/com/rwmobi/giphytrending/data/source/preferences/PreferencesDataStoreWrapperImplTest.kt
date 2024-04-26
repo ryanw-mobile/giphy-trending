@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
 package com.rwmobi.giphytrending.data.source.preferences
 
 import android.content.Context
@@ -42,8 +47,10 @@ class PreferencesDataStoreWrapperImplTest {
         )
     }
 
+    // Test function names reviewed by ChatGPT for consistency
+
     @Test
-    fun testUpdateStringPreference() = runTest {
+    fun updatePreference_ShouldCorrectlyUpdateStringValue() = runTest {
         val newValue = "newString"
         // Start collecting the flow in a separate coroutine to observe updates.
         val dataFlow = preferencesDataStoreWrapper.getDataStoreFlow()
@@ -63,7 +70,7 @@ class PreferencesDataStoreWrapperImplTest {
     }
 
     @Test
-    fun testUpdateBooleanPreference() = runTest {
+    fun updatePreference_ShouldCorrectlyUpdateBooleanValue() = runTest {
         val newValue = true
         val dataFlow = preferencesDataStoreWrapper.getDataStoreFlow()
 
@@ -81,7 +88,7 @@ class PreferencesDataStoreWrapperImplTest {
     }
 
     @Test
-    fun testUpdateIntPreference() = runTest {
+    fun updatePreference_ShouldCorrectlyUpdateIntValue() = runTest {
         val newValue = 42
         val dataFlow = preferencesDataStoreWrapper.getDataStoreFlow()
 
@@ -99,14 +106,13 @@ class PreferencesDataStoreWrapperImplTest {
     }
 
     @Test
-    fun testClear() = runTest {
+    fun clearPreferences_ShouldRemoveAllValues() = runTest {
         // Setup initial values
         with(preferencesDataStoreWrapper) {
             updatePreference(key = prefKeyString, newValue = "newString")
             updatePreference(key = prefKeyBoolean, newValue = true)
             updatePreference(key = prefKeyInt, newValue = 42)
         }
-
         val dataFlow = preferencesDataStoreWrapper.getDataStoreFlow()
 
         preferencesDataStoreWrapper.clear()
@@ -121,7 +127,6 @@ class PreferencesDataStoreWrapperImplTest {
                 }
             }
         }
-
         flowJob.join()
     }
 }

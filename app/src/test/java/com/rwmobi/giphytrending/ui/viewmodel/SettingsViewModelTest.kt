@@ -10,8 +10,6 @@ import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -34,8 +32,10 @@ internal class SettingsViewModelTest {
         )
     }
 
+    // Test function names reviewed by ChatGPT for consistency
+
     @Test
-    fun `setApiRequestLimit should update apiRequestLimit in UI state and set isLoading to false`() {
+    fun setApiRequestLimit_ShouldUpdateApiRequestLimitAndSetIsLoadingToFalse() {
         val expectedMaxApiEntries = 100
         fakeUserPreferencesRepository.init(
             UserPreferences(
@@ -52,7 +52,7 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `setRating should update the rating in UI state and set isLoading to false`() {
+    fun setRating_ShouldUpdateRatingInUIStateAndSetIsLoadingToFalse() {
         val expectedRating = Rating.R
         fakeUserPreferencesRepository.init(
             UserPreferences(
@@ -69,7 +69,7 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `requestScrollToTop should update the requestScrollToTop in UI state`() {
+    fun requestScrollToTop_ShouldUpdateRequestInUIStateCorrectly() {
         val expectedRequestScrollToTop = true
 
         settingsViewModel.requestScrollToTop(enabled = expectedRequestScrollToTop)
@@ -79,13 +79,10 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `should add the emitted error to UI state and set isLoading to false`() = runTest {
+    fun emitError_ShouldAddErrorMessageToUIStateAndSetIsLoadingToFalse() = runTest {
         val errorMessage = "Test error"
         fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 
-        runBlocking {
-            delay(100) // Small delay to ensure flow collects the error
-        }
         val uiState = settingsViewModel.uiState.value
 
         uiState.errorMessages.size shouldBe 1
@@ -94,13 +91,10 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun `errorShown should remove the specified error message from UI state`() = runTest {
+    fun errorShown_ShouldRemoveSpecifiedErrorMessageFromUIState() = runTest {
         val errorMessage = "Test error"
         fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 
-        runBlocking {
-            delay(100) // Small delay to ensure flow collects the error
-        }
         val errorId = settingsViewModel.uiState.value.errorMessages.first().id
         settingsViewModel.errorShown(errorId)
 

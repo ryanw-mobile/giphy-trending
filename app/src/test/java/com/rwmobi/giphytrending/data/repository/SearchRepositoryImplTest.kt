@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
 package com.rwmobi.giphytrending.data.repository
 
 import com.rwmobi.giphytrending.data.source.local.mappers.asGiphyImageItem
@@ -30,8 +35,10 @@ class SearchRepositoryImplTest {
         )
     }
 
+    // Test function names reviewed by ChatGPT for consistency
+
     @Test
-    fun `search should return empty result if keyword is null`() = runTest {
+    fun search_WithNullKeyword_ShouldReturnEmptyResult() = runTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword: String? = null
@@ -43,7 +50,7 @@ class SearchRepositoryImplTest {
     }
 
     @Test
-    fun `search should return empty result if keyword is empty`() = runTest {
+    fun search_WithEmptyKeyword_ShouldReturnEmptyResult() = runTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword: String? = ""
@@ -55,7 +62,7 @@ class SearchRepositoryImplTest {
     }
 
     @Test
-    fun `search should return empty result if keyword is blank`() = runTest {
+    fun search_WithBlankKeyword_ShouldReturnEmptyResult() = runTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword = "     "
@@ -67,7 +74,7 @@ class SearchRepositoryImplTest {
     }
 
     @Test
-    fun `search should return result if API request was successful`() = runTest {
+    fun search_WithValidKeyword_ShouldReturnSuccessfulResult() = runTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword = "some keyword"
@@ -79,7 +86,7 @@ class SearchRepositoryImplTest {
     }
 
     @Test
-    fun `search should return failure if giphyApiKey is blank`() = runTest {
+    fun search_WithBlankApiKey_ShouldThrowEmptyGiphyAPIKeyException() = runTest {
         setupRepository(giphyApiKey = "")
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
 
@@ -90,7 +97,7 @@ class SearchRepositoryImplTest {
     }
 
     @Test
-    fun `search should return failure if network call returns an error`() = runTest {
+    fun search_WithNetworkError_ShouldReturnFailure() = runTest {
         setupRepository()
         fakeNetworkDataSource.apiError = Exception()
 
@@ -102,21 +109,21 @@ class SearchRepositoryImplTest {
 
     // lastSuccessfulSearchResults
     @Test
-    fun `getLastSuccessfulSearchKeyword should return null if no successful search was done`() {
+    fun getLastSuccessfulSearchKeyword_WithoutSuccessfulSearch_ShouldReturnNull() {
         setupRepository()
         val lastSuccessfulSearchKeyword = searchRepository.getLastSuccessfulSearchKeyword()
         lastSuccessfulSearchKeyword shouldBe null
     }
 
     @Test
-    fun `getLastSuccessfulSearchResults should return null if no successful search was done`() {
+    fun getLastSuccessfulSearchResults_WithoutSuccessfulSearch_ShouldReturnNull() {
         setupRepository()
         val lastSuccessfulSearchResults = searchRepository.getLastSuccessfulSearchResults()
         lastSuccessfulSearchResults shouldBe null
     }
 
     @Test
-    fun `should return last search keyword and results if a successful search was done`() = runTest {
+    fun getLastSuccessfulSearch_WithSuccessfulSearch_ShouldReturnKeywordAndResults() = runTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword = "some keyword"
@@ -129,7 +136,7 @@ class SearchRepositoryImplTest {
     }
 
     @Test
-    fun `should return last successful search keyword and results if the recent search was failure`() = runTest {
+    fun getLastSuccessfulSearch_AfterFailedSearch_ShouldMaintainPreviousSuccess() = runTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword = "some keyword"

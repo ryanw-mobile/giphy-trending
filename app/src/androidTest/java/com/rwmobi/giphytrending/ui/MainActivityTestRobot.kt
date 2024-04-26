@@ -20,7 +20,7 @@ import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.utils.withRole
 
 internal class MainActivityTestRobot(
-    private val composeTestRule: giphyTrendingTestRule,
+    private val composeTestRule: GiphyTrendingTestRule,
 ) {
     init {
         appBarIsVisible()

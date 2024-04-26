@@ -16,14 +16,16 @@ internal class TrendingMapperTest {
      * When tests found broken, it suggested that we might have to check if the changes are intended.
      */
 
+    // Test function names reviewed by ChatGPT for consistency
+
     @Test
-    fun `toDomainModel should correctly convert from TrendingEntity to GiphyImageItemDomainModel`() {
+    fun toDomainModel_ShouldConvertTrendingEntityToGiphyImageItemCorrectly() {
         val giphyImageItemDomainModel = SampleTrendingMapper.sampleTrendingEntity1.asGiphyImageItem()
         giphyImageItemDomainModel shouldBe SampleTrendingMapper.sampleDomainModel1
     }
 
     @Test
-    fun `toDomainModelList should correctly convert from list of TrendingEntity to list of GiphyImageItemDomainModel`() {
+    fun toDomainModelList_ShouldConvertListOfTrendingEntitiesToListOfGiphyImageItemsCorrectly() {
         val trendingEntityList = listOf(
             SampleTrendingMapper.sampleTrendingEntity1,
             SampleTrendingMapper.sampleTrendingEntity2,
@@ -41,13 +43,13 @@ internal class TrendingMapperTest {
     }
 
     @Test
-    fun `toTrendingEntity should correctly convert from TrendingData to TrendingEntity`() {
+    fun toTrendingEntity_ShouldConvertTrendingDataToTrendingEntityCorrectly() {
         val trendingEntity = SampleTrendingMapper.sampleTrendingDataDto1.asTrendingEntity()
         trendingEntity shouldBe SampleTrendingMapper.sampleTrendingEntity1
     }
 
     @Test
-    fun `toTrendingEntityList should correctly convert from TrendingData to list of TrendingEntity`() {
+    fun toTrendingEntityList_ShouldConvertListOfTrendingDataToListOfTrendingEntitiesCorrectly() {
         val mockTrendingDataList = listOf(
             SampleTrendingMapper.sampleTrendingDataDto1,
             SampleTrendingMapper.sampleTrendingDataDto2,

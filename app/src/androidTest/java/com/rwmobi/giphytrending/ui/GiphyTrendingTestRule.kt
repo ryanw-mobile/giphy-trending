@@ -9,4 +9,4 @@ import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.rwmobi.giphytrending.MainActivity
 
-typealias giphyTrendingTestRule = AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>
+typealias GiphyTrendingTestRule = AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>

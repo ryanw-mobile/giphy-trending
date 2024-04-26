@@ -39,8 +39,10 @@ class TrendyRepositoryImplTest {
         )
     }
 
+    // Test function names reviewed by ChatGPT for consistency
+
     @Test
-    fun `fetchCachedTrending should return correct list if database query success`() = runTest {
+    fun fetchCachedTrending_ShouldReturnCorrectList_WhenDatabaseQuerySucceeds() = runTest {
         setupRepository()
         fakeRoomDbDataSource.queryDataResponse = SampleTrendingEntityList.singleEntityList
 
@@ -51,7 +53,7 @@ class TrendyRepositoryImplTest {
     }
 
     @Test
-    fun `fetchCachedTrending should return failure if database query throws exception`() = runTest {
+    fun fetchCachedTrending_ShouldReturnFailure_WhenDatabaseQueryFails() = runTest {
         setupRepository()
         fakeRoomDbDataSource.apiError = Exception()
 
@@ -62,7 +64,7 @@ class TrendyRepositoryImplTest {
     }
 
     @Test
-    fun `reloadTrending should return correct list if network and database operations all success`() = runTest {
+    fun reloadTrending_ShouldReturnCorrectList_WhenNetworkAndDatabaseOperationsSucceed() = runTest {
         setupRepository()
         fakeNetworkDataSource.trendingNetworkResponseDto = SampleTrendingNetworkResponse.singleResponse
         fakeRoomDbDataSource.queryDataResponse = SampleTrendingEntityList.singleEntityList
@@ -74,7 +76,7 @@ class TrendyRepositoryImplTest {
     }
 
     @Test
-    fun `reloadTrending should return failure if giphyApiKey is blank`() = runTest {
+    fun reloadTrending_ShouldReturnFailure_WhenApiKeyIsBlank() = runTest {
         setupRepository(giphyApiKey = "")
         fakeNetworkDataSource.apiError = Exception()
 
@@ -85,7 +87,7 @@ class TrendyRepositoryImplTest {
     }
 
     @Test
-    fun `reloadTrending should return failure if network call returns an error`() = runTest {
+    fun reloadTrending_ShouldReturnFailure_WhenNetworkCallFails() = runTest {
         setupRepository()
         fakeNetworkDataSource.apiError = Exception()
 
@@ -96,7 +98,7 @@ class TrendyRepositoryImplTest {
     }
 
     @Test
-    fun `reloadTrending should return failure if database operation throws exception`() = runTest {
+    fun reloadTrending_ShouldReturnFailure_WhenDatabaseOperationThrowsException() = runTest {
         setupRepository()
         fakeRoomDbDataSource.apiError = Exception()
 

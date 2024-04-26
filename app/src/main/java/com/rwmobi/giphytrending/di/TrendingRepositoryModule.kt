@@ -5,7 +5,7 @@
 
 package com.rwmobi.giphytrending.di
 
-import com.rwmobi.giphytrending.data.repository.TrendyRepositoryImpl
+import com.rwmobi.giphytrending.data.repository.TrendingRepositoryImpl
 import com.rwmobi.giphytrending.data.source.local.interfaces.DatabaseDataSource
 import com.rwmobi.giphytrending.data.source.network.interfaces.NetworkDataSource
 import com.rwmobi.giphytrending.domain.repository.TrendingRepository
@@ -27,7 +27,7 @@ object TrendingRepositoryModule {
         @GiphyApiKey giphyApiKey: String,
         @DispatcherModule.IoDispatcher dispatcher: CoroutineDispatcher,
     ): TrendingRepository {
-        return TrendyRepositoryImpl(
+        return TrendingRepositoryImpl(
             networkDataSource = networkDataSource,
             databaseDataSource = databaseDataSource,
             giphyApiKey = giphyApiKey,

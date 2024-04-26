@@ -21,7 +21,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class TrendyRepositoryImplTest {
+class TrendingRepositoryImplTest {
     private lateinit var trendingRepository: TrendingRepository
     private lateinit var dispatcher: TestDispatcher
     private lateinit var fakeRoomDbDataSource: FakeDatabaseDataSource
@@ -31,7 +31,7 @@ class TrendyRepositoryImplTest {
         dispatcher = UnconfinedTestDispatcher()
         fakeRoomDbDataSource = FakeDatabaseDataSource()
         fakeNetworkDataSource = FakeNetworkDataSource()
-        trendingRepository = TrendyRepositoryImpl(
+        trendingRepository = TrendingRepositoryImpl(
             networkDataSource = fakeNetworkDataSource,
             databaseDataSource = fakeRoomDbDataSource,
             giphyApiKey = giphyApiKey,

@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.navigation.AppNavItem
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 
@@ -37,14 +38,17 @@ fun AppBottomNavigationBar(
     navController: NavController,
     onCurrentRouteSecondTapped: (item: AppNavItem) -> Unit,
 ) {
+    val context = LocalContext.current
+
     NavigationBar(
-        modifier = modifier,
+        modifier = modifier.semantics {
+            contentDescription = context.getString(R.string.content_description_navigation_bar)
+        },
         tonalElevation = 0.dp,
         containerColor = MaterialTheme.colorScheme.background,
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
-        val context = LocalContext.current
 
         for (item in AppNavItem.navigationBarItems) {
             val selected = currentRoute == item.screenRoute

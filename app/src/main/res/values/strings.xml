@@ -37,4 +37,8 @@
     <string name="not_selected" tools:override="true">Not selected</string>
     <string name="search">Search</string>
     <string name="content_description_clear_search_keyword">Clear search keyword</string>
+    <string name="content_description_navigation_bar">Navigation Bar</string>
+    <string name="content_description_navigation_rail">Navigation Rail</string>
+    <string name="content_description_pull_to_refresh">Pull to refresh</string>
+
 </resources>

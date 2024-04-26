@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.navigation.AppNavItem
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.theme.getDimension
@@ -40,13 +41,16 @@ fun AppNavigationRail(
     navController: NavController,
     onCurrentRouteSecondTapped: (item: AppNavItem) -> Unit,
 ) {
+    val context = LocalContext.current
+
     NavigationRail(
-        modifier = modifier,
+        modifier = modifier.semantics {
+            contentDescription = context.getString(R.string.content_description_navigation_rail)
+        },
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         val dimension = LocalConfiguration.current.getDimension()
-        val context = LocalContext.current
 
         Spacer(Modifier.weight(1f))
 

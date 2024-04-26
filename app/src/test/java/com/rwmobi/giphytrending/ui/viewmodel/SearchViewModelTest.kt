@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
 package com.rwmobi.giphytrending.ui.viewmodel
 
 import coil.ImageLoader
@@ -11,8 +16,6 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -38,9 +41,10 @@ internal class SearchViewModelTest {
         )
     }
 
-    // fetchLastSuccessfulSearch
+    // Test function names reviewed by ChatGPT for consistency
+
     @Test
-    fun `fetchLastSuccessfulSearch should update UIState correctly if repository return something`() = runTest {
+    fun fetchLastSuccessfulSearch_ShouldUpdateUIStateCorrectly_WhenDataIsAvailable() = runTest {
         val lastSuccessfulSearchKeyword = "last serach keyword"
         val lastSuccessfulSearchResult = SampleGiphyImageItemList.giphyImageItemList
         fakeSearchRepository.setLastSuccessfulSearchKeywordForTest(lastSuccessfulSearchKeyword)
@@ -56,7 +60,7 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun `fetchLastSuccessfulSearch should update UIState with default values if repository return null`() = runTest {
+    fun fetchLastSuccessfulSearch_ShouldSetUIStateToDefault_WhenNoDataReturned() = runTest {
         viewModel.fetchLastSuccessfulSearch()
 
         with(viewModel.uiState.value) {
@@ -67,20 +71,20 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun `updateKeyword should update keyword correctly`() = runTest {
+    fun updateKeyword_ShouldCorrectlyUpdateUIStateWithNewKeyword() = runTest {
         val keyword = "some search keyword"
         viewModel.updateKeyword(keyword)
         viewModel.uiState.value.keyword shouldBe keyword
     }
 
     @Test
-    fun `updateKeyword should handle null input by clearing keyword`() = runTest {
+    fun updateKeyword_ShouldClearKeyword_WhenNullInputReceived() = runTest {
         viewModel.updateKeyword(null)
         viewModel.uiState.value.keyword.isEmpty() shouldBe true
     }
 
     @Test
-    fun `updateKeyword should trim the keyword to the max length`() = runTest {
+    fun updateKeyword_ShouldTrimKeywordToMaxLength_WhenExceedingLimit() = runTest {
         val maxLength = viewModel.uiState.value.keywordMaxLength
         val longKeyword = "x".repeat(100)
 
@@ -90,14 +94,14 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun `clearKeyword should reset keyword state`() = runTest {
+    fun clearKeyword_ShouldResetKeywordInUIState() = runTest {
         viewModel.updateKeyword("test")
         viewModel.clearKeyword()
         viewModel.uiState.value.keyword.isEmpty() shouldBe true
     }
 
     @Test
-    fun `search should process correctly with valid preferences`() = runTest {
+    fun search_ShouldSucceedWithValidPreferences_AndUpdateUIState() = runTest {
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
                 apiRequestLimit = 100,
@@ -113,7 +117,7 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun `search should handle error when preferences are not set`() = runTest {
+    fun search_ShouldHandleError_WhenPreferencesNotSet() = runTest {
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
                 apiRequestLimit = null,
@@ -132,7 +136,7 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun `search should update UI on search failure`() = runTest {
+    fun search_ShouldUpdateUIWithError_WhenSearchFails() = runTest {
         val errorMessage = "some error message"
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
@@ -154,14 +158,14 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun `retrieving ImageLoader should return the correct instance of ImageLoader`() {
+    fun getImageLoader_ShouldReturnCorrectImageLoaderInstance() {
         val expectedImageLoader = mockImageLoader
         val imageLoader = viewModel.getImageLoader()
         imageLoader shouldBeSameInstanceAs expectedImageLoader
     }
 
     @Test
-    fun `requestScrollToTop should update the requestScrollToTop in UI state`() {
+    fun requestScrollToTop_ShouldUpdateRequestInUIState() {
         val expectedRequestScrollToTop = true
 
         viewModel.requestScrollToTop(enabled = expectedRequestScrollToTop)
@@ -171,13 +175,10 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun `should add the emitted error to UI state and set isLoading to false`() = runTest {
+    fun searchError_ShouldUpdateUIStateAndSetLoadingFalse_WhenErrorOccurs() = runTest {
         val errorMessage = "Test error"
         fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 
-        runBlocking {
-            delay(100) // Small delay to ensure flow collects the error
-        }
         val uiState = viewModel.uiState.value
 
         with(uiState) {
@@ -188,13 +189,10 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun `errorShown should remove the specified error message from UI state`() = runTest {
+    fun errorShown_ShouldRemoveErrorMessageFromUIState_WhenCalled() = runTest {
         val errorMessage = "Test error"
         fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 
-        runBlocking {
-            delay(100) // Small delay to ensure flow collects the error
-        }
         val errorId = viewModel.uiState.value.errorMessages.first().id
         viewModel.errorShown(errorId)
 

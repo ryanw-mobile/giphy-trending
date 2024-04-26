@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
 package com.rwmobi.giphytrending.data.source.local
 
 import android.content.Context
@@ -26,7 +31,7 @@ class RoomDatabaseDataSourceTest {
     fun setup() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         giphyDatabase = Room.inMemoryDatabaseBuilder(context, GiphyDatabase::class.java)
-            .allowMainThreadQueries() // only for testing
+            .allowMainThreadQueries()
             .build()
 
         roomDatabaseDataSource = RoomDatabaseDataSource(giphyDatabase = giphyDatabase)
@@ -37,8 +42,10 @@ class RoomDatabaseDataSourceTest {
         giphyDatabase.close()
     }
 
+    // Test function names reviewed by ChatGPT for consistency
+
     @Test
-    fun `Given a single TrendingEntity, when inserting into the database, then it should be retrievable`() = runTest {
+    fun insertData_WithSingleEntity_ShouldStoreAndRetrieveEntityCorrectly() = runTest {
         val testData = SampleTrendingEntity.case1
         roomDatabaseDataSource.insertData(data = testData)
 
@@ -49,7 +56,7 @@ class RoomDatabaseDataSourceTest {
     }
 
     @Test
-    fun `Given a list of TrendingEntity, when inserting all into the database, then all should be retrievable`() = runTest {
+    fun insertAllData_WithMultipleEntities_ShouldStoreAndRetrieveAllEntitiesCorrectly() = runTest {
         val testDataList = SampleTrendingEntityList.tripleEntityList
         roomDatabaseDataSource.insertAllData(data = testDataList)
 
@@ -60,47 +67,38 @@ class RoomDatabaseDataSourceTest {
     }
 
     @Test
-    fun `Given data in the database, when clearing, then it should be empty`() = runTest {
-        // Given
+    fun clearData_AfterInserting_ShouldEmptyDatabaseSuccessfully() = runTest {
         val testDataList = SampleTrendingEntityList.tripleEntityList
         roomDatabaseDataSource.insertAllData(data = testDataList)
 
-        // When
         roomDatabaseDataSource.clear()
         val result = roomDatabaseDataSource.queryData()
 
-        // Then
         result.size shouldBe 0
     }
 
     @Test
-    fun `Given data in the database, when marking as dirty, then dirty flag should be set`() = runTest {
-        // Given
+    fun markDirty_AfterInserting_ShouldSetDirtyFlagForAllEntries() = runTest {
         val testDataList = SampleTrendingEntityList.tripleEntityList
         roomDatabaseDataSource.insertAllData(data = testDataList)
 
-        // When
         roomDatabaseDataSource.markDirty()
         val result = roomDatabaseDataSource.queryData()
 
-        // Then
         result.forEach { trendingEntity ->
             trendingEntity.dirty shouldBe true
         }
     }
 
     @Test
-    fun `Given dirty data in the database, when deleting, then no dirty data should remain`() = runTest {
-        // Given
+    fun deleteDirty_WhenDataIsMarkedDirty_ShouldRemoveAllDirtyEntries() = runTest {
         val testDataList = SampleTrendingEntityList.tripleEntityList
         roomDatabaseDataSource.insertAllData(data = testDataList)
         roomDatabaseDataSource.markDirty()
 
-        // When
         roomDatabaseDataSource.deleteDirty()
         val result = roomDatabaseDataSource.queryData()
 
-        // Then
         result.forEach { trendingEntity ->
             trendingEntity.dirty shouldBe false
         }

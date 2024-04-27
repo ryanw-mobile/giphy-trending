@@ -37,66 +37,123 @@ import io.mockk.verify
 internal class TrendingListTestRobot(
     private val composeTestRule: GiphyTrendingTestRule,
 ) {
-    fun printSemanticTree() {
-        composeTestRule.onRoot().printToLog("SemanticTree")
-    }
-
+    // Checks
     fun checkNoDataScreenIsDisplayed() {
-        assertTrendingListIsNotDisplayed()
-        assertNoDataScreenIsDisplayed()
+        try {
+            assertTrendingListIsNotDisplayed()
+            assertNoDataScreenIsDisplayed()
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("TrendingListTestRobotError")
+            throw AssertionError("Expected No Data screen is not displayed. ${e.message}")
+        }
     }
 
     fun checkTrendingListIsDisplayed() {
-        assertNoDataScreenIsNotDisplayed()
-        assertTrendingListIsDisplayed()
+        try {
+            assertNoDataScreenIsNotDisplayed()
+            assertTrendingListIsDisplayed()
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("TrendingListTestRobotError")
+            throw AssertionError("Expected Trending List is not displayed. ${e.message}")
+        }
+    }
+
+    fun checkGiphyImageItemIsDisplayed(giphyImageItem: GiphyImageItem) {
+        try {
+            assertTrendingItemIsDisplayed(giphyImageItem = giphyImageItem)
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("TrendingListTestRobotError")
+            throw AssertionError("Expected Trending List item is not displayed. ${e.message}")
+        }
     }
 
     fun checkTrendingListContainsAllGiphyImageItems(giphyImageItemList: List<GiphyImageItem>) {
-        for (index in 0..giphyImageItemList.lastIndex) {
-            scrollToTrendingItem(index = index)
-            assertTrendingItemIsDisplayed(giphyImageItem = giphyImageItemList[index])
+        try {
+            for (index in 0..giphyImageItemList.lastIndex) {
+                scrollToTrendingItem(index = index)
+                assertTrendingItemIsDisplayed(giphyImageItem = giphyImageItemList[index])
+            }
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("TrendingListTestRobotError")
+            throw AssertionError("Expected Trending List item is not displayed. ${e.message}")
         }
     }
 
     fun checkGiphyImageItemButtonsLongClickToolTipAreDisplayed() {
-        with(composeTestRule) {
-            assertLongClickToolTipIsDisplayed(
-                contentDescription = activity.getString(R.string.content_description_copy_image_link),
-            )
-            assertLongClickToolTipIsDisplayed(
-                contentDescription = activity.getString(R.string.content_description_download_image),
-            )
-            assertLongClickToolTipIsDisplayed(
-                contentDescription = activity.getString(R.string.content_description_open_in_browser),
-            )
+        try {
+            with(composeTestRule) {
+                assertLongClickToolTipIsDisplayed(
+                    contentDescription = activity.getString(R.string.content_description_copy_image_link),
+                )
+                assertLongClickToolTipIsDisplayed(
+                    contentDescription = activity.getString(R.string.content_description_download_image),
+                )
+                assertLongClickToolTipIsDisplayed(
+                    contentDescription = activity.getString(R.string.content_description_open_in_browser),
+                )
+            }
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("TrendingListTestRobotError")
+            throw AssertionError("Expected button tool tip is not displayed. ${e.message}")
         }
     }
 
     fun checkCopyImageLinkButton() {
-        with(composeTestRule) {
-            tapCopyImageLinkButton()
-            onNodeWithText(text = activity.getString(R.string.clipboard_copied)).assertIsDisplayed()
+        try {
+            with(composeTestRule) {
+                tapCopyImageLinkButton()
+                onNodeWithText(text = activity.getString(R.string.clipboard_copied)).assertIsDisplayed()
+            }
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("TrendingListTestRobotError")
+            throw AssertionError("Expected Copy Image Link button message is not displayed. ${e.message}")
         }
     }
 
     fun checkOpenInBrowserButton(url: String) {
-        mockkStatic("com.rwmobi.giphytrending.ui.utils.KotlinExtensionsKt")
-        every { any(Context::class).startBrowserActivity(any()) } just Runs
+        try {
+            mockkStatic("com.rwmobi.giphytrending.ui.utils.KotlinExtensionsKt")
+            every { any(Context::class).startBrowserActivity(any()) } just Runs
 
-        tapOpenInBrowserButton()
+            tapOpenInBrowserButton()
 
-        verify { any(Context::class).startBrowserActivity(url) }
-        unmockkStatic("com.rwmobi.giphytrending.ui.utils.KotlinExtensionsKt")
+            verify { any(Context::class).startBrowserActivity(url) }
+            unmockkStatic("com.rwmobi.giphytrending.ui.utils.KotlinExtensionsKt")
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("TrendingListTestRobotError")
+            throw AssertionError("Expected Open In Browser button action is not triggered. ${e.message}")
+        }
     }
 
     fun checkDownloadImageButton(imageUrl: String) {
-        mockkStatic("com.rwmobi.giphytrending.ui.utils.KotlinExtensionsKt")
-        every { any(Context::class).downloadImageUsingMediaStore(any()) } returns true
+        try {
+            mockkStatic("com.rwmobi.giphytrending.ui.utils.KotlinExtensionsKt")
+            every { any(Context::class).downloadImageUsingMediaStore(any()) } returns true
 
-        tapDownloadImageButton()
+            tapDownloadImageButton()
 
-        verify { any(Context::class).downloadImageUsingMediaStore(imageUrl) }
-        unmockkStatic("com.rwmobi.giphytrending.ui.utils.KotlinExtensionsKt")
+            verify { any(Context::class).downloadImageUsingMediaStore(imageUrl) }
+            unmockkStatic("com.rwmobi.giphytrending.ui.utils.KotlinExtensionsKt")
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("TrendingListTestRobotError")
+            throw AssertionError("Expected Download Image button action is not triggered. ${e.message}")
+        }
+    }
+
+    fun checkErrorSnackbarIsDisplayedAndDismissed(exceptionMessage: String) {
+        try {
+            assertSnackbarIsDisplayed(message = "Error getting data: $exceptionMessage")
+            tapOK()
+            assertSnackbarIsNotDisplayed(message = "Error getting data: $exceptionMessage")
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("TrendingListTestRobotError")
+            throw AssertionError("Expected error snackbar behavior is not observed. ${e.message}")
+        }
+    }
+
+    // Actions
+    fun printSemanticTree() {
+        composeTestRule.onRoot().printToLog("SemanticTree")
     }
 
     fun waitUntilTrendingListIsVisible() {
@@ -107,15 +164,6 @@ internal class TrendingListTestRobot(
                     useUnmergedTree = true,
                 ).isDisplayed()
             }
-        }
-    }
-
-    fun scrollToTrendingItem(index: Int) {
-        with(composeTestRule) {
-            onNodeWithContentDescription(
-                label = activity.getString(R.string.content_description_trending_list),
-                useUnmergedTree = true,
-            ).performScrollToIndex(index)
         }
     }
 
@@ -135,19 +183,64 @@ internal class TrendingListTestRobot(
         }
     }
 
-    fun assertTrendingListIsDisplayed() {
+    fun scrollToTrendingItem(index: Int) {
+        with(composeTestRule) {
+            onNodeWithContentDescription(
+                label = activity.getString(R.string.content_description_trending_list),
+                useUnmergedTree = true,
+            ).performScrollToIndex(index)
+        }
+    }
+
+    private fun tapOK() {
+        with(composeTestRule) {
+            onNode(
+                matcher = withRole(Role.Button).and(hasText(text = activity.getString(R.string.ok))),
+            ).performClick()
+        }
+    }
+
+    private fun tapCopyImageLinkButton() {
+        with(composeTestRule) {
+            onAllNodes(
+                matcher = withRole(Role.Button)
+                    .and(hasContentDescription(value = activity.getString(R.string.content_description_copy_image_link))),
+            ).onFirst().performClick()
+        }
+    }
+
+    private fun tapOpenInBrowserButton() {
+        with(composeTestRule) {
+            onAllNodes(
+                matcher = withRole(Role.Button)
+                    .and(hasContentDescription(value = activity.getString(R.string.content_description_open_in_browser))),
+            ).onFirst().performClick()
+        }
+    }
+
+    private fun tapDownloadImageButton() {
+        with(composeTestRule) {
+            onAllNodes(
+                matcher = withRole(Role.Button)
+                    .and(hasContentDescription(value = activity.getString(R.string.content_description_download_image))),
+            ).onFirst().performClick()
+        }
+    }
+
+    // Assertions
+    private fun assertTrendingListIsDisplayed() {
         with(composeTestRule) {
             onNodeWithContentDescription(label = activity.getString(R.string.content_description_trending_list)).assertIsDisplayed()
         }
     }
 
-    fun assertTrendingListIsNotDisplayed() {
+    private fun assertTrendingListIsNotDisplayed() {
         with(composeTestRule) {
             onNodeWithContentDescription(label = activity.getString(R.string.content_description_trending_list)).assertDoesNotExist()
         }
     }
 
-    fun assertTrendingItemIsDisplayed(giphyImageItem: GiphyImageItem) {
+    private fun assertTrendingItemIsDisplayed(giphyImageItem: GiphyImageItem) {
         with(composeTestRule) {
             onNodeWithText(text = giphyImageItem.title).assertIsDisplayed()
             onNode(
@@ -156,19 +249,19 @@ internal class TrendingListTestRobot(
         }
     }
 
-    fun assertNoDataScreenIsDisplayed() {
+    private fun assertNoDataScreenIsDisplayed() {
         with(composeTestRule) {
             onNodeWithText(text = activity.getString(R.string.there_is_nothing_to_show_try_pull_to_reload)).assertIsDisplayed()
         }
     }
 
-    fun assertNoDataScreenIsNotDisplayed() {
+    private fun assertNoDataScreenIsNotDisplayed() {
         with(composeTestRule) {
             onNodeWithText(text = activity.getString(R.string.there_is_nothing_to_show_try_pull_to_reload)).assertDoesNotExist()
         }
     }
 
-    fun assertLongClickToolTipIsDisplayed(contentDescription: String) {
+    private fun assertLongClickToolTipIsDisplayed(contentDescription: String) {
         with(composeTestRule) {
             onAllNodes(
                 matcher = withRole(Role.Button).and(hasContentDescription(value = contentDescription)),
@@ -180,42 +273,7 @@ internal class TrendingListTestRobot(
         }
     }
 
-    fun tapOK() {
-        with(composeTestRule) {
-            onNode(
-                matcher = withRole(Role.Button).and(hasText(text = activity.getString(R.string.ok))),
-            ).performClick()
-        }
-    }
-
-    fun tapCopyImageLinkButton() {
-        with(composeTestRule) {
-            onAllNodes(
-                matcher = withRole(Role.Button)
-                    .and(hasContentDescription(value = activity.getString(R.string.content_description_copy_image_link))),
-            ).onFirst().performClick()
-        }
-    }
-
-    fun tapOpenInBrowserButton() {
-        with(composeTestRule) {
-            onAllNodes(
-                matcher = withRole(Role.Button)
-                    .and(hasContentDescription(value = activity.getString(R.string.content_description_open_in_browser))),
-            ).onFirst().performClick()
-        }
-    }
-
-    fun tapDownloadImageButton() {
-        with(composeTestRule) {
-            onAllNodes(
-                matcher = withRole(Role.Button)
-                    .and(hasContentDescription(value = activity.getString(R.string.content_description_download_image))),
-            ).onFirst().performClick()
-        }
-    }
-
-    fun assertSnackbarIsDisplayed(message: String) {
+    private fun assertSnackbarIsDisplayed(message: String) {
         with(composeTestRule) {
             onNodeWithText(text = message).assertIsDisplayed()
             onNode(
@@ -224,7 +282,7 @@ internal class TrendingListTestRobot(
         }
     }
 
-    fun assertSnackbarIsNotDisplayed(message: String) {
+    private fun assertSnackbarIsNotDisplayed(message: String) {
         with(composeTestRule) {
             onNodeWithText(text = message).assertDoesNotExist()
             onNode(

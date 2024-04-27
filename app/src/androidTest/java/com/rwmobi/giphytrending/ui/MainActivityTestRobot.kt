@@ -7,7 +7,6 @@ package com.rwmobi.giphytrending.ui
 
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -22,11 +21,85 @@ import com.rwmobi.giphytrending.ui.test.withRole
 internal class MainActivityTestRobot(
     private val composeTestRule: GiphyTrendingTestRule,
 ) {
+    fun checkAppLayoutIsDisplayed() {
+        try {
+            assertTopAppBarIsVisible()
+            assertNavigationItemsAreDisplayed()
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
+            throw AssertionError("Expected App layout is not displayed. ${e.message}")
+        }
+    }
+
+    fun navigateToTrendingScreen() {
+        try {
+            tapTrendingTab()
+            assertTrendingTabIsSelected()
+            assertTopAppBarIsVisible()
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
+            throw AssertionError("Expected trending screen layout is not displayed. ${e.message}")
+        }
+    }
+
+    fun navigateToSearchScreen() {
+        try {
+            tapSearchTab()
+            assertSearchTabIsSelected()
+            assertTopAppBarIsVisible()
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
+            throw AssertionError("Expected search screen layout is not displayed. ${e.message}")
+        }
+    }
+
+    fun navigateToSettingsScreen() {
+        try {
+            tapSettingsTab()
+            assertSettingsTabIsSelected()
+            assertTopAppBarIsVisible()
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
+            throw AssertionError("Expected settings screen layout is not displayed. ${e.message}")
+        }
+    }
+
+    fun secondTapOnTrendingTab() {
+        try {
+            assertTrendingTabIsSelected()
+            navigateToTrendingScreen()
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
+            throw AssertionError("Expected second tap on trending screen behaviour is not observed. ${e.message}")
+        }
+    }
+
+    fun secondTapOnSearchTab() {
+        try {
+            assertSearchTabIsSelected()
+            navigateToSearchScreen()
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
+            throw AssertionError("Expected second tap on search screen behaviour is not observed. ${e.message}")
+        }
+    }
+
+    fun secondTapOnSettingsTab() {
+        try {
+            assertSettingsTabIsSelected()
+            navigateToSettingsScreen()
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
+            throw AssertionError("Expected second tap on settings screen behaviour is not observed. ${e.message}")
+        }
+    }
+
+    // Actions
     fun printSemanticTree() {
         composeTestRule.onRoot().printToLog("SemanticTree")
     }
 
-    fun tapTrendingTab() {
+    private fun tapTrendingTab() {
         with(composeTestRule) {
             onNode(
                 matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.TrendingList.titleResId))),
@@ -34,7 +107,7 @@ internal class MainActivityTestRobot(
         }
     }
 
-    fun tapSearchTab() {
+    private fun tapSearchTab() {
         with(composeTestRule) {
             onNode(
                 matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.Search.titleResId))),
@@ -42,7 +115,7 @@ internal class MainActivityTestRobot(
         }
     }
 
-    fun tapSettingsTab() {
+    private fun tapSettingsTab() {
         with(composeTestRule) {
             onNode(
                 matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.Settings.titleResId))),
@@ -50,7 +123,8 @@ internal class MainActivityTestRobot(
         }
     }
 
-    fun assertTopAppBarIsVisible() {
+    // Assertions
+    private fun assertTopAppBarIsVisible() {
         with(composeTestRule) {
             onNode(
                 matcher = withRole(Role.Image).and(hasContentDescription(value = activity.getString(R.string.app_name))),
@@ -58,7 +132,7 @@ internal class MainActivityTestRobot(
         }
     }
 
-    fun assertTopAppBarIsNotVisible() {
+    private fun assertTopAppBarIsNotVisible() {
         with(composeTestRule) {
             onNode(
                 matcher = withRole(Role.Image).and(hasContentDescription(value = activity.getString(R.string.app_name))),
@@ -66,19 +140,19 @@ internal class MainActivityTestRobot(
         }
     }
 
-    fun assertNavigationBarIsDisplayed() {
+    private fun assertNavigationBarIsDisplayed() {
         with(composeTestRule) {
             onNodeWithContentDescription(label = activity.getString(R.string.content_description_navigation_bar)).assertIsDisplayed()
         }
     }
 
-    fun assertNavigationRailIsDisplayed() {
+    private fun assertNavigationRailIsDisplayed() {
         with(composeTestRule) {
             onNodeWithContentDescription(label = activity.getString(R.string.content_description_navigation_rail)).assertIsDisplayed()
         }
     }
 
-    fun assertNavigationItemsAreDisplayed() {
+    private fun assertNavigationItemsAreDisplayed() {
         with(composeTestRule) {
             for (navigationItem in AppNavItem.navigationBarItems) {
                 onNode(
@@ -88,26 +162,26 @@ internal class MainActivityTestRobot(
         }
     }
 
-    fun assertTrendingTabIsSelected() {
+    private fun assertTrendingTabIsSelected() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(R.string.trending))),
+                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.TrendingList.titleResId))),
             ).assertIsSelected()
-
-            onNode(
-                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(R.string.settings))),
-            ).assertIsNotSelected()
         }
     }
 
-    fun assertSettingsTabIsSelected() {
+    private fun assertSearchTabIsSelected() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(R.string.trending))),
-            ).assertIsNotSelected()
+                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.Search.titleResId))),
+            ).assertIsSelected()
+        }
+    }
 
+    private fun assertSettingsTabIsSelected() {
+        with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(R.string.settings))),
+                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.Settings.titleResId))),
             ).assertIsSelected()
         }
     }

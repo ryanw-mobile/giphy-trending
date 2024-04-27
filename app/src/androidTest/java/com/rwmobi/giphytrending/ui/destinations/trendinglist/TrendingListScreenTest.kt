@@ -71,11 +71,8 @@ class TrendingListScreenTest {
         )
 
         with(mainActivityTestRobot) {
-            assertTopAppBarIsVisible()
-            assertNavigationItemsAreDisplayed()
-
-            tapTrendingTab()
-            assertTrendingTabIsSelected()
+            checkAppLayoutIsDisplayed()
+            navigateToTrendingScreen()
         }
 
         with(trendingListTestRobot) {
@@ -89,25 +86,21 @@ class TrendingListScreenTest {
             checkTrendingListContainsAllGiphyImageItems(giphyImageItemList = SampleGiphyImageItemList.giphyImageItemList)
 
             scrollToTrendingItem(index = SampleGiphyImageItemList.giphyImageItemList.lastIndex)
-            assertTrendingItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList.last())
+            checkGiphyImageItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList.last())
         }
 
         with(mainActivityTestRobot) {
-            // Test scroll to top
-            assertTrendingTabIsSelected()
-            tapTrendingTab()
+            secondTapOnTrendingTab()
         }
 
         with(trendingListTestRobot) {
-            assertTrendingItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList.first())
+            checkGiphyImageItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList.first())
 
             // Check error message snackbar
             val exceptionMessage = "Testing Exception"
             fakeTrendingRepository.setTrendingResultForTest(Result.failure(IOException(exceptionMessage)))
             performPullToRefresh()
-            assertSnackbarIsDisplayed(message = "Error getting data: $exceptionMessage")
-            tapOK()
-            assertSnackbarIsNotDisplayed(message = "Error getting data: $exceptionMessage")
+            checkErrorSnackbarIsDisplayedAndDismissed(exceptionMessage = exceptionMessage)
 
             // Reload with only one item for easier testing
             val lastGiphyItem = SampleGiphyImageItemList.giphyImageItemList.last()
@@ -115,7 +108,7 @@ class TrendingListScreenTest {
                 trendingResult = Result.success(listOf(lastGiphyItem)),
             )
             performPullToRefresh()
-            assertTrendingItemIsDisplayed(giphyImageItem = lastGiphyItem)
+            checkGiphyImageItemIsDisplayed(giphyImageItem = lastGiphyItem)
 
             checkGiphyImageItemButtonsLongClickToolTipAreDisplayed()
             checkOpenInBrowserButton(url = lastGiphyItem.webUrl)

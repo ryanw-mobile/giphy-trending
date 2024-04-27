@@ -3,7 +3,7 @@
  * https://github.com/ryanw-mobile
  */
 
-package com.rwmobi.giphytrending.data.source.network
+package com.rwmobi.giphytrending.ui.test
 
 import com.rwmobi.giphytrending.data.source.network.dto.FixedHeight
 import com.rwmobi.giphytrending.data.source.network.dto.FixedWidth

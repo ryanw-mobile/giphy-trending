@@ -74,6 +74,7 @@ fun TrendingListScreen(
                 GiphyStaggeredGrid(
                     modifier = Modifier.fillMaxSize(),
                     giphyImageItems = giphyImageItems,
+                    listContentDescription = stringResource(R.string.content_description_trending_list),
                     useCardLayout = useCardLayout,
                     imageLoader = imageLoader,
                     requestScrollToTop = uiState.requestScrollToTop,

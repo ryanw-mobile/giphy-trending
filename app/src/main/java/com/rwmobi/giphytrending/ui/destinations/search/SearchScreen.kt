@@ -89,6 +89,7 @@ fun SearchScreen(
                     GiphyStaggeredGrid(
                         modifier = Modifier.fillMaxSize(),
                         giphyImageItems = giphyImageItems,
+                        listContentDescription = stringResource(R.string.content_description_search_results),
                         useCardLayout = useCardLayout,
                         imageLoader = imageLoader,
                         requestScrollToTop = uiState.requestScrollToTop,

@@ -18,6 +18,7 @@
     <string name="acknowledgement_sampleapp">This is a sample App for demonstration purpose.\nSource available at https://github.com/ryanw-mobile/giphy-trending</string>
     <string name="loading">Loading…</string>
     <string name="content_description_trending_list">Trending List</string>
+    <string name="content_description_search_results">Search Results</string>
     <string name="content_description_open_in_browser">Open in browser</string>
     <string name="content_description_copy_image_link">Copy image link</string>
     <string name="content_description_download_image">Download image</string>
@@ -41,5 +42,6 @@
     <string name="content_description_navigation_bar">Navigation Bar</string>
     <string name="content_description_navigation_rail">Navigation Rail</string>
     <string name="content_description_pull_to_refresh">Pull to refresh</string>
+    <string name="content_description_search_bar">Search bar</string>
 
 </resources>

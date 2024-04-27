@@ -9,7 +9,9 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.printToLog
@@ -94,6 +96,17 @@ internal class MainActivityTestRobot(
         }
     }
 
+    fun checkErrorSnackbarIsDisplayedAndDismissed(exceptionMessage: String) {
+        try {
+            assertSnackbarIsDisplayed(message = exceptionMessage)
+            tapOK()
+            assertSnackbarIsNotDisplayed(message = exceptionMessage)
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
+            throw AssertionError("Expected error snackbar behavior is not observed. ${e.message}")
+        }
+    }
+
     // Actions
     fun printSemanticTree() {
         composeTestRule.onRoot().printToLog("SemanticTree")
@@ -119,6 +132,14 @@ internal class MainActivityTestRobot(
         with(composeTestRule) {
             onNode(
                 matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.Settings.titleResId))),
+            ).performClick()
+        }
+    }
+
+    private fun tapOK() {
+        with(composeTestRule) {
+            onNode(
+                matcher = withRole(Role.Button).and(hasText(text = activity.getString(R.string.ok))),
             ).performClick()
         }
     }
@@ -183,6 +204,24 @@ internal class MainActivityTestRobot(
             onNode(
                 matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.Settings.titleResId))),
             ).assertIsSelected()
+        }
+    }
+
+    private fun assertSnackbarIsDisplayed(message: String) {
+        with(composeTestRule) {
+            onNodeWithText(text = message).assertIsDisplayed()
+            onNode(
+                matcher = withRole(Role.Button).and(hasText(text = activity.getString(R.string.ok))),
+            ).assertIsDisplayed()
+        }
+    }
+
+    private fun assertSnackbarIsNotDisplayed(message: String) {
+        with(composeTestRule) {
+            onNodeWithText(text = message).assertDoesNotExist()
+            onNode(
+                matcher = withRole(Role.Button).and(hasText(text = activity.getString(R.string.ok))),
+            ).assertDoesNotExist()
         }
     }
 }

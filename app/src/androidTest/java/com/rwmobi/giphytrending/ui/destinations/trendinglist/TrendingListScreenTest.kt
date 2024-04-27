@@ -15,10 +15,10 @@ import com.rwmobi.giphytrending.domain.model.UserPreferences
 import com.rwmobi.giphytrending.domain.repository.TrendingRepository
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
 import com.rwmobi.giphytrending.ui.MainActivityTestRobot
+import com.rwmobi.giphytrending.ui.components.GiphyItemTestRobot
 import com.rwmobi.giphytrending.ui.test.SampleGiphyImageItemList
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -45,6 +45,7 @@ class TrendingListScreenTest {
 
     private lateinit var mainActivityTestRobot: MainActivityTestRobot
     private lateinit var trendingListTestRobot: TrendingListTestRobot
+    private lateinit var giphyItemTestRobot: GiphyItemTestRobot
     private lateinit var fakeTrendingRepository: FakeUITestTrendingRepository
     private lateinit var fakeUserPreferencesRepository: FakeUITestUserPreferencesRepository
 
@@ -53,6 +54,7 @@ class TrendingListScreenTest {
         hiltRule.inject()
         mainActivityTestRobot = MainActivityTestRobot(composeTestRule)
         trendingListTestRobot = TrendingListTestRobot(composeTestRule)
+        giphyItemTestRobot = GiphyItemTestRobot(composeTestRule)
         fakeTrendingRepository = trendingRepository as FakeUITestTrendingRepository
         fakeUserPreferencesRepository = (userPreferencesRepository as FakeUITestUserPreferencesRepository).apply {
             init(
@@ -66,57 +68,61 @@ class TrendingListScreenTest {
 
     @Test
     fun trendingListScreenJourneyTest() = runTest {
-        fakeTrendingRepository.setTrendingResultForTest(
-            trendingResult = Result.success(emptyList()),
-        )
-
-        with(mainActivityTestRobot) {
-            checkAppLayoutIsDisplayed()
-            navigateToTrendingScreen()
-        }
-
         with(trendingListTestRobot) {
-            checkNoDataScreenIsDisplayed()
-
             fakeTrendingRepository.setTrendingResultForTest(
-                trendingResult = Result.success(SampleGiphyImageItemList.giphyImageItemList),
+                trendingResult = Result.success(emptyList()),
             )
-            performPullToRefresh()
-            checkTrendingListIsDisplayed()
-            checkTrendingListContainsAllGiphyImageItems(giphyImageItemList = SampleGiphyImageItemList.giphyImageItemList)
 
-            scrollToTrendingItem(index = SampleGiphyImageItemList.giphyImageItemList.lastIndex)
-            checkGiphyImageItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList.last())
-        }
+            with(mainActivityTestRobot) {
+                checkAppLayoutIsDisplayed()
+                navigateToTrendingScreen()
+                checkNoDataScreenIsDisplayed()
+            }
 
-        with(mainActivityTestRobot) {
-            secondTapOnTrendingTab()
-        }
+            // Pull to refresh with some data returned
 
-        with(trendingListTestRobot) {
-            checkGiphyImageItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList.first())
+            with(giphyItemTestRobot) {
+                fakeTrendingRepository.setTrendingResultForTest(
+                    trendingResult = Result.success(SampleGiphyImageItemList.giphyImageItemList),
+                )
+                performPullToRefresh()
+                checkTrendingListIsDisplayed()
+                checkTrendingListContainsAllGiphyImageItems(giphyImageItemList = SampleGiphyImageItemList.giphyImageItemList)
 
-            // Check error message snackbar
-            val exceptionMessage = "Testing Exception"
-            fakeTrendingRepository.setTrendingResultForTest(Result.failure(IOException(exceptionMessage)))
-            performPullToRefresh()
-            checkErrorSnackbarIsDisplayedAndDismissed(exceptionMessage = exceptionMessage)
+                scrollToTrendingItem(index = SampleGiphyImageItemList.giphyImageItemList.lastIndex)
+                checkGiphyImageItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList.last())
+
+                // Second top should scroll back to the top
+                with(mainActivityTestRobot) {
+                    secondTapOnTrendingTab()
+                }
+                checkGiphyImageItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList.first())
+            }
+
+            // Error Snackbar
+            with(mainActivityTestRobot) {
+                val exceptionMessage = "Testing Exception"
+                fakeTrendingRepository.setTrendingResultForTest(Result.failure(IOException(exceptionMessage)))
+                performPullToRefresh()
+                checkErrorSnackbarIsDisplayedAndDismissed(exceptionMessage = "Error getting data: $exceptionMessage")
+            }
 
             // Reload with only one item for easier testing
-            val lastGiphyItem = SampleGiphyImageItemList.giphyImageItemList.last()
-            fakeTrendingRepository.setTrendingResultForTest(
-                trendingResult = Result.success(listOf(lastGiphyItem)),
-            )
-            performPullToRefresh()
-            checkGiphyImageItemIsDisplayed(giphyImageItem = lastGiphyItem)
+            with(giphyItemTestRobot) {
+                val lastGiphyItem = SampleGiphyImageItemList.giphyImageItemList.last()
+                fakeTrendingRepository.setTrendingResultForTest(
+                    trendingResult = Result.success(listOf(lastGiphyItem)),
+                )
+                performPullToRefresh()
 
-            checkGiphyImageItemButtonsLongClickToolTipAreDisplayed()
-            checkOpenInBrowserButton(url = lastGiphyItem.webUrl)
-            advanceUntilIdle()
-            checkDownloadImageButton(imageUrl = lastGiphyItem.imageUrl)
-            advanceUntilIdle()
-            // This likely to have the clipboard floating dialog, so we put it to the end of test
-            checkCopyImageLinkButton()
+                checkGiphyImageItemIsDisplayed(giphyImageItem = lastGiphyItem)
+
+                checkGiphyImageItemButtonsLongClickToolTipAreDisplayed()
+                checkOpenInBrowserButton(url = lastGiphyItem.webUrl)
+                checkDownloadImageButton(imageUrl = lastGiphyItem.imageUrl)
+                // This likely to have the clipboard floating dialog, so we put it to the end of test
+                checkCopyImageLinkButton()
+            }
         }
     }
 }

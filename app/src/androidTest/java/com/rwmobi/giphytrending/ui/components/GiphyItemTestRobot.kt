@@ -11,11 +11,9 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onFirst
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.printToLog
 import com.rwmobi.giphytrending.R
@@ -35,24 +33,12 @@ internal class GiphyItemTestRobot(
     private val composeTestRule: GiphyTrendingTestRule,
 ) {
     // Checks
-    fun checkGiphyImageItemIsDisplayed(giphyImageItem: GiphyImageItem) {
+    fun checkGiphyItemIsDisplayed(giphyImageItem: GiphyImageItem) {
         try {
-            assertTrendingItemIsDisplayed(giphyImageItem = giphyImageItem)
+            assertGiphyItemIsDisplayed(giphyImageItem = giphyImageItem)
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("GiphyItemTestRobotError")
-            throw AssertionError("Expected Trending List item is not displayed. ${e.message}")
-        }
-    }
-
-    fun checkTrendingListContainsAllGiphyImageItems(giphyImageItemList: List<GiphyImageItem>) {
-        try {
-            for (index in 0..giphyImageItemList.lastIndex) {
-                scrollToTrendingItem(index = index)
-                assertTrendingItemIsDisplayed(giphyImageItem = giphyImageItemList[index])
-            }
-        } catch (e: AssertionError) {
-            composeTestRule.onRoot().printToLog("GiphyItemTestRobotError")
-            throw AssertionError("Expected Trending List item is not displayed. ${e.message}")
+            throw AssertionError("Expected Trending List item is not displayed. ${e.message}", e)
         }
     }
 
@@ -71,7 +57,7 @@ internal class GiphyItemTestRobot(
             }
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("GiphyItemTestRobotError")
-            throw AssertionError("Expected button tool tip is not displayed. ${e.message}")
+            throw AssertionError("Expected button tool tip is not displayed. ${e.message}", e)
         }
     }
 
@@ -83,7 +69,7 @@ internal class GiphyItemTestRobot(
             }
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("GiphyItemTestRobotError")
-            throw AssertionError("Expected Copy Image Link button message is not displayed. ${e.message}")
+            throw AssertionError("Expected Copy Image Link button message is not displayed. ${e.message}", e)
         }
     }
 
@@ -98,7 +84,7 @@ internal class GiphyItemTestRobot(
             unmockkStatic("com.rwmobi.giphytrending.ui.utils.KotlinExtensionsKt")
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("GiphyItemTestRobotError")
-            throw AssertionError("Expected Open In Browser button action is not triggered. ${e.message}")
+            throw AssertionError("Expected Open In Browser button action is not triggered. ${e.message}", e)
         }
     }
 
@@ -113,22 +99,13 @@ internal class GiphyItemTestRobot(
             unmockkStatic("com.rwmobi.giphytrending.ui.utils.KotlinExtensionsKt")
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("TGiphyItemTestRobotError")
-            throw AssertionError("Expected Download Image button action is not triggered. ${e.message}")
+            throw AssertionError("Expected Download Image button action is not triggered. ${e.message}", e)
         }
     }
 
     // Actions
     fun printSemanticTree() {
         composeTestRule.onRoot().printToLog("SemanticTree")
-    }
-
-    fun scrollToTrendingItem(index: Int) {
-        with(composeTestRule) {
-            onNodeWithContentDescription(
-                label = activity.getString(R.string.content_description_trending_list),
-                useUnmergedTree = true,
-            ).performScrollToIndex(index)
-        }
     }
 
     private fun tapCopyImageLinkButton() {
@@ -159,7 +136,7 @@ internal class GiphyItemTestRobot(
     }
 
     // Assertions
-    private fun assertTrendingItemIsDisplayed(giphyImageItem: GiphyImageItem) {
+    private fun assertGiphyItemIsDisplayed(giphyImageItem: GiphyImageItem) {
         with(composeTestRule) {
             onNodeWithText(text = giphyImageItem.title).assertIsDisplayed()
             onNode(

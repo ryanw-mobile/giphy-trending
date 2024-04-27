@@ -87,16 +87,16 @@ class TrendingListScreenTest {
                 )
                 performPullToRefresh()
                 checkTrendingListIsDisplayed()
-                checkTrendingListContainsAllGiphyImageItems(giphyImageItemList = SampleGiphyImageItemList.giphyImageItemList)
-
-                scrollToTrendingItem(index = SampleGiphyImageItemList.giphyImageItemList.lastIndex)
-                checkGiphyImageItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList.last())
+                for (index in 0..SampleGiphyImageItemList.giphyImageItemList.lastIndex) {
+                    checkCanScrollToTrendingListItem(index = index)
+                    checkGiphyItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList[index])
+                }
 
                 // Second top should scroll back to the top
                 with(mainActivityTestRobot) {
                     secondTapOnTrendingTab()
                 }
-                checkGiphyImageItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList.first())
+                checkGiphyItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList.first())
             }
 
             // Error Snackbar
@@ -115,7 +115,7 @@ class TrendingListScreenTest {
                 )
                 performPullToRefresh()
 
-                checkGiphyImageItemIsDisplayed(giphyImageItem = lastGiphyItem)
+                checkGiphyItemIsDisplayed(giphyImageItem = lastGiphyItem)
 
                 checkGiphyImageItemButtonsLongClickToolTipAreDisplayed()
                 checkOpenInBrowserButton(url = lastGiphyItem.webUrl)

@@ -10,6 +10,7 @@ import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.printToLog
 import androidx.compose.ui.test.swipeDown
@@ -26,7 +27,7 @@ internal class TrendingListTestRobot(
             assertNoDataScreenIsDisplayed()
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("TrendingListTestRobotError")
-            throw AssertionError("Expected No Data screen is not displayed. ${e.message}")
+            throw AssertionError("Expected No Data screen is not displayed. ${e.message}", e)
         }
     }
 
@@ -36,7 +37,16 @@ internal class TrendingListTestRobot(
             assertTrendingListIsDisplayed()
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("TrendingListTestRobotError")
-            throw AssertionError("Expected Trending List is not displayed. ${e.message}")
+            throw AssertionError("Expected Trending List is not displayed. ${e.message}", e)
+        }
+    }
+
+    fun checkCanScrollToTrendingListItem(index: Int) {
+        try {
+            scrollToTrendingListItem(index = index)
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("TrendingListTestRobotError")
+            throw AssertionError("Cannot scroll to the requested list index $index. ${e.message}", e)
         }
     }
 
@@ -69,6 +79,15 @@ internal class TrendingListTestRobot(
 
             // UI has intentional delay as loading effect
             mainClock.advanceTimeBy(milliseconds = 2_000)
+        }
+    }
+
+    private fun scrollToTrendingListItem(index: Int) {
+        with(composeTestRule) {
+            onNodeWithContentDescription(
+                label = activity.getString(R.string.content_description_trending_list),
+                useUnmergedTree = true,
+            ).performScrollToIndex(index)
         }
     }
 

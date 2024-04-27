@@ -5,8 +5,8 @@
 
 package com.rwmobi.giphytrending.di
 
-import com.rwmobi.giphytrending.data.source.network.FakeNetworkDataSourceB
-import com.rwmobi.giphytrending.data.source.network.interfaces.NetworkDataSource
+import com.rwmobi.giphytrending.domain.repository.TrendingRepository
+import com.rwmobi.giphytrending.ui.test.FakeTrendingRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.android.components.ViewModelComponent
@@ -16,12 +16,12 @@ import dagger.hilt.testing.TestInstallIn
 @Module
 @TestInstallIn(
     components = [ViewModelComponent::class],
-    replaces = [NetworkDataSourceModule::class],
+    replaces = [TrendingRepositoryModule::class],
 )
-object FakeNetworkDataSourceModule {
+object FakeTrendingRepositoryModule {
     @ViewModelScoped
     @Provides
-    fun provideNetworkDataSource(): NetworkDataSource {
-        return FakeNetworkDataSourceB()
+    fun provideFakeTrendingRepository(): TrendingRepository {
+        return FakeTrendingRepository()
     }
 }

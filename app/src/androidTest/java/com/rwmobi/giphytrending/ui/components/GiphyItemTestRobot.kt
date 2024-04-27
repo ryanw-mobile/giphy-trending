@@ -135,7 +135,7 @@ internal class GiphyItemTestRobot(
         with(composeTestRule) {
             onAllNodes(
                 matcher = withRole(Role.Button)
-                    .and(hasContentDescription(value = activity.getString(R.string.content_description_copy_image_link))),
+                    and hasContentDescription(value = activity.getString(R.string.content_description_copy_image_link)),
             ).onFirst().performClick()
         }
     }
@@ -144,7 +144,7 @@ internal class GiphyItemTestRobot(
         with(composeTestRule) {
             onAllNodes(
                 matcher = withRole(Role.Button)
-                    .and(hasContentDescription(value = activity.getString(R.string.content_description_open_in_browser))),
+                    and hasContentDescription(value = activity.getString(R.string.content_description_open_in_browser)),
             ).onFirst().performClick()
         }
     }
@@ -153,7 +153,7 @@ internal class GiphyItemTestRobot(
         with(composeTestRule) {
             onAllNodes(
                 matcher = withRole(Role.Button)
-                    .and(hasContentDescription(value = activity.getString(R.string.content_description_download_image))),
+                    and hasContentDescription(value = activity.getString(R.string.content_description_download_image)),
             ).onFirst().performClick()
         }
     }
@@ -163,7 +163,7 @@ internal class GiphyItemTestRobot(
         with(composeTestRule) {
             onNodeWithText(text = giphyImageItem.title).assertIsDisplayed()
             onNode(
-                matcher = withRole(Role.Image).and(hasContentDescription(value = giphyImageItem.title)),
+                matcher = withRole(Role.Image) and hasContentDescription(value = giphyImageItem.title),
             )
         }
     }
@@ -171,7 +171,7 @@ internal class GiphyItemTestRobot(
     private fun assertLongClickToolTipIsDisplayed(contentDescription: String) {
         with(composeTestRule) {
             onAllNodes(
-                matcher = withRole(Role.Button).and(hasContentDescription(value = contentDescription)),
+                matcher = withRole(Role.Button) and hasContentDescription(value = contentDescription),
             ).onFirst().performTouchInput {
                 longClick()
             }

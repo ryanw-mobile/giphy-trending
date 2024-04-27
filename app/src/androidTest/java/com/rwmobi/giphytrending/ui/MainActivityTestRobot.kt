@@ -115,7 +115,7 @@ internal class MainActivityTestRobot(
     private fun tapTrendingTab() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.TrendingList.titleResId))),
+                matcher = withRole(Role.Tab) and hasContentDescription(value = activity.getString(AppNavItem.TrendingList.titleResId)),
             ).performClick()
         }
     }
@@ -123,7 +123,7 @@ internal class MainActivityTestRobot(
     private fun tapSearchTab() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.Search.titleResId))),
+                matcher = withRole(Role.Tab) and hasContentDescription(value = activity.getString(AppNavItem.Search.titleResId)),
             ).performClick()
         }
     }
@@ -131,7 +131,7 @@ internal class MainActivityTestRobot(
     private fun tapSettingsTab() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.Settings.titleResId))),
+                matcher = withRole(Role.Tab) and hasContentDescription(value = activity.getString(AppNavItem.Settings.titleResId)),
             ).performClick()
         }
     }
@@ -139,7 +139,7 @@ internal class MainActivityTestRobot(
     private fun tapOK() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Button).and(hasText(text = activity.getString(R.string.ok))),
+                matcher = withRole(Role.Button) and hasText(text = activity.getString(R.string.ok)),
             ).performClick()
         }
     }
@@ -148,7 +148,7 @@ internal class MainActivityTestRobot(
     private fun assertTopAppBarIsVisible() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Image).and(hasContentDescription(value = activity.getString(R.string.app_name))),
+                matcher = withRole(Role.Image) and hasContentDescription(value = activity.getString(R.string.app_name)),
             ).assertIsDisplayed()
         }
     }
@@ -156,7 +156,7 @@ internal class MainActivityTestRobot(
     private fun assertTopAppBarIsNotVisible() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Image).and(hasContentDescription(value = activity.getString(R.string.app_name))),
+                matcher = withRole(Role.Image) and hasContentDescription(value = activity.getString(R.string.app_name)),
             ).assertDoesNotExist()
         }
     }
@@ -177,7 +177,7 @@ internal class MainActivityTestRobot(
         with(composeTestRule) {
             for (navigationItem in AppNavItem.navigationBarItems) {
                 onNode(
-                    matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(navigationItem.titleResId))),
+                    matcher = withRole(Role.Tab) and hasContentDescription(value = activity.getString(navigationItem.titleResId)),
                 ).assertIsDisplayed()
             }
         }
@@ -186,7 +186,7 @@ internal class MainActivityTestRobot(
     private fun assertTrendingTabIsSelected() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.TrendingList.titleResId))),
+                matcher = withRole(Role.Tab) and hasContentDescription(value = activity.getString(AppNavItem.TrendingList.titleResId)),
             ).assertIsSelected()
         }
     }
@@ -194,7 +194,7 @@ internal class MainActivityTestRobot(
     private fun assertSearchTabIsSelected() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.Search.titleResId))),
+                matcher = withRole(Role.Tab) and hasContentDescription(value = activity.getString(AppNavItem.Search.titleResId)),
             ).assertIsSelected()
         }
     }
@@ -202,7 +202,7 @@ internal class MainActivityTestRobot(
     private fun assertSettingsTabIsSelected() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.Settings.titleResId))),
+                matcher = withRole(Role.Tab) and hasContentDescription(value = activity.getString(AppNavItem.Settings.titleResId)),
             ).assertIsSelected()
         }
     }
@@ -211,7 +211,7 @@ internal class MainActivityTestRobot(
         with(composeTestRule) {
             onNodeWithText(text = message).assertIsDisplayed()
             onNode(
-                matcher = withRole(Role.Button).and(hasText(text = activity.getString(R.string.ok))),
+                matcher = withRole(Role.Button) and hasText(text = activity.getString(R.string.ok)),
             ).assertIsDisplayed()
         }
     }
@@ -220,7 +220,7 @@ internal class MainActivityTestRobot(
         with(composeTestRule) {
             onNodeWithText(text = message).assertDoesNotExist()
             onNode(
-                matcher = withRole(Role.Button).and(hasText(text = activity.getString(R.string.ok))),
+                matcher = withRole(Role.Button) and hasText(text = activity.getString(R.string.ok)),
             ).assertDoesNotExist()
         }
     }

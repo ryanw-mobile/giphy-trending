@@ -10,72 +10,34 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.hasContentDescription
-import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.printToLog
 import com.rwmobi.giphytrending.R
+import com.rwmobi.giphytrending.ui.navigation.AppNavItem
 import com.rwmobi.giphytrending.ui.test.GiphyTrendingTestRule
 import com.rwmobi.giphytrending.ui.test.withRole
 
 internal class MainActivityTestRobot(
     private val composeTestRule: GiphyTrendingTestRule,
 ) {
-    init {
-        appBarIsVisible()
-        trendingTabIsSelected()
-        waitUntilTrendingListIsVisible()
-    }
-
-    fun waitUntilTrendingListIsVisible() {
-        with(composeTestRule) {
-            waitUntil(timeoutMillis = 1_000) {
-                onNodeWithContentDescription(
-                    label = activity.getString(R.string.content_description_trending_list),
-                    useUnmergedTree = true,
-                ).isDisplayed()
-            }
-        }
-    }
-
-    fun appBarIsVisible() {
-        with(composeTestRule) {
-            onNode(
-                matcher = withRole(Role.Image).and(hasContentDescription(value = activity.getString(R.string.app_name))),
-            ).assertIsDisplayed()
-        }
-    }
-
-    fun trendingTabIsSelected() {
-        with(composeTestRule) {
-            onNode(
-                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(R.string.trending))),
-            ).assertIsSelected()
-
-            onNode(
-                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(R.string.settings))),
-            ).assertIsNotSelected()
-        }
-    }
-
-    fun settingsTabIsSelected() {
-        with(composeTestRule) {
-            onNode(
-                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(R.string.trending))),
-            ).assertIsNotSelected()
-
-            onNode(
-                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(R.string.settings))),
-            ).assertIsSelected()
-        }
+    fun printSemanticTree() {
+        composeTestRule.onRoot().printToLog("SemanticTree")
     }
 
     fun tapTrendingTab() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(R.string.trending))),
+                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.TrendingList.titleResId))),
+            ).performClick()
+        }
+    }
+
+    fun tapSearchTab() {
+        with(composeTestRule) {
+            onNode(
+                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.Search.titleResId))),
             ).performClick()
         }
     }
@@ -83,21 +45,70 @@ internal class MainActivityTestRobot(
     fun tapSettingsTab() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(R.string.settings))),
+                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(AppNavItem.Settings.titleResId))),
             ).performClick()
         }
     }
 
-    fun scrollToTrendingItem(index: Int) {
+    fun assertTopAppBarIsVisible() {
         with(composeTestRule) {
-            onNodeWithContentDescription(
-                label = activity.getString(R.string.content_description_trending_list),
-                useUnmergedTree = true,
-            ).performScrollToIndex(index)
+            onNode(
+                matcher = withRole(Role.Image).and(hasContentDescription(value = activity.getString(R.string.app_name))),
+            ).assertIsDisplayed()
         }
     }
 
-    fun printSemanticTree() {
-        composeTestRule.onRoot().printToLog("SemanticTree")
+    fun assertTopAppBarIsNotVisible() {
+        with(composeTestRule) {
+            onNode(
+                matcher = withRole(Role.Image).and(hasContentDescription(value = activity.getString(R.string.app_name))),
+            ).assertDoesNotExist()
+        }
+    }
+
+    fun assertNavigationBarIsDisplayed() {
+        with(composeTestRule) {
+            onNodeWithContentDescription(label = activity.getString(R.string.content_description_navigation_bar)).assertIsDisplayed()
+        }
+    }
+
+    fun assertNavigationRailIsDisplayed() {
+        with(composeTestRule) {
+            onNodeWithContentDescription(label = activity.getString(R.string.content_description_navigation_rail)).assertIsDisplayed()
+        }
+    }
+
+    fun assertNavigationItemsAreDisplayed() {
+        with(composeTestRule) {
+            for (navigationItem in AppNavItem.navigationBarItems) {
+                onNode(
+                    matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(navigationItem.titleResId))),
+                ).assertIsDisplayed()
+            }
+        }
+    }
+
+    fun assertTrendingTabIsSelected() {
+        with(composeTestRule) {
+            onNode(
+                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(R.string.trending))),
+            ).assertIsSelected()
+
+            onNode(
+                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(R.string.settings))),
+            ).assertIsNotSelected()
+        }
+    }
+
+    fun assertSettingsTabIsSelected() {
+        with(composeTestRule) {
+            onNode(
+                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(R.string.trending))),
+            ).assertIsNotSelected()
+
+            onNode(
+                matcher = withRole(Role.Tab).and(hasContentDescription(value = activity.getString(R.string.settings))),
+            ).assertIsSelected()
+        }
     }
 }

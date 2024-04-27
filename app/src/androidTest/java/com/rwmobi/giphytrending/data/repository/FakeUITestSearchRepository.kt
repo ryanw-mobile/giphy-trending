@@ -1,11 +1,16 @@
-package com.rwmobi.giphytrending.ui.test
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
+package com.rwmobi.giphytrending.data.repository
 
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.repository.SearchRepository
 import javax.inject.Inject
 
-internal class FakeSearchRepository @Inject constructor() : SearchRepository {
+class FakeUITestSearchRepository @Inject constructor() : SearchRepository {
     private var searchResult: Result<List<GiphyImageItem>>? = null
     private var lastSuccessfulSearchKeyword: String? = null
     private var lastSuccessfulSearchResults: List<GiphyImageItem>? = null

@@ -5,8 +5,8 @@
 
 package com.rwmobi.giphytrending.di
 
+import com.rwmobi.giphytrending.data.repository.FakeUITestSearchRepository
 import com.rwmobi.giphytrending.domain.repository.SearchRepository
-import com.rwmobi.giphytrending.ui.test.FakeSearchRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent
@@ -22,6 +22,6 @@ object FakeSearchRepositoryModule {
     @Singleton
     @Provides
     fun provideFakeSearchRepository(): SearchRepository {
-        return FakeSearchRepository()
+        return FakeUITestSearchRepository()
     }
 }

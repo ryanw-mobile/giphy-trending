@@ -1,4 +1,9 @@
-package com.rwmobi.giphytrending.ui.test
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
+package com.rwmobi.giphytrending.data.repository
 
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
@@ -10,7 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
-internal class FakeUserPreferencesRepository @Inject constructor() : UserPreferencesRepository {
+class FakeUITestUserPreferencesRepository @Inject constructor() : UserPreferencesRepository {
     private val _userPreferences: MutableStateFlow<UserPreferences> = MutableStateFlow(UserPreferences(apiRequestLimit = null, rating = null))
     override val userPreferences = _userPreferences.asStateFlow()
 

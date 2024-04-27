@@ -94,6 +94,7 @@ fun TrendingListScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState()), // to support pull to refresh
+                    stringResource(R.string.there_is_nothing_to_show_try_pull_to_reload),
                 )
             }
         }

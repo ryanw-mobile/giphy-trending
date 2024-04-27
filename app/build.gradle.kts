@@ -186,6 +186,8 @@ android {
                 "META-INF/AL2.0",
                 "META-INF/LGPL2.1",
                 "META-INF/licenses/ASM",
+                "META-INF/LICENSE.md",
+                "META-INF/LICENSE*.md",
             )
             pickFirsts += listOf(
                 "win32-x86-64/attach_hotspot_windows.dll",
@@ -295,6 +297,7 @@ dependencies {
     androidTestImplementation(libs.kotest.assertions.core)
     androidTestImplementation(libs.jetbrains.kotlinx.coroutines.test)
     androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.mockk.android)
 }
 
 configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {

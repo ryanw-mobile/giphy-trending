@@ -1,11 +1,16 @@
-package com.rwmobi.giphytrending.ui.test
+/*
+ * Copyright (c) 2024. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
+package com.rwmobi.giphytrending.data.repository
 
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.repository.TrendingRepository
 import javax.inject.Inject
 
-internal class FakeTrendingRepository @Inject constructor() : TrendingRepository {
+class FakeUITestTrendingRepository @Inject constructor() : TrendingRepository {
     private var trendingResult: Result<List<GiphyImageItem>>? = null
 
     override suspend fun fetchCachedTrending(): Result<List<GiphyImageItem>> {

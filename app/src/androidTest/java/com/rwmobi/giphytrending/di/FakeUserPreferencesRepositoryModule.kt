@@ -5,23 +5,23 @@
 
 package com.rwmobi.giphytrending.di
 
+import com.rwmobi.giphytrending.data.repository.FakeUITestUserPreferencesRepository
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
-import com.rwmobi.giphytrending.ui.test.FakeUserPreferencesRepository
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.android.components.ViewModelComponent
-import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
+import javax.inject.Singleton
 
 @Module
 @TestInstallIn(
-    components = [ViewModelComponent::class],
+    components = [SingletonComponent::class],
     replaces = [UserPreferencesRepositoryModule::class],
 )
 object FakeUserPreferencesRepositoryModule {
-    @ViewModelScoped
+    @Singleton
     @Provides
     fun provideFakeUserPreferencesRepository(): UserPreferencesRepository {
-        return FakeUserPreferencesRepository()
+        return FakeUITestUserPreferencesRepository()
     }
 }

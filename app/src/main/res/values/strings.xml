@@ -25,6 +25,7 @@
     <string name="downloading_image">Downloading image…</string>
     <string name="failed_to_download_file">Failed to download file.</string>
     <string name="there_is_nothing_to_show_try_pull_to_reload">There is nothing to show.\nTry pull to reload?</string>
+    <string name="there_is_nothing_to_show_try_another_search">There is nothing to show.\nTry another search?</string>
     <string name="rating">Image Rating</string>
     <string name="version">Version: %1$s</string>
     <string name="rating_g">Contains images that are broadly accepted as appropriate and commonly witnessed by people in a public environment.</string>

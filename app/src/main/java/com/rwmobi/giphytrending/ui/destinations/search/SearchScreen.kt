@@ -109,6 +109,7 @@ fun SearchScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState()), // to support pull to refresh
+                        text = stringResource(R.string.there_is_nothing_to_show_try_another_search),
                     )
                 }
             }

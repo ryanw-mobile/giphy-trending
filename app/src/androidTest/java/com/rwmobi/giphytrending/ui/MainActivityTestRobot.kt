@@ -29,7 +29,7 @@ internal class MainActivityTestRobot(
             assertNavigationItemsAreDisplayed()
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
-            throw AssertionError("Expected App layout is not displayed. ${e.message}")
+            throw AssertionError("Expected App layout is not displayed. ${e.message}", e)
         }
     }
 
@@ -40,7 +40,7 @@ internal class MainActivityTestRobot(
             assertTopAppBarIsVisible()
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
-            throw AssertionError("Expected trending screen layout is not displayed. ${e.message}")
+            throw AssertionError("Expected trending screen layout is not displayed. ${e.message}", e)
         }
     }
 
@@ -51,7 +51,7 @@ internal class MainActivityTestRobot(
             assertTopAppBarIsVisible()
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
-            throw AssertionError("Expected search screen layout is not displayed. ${e.message}")
+            throw AssertionError("Expected search screen layout is not displayed. ${e.message}", e)
         }
     }
 
@@ -62,7 +62,7 @@ internal class MainActivityTestRobot(
             assertTopAppBarIsVisible()
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
-            throw AssertionError("Expected settings screen layout is not displayed. ${e.message}")
+            throw AssertionError("Expected settings screen layout is not displayed. ${e.message}", e)
         }
     }
 
@@ -72,7 +72,7 @@ internal class MainActivityTestRobot(
             navigateToTrendingScreen()
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
-            throw AssertionError("Expected second tap on trending screen behaviour is not observed. ${e.message}")
+            throw AssertionError("Expected second tap on trending screen behaviour is not observed. ${e.message}", e)
         }
     }
 
@@ -82,7 +82,7 @@ internal class MainActivityTestRobot(
             navigateToSearchScreen()
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
-            throw AssertionError("Expected second tap on search screen behaviour is not observed. ${e.message}")
+            throw AssertionError("Expected second tap on search screen behaviour is not observed. ${e.message}", e)
         }
     }
 
@@ -92,7 +92,7 @@ internal class MainActivityTestRobot(
             navigateToSettingsScreen()
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
-            throw AssertionError("Expected second tap on settings screen behaviour is not observed. ${e.message}")
+            throw AssertionError("Expected second tap on settings screen behaviour is not observed. ${e.message}", e)
         }
     }
 
@@ -103,7 +103,7 @@ internal class MainActivityTestRobot(
             assertSnackbarIsNotDisplayed(message = exceptionMessage)
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
-            throw AssertionError("Expected error snackbar behavior is not observed. ${e.message}")
+            throw AssertionError("Expected error snackbar behavior is not observed. ${e.message}", e)
         }
     }
 

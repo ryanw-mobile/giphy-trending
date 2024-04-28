@@ -122,7 +122,6 @@ class SearchScreenTest {
                 checkGiphyImageItemButtonsLongClickToolTipAreDisplayed()
                 checkOpenInBrowserButton(url = lastGiphyItem.webUrl)
                 checkDownloadImageButton(imageUrl = lastGiphyItem.imageUrl)
-                // This likely to have the clipboard floating dialog, so we put it to the end of test
                 checkCopyImageLinkButton()
             }
 

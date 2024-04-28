@@ -39,6 +39,7 @@ generally believe it to be a bad coding practice by tightly coupling the busines
 * Dynamic screen layout support using Windows Size Class
 * Gradle Kotlin DSL and Version Catalog
 * Macrobenchmark and Baseline Profile
+* Full unit test and UI (Journey) test suite
 
 &nbsp;
 

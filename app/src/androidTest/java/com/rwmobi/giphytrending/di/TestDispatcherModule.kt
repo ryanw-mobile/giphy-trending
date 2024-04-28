@@ -10,25 +10,23 @@ import dagger.Provides
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.Dispatchers
 
 @Module
 @TestInstallIn(
     components = [SingletonComponent::class],
     replaces = [DispatcherModule::class],
 )
-@OptIn(ExperimentalCoroutinesApi::class)
 object TestDispatcherModule {
     @DispatcherModule.DefaultDispatcher
     @Provides
-    fun providesDefaultDispatcher(): CoroutineDispatcher = UnconfinedTestDispatcher()
+    fun providesDefaultDispatcher(): CoroutineDispatcher = Dispatchers.Unconfined
 
     @DispatcherModule.IoDispatcher
     @Provides
-    fun providesIoDispatcher(): CoroutineDispatcher = UnconfinedTestDispatcher()
+    fun providesIoDispatcher(): CoroutineDispatcher = Dispatchers.Unconfined
 
     @DispatcherModule.MainDispatcher
     @Provides
-    fun providesMainDispatcher(): CoroutineDispatcher = UnconfinedTestDispatcher()
+    fun providesMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
 }

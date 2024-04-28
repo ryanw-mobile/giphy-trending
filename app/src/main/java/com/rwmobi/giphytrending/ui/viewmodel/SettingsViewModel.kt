@@ -25,7 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val userPreferencesRepository: UserPreferencesRepository,
-    @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher,
+    @DispatcherModule.IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<SettingsUIState> = MutableStateFlow(SettingsUIState(isLoading = true))
     var uiState = _uiState.asStateFlow()

@@ -8,16 +8,19 @@ package com.rwmobi.giphytrending.ui.destinations.search
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertIsNotFocused
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.printToLog
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.test.GiphyTrendingTestRule
@@ -154,7 +157,9 @@ internal class SearchTestRobot(
 
     private fun tapToDismissKeyboard() {
         with(composeTestRule) {
-            onRoot().performClick()
+            onNodeWithTag(testTag = "layoutBox").performTouchInput {
+                click()
+            }
         }
     }
 

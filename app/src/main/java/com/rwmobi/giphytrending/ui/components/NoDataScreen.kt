@@ -34,6 +34,7 @@ import com.rwmobi.giphytrending.ui.theme.getDimension
 @Composable
 fun NoDataScreen(
     modifier: Modifier = Modifier,
+    text: String,
 ) {
     val dimension = LocalConfiguration.current.getDimension()
 
@@ -58,7 +59,7 @@ fun NoDataScreen(
                 .padding(all = dimension.defaultHalfPadding),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleMedium,
-            text = stringResource(R.string.there_is_nothing_to_show_try_pull_to_reload),
+            text = text,
         )
     }
 }
@@ -68,7 +69,10 @@ fun NoDataScreen(
 private fun NoDataScreenPreview() {
     GiphyTrendingTheme {
         Surface {
-            NoDataScreen(modifier = Modifier.fillMaxSize())
+            NoDataScreen(
+                modifier = Modifier.fillMaxSize(),
+                text = stringResource(R.string.there_is_nothing_to_show_try_pull_to_reload),
+            )
         }
     }
 }

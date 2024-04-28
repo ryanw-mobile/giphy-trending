@@ -37,8 +37,11 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.rwmobi.giphytrending.R
@@ -55,6 +58,7 @@ fun SearchTextField(
     onClearKeyword: () -> Unit,
     onSearch: () -> Unit,
 ) {
+    val context = LocalContext.current
     val dimension = LocalConfiguration.current.getDimension()
     val focusRequester = FocusRequester()
     val coroutineScope = rememberCoroutineScope()
@@ -67,6 +71,9 @@ fun SearchTextField(
             .focusRequester(focusRequester)
             .onFocusChanged { focusState ->
                 isFocused = focusState.isFocused
+            }
+            .semantics {
+                contentDescription = context.getString(R.string.content_description_search_bar)
             },
         value = keyword,
         onValueChange = { onUpdateKeyword(it) },

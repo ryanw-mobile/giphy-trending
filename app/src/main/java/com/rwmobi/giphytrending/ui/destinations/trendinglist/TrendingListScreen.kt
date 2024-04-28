@@ -25,6 +25,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -72,6 +74,7 @@ fun TrendingListScreen(
                 GiphyStaggeredGrid(
                     modifier = Modifier.fillMaxSize(),
                     giphyImageItems = giphyImageItems,
+                    listContentDescription = stringResource(R.string.content_description_trending_list),
                     useCardLayout = useCardLayout,
                     imageLoader = imageLoader,
                     requestScrollToTop = uiState.requestScrollToTop,
@@ -92,6 +95,7 @@ fun TrendingListScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState()), // to support pull to refresh
+                    stringResource(R.string.there_is_nothing_to_show_try_pull_to_reload),
                 )
             }
         }
@@ -114,7 +118,9 @@ fun TrendingListScreen(
         }
 
         PullToRefreshContainer(
-            modifier = Modifier.align(Alignment.TopCenter),
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .semantics { contentDescription = context.getString(R.string.content_description_pull_to_refresh) },
             state = pullRefreshState,
         )
     }

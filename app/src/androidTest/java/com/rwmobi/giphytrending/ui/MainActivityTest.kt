@@ -5,12 +5,15 @@
 
 package com.rwmobi.giphytrending.ui
 
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import com.rwmobi.giphytrending.MainActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -27,29 +30,30 @@ class MainActivityTest {
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
     private lateinit var mainActivityTestRobot: MainActivityTestRobot
+    val uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 
     @Before
     fun setUp() {
-        // Initialize Hilt for the test
-        runTest {
-            hiltRule.inject()
-            mainActivityTestRobot = MainActivityTestRobot(composeTestRule)
-        }
+        hiltRule.inject()
+        mainActivityTestRobot = MainActivityTestRobot(composeTestRule)
     }
 
+    @After
+    fun tearDown() {
+        uiDevice.setOrientationNatural()
+    }
+
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     @Test
-    fun appBasicJourneyTest() = runTest {
+    fun appNavigationLayoutTest() {
         with(mainActivityTestRobot) {
-            printSemanticTree()
-            for (index in 0..6) {
-                scrollToTrendingItem(index = index)
-            }
-            tapSettingsTab()
-            settingsTabIsSelected()
-            printSemanticTree()
-            tapTrendingTab()
-            trendingTabIsSelected()
-            printSemanticTree()
+            // Rotate to landscape
+            uiDevice.setOrientationLeft()
+            checkNavigationLayoutIsCorrect()
+
+// Rotate to portrait
+            uiDevice.setOrientationNatural()
+            checkNavigationLayoutIsCorrect()
         }
     }
 }

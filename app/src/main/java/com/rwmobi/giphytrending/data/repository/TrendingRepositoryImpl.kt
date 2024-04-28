@@ -23,7 +23,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
-class TrendyRepositoryImpl @Inject constructor(
+class TrendingRepositoryImpl @Inject constructor(
     private val networkDataSource: NetworkDataSource,
     private val databaseDataSource: DatabaseDataSource,
     @GiphyApiKey private val giphyApiKey: String,

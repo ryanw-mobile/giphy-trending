@@ -27,6 +27,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.AnnotatedString
 import androidx.core.net.toUri
 import coil.ImageLoader
@@ -64,11 +66,15 @@ fun SearchScreen(
     val focusManager: FocusManager = LocalFocusManager.current
 
     Box(
-        modifier = modifier.pointerInput(Unit) {
-            detectTapGestures(
-                onTap = { coroutineScope.launch { focusManager.clearFocus() } },
-            )
-        },
+        modifier = modifier
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = { coroutineScope.launch { focusManager.clearFocus() } },
+                )
+            }
+            .semantics {
+                testTag = "layoutBox"
+            },
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -89,6 +95,7 @@ fun SearchScreen(
                     GiphyStaggeredGrid(
                         modifier = Modifier.fillMaxSize(),
                         giphyImageItems = giphyImageItems,
+                        listContentDescription = stringResource(R.string.content_description_search_results),
                         useCardLayout = useCardLayout,
                         imageLoader = imageLoader,
                         requestScrollToTop = uiState.requestScrollToTop,
@@ -109,6 +116,7 @@ fun SearchScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState()), // to support pull to refresh
+                        text = stringResource(R.string.there_is_nothing_to_show_try_another_search),
                     )
                 }
             }

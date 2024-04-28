@@ -19,7 +19,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.PreviewFontScale
@@ -27,17 +26,17 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
-import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.domain.model.GiphyImageItem
 import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemsProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.theme.getDimension
 
 @Composable
-internal fun GiphyStaggeredGrid(
+fun GiphyStaggeredGrid(
     modifier: Modifier = Modifier,
     imageLoader: ImageLoader,
     giphyImageItems: List<GiphyImageItem>,
+    listContentDescription: String,
     requestScrollToTop: Boolean,
     useCardLayout: Boolean,
     onClickToDownload: (imageUrl: String) -> Unit,
@@ -46,7 +45,6 @@ internal fun GiphyStaggeredGrid(
     onScrolledToTop: () -> Unit,
 ) {
     val dimension = LocalConfiguration.current.getDimension()
-    val contentDescriptionTrendingList = stringResource(R.string.content_description_trending_list)
     val lazyStaggeredGridState = rememberLazyStaggeredGridState()
 
     LaunchedEffect(requestScrollToTop) {
@@ -59,7 +57,7 @@ internal fun GiphyStaggeredGrid(
     LazyVerticalStaggeredGrid(
         modifier = modifier
             .fillMaxSize()
-            .semantics { contentDescription = contentDescriptionTrendingList },
+            .semantics { contentDescription = listContentDescription },
         state = lazyStaggeredGridState,
         columns = StaggeredGridCells.Adaptive(minSize = 320.dp),
         contentPadding = PaddingValues(all = dimension.defaultHalfPadding),
@@ -104,6 +102,7 @@ private fun Preview(
                 modifier = Modifier.fillMaxSize(),
                 imageLoader = ImageLoader(LocalContext.current),
                 giphyImageItems = giphyImageItems,
+                listContentDescription = "",
                 requestScrollToTop = false,
                 useCardLayout = false,
                 onClickToDownload = {},
@@ -127,6 +126,7 @@ private fun PreviewCardLayout(
                 modifier = Modifier.fillMaxSize(),
                 imageLoader = ImageLoader(LocalContext.current),
                 giphyImageItems = giphyImageItems,
+                listContentDescription = "",
                 requestScrollToTop = false,
                 useCardLayout = true,
                 onClickToDownload = {},

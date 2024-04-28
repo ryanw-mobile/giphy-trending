@@ -5,6 +5,9 @@
 
 package com.rwmobi.giphytrending.ui
 
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsSelected
@@ -15,6 +18,9 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.printToLog
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
+import androidx.test.platform.app.InstrumentationRegistry
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.navigation.AppNavItem
 import com.rwmobi.giphytrending.ui.test.GiphyTrendingTestRule
@@ -30,6 +36,20 @@ internal class MainActivityTestRobot(
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
             throw AssertionError("Expected App layout is not displayed. ${e.message}", e)
+        }
+    }
+
+    fun checkNavigationLayoutIsCorrect() {
+        try {
+            val windowWidthSizeClass = getWindowSizeClass().widthSizeClass
+            if (windowWidthSizeClass == WindowWidthSizeClass.Compact) {
+                assertNavigationBarIsDisplayed()
+            } else {
+                assertNavigationRailIsDisplayed()
+            }
+        } catch (e: AssertionError) {
+            composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
+            throw AssertionError("Expected navigation layout is not observed. ${e.message}", e)
         }
     }
 
@@ -142,6 +162,19 @@ internal class MainActivityTestRobot(
                 matcher = withRole(Role.Button) and hasText(text = activity.getString(R.string.ok)),
             ).performClick()
         }
+    }
+
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+    private fun getWindowSizeClass(): WindowSizeClass {
+        val metrics = InstrumentationRegistry.getInstrumentation().targetContext.resources.displayMetrics
+        val widthPx = metrics.widthPixels
+        val heightPx = metrics.heightPixels
+        val density = metrics.density
+
+        val widthDp = widthPx / density
+        val heightDp = heightPx / density
+
+        return WindowSizeClass.calculateFromSize(size = DpSize(width = widthDp.dp, height = heightDp.dp))
     }
 
     // Assertions

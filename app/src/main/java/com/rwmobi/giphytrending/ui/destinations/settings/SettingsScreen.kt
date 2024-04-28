@@ -5,7 +5,6 @@
 
 package com.rwmobi.giphytrending.ui.destinations.settings
 
-import android.content.Intent
 import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
@@ -35,7 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -72,6 +71,7 @@ import com.rwmobi.giphytrending.ui.theme.Dimension
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.theme.getDimension
 import com.rwmobi.giphytrending.ui.utils.getPreviewWindowSizeClass
+import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
 
 @Composable
 fun SettingsScreen(
@@ -92,6 +92,7 @@ fun SettingsScreen(
         }
     }
 
+    val context = LocalContext.current
     Box(modifier = modifier) {
         if (uiState.apiRequestLimit != null && uiState.rating != null) {
             if (!isLargeScreen) {
@@ -106,6 +107,7 @@ fun SettingsScreen(
                     sliderRange = apiMinEntries.toFloat()..apiMaxEntries.toFloat(),
                     onUpdateApiRequestLimit = { uiEvent.onUpdateApiMaxEntries(it.toInt()) },
                     onUpdateRating = { uiEvent.onUpdateRating(it) },
+                    onBrowseUrl = { url -> context.startBrowserActivity(url = url) },
                 )
 
                 LaunchedEffect(uiState.requestScrollToTop) {
@@ -133,6 +135,7 @@ fun SettingsScreen(
                         sliderRange = apiMinEntries.toFloat()..apiMaxEntries.toFloat(),
                         onUpdateApiRequestLimit = { uiEvent.onUpdateApiMaxEntries(it.toInt()) },
                         onUpdateRating = { uiEvent.onUpdateRating(it) },
+                        onBrowseUrl = { url -> context.startBrowserActivity(url = url) },
                     )
 
                     Spacer(modifier = Modifier.weight(weight = 1f, fill = true))
@@ -163,8 +166,8 @@ private fun Settings(
     sliderRange: ClosedFloatingPointRange<Float>,
     onUpdateApiRequestLimit: (Float) -> Unit,
     onUpdateRating: (Rating) -> Unit,
+    onBrowseUrl: (url: String) -> Unit,
 ) {
-    val context = LocalContext.current
     val dimension = LocalConfiguration.current.getDimension()
 
     Column(
@@ -214,8 +217,7 @@ private fun Settings(
             onClick = { offset ->
                 annotatedText.getStringAnnotations(tag = "URL", start = offset, end = offset)
                     .firstOrNull()?.let { annotation ->
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(annotation.item))
-                        context.startActivity(intent)
+                        onBrowseUrl(Uri.parse(annotation.item).toString())
                     }
             },
         )
@@ -230,7 +232,8 @@ private fun ItemsToLoad(
     sliderValue: Float,
     onUpdateApiRequestLimit: (Float) -> Unit,
 ) {
-    var tempSliderValue by remember { mutableStateOf(sliderValue) }
+    var tempSliderValue by remember { mutableFloatStateOf(sliderValue) }
+    val context = LocalContext.current
 
     Column(modifier = modifier) {
         Text(
@@ -245,7 +248,8 @@ private fun ItemsToLoad(
         Slider(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = dimension.defaultFullPadding),
+                .padding(horizontal = dimension.defaultFullPadding)
+                .semantics { contentDescription = context.getString(R.string.content_description_slider) },
             valueRange = sliderRange,
             value = tempSliderValue,
             onValueChange = { tempSliderValue = it },

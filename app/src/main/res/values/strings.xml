@@ -43,5 +43,6 @@
     <string name="content_description_navigation_rail">Navigation Rail</string>
     <string name="content_description_pull_to_refresh">Pull to refresh</string>
     <string name="content_description_search_bar">Search bar</string>
+    <string name="content_description_slider">slider</string>
 
 </resources>

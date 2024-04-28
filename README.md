@@ -61,13 +61,18 @@ generally believe it to be a bad coding practice by tightly coupling the busines
 * [Retrofit2](https://square.github.io/retrofit/) - HTTP client for Android and Java
 * [Moshi](https://github.com/square/moshi) - Modern JSON library for Android and Java
 * [Splash Screen API](https://developer.android.com/guide/topics/ui/splash-screen) - Official
-  splash screen solution
+  backward compatible
+  splash screen
 * [Coil](https://coil-kt.github.io/coil/) - Image loading library for Android, leveraging Kotlin
   Coroutines
 * [Dagger Hilt](https://dagger.dev/hilt/) - Dependency injection framework
 * [Timber](https://github.com/JakeWharton/timber) - Logging utility
 * [LeakCanary](https://github.com/square/leakcanary) - Memory leak detection tool
 * `JUnit 4` - Testing framework and runner
+* [Espresso](https://developer.android.com/training/testing/espresso) - UI testing framework for
+  Android
+* [UI Automator](https://developer.android.com/training/testing/ui-automator) - UI testing framework
+  for user interaction automation
 * [Robolectric](https://robolectric.org/) - Testing framework for Android-JVM tests
 * [kotest](https://kotest.io/) - We use the assertion library only, not the runner
 * [MockK](https://mockk.io/) - Mocking library for Kotlin
@@ -168,23 +173,35 @@ The generated apk(s) will be stored under `app/build/outputs/`
 #### Attribution-NonCommercial (CC BY-NC 4.0)
 
 Nothing is free in this world. RW MobiMedia UK Limited, a fully tax-paying entity in the UK,
-sponsors the infrastructure and development costs of this project. 
+sponsors the infrastructure and development costs of this project.
 
 Copyright 2024 RW MobiMedia UK Limited
 
-This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. To view a copy of this license, visit [http://creativecommons.org/licenses/by-nc/4.0/](http://creativecommons.org/licenses/by-nc/4.0/) or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International
+License. To view a copy of this license,
+visit [http://creativecommons.org/licenses/by-nc/4.0/](http://creativecommons.org/licenses/by-nc/4.0/)
+or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
 
 #### Conditions
+
 Under the terms of this license, you are free to:
+
 - **Share** — copy and redistribute the material in any medium or format.
 - **Adapt** — remix, transform, and build upon the material.
 
 The licensing terms include the following stipulations:
-- **Attribution** — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-- **NonCommercial** — You may not use the material for commercial purposes. Any commercial use is strictly prohibited without prior permission from RW MobiMedia UK Limited.
+
+- **Attribution** — You must give appropriate credit, provide a link to the license, and indicate if
+  changes were made. You may do so in any reasonable manner, but not in any way that suggests the
+  licensor endorses you or your use.
+- **NonCommercial** — You may not use the material for commercial purposes. Any commercial use is
+  strictly prohibited without prior permission from RW MobiMedia UK Limited.
 
 #### Disclaimer
-This work is provided "as is" without any warranties, and the licensing coverage is only applicable as long as the distribution or use is for non-commercial purposes.
+
+This work is provided "as is" without any warranties, and the licensing coverage is only applicable
+as long as the distribution or use is for non-commercial purposes.
 
 #### Further Enquiries
+
 For permissions beyond the scope of this license, please contact RW MobiMedia UK Limited.

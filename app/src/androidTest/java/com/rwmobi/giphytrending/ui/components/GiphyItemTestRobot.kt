@@ -9,6 +9,7 @@ import android.content.Context
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithText
@@ -66,6 +67,7 @@ internal class GiphyItemTestRobot(
             with(composeTestRule) {
                 tapCopyImageLinkButton()
                 onNodeWithText(text = activity.getString(R.string.clipboard_copied)).assertIsDisplayed()
+                tapOK()
             }
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("GiphyItemTestRobotError")
@@ -154,6 +156,14 @@ internal class GiphyItemTestRobot(
             }
             onNodeWithText(text = contentDescription).assertIsDisplayed()
             mainClock.advanceTimeBy(milliseconds = 5_000)
+        }
+    }
+
+    private fun tapOK() {
+        with(composeTestRule) {
+            onNode(
+                matcher = withRole(Role.Button) and hasText(text = activity.getString(R.string.ok)),
+            ).performClick()
         }
     }
 }

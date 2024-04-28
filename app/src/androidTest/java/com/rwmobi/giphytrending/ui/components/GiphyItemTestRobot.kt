@@ -98,7 +98,7 @@ internal class GiphyItemTestRobot(
             verify { any(Context::class).downloadImageUsingMediaStore(imageUrl) }
             unmockkStatic("com.rwmobi.giphytrending.ui.utils.KotlinExtensionsKt")
         } catch (e: AssertionError) {
-            composeTestRule.onRoot().printToLog("TGiphyItemTestRobotError")
+            composeTestRule.onRoot().printToLog("GiphyItemTestRobotError")
             throw AssertionError("Expected Download Image button action is not triggered. ${e.message}", e)
         }
     }

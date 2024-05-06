@@ -44,7 +44,7 @@ internal class TrendingMapperTest {
 
     @Test
     fun toTrendingEntity_ShouldConvertTrendingDataToTrendingEntityCorrectly() {
-        val trendingEntity = SampleTrendingMapper.sampleTrendingDataDto1.asTrendingEntity()
+        val trendingEntity = SampleTrendingMapper.sampleTrendingDataDto1.toTrendingEntity()
         trendingEntity shouldBe SampleTrendingMapper.sampleTrendingEntity1
     }
 
@@ -61,7 +61,7 @@ internal class TrendingMapperTest {
             SampleTrendingMapper.sampleTrendingEntity3,
         )
 
-        val trendingEntityList = mockTrendingDataList.asTrendingEntity()
+        val trendingEntityList = mockTrendingDataList.toTrendingEntity()
 
         trendingEntityList shouldBe expectedTrendingEntityList
     }

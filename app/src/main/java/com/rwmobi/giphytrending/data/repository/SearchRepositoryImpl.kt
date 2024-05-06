@@ -5,8 +5,8 @@
 
 package com.rwmobi.giphytrending.data.repository
 
-import com.rwmobi.giphytrending.data.source.local.mappers.asTrendingEntity
 import com.rwmobi.giphytrending.data.source.local.mappers.toGifObject
+import com.rwmobi.giphytrending.data.source.local.mappers.toTrendingEntity
 import com.rwmobi.giphytrending.data.source.network.interfaces.NetworkDataSource
 import com.rwmobi.giphytrending.di.DispatcherModule
 import com.rwmobi.giphytrending.di.GiphyApiKey
@@ -59,7 +59,7 @@ class SearchRepositoryImpl @Inject constructor(
                 )
 
                 lastSuccessfulSearchKeyword = keyword
-                lastSuccessfulSearchResults = result.trendingData.asTrendingEntity().toGifObject()
+                lastSuccessfulSearchResults = result.trendingData.toTrendingEntity().toGifObject()
                 Result.success(value = lastSuccessfulSearchResults ?: emptyList())
             } catch (cancellationException: CancellationException) {
                 throw cancellationException

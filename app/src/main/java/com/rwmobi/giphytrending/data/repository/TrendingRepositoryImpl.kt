@@ -6,8 +6,8 @@
 package com.rwmobi.giphytrending.data.repository
 
 import com.rwmobi.giphytrending.data.source.local.interfaces.DatabaseDataSource
-import com.rwmobi.giphytrending.data.source.local.mappers.asTrendingEntity
 import com.rwmobi.giphytrending.data.source.local.mappers.toGifObject
+import com.rwmobi.giphytrending.data.source.local.mappers.toTrendingEntity
 import com.rwmobi.giphytrending.data.source.network.dto.TrendingNetworkResponseDto
 import com.rwmobi.giphytrending.data.source.network.interfaces.NetworkDataSource
 import com.rwmobi.giphytrending.di.DispatcherModule
@@ -50,7 +50,7 @@ class TrendingRepositoryImpl @Inject constructor(
                 Timber.tag("refreshTrending").v("Mark dirty: success")
 
                 val trendingNetworkResponse = getTrendingFromNetwork(limit = limit, rating = rating)
-                databaseDataSource.insertAllData(data = trendingNetworkResponse.trendingData.asTrendingEntity())
+                databaseDataSource.insertAllData(data = trendingNetworkResponse.trendingData.toTrendingEntity())
                 Timber.tag("refreshTrending").v("Insertion completed")
 
                 val invalidationResult = invalidateDirtyTrendingDb()

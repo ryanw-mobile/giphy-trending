@@ -6,15 +6,15 @@
 package com.rwmobi.giphytrending.data.repository
 
 import com.rwmobi.giphytrending.data.source.local.interfaces.DatabaseDataSource
-import com.rwmobi.giphytrending.data.source.local.mappers.asGiphyImageItem
-import com.rwmobi.giphytrending.data.source.local.mappers.asTrendingEntity
+import com.rwmobi.giphytrending.data.source.local.mappers.toGifObject
+import com.rwmobi.giphytrending.data.source.local.mappers.toTrendingEntity
 import com.rwmobi.giphytrending.data.source.network.dto.TrendingNetworkResponseDto
 import com.rwmobi.giphytrending.data.source.network.interfaces.NetworkDataSource
 import com.rwmobi.giphytrending.di.DispatcherModule
 import com.rwmobi.giphytrending.di.GiphyApiKey
 import com.rwmobi.giphytrending.domain.exceptions.EmptyGiphyAPIKeyException
 import com.rwmobi.giphytrending.domain.exceptions.except
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.repository.TrendingRepository
 import kotlinx.coroutines.CancellationException
@@ -29,15 +29,15 @@ class TrendingRepositoryImpl @Inject constructor(
     @GiphyApiKey private val giphyApiKey: String,
     @DispatcherModule.IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : TrendingRepository {
-    override suspend fun fetchCachedTrending(): Result<List<GiphyImageItem>> {
+    override suspend fun fetchCachedTrending(): Result<List<GifObject>> {
         return withContext(dispatcher) {
             Result.runCatching {
-                databaseDataSource.queryData().asGiphyImageItem()
+                databaseDataSource.queryData().toGifObject()
             }.except<CancellationException, _>()
         }
     }
 
-    override suspend fun reloadTrending(limit: Int, rating: Rating): Result<List<GiphyImageItem>> {
+    override suspend fun reloadTrending(limit: Int, rating: Rating): Result<List<GifObject>> {
         if (giphyApiKey.isBlank()) {
             @Suppress("UNREACHABLE_CODE")
             // It won't work without an API Key - CI might pass in nothing
@@ -50,7 +50,7 @@ class TrendingRepositoryImpl @Inject constructor(
                 Timber.tag("refreshTrending").v("Mark dirty: success")
 
                 val trendingNetworkResponse = getTrendingFromNetwork(limit = limit, rating = rating)
-                databaseDataSource.insertAllData(data = trendingNetworkResponse.trendingData.asTrendingEntity())
+                databaseDataSource.insertAllData(data = trendingNetworkResponse.trendingData.toTrendingEntity())
                 Timber.tag("refreshTrending").v("Insertion completed")
 
                 val invalidationResult = invalidateDirtyTrendingDb()
@@ -58,7 +58,7 @@ class TrendingRepositoryImpl @Inject constructor(
                     Timber.tag("invalidationResult").e(invalidationResult.exceptionOrNull())
                     Result.failure(exception = invalidationResult.exceptionOrNull() ?: UnknownError())
                 } else {
-                    Result.success(value = databaseDataSource.queryData().asGiphyImageItem())
+                    Result.success(value = databaseDataSource.queryData().toGifObject())
                 }
             } catch (cancellationException: CancellationException) {
                 throw cancellationException

@@ -47,7 +47,7 @@ import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.rwmobi.giphytrending.R
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.theme.getDimension
@@ -55,7 +55,7 @@ import com.rwmobi.giphytrending.ui.theme.getDimension
 @Composable
 fun GiphyItem(
     modifier: Modifier = Modifier,
-    giphyImageItem: GiphyImageItem,
+    gifObject: GifObject,
     showBottomDivider: Boolean,
     imageLoader: ImageLoader,
     onClickToDownload: (imageUrl: String) -> Unit,
@@ -78,23 +78,23 @@ fun GiphyItem(
             fontWeight = FontWeight.Bold,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
-            text = giphyImageItem.title,
+            text = gifObject.title,
         )
 
         AsyncImage(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(ratio = (giphyImageItem.previewWidth / giphyImageItem.previewHeight.toFloat()))
+                .aspectRatio(ratio = (gifObject.previewWidth / gifObject.previewHeight.toFloat()))
                 .background(color = MaterialTheme.colorScheme.surfaceDim.copy(alpha = 0.3f)),
             model = ImageRequest
                 .Builder(LocalContext.current)
-                .data(giphyImageItem.previewUrl)
+                .data(gifObject.previewUrl)
                 .crossfade(true)
                 .build(),
             fallback = painterResource(R.drawable.twotone_insert_photo_24),
             error = painterResource(R.drawable.twotone_insert_photo_24),
             placeholder = painterResource(R.drawable.twotone_insert_photo_24),
-            contentDescription = giphyImageItem.title,
+            contentDescription = gifObject.title,
             contentScale = ContentScale.FillWidth,
             imageLoader = imageLoader,
         )
@@ -124,10 +124,10 @@ fun GiphyItem(
                     color = MaterialTheme.colorScheme.onTertiaryContainer,
                     maxLines = 1,
                     overflow = TextOverflow.Clip,
-                    text = giphyImageItem.type.uppercase(),
+                    text = gifObject.type.uppercase(),
                 )
 
-                if (giphyImageItem.username.isNotBlank()) {
+                if (gifObject.username.isNotBlank()) {
                     Text(
                         modifier = Modifier
                             .wrapContentHeight()
@@ -140,34 +140,34 @@ fun GiphyItem(
                         fontWeight = FontWeight.Medium,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
-                        text = "@${giphyImageItem.username}",
+                        text = "@${gifObject.username}",
                     )
                 } else {
                     Spacer(modifier = Modifier.weight(weight = 1.0f, fill = true))
                 }
             }
 
-            if (giphyImageItem.imageUrl.isNotEmpty()) {
+            if (gifObject.imageUrl.isNotEmpty()) {
                 IconButtonWithToolTip(
                     tooltipText = stringResource(R.string.content_description_download_image),
                     painter = painterResource(id = R.drawable.baseline_file_download_24),
-                    onClick = { onClickToDownload(giphyImageItem.imageUrl) },
+                    onClick = { onClickToDownload(gifObject.imageUrl) },
                 )
             }
 
-            if (giphyImageItem.webUrl.isNotEmpty()) {
+            if (gifObject.webUrl.isNotEmpty()) {
                 IconButtonWithToolTip(
                     tooltipText = stringResource(R.string.content_description_open_in_browser),
                     painter = painterResource(id = R.drawable.ic_baseline_open_in_browser_24),
-                    onClick = { onClickToOpen(giphyImageItem.webUrl) },
+                    onClick = { onClickToOpen(gifObject.webUrl) },
                 )
             }
 
-            if (giphyImageItem.imageUrl.isNotEmpty()) {
+            if (gifObject.imageUrl.isNotEmpty()) {
                 IconButtonWithToolTip(
                     tooltipText = stringResource(R.string.content_description_copy_image_link),
                     painter = painterResource(id = R.drawable.ic_baseline_content_copy_24),
-                    onClick = { onClickToShare(giphyImageItem.imageUrl) },
+                    onClick = { onClickToShare(gifObject.imageUrl) },
                 )
             }
         }
@@ -187,13 +187,13 @@ fun GiphyItem(
 @PreviewFontScale
 @Composable
 private fun Preview(
-    @PreviewParameter(GiphyImageItemProvider::class) giphyImageItem: GiphyImageItem,
+    @PreviewParameter(GiphyImageItemProvider::class) gifObject: GifObject,
 ) {
     GiphyTrendingTheme {
         Surface {
             GiphyItem(
                 modifier = Modifier.fillMaxWidth(),
-                giphyImageItem = giphyImageItem,
+                gifObject = gifObject,
                 showBottomDivider = false,
                 imageLoader = ImageLoader(LocalContext.current),
                 onClickToDownload = {},

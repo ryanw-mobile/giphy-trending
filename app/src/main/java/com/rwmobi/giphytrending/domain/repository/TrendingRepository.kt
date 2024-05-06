@@ -5,11 +5,11 @@
 
 package com.rwmobi.giphytrending.domain.repository
 
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.domain.model.Rating
 
 interface TrendingRepository {
 
-    suspend fun fetchCachedTrending(): Result<List<GiphyImageItem>>
-    suspend fun reloadTrending(limit: Int, rating: Rating): Result<List<GiphyImageItem>>
+    suspend fun fetchCachedTrending(): Result<List<GifObject>>
+    suspend fun reloadTrending(limit: Int, rating: Rating): Result<List<GifObject>>
 }

@@ -20,7 +20,7 @@ internal class TrendingMapperTest {
 
     @Test
     fun toDomainModel_ShouldConvertTrendingEntityToGiphyImageItemCorrectly() {
-        val giphyImageItemDomainModel = SampleTrendingMapper.sampleTrendingEntity1.asGiphyImageItem()
+        val giphyImageItemDomainModel = SampleTrendingMapper.sampleTrendingEntity1.toGifObject()
         giphyImageItemDomainModel shouldBe SampleTrendingMapper.sampleDomainModel1
     }
 
@@ -37,14 +37,14 @@ internal class TrendingMapperTest {
             SampleTrendingMapper.sampleDomainModel3,
         )
 
-        val giphyImageItemDomainModelList = trendingEntityList.asGiphyImageItem()
+        val giphyImageItemDomainModelList = trendingEntityList.toGifObject()
 
         giphyImageItemDomainModelList shouldContainExactly expectedGiphyImageItemDomainModelList
     }
 
     @Test
     fun toTrendingEntity_ShouldConvertTrendingDataToTrendingEntityCorrectly() {
-        val trendingEntity = SampleTrendingMapper.sampleTrendingDataDto1.asTrendingEntity()
+        val trendingEntity = SampleTrendingMapper.sampleTrendingDataDto1.toTrendingEntity()
         trendingEntity shouldBe SampleTrendingMapper.sampleTrendingEntity1
     }
 
@@ -61,7 +61,7 @@ internal class TrendingMapperTest {
             SampleTrendingMapper.sampleTrendingEntity3,
         )
 
-        val trendingEntityList = mockTrendingDataList.asTrendingEntity()
+        val trendingEntityList = mockTrendingDataList.toTrendingEntity()
 
         trendingEntityList shouldBe expectedTrendingEntityList
     }

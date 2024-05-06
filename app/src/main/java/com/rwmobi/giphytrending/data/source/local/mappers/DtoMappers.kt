@@ -8,7 +8,7 @@ package com.rwmobi.giphytrending.data.source.local.mappers
 import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
 import com.rwmobi.giphytrending.data.source.network.dto.TrendingDataDto
 
-fun TrendingDataDto.asTrendingEntity() = TrendingEntity(
+fun TrendingDataDto.toTrendingEntity() = TrendingEntity(
     id = this.id,
     previewUrl = urlCleanUp(this.images.fixedWidth.url),
     previewHeight = this.images.fixedWidth.height.toInt(),
@@ -22,7 +22,7 @@ fun TrendingDataDto.asTrendingEntity() = TrendingEntity(
     importDateTime = this.importDatetime,
 )
 
-fun List<TrendingDataDto>.asTrendingEntity() = this.map { it.asTrendingEntity() }
+fun List<TrendingDataDto>.toTrendingEntity() = this.map { it.toTrendingEntity() }
 
 /**
  * The image URL returned by the server contains tracking code.

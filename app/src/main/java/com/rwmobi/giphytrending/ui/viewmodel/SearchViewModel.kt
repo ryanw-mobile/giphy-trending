@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import com.rwmobi.giphytrending.di.DispatcherModule
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
 import com.rwmobi.giphytrending.domain.repository.SearchRepository
@@ -62,7 +62,7 @@ class SearchViewModel @Inject constructor(
                 currentUiState.copy(
                     isLoading = false,
                     keyword = lastSearchKeyword ?: "",
-                    giphyImageItems = lastSearchResult,
+                    gifObjects = lastSearchResult,
                 )
             }
         }
@@ -99,7 +99,7 @@ class SearchViewModel @Inject constructor(
             _uiState.update { currentUiState ->
                 currentUiState.copy(
                     isLoading = true,
-                    giphyImageItems = emptyList(),
+                    gifObjects = emptyList(),
                 )
             }
             startNewSearch(keyword = keyword, apiMaxEntries = apiMaxEntries, rating = rating)
@@ -168,13 +168,13 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private fun processTrendingList(repositoryResult: Result<List<GiphyImageItem>>) {
+    private fun processTrendingList(repositoryResult: Result<List<GifObject>>) {
         when (repositoryResult.isFailure) {
             true -> updateUIForError("Error getting data: ${repositoryResult.exceptionOrNull()?.message}")
             false -> _uiState.update { currentUiState ->
                 currentUiState.copy(
                     isLoading = false,
-                    giphyImageItems = repositoryResult.getOrNull() ?: emptyList(),
+                    gifObjects = repositoryResult.getOrNull() ?: emptyList(),
                 ).also {
                     Timber.tag("processTrendingList").v("Processed ${repositoryResult.getOrNull()?.count() ?: 0} entries")
                 }

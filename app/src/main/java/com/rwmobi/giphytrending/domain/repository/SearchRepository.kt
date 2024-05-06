@@ -5,12 +5,12 @@
 
 package com.rwmobi.giphytrending.domain.repository
 
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.domain.model.Rating
 
 interface SearchRepository {
 
-    suspend fun search(keyword: String?, limit: Int, rating: Rating): Result<List<GiphyImageItem>>
+    suspend fun search(keyword: String?, limit: Int, rating: Rating): Result<List<GifObject>>
     fun getLastSuccessfulSearchKeyword(): String?
-    fun getLastSuccessfulSearchResults(): List<GiphyImageItem>?
+    fun getLastSuccessfulSearchResults(): List<GifObject>?
 }

@@ -16,7 +16,7 @@ import com.rwmobi.giphytrending.domain.repository.SearchRepository
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
 import com.rwmobi.giphytrending.ui.MainActivityTestRobot
 import com.rwmobi.giphytrending.ui.components.GiphyItemTestRobot
-import com.rwmobi.giphytrending.ui.test.SampleGiphyImageItemList
+import com.rwmobi.giphytrending.ui.test.SampleGifObjectList
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -92,32 +92,32 @@ class SearchScreenTest {
             // Happy search flow
             with(giphyItemTestRobot) {
                 fakeSearchRepository.setSearchResultForTest(
-                    searchResult = Result.success(SampleGiphyImageItemList.giphyImageItemList),
+                    searchResult = Result.success(SampleGifObjectList.gifObjects),
                 )
                 checkCanPerformSearchWithKeyword("any test keywords")
                 checkSearchResultsListIsDisplayed()
-                for (index in 0..SampleGiphyImageItemList.giphyImageItemList.lastIndex) {
+                for (index in 0..SampleGifObjectList.gifObjects.lastIndex) {
                     checkCanScrollToSearchResultItem(index = index)
-                    checkGiphyItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList[index])
+                    checkGiphyItemIsDisplayed(gifObject = SampleGifObjectList.gifObjects[index])
                 }
 
                 // Second top should scroll back to the top
                 with(mainActivityTestRobot) {
                     secondTapOnSearchTab()
                 }
-                checkGiphyItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList.first())
+                checkGiphyItemIsDisplayed(gifObject = SampleGifObjectList.gifObjects.first())
             }
 
             // Reload with only one item for easier testing
             with(giphyItemTestRobot) {
-                val lastGiphyItem = SampleGiphyImageItemList.giphyImageItemList.last()
+                val lastGiphyItem = SampleGifObjectList.gifObjects.last()
                 fakeSearchRepository.setSearchResultForTest(
                     searchResult = Result.success(listOf(lastGiphyItem)),
                 )
                 checkCanClearSearchKeyword()
                 checkCanPerformSearchWithKeyword("any other test keywords")
 
-                checkGiphyItemIsDisplayed(giphyImageItem = lastGiphyItem)
+                checkGiphyItemIsDisplayed(gifObject = lastGiphyItem)
 
                 checkGiphyImageItemButtonsLongClickToolTipAreDisplayed()
                 checkOpenInBrowserButton(url = lastGiphyItem.webUrl)
@@ -128,7 +128,7 @@ class SearchScreenTest {
             // Check the search keyword and result can survive navigation
             with(mainActivityTestRobot) {
                 val lastSuccessfulSearchKeyword = "last search keyword"
-                val lastSuccessfulSearchResult = listOf(SampleGiphyImageItemList.giphyImageItemList[1])
+                val lastSuccessfulSearchResult = listOf(SampleGifObjectList.gifObjects[1])
 
                 navigateToTrendingScreen()
                 fakeSearchRepository.setLastSuccessfulSearchKeywordForTest(lastSuccessfulSearchKeyword)
@@ -136,7 +136,7 @@ class SearchScreenTest {
 
                 navigateToSearchScreen()
                 checkSearchKeywordIsDisplayed(keyword = lastSuccessfulSearchKeyword)
-                giphyItemTestRobot.checkGiphyItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList[1])
+                giphyItemTestRobot.checkGiphyItemIsDisplayed(gifObject = SampleGifObjectList.gifObjects[1])
             }
         }
     }

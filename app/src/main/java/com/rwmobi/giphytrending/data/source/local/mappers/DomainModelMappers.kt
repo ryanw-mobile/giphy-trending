@@ -6,9 +6,9 @@
 package com.rwmobi.giphytrending.data.source.local.mappers
 
 import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 
-fun TrendingEntity.asGiphyImageItem() = GiphyImageItem(
+fun TrendingEntity.toGifObject() = GifObject(
     id = this.id,
     previewUrl = this.previewUrl,
     previewHeight = this.previewHeight,
@@ -20,4 +20,4 @@ fun TrendingEntity.asGiphyImageItem() = GiphyImageItem(
     username = this.username,
 )
 
-fun List<TrendingEntity>.asGiphyImageItem() = this.map { it.asGiphyImageItem() }
+fun List<TrendingEntity>.toGifObject() = this.map { it.toGifObject() }

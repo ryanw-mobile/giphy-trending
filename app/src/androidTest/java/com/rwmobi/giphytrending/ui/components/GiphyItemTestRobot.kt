@@ -18,7 +18,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.printToLog
 import com.rwmobi.giphytrending.R
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.ui.test.GiphyTrendingTestRule
 import com.rwmobi.giphytrending.ui.test.withRole
 import com.rwmobi.giphytrending.ui.utils.downloadImageUsingMediaStore
@@ -34,9 +34,9 @@ internal class GiphyItemTestRobot(
     private val composeTestRule: GiphyTrendingTestRule,
 ) {
     // Checks
-    fun checkGiphyItemIsDisplayed(giphyImageItem: GiphyImageItem) {
+    fun checkGiphyItemIsDisplayed(gifObject: GifObject) {
         try {
-            assertGiphyItemIsDisplayed(giphyImageItem = giphyImageItem)
+            assertGiphyItemIsDisplayed(gifObject = gifObject)
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("GiphyItemTestRobotError")
             throw AssertionError("Expected Trending List item is not displayed. ${e.message}", e)
@@ -138,11 +138,11 @@ internal class GiphyItemTestRobot(
     }
 
     // Assertions
-    private fun assertGiphyItemIsDisplayed(giphyImageItem: GiphyImageItem) {
+    private fun assertGiphyItemIsDisplayed(gifObject: GifObject) {
         with(composeTestRule) {
-            onNodeWithText(text = giphyImageItem.title).assertIsDisplayed()
+            onNodeWithText(text = gifObject.title).assertIsDisplayed()
             onNode(
-                matcher = withRole(Role.Image) and hasContentDescription(value = giphyImageItem.title),
+                matcher = withRole(Role.Image) and hasContentDescription(value = gifObject.title),
             )
         }
     }

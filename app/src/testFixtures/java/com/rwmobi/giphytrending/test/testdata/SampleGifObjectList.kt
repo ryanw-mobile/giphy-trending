@@ -5,11 +5,11 @@
 
 package com.rwmobi.giphytrending.test.testdata
 
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 
-object SampleGiphyImageItemList {
-    val giphyImageItemList = listOf(
-        GiphyImageItem(
+object SampleGifObjectList {
+    val gifObjects = listOf(
+        GifObject(
             id = "MiBE4zcYUZWYmHnsI7",
             previewUrl = "https://media4.giphy.com/media/MiBE4zcYUZWYmHnsI7/200w.gif",
             previewHeight = 280,
@@ -20,7 +20,7 @@ object SampleGiphyImageItemList {
             type = "gif",
             username = "marchmadness",
         ),
-        GiphyImageItem(
+        GifObject(
             id = "5KF7hci72bv2ZbchuT",
             previewUrl = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/200w.gif",
             previewWidth = 480,
@@ -31,7 +31,7 @@ object SampleGiphyImageItemList {
             type = "gif",
             username = "studiosoriginals",
         ),
-        GiphyImageItem(
+        GifObject(
             id = "uaIAIw3ELuk69mhZ5I",
             previewUrl = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/200w.gif",
             previewWidth = 480,

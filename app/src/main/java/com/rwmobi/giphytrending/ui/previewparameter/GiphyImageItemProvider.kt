@@ -6,12 +6,12 @@
 package com.rwmobi.giphytrending.ui.previewparameter
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 
-class GiphyImageItemProvider : PreviewParameterProvider<GiphyImageItem> {
-    override val values: Sequence<GiphyImageItem>
+class GiphyImageItemProvider : PreviewParameterProvider<GifObject> {
+    override val values: Sequence<GifObject>
         get() = sequenceOf(
-            GiphyImageItem(
+            GifObject(
                 id = "MiBE4zcYUZWYmHnsI7",
                 previewUrl = "https://media4.giphy.com/media/MiBE4zcYUZWYmHnsI7/200w.gif",
                 previewHeight = 280,

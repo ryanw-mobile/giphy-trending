@@ -5,11 +5,11 @@
 
 package com.rwmobi.giphytrending.ui.destinations.trendinglist
 
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.ui.model.ErrorMessage
 
 data class TrendingUIState(
-    val giphyImageItems: List<GiphyImageItem>? = null,
+    val gifObjects: List<GifObject>? = null,
     val isLoading: Boolean = true,
     val requestScrollToTop: Boolean = false,
     val errorMessages: List<ErrorMessage> = emptyList(),

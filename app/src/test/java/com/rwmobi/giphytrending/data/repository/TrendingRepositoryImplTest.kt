@@ -6,7 +6,7 @@
 package com.rwmobi.giphytrending.data.repository
 
 import com.rwmobi.giphytrending.data.source.local.FakeDatabaseDataSource
-import com.rwmobi.giphytrending.data.source.local.mappers.asGiphyImageItem
+import com.rwmobi.giphytrending.data.source.local.mappers.toGifObject
 import com.rwmobi.giphytrending.data.source.network.FakeNetworkDataSource
 import com.rwmobi.giphytrending.domain.exceptions.EmptyGiphyAPIKeyException
 import com.rwmobi.giphytrending.domain.model.Rating
@@ -49,7 +49,7 @@ class TrendingRepositoryImplTest {
         val result = trendingRepository.fetchCachedTrending()
 
         result.isSuccess shouldBe true
-        result.getOrNull() shouldBe SampleTrendingEntityList.singleEntityList.asGiphyImageItem()
+        result.getOrNull() shouldBe SampleTrendingEntityList.singleEntityList.toGifObject()
     }
 
     @Test
@@ -72,7 +72,7 @@ class TrendingRepositoryImplTest {
         val result = trendingRepository.reloadTrending(limit = 100, rating = Rating.R)
 
         result.isSuccess shouldBe true
-        result.getOrNull() shouldBe SampleTrendingEntityList.singleEntityList.asGiphyImageItem()
+        result.getOrNull() shouldBe SampleTrendingEntityList.singleEntityList.toGifObject()
     }
 
     @Test

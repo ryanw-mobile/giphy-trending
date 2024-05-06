@@ -10,7 +10,7 @@ import com.rwmobi.giphytrending.data.repository.FakeTrendingRepository
 import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
-import com.rwmobi.giphytrending.test.testdata.SampleGiphyImageItemList
+import com.rwmobi.giphytrending.test.testdata.SampleGifObjectList
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 import io.mockk.mockk
@@ -65,7 +65,7 @@ internal class TrendingViewModelTest {
 
         setupViewModel()
 
-        viewModel.uiState.value.giphyImageItems shouldBe emptyList()
+        viewModel.uiState.value.gifObjects shouldBe emptyList()
         viewModel.uiState.value.isLoading shouldBe false
     }
 
@@ -97,10 +97,10 @@ internal class TrendingViewModelTest {
         fakeTrendingRepository.setTrendingResultForTest(Result.success(emptyList()))
         setupViewModel()
 
-        fakeTrendingRepository.setTrendingResultForTest(Result.success(SampleGiphyImageItemList.giphyImageItemList))
+        fakeTrendingRepository.setTrendingResultForTest(Result.success(SampleGifObjectList.gifObjects))
         viewModel.refresh()
 
-        viewModel.uiState.value.giphyImageItems shouldBe SampleGiphyImageItemList.giphyImageItemList
+        viewModel.uiState.value.gifObjects shouldBe SampleGifObjectList.gifObjects
         viewModel.uiState.value.isLoading shouldBe false
     }
 

@@ -16,7 +16,7 @@ import com.rwmobi.giphytrending.domain.repository.TrendingRepository
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
 import com.rwmobi.giphytrending.ui.MainActivityTestRobot
 import com.rwmobi.giphytrending.ui.components.GiphyItemTestRobot
-import com.rwmobi.giphytrending.ui.test.SampleGiphyImageItemList
+import com.rwmobi.giphytrending.ui.test.SampleGifObjectList
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -83,20 +83,20 @@ class TrendingListScreenTest {
 
             with(giphyItemTestRobot) {
                 fakeTrendingRepository.setTrendingResultForTest(
-                    trendingResult = Result.success(SampleGiphyImageItemList.giphyImageItemList),
+                    trendingResult = Result.success(SampleGifObjectList.gifObjects),
                 )
                 performPullToRefresh()
                 checkTrendingListIsDisplayed()
-                for (index in 0..SampleGiphyImageItemList.giphyImageItemList.lastIndex) {
+                for (index in 0..SampleGifObjectList.gifObjects.lastIndex) {
                     checkCanScrollToTrendingListItem(index = index)
-                    checkGiphyItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList[index])
+                    checkGiphyItemIsDisplayed(gifObject = SampleGifObjectList.gifObjects[index])
                 }
 
                 // Second top should scroll back to the top
                 with(mainActivityTestRobot) {
                     secondTapOnTrendingTab()
                 }
-                checkGiphyItemIsDisplayed(giphyImageItem = SampleGiphyImageItemList.giphyImageItemList.first())
+                checkGiphyItemIsDisplayed(gifObject = SampleGifObjectList.gifObjects.first())
             }
 
             // Error Snackbar
@@ -109,13 +109,13 @@ class TrendingListScreenTest {
 
             // Reload with only one item for easier testing
             with(giphyItemTestRobot) {
-                val lastGiphyItem = SampleGiphyImageItemList.giphyImageItemList.last()
+                val lastGiphyItem = SampleGifObjectList.gifObjects.last()
                 fakeTrendingRepository.setTrendingResultForTest(
                     trendingResult = Result.success(listOf(lastGiphyItem)),
                 )
                 performPullToRefresh()
 
-                checkGiphyItemIsDisplayed(giphyImageItem = lastGiphyItem)
+                checkGiphyItemIsDisplayed(gifObject = lastGiphyItem)
 
                 checkGiphyImageItemButtonsLongClickToolTipAreDisplayed()
                 checkOpenInBrowserButton(url = lastGiphyItem.webUrl)

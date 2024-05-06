@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import com.rwmobi.giphytrending.di.DispatcherModule
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
 import com.rwmobi.giphytrending.domain.repository.TrendingRepository
@@ -125,13 +125,13 @@ class TrendingViewModel @Inject constructor(
         }
     }
 
-    private fun processTrendingList(repositoryResult: Result<List<GiphyImageItem>>, isLoadingDone: Boolean) {
+    private fun processTrendingList(repositoryResult: Result<List<GifObject>>, isLoadingDone: Boolean) {
         when (repositoryResult.isFailure) {
             true -> updateUIForError("Error getting data: ${repositoryResult.exceptionOrNull()?.message}")
             false -> _uiState.update { currentUiState ->
                 currentUiState.copy(
                     isLoading = !isLoadingDone,
-                    giphyImageItems = repositoryResult.getOrNull() ?: emptyList(),
+                    gifObjects = repositoryResult.getOrNull() ?: emptyList(),
                 ).also {
                     Timber.tag("processTrendingList").v("Processed ${repositoryResult.getOrNull()?.count() ?: 0} entries, isLoading = ${!isLoadingDone}")
                 }

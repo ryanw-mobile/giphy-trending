@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.theme.getDimension
@@ -28,7 +28,7 @@ import com.rwmobi.giphytrending.ui.theme.getDimension
 @Composable
 fun GiphyItemCard(
     modifier: Modifier = Modifier,
-    giphyImageItem: GiphyImageItem,
+    gifObject: GifObject,
     imageLoader: ImageLoader,
     onClickToDownload: (imageUrl: String) -> Unit,
     onClickToOpen: (url: String) -> Unit,
@@ -43,7 +43,7 @@ fun GiphyItemCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = dimension.defaultHalfPadding),
-            giphyImageItem = giphyImageItem,
+            gifObject = gifObject,
             showBottomDivider = false,
             imageLoader = imageLoader,
             onClickToDownload = { onClickToDownload(it) },
@@ -57,7 +57,7 @@ fun GiphyItemCard(
 @PreviewFontScale
 @Composable
 private fun Preview(
-    @PreviewParameter(GiphyImageItemProvider::class) giphyImageItem: GiphyImageItem,
+    @PreviewParameter(GiphyImageItemProvider::class) gifObject: GifObject,
 ) {
     GiphyTrendingTheme {
         Surface {
@@ -65,7 +65,7 @@ private fun Preview(
                 modifier = Modifier
                     .padding(all = 24.dp)
                     .fillMaxWidth(),
-                giphyImageItem = giphyImageItem,
+                gifObject = gifObject,
                 imageLoader = ImageLoader(LocalContext.current),
                 onClickToDownload = {},
                 onClickToShare = {},

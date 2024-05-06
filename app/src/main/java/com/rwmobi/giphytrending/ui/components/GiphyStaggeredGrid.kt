@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemsProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.theme.getDimension
@@ -35,7 +35,7 @@ import com.rwmobi.giphytrending.ui.theme.getDimension
 fun GiphyStaggeredGrid(
     modifier: Modifier = Modifier,
     imageLoader: ImageLoader,
-    giphyImageItems: List<GiphyImageItem>,
+    gifObjects: List<GifObject>,
     listContentDescription: String,
     requestScrollToTop: Boolean,
     useCardLayout: Boolean,
@@ -63,13 +63,13 @@ fun GiphyStaggeredGrid(
         contentPadding = PaddingValues(all = dimension.defaultHalfPadding),
     ) {
         itemsIndexed(
-            items = giphyImageItems,
+            items = gifObjects,
             key = { _, giphyImageItem -> giphyImageItem.id },
         ) { index, giphyImageItem ->
             if (useCardLayout) {
                 GiphyItemCard(
                     modifier = Modifier.padding(all = dimension.defaultHalfPadding),
-                    giphyImageItem = giphyImageItem,
+                    gifObject = giphyImageItem,
                     imageLoader = imageLoader,
                     onClickToDownload = onClickToDownload,
                     onClickToOpen = onClickToOpen,
@@ -78,8 +78,8 @@ fun GiphyStaggeredGrid(
             } else {
                 GiphyItem(
                     modifier = Modifier.fillMaxWidth(),
-                    giphyImageItem = giphyImageItem,
-                    showBottomDivider = (index < giphyImageItems.lastIndex),
+                    gifObject = giphyImageItem,
+                    showBottomDivider = (index < gifObjects.lastIndex),
                     imageLoader = imageLoader,
                     onClickToDownload = { onClickToDownload(it) },
                     onClickToOpen = { onClickToOpen(it) },
@@ -94,14 +94,14 @@ fun GiphyStaggeredGrid(
 @PreviewFontScale
 @Composable
 private fun Preview(
-    @PreviewParameter(GiphyImageItemsProvider::class) giphyImageItems: List<GiphyImageItem>,
+    @PreviewParameter(GiphyImageItemsProvider::class) gifObjects: List<GifObject>,
 ) {
     GiphyTrendingTheme {
         Surface {
             GiphyStaggeredGrid(
                 modifier = Modifier.fillMaxSize(),
                 imageLoader = ImageLoader(LocalContext.current),
-                giphyImageItems = giphyImageItems,
+                gifObjects = gifObjects,
                 listContentDescription = "",
                 requestScrollToTop = false,
                 useCardLayout = false,
@@ -118,14 +118,14 @@ private fun Preview(
 @PreviewFontScale
 @Composable
 private fun PreviewCardLayout(
-    @PreviewParameter(GiphyImageItemsProvider::class) giphyImageItems: List<GiphyImageItem>,
+    @PreviewParameter(GiphyImageItemsProvider::class) gifObjects: List<GifObject>,
 ) {
     GiphyTrendingTheme {
         Surface {
             GiphyStaggeredGrid(
                 modifier = Modifier.fillMaxSize(),
                 imageLoader = ImageLoader(LocalContext.current),
-                giphyImageItems = giphyImageItems,
+                gifObjects = gifObjects,
                 listContentDescription = "",
                 requestScrollToTop = false,
                 useCardLayout = true,

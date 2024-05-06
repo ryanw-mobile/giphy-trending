@@ -11,7 +11,7 @@ import com.rwmobi.giphytrending.data.source.network.dto.FixedWidth
 import com.rwmobi.giphytrending.data.source.network.dto.Images
 import com.rwmobi.giphytrending.data.source.network.dto.Original
 import com.rwmobi.giphytrending.data.source.network.dto.TrendingDataDto
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 import java.util.Date
 
 internal object SampleTrendingMapper {
@@ -87,7 +87,7 @@ internal object SampleTrendingMapper {
         )
 
     val sampleDomainModel1 =
-        GiphyImageItem(
+        GifObject(
             id = "5KF7hci72bv2ZbchuT",
             previewUrl = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/200w.gif",
             previewWidth = 480,
@@ -171,7 +171,7 @@ internal object SampleTrendingMapper {
         )
 
     val sampleDomainModel2 =
-        GiphyImageItem(
+        GifObject(
             id = "uaIAIw3ELuk69mhZ5I",
             previewUrl = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/200w.gif",
             previewWidth = 480,
@@ -255,7 +255,7 @@ internal object SampleTrendingMapper {
         )
 
     val sampleDomainModel3 =
-        GiphyImageItem(
+        GifObject(
             id = "etKSrsbbKbqwW6vzOg",
             previewUrl = "https://media1.giphy.com/media/etKSrsbbKbqwW6vzOg/200w.gif",
             previewWidth = 480,

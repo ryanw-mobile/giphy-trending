@@ -10,7 +10,7 @@ import com.rwmobi.giphytrending.data.repository.FakeSearchRepository
 import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
-import com.rwmobi.giphytrending.test.testdata.SampleGiphyImageItemList
+import com.rwmobi.giphytrending.test.testdata.SampleGifObjectList
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeSameInstanceAs
@@ -46,7 +46,7 @@ internal class SearchViewModelTest {
     @Test
     fun fetchLastSuccessfulSearch_ShouldUpdateUIStateCorrectly_WhenDataIsAvailable() = runTest {
         val lastSuccessfulSearchKeyword = "last serach keyword"
-        val lastSuccessfulSearchResult = SampleGiphyImageItemList.giphyImageItemList
+        val lastSuccessfulSearchResult = SampleGifObjectList.gifObjects
         fakeSearchRepository.setLastSuccessfulSearchKeywordForTest(lastSuccessfulSearchKeyword)
         fakeSearchRepository.setLastSuccessfulSearchResultsForTest(lastSuccessfulSearchResult)
 
@@ -55,7 +55,7 @@ internal class SearchViewModelTest {
         with(viewModel.uiState.value) {
             isLoading shouldBe false
             keyword shouldBe lastSuccessfulSearchKeyword
-            giphyImageItems shouldContainExactlyInAnyOrder lastSuccessfulSearchResult
+            gifObjects shouldContainExactlyInAnyOrder lastSuccessfulSearchResult
         }
     }
 
@@ -66,7 +66,7 @@ internal class SearchViewModelTest {
         with(viewModel.uiState.value) {
             isLoading shouldBe false
             keyword shouldBe ""
-            giphyImageItems shouldBe null
+            gifObjects shouldBe null
         }
     }
 
@@ -108,12 +108,12 @@ internal class SearchViewModelTest {
                 rating = Rating.G,
             ),
         )
-        fakeSearchRepository.setSearchResultForTest(Result.success(SampleGiphyImageItemList.giphyImageItemList))
+        fakeSearchRepository.setSearchResultForTest(Result.success(SampleGifObjectList.gifObjects))
 
         viewModel.updateKeyword("test")
         viewModel.search()
 
-        viewModel.uiState.value.giphyImageItems shouldContainExactlyInAnyOrder SampleGiphyImageItemList.giphyImageItemList
+        viewModel.uiState.value.gifObjects shouldContainExactlyInAnyOrder SampleGifObjectList.gifObjects
     }
 
     @Test

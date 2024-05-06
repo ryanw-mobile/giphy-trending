@@ -1,22 +1,22 @@
 package com.rwmobi.giphytrending.data.repository
 
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.repository.SearchRepository
 
 class FakeSearchRepository : SearchRepository {
-    private var searchResult: Result<List<GiphyImageItem>>? = null
+    private var searchResult: Result<List<GifObject>>? = null
     private var lastSuccessfulSearchKeyword: String? = null
-    private var lastSuccessfulSearchResults: List<GiphyImageItem>? = null
+    private var lastSuccessfulSearchResults: List<GifObject>? = null
 
-    override suspend fun search(keyword: String?, limit: Int, rating: Rating): Result<List<GiphyImageItem>> {
+    override suspend fun search(keyword: String?, limit: Int, rating: Rating): Result<List<GifObject>> {
         return searchResult ?: Result.success(emptyList())
     }
 
     override fun getLastSuccessfulSearchKeyword(): String? = lastSuccessfulSearchKeyword
-    override fun getLastSuccessfulSearchResults(): List<GiphyImageItem>? = lastSuccessfulSearchResults
+    override fun getLastSuccessfulSearchResults(): List<GifObject>? = lastSuccessfulSearchResults
 
-    fun setSearchResultForTest(searchResult: Result<List<GiphyImageItem>>?) {
+    fun setSearchResultForTest(searchResult: Result<List<GifObject>>?) {
         this.searchResult = searchResult
     }
 
@@ -24,7 +24,7 @@ class FakeSearchRepository : SearchRepository {
         this.lastSuccessfulSearchKeyword = lastSuccessfulSearchKeyword
     }
 
-    fun setLastSuccessfulSearchResultsForTest(lastSuccessfulSearchResults: List<GiphyImageItem>?) {
+    fun setLastSuccessfulSearchResultsForTest(lastSuccessfulSearchResults: List<GifObject>?) {
         this.lastSuccessfulSearchResults = lastSuccessfulSearchResults
     }
 }

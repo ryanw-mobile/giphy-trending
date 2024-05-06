@@ -5,7 +5,7 @@
 
 package com.rwmobi.giphytrending.domain.model
 
-data class GiphyImageItem(
+data class GifObject(
     val id: String,
     val previewUrl: String,
     val previewHeight: Int,

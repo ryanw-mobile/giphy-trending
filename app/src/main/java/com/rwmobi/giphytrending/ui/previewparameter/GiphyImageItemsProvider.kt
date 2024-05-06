@@ -6,13 +6,13 @@
 package com.rwmobi.giphytrending.ui.previewparameter
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 
-class GiphyImageItemsProvider : PreviewParameterProvider<List<GiphyImageItem>> {
-    override val values: Sequence<List<GiphyImageItem>>
+class GiphyImageItemsProvider : PreviewParameterProvider<List<GifObject>> {
+    override val values: Sequence<List<GifObject>>
         get() = sequenceOf(
             listOf(
-                GiphyImageItem(
+                GifObject(
                     id = "MiBE4zcYUZWYmHnsI7",
                     previewUrl = "https://media4.giphy.com/media/MiBE4zcYUZWYmHnsI7/200w.gif",
                     previewHeight = 280,
@@ -23,7 +23,7 @@ class GiphyImageItemsProvider : PreviewParameterProvider<List<GiphyImageItem>> {
                     type = "gif",
                     username = "marchmadness",
                 ),
-                GiphyImageItem(
+                GifObject(
                     id = "5KF7hci72bv2ZbchuT",
                     previewUrl = "https://media2.giphy.com/media/5KF7hci72bv2ZbchuT/200w.gif",
                     previewWidth = 480,
@@ -34,7 +34,7 @@ class GiphyImageItemsProvider : PreviewParameterProvider<List<GiphyImageItem>> {
                     type = "gif",
                     username = "studiosoriginals",
                 ),
-                GiphyImageItem(
+                GifObject(
                     id = "uaIAIw3ELuk69mhZ5I",
                     previewUrl = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/200w.gif",
                     previewWidth = 480,

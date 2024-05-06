@@ -90,11 +90,11 @@ fun SearchScreen(
                 onSearch = uiEvent.onSearch,
             )
 
-            uiState.giphyImageItems?.let { giphyImageItems ->
+            uiState.gifObjects?.let { giphyImageItems ->
                 if (giphyImageItems.isNotEmpty()) {
                     GiphyStaggeredGrid(
                         modifier = Modifier.fillMaxSize(),
-                        giphyImageItems = giphyImageItems,
+                        gifObjects = giphyImageItems,
                         listContentDescription = stringResource(R.string.content_description_search_results),
                         useCardLayout = useCardLayout,
                         imageLoader = imageLoader,

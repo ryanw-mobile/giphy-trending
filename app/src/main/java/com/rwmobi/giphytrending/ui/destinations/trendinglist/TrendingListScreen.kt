@@ -34,7 +34,7 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.core.net.toUri
 import coil.ImageLoader
 import com.rwmobi.giphytrending.R
-import com.rwmobi.giphytrending.domain.model.GiphyImageItem
+import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.ui.components.GiphyStaggeredGrid
 import com.rwmobi.giphytrending.ui.components.NoDataScreen
 import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemsProvider
@@ -69,11 +69,11 @@ fun TrendingListScreen(
     val clipboardHistory = remember { mutableStateListOf<String>() }
 
     Box(modifier = modifier.nestedScroll(connection = pullRefreshState.nestedScrollConnection)) {
-        uiState.giphyImageItems?.let { giphyImageItems ->
+        uiState.gifObjects?.let { giphyImageItems ->
             if (giphyImageItems.isNotEmpty()) {
                 GiphyStaggeredGrid(
                     modifier = Modifier.fillMaxSize(),
-                    giphyImageItems = giphyImageItems,
+                    gifObjects = giphyImageItems,
                     listContentDescription = stringResource(R.string.content_description_trending_list),
                     useCardLayout = useCardLayout,
                     imageLoader = imageLoader,
@@ -141,7 +141,7 @@ fun TrendingListScreen(
 @PreviewScreenSizes
 @Composable
 private fun Preview(
-    @PreviewParameter(GiphyImageItemsProvider::class) giphyImageItems: List<GiphyImageItem>,
+    @PreviewParameter(GiphyImageItemsProvider::class) gifObjects: List<GifObject>,
 ) {
     GiphyTrendingTheme {
         Surface {
@@ -150,7 +150,7 @@ private fun Preview(
                 useCardLayout = getPreviewWindowSizeClass().widthSizeClass != WindowWidthSizeClass.Compact,
                 imageLoader = ImageLoader(LocalContext.current),
                 uiState = TrendingUIState(
-                    giphyImageItems = giphyImageItems,
+                    gifObjects = gifObjects,
                     isLoading = false,
                 ),
                 uiEvent = TrendingUIEvent(
@@ -174,7 +174,7 @@ private fun NoDataPreview() {
                 useCardLayout = getPreviewWindowSizeClass().widthSizeClass != WindowWidthSizeClass.Compact,
                 imageLoader = ImageLoader(LocalContext.current),
                 uiState = TrendingUIState(
-                    giphyImageItems = emptyList(),
+                    gifObjects = emptyList(),
                     isLoading = false,
                 ),
                 uiEvent = TrendingUIEvent(

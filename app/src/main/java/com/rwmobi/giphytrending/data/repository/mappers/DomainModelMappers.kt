@@ -3,7 +3,7 @@
  * https://github.com/ryanw-mobile
  */
 
-package com.rwmobi.giphytrending.data.source.local.mappers
+package com.rwmobi.giphytrending.data.repository.mappers
 
 import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
 import com.rwmobi.giphytrending.domain.model.GifObject
@@ -19,5 +19,3 @@ fun TrendingEntity.toGifObject() = GifObject(
     type = this.type,
     username = this.username,
 )
-
-fun List<TrendingEntity>.toGifObject() = this.map { it.toGifObject() }

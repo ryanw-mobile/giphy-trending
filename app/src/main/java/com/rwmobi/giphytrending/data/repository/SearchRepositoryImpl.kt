@@ -5,19 +5,18 @@
 
 package com.rwmobi.giphytrending.data.repository
 
-import com.rwmobi.giphytrending.data.source.local.mappers.toGifObject
-import com.rwmobi.giphytrending.data.source.local.mappers.toTrendingEntity
+import com.rwmobi.giphytrending.data.repository.mappers.toGifObject
 import com.rwmobi.giphytrending.data.source.network.interfaces.NetworkDataSource
 import com.rwmobi.giphytrending.di.DispatcherModule
 import com.rwmobi.giphytrending.di.GiphyApiKey
 import com.rwmobi.giphytrending.domain.exceptions.EmptyGiphyAPIKeyException
+import com.rwmobi.giphytrending.domain.exceptions.except
 import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.repository.SearchRepository
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -49,7 +48,7 @@ class SearchRepositoryImpl @Inject constructor(
 
         // Search changes frequently, we only cache results in memory
         return withContext(dispatcher) {
-            try {
+            runCatching {
                 val result = networkDataSource.getSearch(
                     apiKey = giphyApiKey,
                     keyword = keyword,
@@ -59,14 +58,9 @@ class SearchRepositoryImpl @Inject constructor(
                 )
 
                 lastSuccessfulSearchKeyword = keyword
-                lastSuccessfulSearchResults = result.trendingData.toTrendingEntity().toGifObject()
-                Result.success(value = lastSuccessfulSearchResults ?: emptyList())
-            } catch (cancellationException: CancellationException) {
-                throw cancellationException
-            } catch (ex: Exception) {
-                Timber.tag("search").e(ex)
-                Result.failure(exception = ex)
-            }
+                lastSuccessfulSearchResults = result.trendingData.map { it.toGifObject() }
+                lastSuccessfulSearchResults ?: emptyList()
+            }.except<CancellationException, _>()
         }
     }
 

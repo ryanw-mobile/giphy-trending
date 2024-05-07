@@ -5,9 +5,9 @@
 
 package com.rwmobi.giphytrending.data.repository
 
+import com.rwmobi.giphytrending.data.repository.mappers.toEntity
+import com.rwmobi.giphytrending.data.repository.mappers.toGifObject
 import com.rwmobi.giphytrending.data.source.local.interfaces.DatabaseDataSource
-import com.rwmobi.giphytrending.data.source.local.mappers.toGifObject
-import com.rwmobi.giphytrending.data.source.local.mappers.toTrendingEntity
 import com.rwmobi.giphytrending.data.source.network.dto.TrendingNetworkResponseDto
 import com.rwmobi.giphytrending.data.source.network.interfaces.NetworkDataSource
 import com.rwmobi.giphytrending.di.DispatcherModule
@@ -32,7 +32,7 @@ class TrendingRepositoryImpl @Inject constructor(
     override suspend fun fetchCachedTrending(): Result<List<GifObject>> {
         return withContext(dispatcher) {
             Result.runCatching {
-                databaseDataSource.queryData().toGifObject()
+                databaseDataSource.queryData().map { it.toGifObject() }
             }.except<CancellationException, _>()
         }
     }
@@ -50,7 +50,7 @@ class TrendingRepositoryImpl @Inject constructor(
                 Timber.tag("refreshTrending").v("Mark dirty: success")
 
                 val trendingNetworkResponse = getTrendingFromNetwork(limit = limit, rating = rating)
-                databaseDataSource.insertAllData(data = trendingNetworkResponse.trendingData.toTrendingEntity())
+                databaseDataSource.insertAllData(data = trendingNetworkResponse.trendingData.map { it.toEntity() })
                 Timber.tag("refreshTrending").v("Insertion completed")
 
                 val invalidationResult = invalidateDirtyTrendingDb()
@@ -58,7 +58,7 @@ class TrendingRepositoryImpl @Inject constructor(
                     Timber.tag("invalidationResult").e(invalidationResult.exceptionOrNull())
                     Result.failure(exception = invalidationResult.exceptionOrNull() ?: UnknownError())
                 } else {
-                    Result.success(value = databaseDataSource.queryData().toGifObject())
+                    Result.success(value = databaseDataSource.queryData().map { it.toGifObject() })
                 }
             } catch (cancellationException: CancellationException) {
                 throw cancellationException

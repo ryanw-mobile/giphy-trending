@@ -5,6 +5,8 @@
 
 package com.rwmobi.giphytrending.data.source.local.mappers
 
+import com.rwmobi.giphytrending.data.repository.mappers.toEntity
+import com.rwmobi.giphytrending.data.repository.mappers.toGifObject
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingMapper
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
@@ -37,14 +39,14 @@ internal class TrendingMapperTest {
             SampleTrendingMapper.sampleDomainModel3,
         )
 
-        val giphyImageItemDomainModelList = trendingEntityList.toGifObject()
+        val giphyImageItemDomainModelList = trendingEntityList.map { it.toGifObject() }
 
         giphyImageItemDomainModelList shouldContainExactly expectedGiphyImageItemDomainModelList
     }
 
     @Test
     fun toTrendingEntity_ShouldConvertTrendingDataToTrendingEntityCorrectly() {
-        val trendingEntity = SampleTrendingMapper.sampleTrendingDataDto1.toTrendingEntity()
+        val trendingEntity = SampleTrendingMapper.sampleTrendingDataDto1.toEntity()
         trendingEntity shouldBe SampleTrendingMapper.sampleTrendingEntity1
     }
 
@@ -61,7 +63,7 @@ internal class TrendingMapperTest {
             SampleTrendingMapper.sampleTrendingEntity3,
         )
 
-        val trendingEntityList = mockTrendingDataList.toTrendingEntity()
+        val trendingEntityList = mockTrendingDataList.map { it.toEntity() }
 
         trendingEntityList shouldBe expectedTrendingEntityList
     }

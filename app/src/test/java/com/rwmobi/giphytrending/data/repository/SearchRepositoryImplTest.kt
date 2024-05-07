@@ -5,8 +5,7 @@
 
 package com.rwmobi.giphytrending.data.repository
 
-import com.rwmobi.giphytrending.data.source.local.mappers.toGifObject
-import com.rwmobi.giphytrending.data.source.local.mappers.toTrendingEntity
+import com.rwmobi.giphytrending.data.repository.mappers.toGifObject
 import com.rwmobi.giphytrending.data.source.network.FakeNetworkDataSource
 import com.rwmobi.giphytrending.domain.exceptions.EmptyGiphyAPIKeyException
 import com.rwmobi.giphytrending.domain.model.Rating
@@ -82,7 +81,7 @@ class SearchRepositoryImplTest {
         val searchResult = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
 
         searchResult.isSuccess shouldBe true
-        searchResult.getOrNull() shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.toTrendingEntity().toGifObject()
+        searchResult.getOrNull() shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.map { it.toGifObject() }
     }
 
     @Test
@@ -132,7 +131,7 @@ class SearchRepositoryImplTest {
         val lastSuccessfulSearchKeyword = searchRepository.getLastSuccessfulSearchKeyword()
         val lastSuccessfulSearchResults = searchRepository.getLastSuccessfulSearchResults()
         lastSuccessfulSearchKeyword shouldBe keyword
-        lastSuccessfulSearchResults shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.toTrendingEntity().toGifObject()
+        lastSuccessfulSearchResults shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.map { it.toGifObject() }
     }
 
     @Test
@@ -147,6 +146,6 @@ class SearchRepositoryImplTest {
         val lastSuccessfulSearchKeyword = searchRepository.getLastSuccessfulSearchKeyword()
         val lastSuccessfulSearchResults = searchRepository.getLastSuccessfulSearchResults()
         lastSuccessfulSearchKeyword shouldBe keyword
-        lastSuccessfulSearchResults shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.toTrendingEntity().toGifObject()
+        lastSuccessfulSearchResults shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.map { it.toGifObject() }
     }
 }

@@ -8,6 +8,7 @@ package com.rwmobi.giphytrending.ui.destinations.trendinglist
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.rwmobi.giphytrending.MainActivity
+import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.data.repository.FakeUITestTrendingRepository
 import com.rwmobi.giphytrending.data.repository.FakeUITestUserPreferencesRepository
 import com.rwmobi.giphytrending.domain.model.Rating
@@ -93,9 +94,7 @@ class TrendingListScreenTest {
                 }
 
                 // Second top should scroll back to the top
-                with(mainActivityTestRobot) {
-                    secondTapOnTrendingTab()
-                }
+                mainActivityTestRobot.secondTapOnTrendingTab()
                 checkGiphyItemIsDisplayed(gifObject = SampleGifObjectList.gifObjects.first())
             }
 
@@ -104,7 +103,7 @@ class TrendingListScreenTest {
                 val exceptionMessage = "Testing Exception"
                 fakeTrendingRepository.setTrendingResultForTest(Result.failure(IOException(exceptionMessage)))
                 performPullToRefresh()
-                checkErrorSnackbarIsDisplayedAndDismissed(exceptionMessage = "Error getting data: $exceptionMessage")
+                checkSnackbarIsDisplayedAndDismissed(message = "Error getting data: $exceptionMessage")
             }
 
             // Reload with only one item for easier testing
@@ -120,6 +119,7 @@ class TrendingListScreenTest {
                 checkGiphyImageItemButtonsLongClickToolTipAreDisplayed()
                 checkOpenInBrowserButton(url = lastGiphyItem.webUrl)
                 checkDownloadImageButton(imageUrl = lastGiphyItem.imageUrl)
+                mainActivityTestRobot.checkSnackbarIsDisplayedAndDismissed(message = composeTestRule.activity.getString(R.string.image_queued_for_download))
                 checkCopyImageLinkButton()
             }
         }

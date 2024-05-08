@@ -13,12 +13,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.rwmobi.giphytrending.BuildConfig
+import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.destinations.search.SearchScreen
 import com.rwmobi.giphytrending.ui.destinations.search.SearchUIEvent
 import com.rwmobi.giphytrending.ui.destinations.settings.SettingsScreen
@@ -53,6 +55,7 @@ fun AppNavHost(
         composable(route = "trendingList") {
             val viewModel: TrendingViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val context = LocalContext.current
 
             LaunchedEffect(lastDoubleTappedNavItem) {
                 val enabled = lastDoubleTappedNavItem?.equals(AppNavItem.TrendingList) ?: false
@@ -73,6 +76,8 @@ fun AppNavHost(
                     onRefresh = { viewModel.refresh() },
                     onErrorShown = { viewModel.errorShown(it) },
                     onScrolledToTop = { onScrolledToTop(AppNavItem.TrendingList) },
+                    onQueueDownloadFailed = { onShowSnackbar(context.getString(R.string.failed_to_download_file)) },
+                    onQueueDownloadSuccess = { onShowSnackbar(context.getString(R.string.image_queued_for_download)) },
                     onShowSnackbar = onShowSnackbar,
                 ),
             )
@@ -85,6 +90,7 @@ fun AppNavHost(
         composable(route = "search") {
             val viewModel: SearchViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+            val context = LocalContext.current
 
             LaunchedEffect(lastDoubleTappedNavItem) {
                 val enabled = lastDoubleTappedNavItem?.equals(AppNavItem.Search) ?: false
@@ -111,6 +117,8 @@ fun AppNavHost(
                     },
                     onErrorShown = { viewModel.errorShown(it) },
                     onScrolledToTop = { onScrolledToTop(AppNavItem.Search) },
+                    onQueueDownloadFailed = { onShowSnackbar(context.getString(R.string.failed_to_download_file)) },
+                    onQueueDownloadSuccess = { onShowSnackbar(context.getString(R.string.image_queued_for_download)) },
                     onShowSnackbar = onShowSnackbar,
                 ),
             )

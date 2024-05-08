@@ -1,21 +1,10 @@
 # Giphy Trending ![Gradle Build](https://github.com/ryanw-mobile/giphy-trending/actions/workflows/main_build.yml/badge.svg) [![codecov](https://codecov.io/gh/ryanw-mobile/giphy-trending/graph/badge.svg?token=J8PHIH3OPU)](https://codecov.io/gh/ryanw-mobile/giphy-trending)
 
 This sample Android app presents the Giphy trending animated gifs for sharing or download. You can
-now also search animated gifs by keyword.
-
-&nbsp;
-
-It was elaborated from the work
+now also search animated gifs by keyword. It was elaborated from the work
 by [Fahri Can](https://medium.com/codex/android-tutorial-part-1-using-room-with-rxjava-2-dagger-2-kotlin-and-mvvm-f8a54f77d3fa)
 in Nov 2021. I migrated the codebase from RxJava to Coroutines, and then from XML Views to Jetpack
 Compose. The current release is completely different from the original version after these years.
-
-&nbsp;
-
-<p align="center">
-  <img src="screenshots/240422_animated_screenshot.gif" width="600" /><br/>
-  <img src="screenshots/240422_github_social_preview.png" width="600" />
-</p>
 
 &nbsp;
 
@@ -28,7 +17,30 @@ generally believe it to be a bad coding practice by tightly coupling the busines
 
 &nbsp;
 
-### High level architecture
+<p align="center">
+  <img src="screenshots/240422_animated_screenshot.gif" width="600" /><br/>
+  <img src="screenshots/240422_github_social_preview.png" width="600" />
+</p>
+
+&nbsp;
+
+## Binaries download
+
+If you want to try out the app without building it, check out
+the [Releases section](https://github.com/ryanw-mobile/giphy-trending/releases) where you can find
+the APK and App Bundles for each major version. A working Giphy API key was applied when building
+the app, therefore you can test it by just installing it.
+
+&nbsp;
+
+## To-do lists
+
+Planned enhancements are
+now [logged as issues](https://github.com/ryanw-mobile/giphy-trending/issues?q=is%3Aopen+is%3Aissue+label%3Arefactor%2Cfeature%2Cfix%2Ctest).
+
+&nbsp;
+
+## High level architecture
 
 * Kotlin
 * MVVM & clean architecture
@@ -43,7 +55,7 @@ generally believe it to be a bad coding practice by tightly coupling the busines
 
 &nbsp;
 
-### Major libraries used
+## Major libraries used
 
 * [Jetpack Compose](https://developer.android.com/jetpack/androidx/releases/compose) - Modern
   toolkit for building native UI
@@ -84,39 +96,14 @@ generally believe it to be a bad coding practice by tightly coupling the busines
 
 &nbsp;
 
-## Contribution invitation
-
-For this being a demo app, you are more than welcomed to join either helping to clear some of the
-pending tasks, or improve the app. Contact me if you are interested.
-
-&nbsp;
-
-## To-do lists
-
-Planned enhancements are
-now [logged as issues](https://github.com/ryanw-mobile/giphy-trending/issues?q=is%3Aopen+is%3Aissue+label%3Arefactor%2Cfeature%2Cfix%2Ctest).
-
-&nbsp;
-
-## Requirements
+## Building the App
+### Requirements
 
 * Android Studio Iguana | 2023.2.1
 * Android device or simulator running Android 9+ (API 28)
-
-&nbsp;
-
-## Binaries download
-
-If you want to try out the app without building it, check out
-the [Releases section](https://github.com/ryanw-mobile/giphy-trending/releases) where you can find
-the APK and App Bundles for each major version. A working Giphy API key was applied when building
-the app, therefore you can test it by just installing it.
-
-&nbsp;
-
-## Building the App
-
 * To build the app by yourself, you need your own [Giphy API Key](https://developers.giphy.com/)
+
+&nbsp;
 
 ### Setting up the keystore
 
@@ -168,7 +155,7 @@ The generated apk(s) will be stored under `app/build/outputs/`
 
 &nbsp;
 
-### License
+## License - No Google Play / App Store submission is allowed
 
 #### Attribution-NonCommercial (CC BY-NC 4.0)
 

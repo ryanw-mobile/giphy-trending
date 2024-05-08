@@ -74,7 +74,7 @@ class SettingsScreenTest {
             with(mainActivityTestRobot) {
                 val exceptionMessage = "Testing Exception"
                 fakeUserPreferencesRepository.emitError(IOException(exceptionMessage))
-                checkErrorSnackbarIsDisplayedAndDismissed(exceptionMessage = exceptionMessage)
+                checkSnackbarIsDisplayedAndDismissed(message = exceptionMessage)
             }
 
             // Currently not meaningful to test - until this screen becomes lengthy

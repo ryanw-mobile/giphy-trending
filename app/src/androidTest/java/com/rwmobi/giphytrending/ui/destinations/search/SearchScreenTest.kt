@@ -8,6 +8,7 @@ package com.rwmobi.giphytrending.ui.destinations.search
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.rwmobi.giphytrending.MainActivity
+import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.data.repository.FakeUITestSearchRepository
 import com.rwmobi.giphytrending.data.repository.FakeUITestUserPreferencesRepository
 import com.rwmobi.giphytrending.domain.model.Rating
@@ -85,7 +86,7 @@ class SearchScreenTest {
                 val exceptionMessage = "Testing Exception"
                 fakeSearchRepository.setSearchResultForTest(Result.failure(IOException(exceptionMessage)))
                 checkCanPerformSearchWithKeyword("any test keywords")
-                checkErrorSnackbarIsDisplayedAndDismissed(exceptionMessage = "Error getting data: $exceptionMessage")
+                checkSnackbarIsDisplayedAndDismissed(message = "Error getting data: $exceptionMessage")
                 checkCanClearSearchKeyword()
             }
 
@@ -102,9 +103,7 @@ class SearchScreenTest {
                 }
 
                 // Second top should scroll back to the top
-                with(mainActivityTestRobot) {
-                    secondTapOnSearchTab()
-                }
+                mainActivityTestRobot.secondTapOnSearchTab()
                 checkGiphyItemIsDisplayed(gifObject = SampleGifObjectList.gifObjects.first())
             }
 
@@ -122,6 +121,7 @@ class SearchScreenTest {
                 checkGiphyImageItemButtonsLongClickToolTipAreDisplayed()
                 checkOpenInBrowserButton(url = lastGiphyItem.webUrl)
                 checkDownloadImageButton(imageUrl = lastGiphyItem.imageUrl)
+                mainActivityTestRobot.checkSnackbarIsDisplayedAndDismissed(message = composeTestRule.activity.getString(R.string.image_queued_for_download))
                 checkCopyImageLinkButton()
             }
 

@@ -116,14 +116,14 @@ internal class MainActivityTestRobot(
         }
     }
 
-    fun checkErrorSnackbarIsDisplayedAndDismissed(exceptionMessage: String) {
+    fun checkSnackbarIsDisplayedAndDismissed(message: String) {
         try {
-            assertSnackbarIsDisplayed(message = exceptionMessage)
+            assertSnackbarIsDisplayed(message = message)
             tapOK()
-            assertSnackbarIsNotDisplayed(message = exceptionMessage)
+            assertSnackbarIsNotDisplayed(message = message)
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
-            throw AssertionError("Expected error snackbar behavior is not observed. ${e.message}", e)
+            throw AssertionError("Expected snackbar behavior is not observed. ${e.message}", e)
         }
     }
 

@@ -46,15 +46,16 @@ internal class GiphyItemTestRobot(
     fun checkGiphyImageItemButtonsLongClickToolTipAreDisplayed() {
         try {
             with(composeTestRule) {
-                assertLongClickToolTipIsDisplayed(
-                    contentDescription = activity.getString(R.string.content_description_copy_image_link),
-                )
-                assertLongClickToolTipIsDisplayed(
-                    contentDescription = activity.getString(R.string.content_description_download_image),
-                )
-                assertLongClickToolTipIsDisplayed(
-                    contentDescription = activity.getString(R.string.content_description_open_in_browser),
-                )
+                listOf(
+                    R.string.content_description_copy_image_link,
+                    R.string.content_description_download_image,
+                    R.string.content_description_open_in_browser,
+                ).forEach {
+                    assertLongClickToolTipIsDisplayed(
+                        contentDescription = activity.getString(it),
+                    )
+                    waitForIdle()
+                }
             }
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("GiphyItemTestRobotError")

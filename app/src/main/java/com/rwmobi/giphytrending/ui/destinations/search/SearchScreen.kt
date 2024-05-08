@@ -104,7 +104,8 @@ fun SearchScreen(
                                 imageUrl = imageUrl,
                                 coroutineScope = coroutineScope,
                                 context = context,
-                                onError = { uiEvent.onShowSnackbar(context.getString(R.string.failed_to_download_file)) },
+                                onSuccess = uiEvent.onQueueDownloadSuccess,
+                                onError = uiEvent.onQueueDownloadFailed,
                             )
                         },
                         onClickToOpen = { url -> context.startBrowserActivity(url = url) },

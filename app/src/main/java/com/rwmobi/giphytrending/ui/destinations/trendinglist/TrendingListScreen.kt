@@ -83,7 +83,8 @@ fun TrendingListScreen(
                             imageUrl = imageUrl,
                             coroutineScope = coroutineScope,
                             context = context,
-                            onError = { uiEvent.onShowSnackbar(context.getString(R.string.failed_to_download_file)) },
+                            onSuccess = uiEvent.onQueueDownloadSuccess,
+                            onError = uiEvent.onQueueDownloadFailed,
                         )
                     },
                     onClickToOpen = { url -> context.startBrowserActivity(url = url) },
@@ -158,6 +159,8 @@ private fun Preview(
                     onErrorShown = {},
                     onShowSnackbar = {},
                     onScrolledToTop = {},
+                    onQueueDownloadFailed = {},
+                    onQueueDownloadSuccess = {},
                 ),
             )
         }
@@ -182,6 +185,8 @@ private fun NoDataPreview() {
                     onErrorShown = {},
                     onShowSnackbar = {},
                     onScrolledToTop = {},
+                    onQueueDownloadFailed = {},
+                    onQueueDownloadSuccess = {},
                 ),
             )
         }

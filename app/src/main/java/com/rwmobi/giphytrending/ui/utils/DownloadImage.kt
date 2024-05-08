@@ -11,13 +11,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-fun downloadImage(imageUrl: String, coroutineScope: CoroutineScope, context: Context, onError: suspend () -> Unit) {
+fun downloadImage(imageUrl: String, coroutineScope: CoroutineScope, context: Context, onError: suspend () -> Unit, onSuccess: suspend () -> Unit) {
     coroutineScope.launch {
-        val result = withContext(Dispatchers.IO) {
+        val isSuccess = withContext(Dispatchers.IO) {
             context.downloadImageUsingMediaStore(imageUrl)
         }
-        if (!result) {
-            withContext(Dispatchers.Main) {
+        withContext(Dispatchers.Main) {
+            if (isSuccess) {
+                onSuccess()
+            } else {
                 onError()
             }
         }

@@ -152,6 +152,50 @@ internal class TrendingViewModelTest {
     }
 
     @Test
+    fun errorMessages_ShouldAccumulateErrorMessages_OnMultipleFailures() = runTest {
+        val errorMessage1 = "Test error 1"
+        val errorMessage2 = "Test error 2"
+        fakeUserPreferencesRepository.init(
+            userPreferences = UserPreferences(
+                apiRequestLimit = 100,
+                rating = Rating.G,
+            ),
+        )
+        setupViewModel()
+
+        fakeUserPreferencesRepository.emitError(Exception(errorMessage1))
+        viewModel.refresh()
+        fakeUserPreferencesRepository.emitError(Exception(errorMessage2))
+        viewModel.refresh()
+
+        val uiState = viewModel.uiState.value
+        uiState.errorMessages.size shouldBe 2
+        uiState.errorMessages[0].message shouldBe errorMessage1
+        uiState.errorMessages[1].message shouldBe errorMessage2
+    }
+
+    @Test
+    fun errorMessages_ShouldNotAccumulateDuplicatedErrorMessages_OnMultipleFailures() = runTest {
+        val errorMessage1 = "Test error 1"
+        fakeUserPreferencesRepository.init(
+            userPreferences = UserPreferences(
+                apiRequestLimit = 100,
+                rating = Rating.G,
+            ),
+        )
+        setupViewModel()
+
+        repeat(times = 2) {
+            fakeUserPreferencesRepository.emitError(Exception(errorMessage1))
+            viewModel.refresh()
+        }
+
+        val uiState = viewModel.uiState.value
+        uiState.errorMessages.size shouldBe 1
+        uiState.errorMessages[0].message shouldBe errorMessage1
+    }
+
+    @Test
     fun errorShown_ShouldRemoveSpecifiedErrorMessageFromUIState() = runTest {
         setupViewModel()
         fakeUserPreferencesRepository.emitError(Exception("some error message"))

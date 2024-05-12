@@ -45,7 +45,7 @@ class TrendingRepositoryImpl @Inject constructor(
         }
 
         return withContext(dispatcher) {
-            try {
+            Result.runCatching {
                 databaseDataSource.markDirty()
                 Timber.tag("refreshTrending").v("Mark dirty: success")
 
@@ -54,18 +54,16 @@ class TrendingRepositoryImpl @Inject constructor(
                 Timber.tag("refreshTrending").v("Insertion completed")
 
                 val invalidationResult = invalidateDirtyTrendingDb()
-                if (invalidationResult.isFailure) {
-                    Timber.tag("invalidationResult").e(invalidationResult.exceptionOrNull())
-                    Result.failure(exception = invalidationResult.exceptionOrNull() ?: UnknownError())
-                } else {
-                    Result.success(value = databaseDataSource.queryData().map { it.toGifObject() })
-                }
-            } catch (cancellationException: CancellationException) {
-                throw cancellationException
-            } catch (ex: Exception) {
-                Timber.tag("refreshTrending").e(ex)
-                Result.failure(exception = ex)
-            }
+                invalidationResult.fold(
+                    onSuccess = {
+                        databaseDataSource.queryData().map { it.toGifObject() }
+                    },
+                    onFailure = { exception ->
+                        Timber.tag("invalidationResult").e(exception)
+                        throw exception
+                    },
+                )
+            }.except<CancellationException, _>()
         }
     }
 

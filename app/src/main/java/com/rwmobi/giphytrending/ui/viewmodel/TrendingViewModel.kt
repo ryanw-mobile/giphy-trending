@@ -82,12 +82,7 @@ class TrendingViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
             userPreferencesRepository.preferenceErrors.collect { preferenceErrors ->
                 Timber.e(preferenceErrors)
-                _uiState.update {
-                    addErrorMessage(
-                        currentUiState = it,
-                        message = preferenceErrors.localizedMessage ?: "Unknown error",
-                    )
-                }
+                updateUIForError(message = preferenceErrors.localizedMessage ?: "Unknown error")
             }
         }
     }
@@ -107,15 +102,6 @@ class TrendingViewModel @Inject constructor(
 
     private fun startLoading() {
         _uiState.update { it.copy(isLoading = true) }
-    }
-
-    private fun updateUIForError(message: String) {
-        _uiState.update {
-            addErrorMessage(
-                currentUiState = it,
-                message = message,
-            )
-        }
     }
 
     private fun loadTrendingData(apiMaxEntries: Int, rating: Rating) {
@@ -139,14 +125,20 @@ class TrendingViewModel @Inject constructor(
         }
     }
 
-    private fun addErrorMessage(currentUiState: TrendingUIState, message: String): TrendingUIState {
-        val newErrorMessage = ErrorMessage(
-            id = UUID.randomUUID().mostSignificantBits,
-            message = message,
-        )
-        return currentUiState.copy(
-            isLoading = false,
-            errorMessages = currentUiState.errorMessages + newErrorMessage,
-        )
+    private fun updateUIForError(message: String) {
+        _uiState.update { currentUiState ->
+            val newErrorMessages = if (_uiState.value.errorMessages.any { it.message == message }) {
+                currentUiState.errorMessages
+            } else {
+                currentUiState.errorMessages + ErrorMessage(
+                    id = UUID.randomUUID().mostSignificantBits,
+                    message = message,
+                )
+            }
+            currentUiState.copy(
+                isLoading = false,
+                errorMessages = newErrorMessages,
+            )
+        }
     }
 }

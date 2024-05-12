@@ -164,17 +164,21 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun processTrendingList(repositoryResult: Result<List<GifObject>>) {
-        when (repositoryResult.isFailure) {
-            true -> updateUIForError("Error getting data: ${repositoryResult.exceptionOrNull()?.message}")
-            false -> _uiState.update { currentUiState ->
-                currentUiState.copy(
-                    isLoading = false,
-                    gifObjects = repositoryResult.getOrNull() ?: emptyList(),
-                ).also {
-                    Timber.tag("processTrendingList").v("Processed ${repositoryResult.getOrNull()?.count() ?: 0} entries")
+        repositoryResult.fold(
+            onSuccess = { gifObjects ->
+                _uiState.update { currentUiState ->
+                    currentUiState.copy(
+                        isLoading = false,
+                        gifObjects = gifObjects,
+                    ).also {
+                        Timber.tag("processTrendingList").v("Processed ${gifObjects.count()} entries")
+                    }
                 }
-            }
-        }
+            },
+            onFailure = { exception ->
+                updateUIForError("Error getting data: ${exception.message}")
+            },
+        )
     }
 
     private fun updateUIForError(message: String) {

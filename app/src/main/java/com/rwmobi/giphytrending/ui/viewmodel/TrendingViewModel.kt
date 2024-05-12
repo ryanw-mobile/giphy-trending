@@ -112,17 +112,21 @@ class TrendingViewModel @Inject constructor(
     }
 
     private fun processTrendingList(repositoryResult: Result<List<GifObject>>, isLoadingDone: Boolean) {
-        when (repositoryResult.isFailure) {
-            true -> updateUIForError("Error getting data: ${repositoryResult.exceptionOrNull()?.message}")
-            false -> _uiState.update { currentUiState ->
-                currentUiState.copy(
-                    isLoading = !isLoadingDone,
-                    gifObjects = repositoryResult.getOrNull() ?: emptyList(),
-                ).also {
-                    Timber.tag("processTrendingList").v("Processed ${repositoryResult.getOrNull()?.count() ?: 0} entries, isLoading = ${!isLoadingDone}")
+        repositoryResult.fold(
+            onSuccess = { gifObjects ->
+                _uiState.update { currentUiState ->
+                    currentUiState.copy(
+                        isLoading = !isLoadingDone,
+                        gifObjects = gifObjects,
+                    ).also {
+                        Timber.tag("processTrendingList").v("Processed ${gifObjects.count()} entries, isLoading = ${!isLoadingDone}")
+                    }
                 }
-            }
-        }
+            },
+            onFailure = { exception ->
+                updateUIForError("Error getting data: ${exception.message}")
+            },
+        )
     }
 
     private fun updateUIForError(message: String) {

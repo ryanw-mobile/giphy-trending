@@ -315,48 +315,50 @@ tasks.named("preBuild") {
     dependsOn(tasks.named("ktlintFormat"))
 }
 
-koverReport {
-    // common filters for all reports of all variants
-    filters {
-        // exclusions for reports
-        excludes {
-            // excludes class by fully-qualified JVM class name, wildcards '*' and '?' are available
-            classes(
-                listOf(
-                    "com.rwmobi.giphytrending.GiphyApplication",
-                    "com.rwmobi.giphytrending.*.*MembersInjector",
-                    "com.rwmobi.giphytrending.*.*Factory",
-                    "com.rwmobi.giphytrending.*.*HiltModules*",
-                    "com.rwmobi.giphytrending.data.source.local.*_Impl*",
-                    "com.rwmobi.giphytrending.data.source.local.*Impl_Factory",
-                    "com.rwmobi.giphytrending.BR",
-                    "com.rwmobi.giphytrending.BuildConfig",
-                    "com.rwmobi.giphytrending.Hilt*",
-                    "com.rwmobi.giphytrending.*.Hilt_*",
-                    "com.rwmobi.giphytrending.ComposableSingletons*",
-                    "*Fragment",
-                    "*Fragment\$*",
-                    "*Activity",
-                    "*Activity\$*",
-                    "*.BuildConfig",
-                    "*.DebugUtil",
-                ),
-            )
-            // excludes all classes located in specified package and it subpackages, wildcards '*' and '?' are available
-            packages(
-                listOf(
-                    "com.rwmobi.giphytrending.di",
-                    "com.rwmobi.giphytrending.ui.components",
-                    "com.rwmobi.giphytrending.ui.destinations",
-                    "com.rwmobi.giphytrending.ui.navigation",
-                    "com.rwmobi.giphytrending.ui.previewparameter",
-                    "com.rwmobi.giphytrending.ui.theme",
-                    "com.rwmobi.giphytrending.ui.utils",
-                    "androidx",
-                    "dagger.hilt.internal.aggregatedroot.codegen",
-                    "hilt_aggregated_deps",
-                ),
-            )
+kover {
+    reports {
+        // common filters for all reports of all variants
+        filters {
+            // exclusions for reports
+            excludes {
+                // excludes class by fully-qualified JVM class name, wildcards '*' and '?' are available
+                classes(
+                    listOf(
+                        "com.rwmobi.giphytrending.GiphyApplication",
+                        "com.rwmobi.giphytrending.*.*MembersInjector",
+                        "com.rwmobi.giphytrending.*.*Factory",
+                        "com.rwmobi.giphytrending.*.*HiltModules*",
+                        "com.rwmobi.giphytrending.data.source.local.*_Impl*",
+                        "com.rwmobi.giphytrending.data.source.local.*Impl_Factory",
+                        "com.rwmobi.giphytrending.BR",
+                        "com.rwmobi.giphytrending.BuildConfig",
+                        "com.rwmobi.giphytrending.Hilt*",
+                        "com.rwmobi.giphytrending.*.Hilt_*",
+                        "com.rwmobi.giphytrending.ComposableSingletons*",
+                        "*Fragment",
+                        "*Fragment\$*",
+                        "*Activity",
+                        "*Activity\$*",
+                        "*.BuildConfig",
+                        "*.DebugUtil",
+                    ),
+                )
+                // excludes all classes located in specified package and it subpackages, wildcards '*' and '?' are available
+                packages(
+                    listOf(
+                        "com.rwmobi.giphytrending.di",
+                        "com.rwmobi.giphytrending.ui.components",
+                        "com.rwmobi.giphytrending.ui.destinations",
+                        "com.rwmobi.giphytrending.ui.navigation",
+                        "com.rwmobi.giphytrending.ui.previewparameter",
+                        "com.rwmobi.giphytrending.ui.theme",
+                        "com.rwmobi.giphytrending.ui.utils",
+                        "androidx",
+                        "dagger.hilt.internal.aggregatedroot.codegen",
+                        "hilt_aggregated_deps",
+                    ),
+                )
+            }
         }
     }
 }

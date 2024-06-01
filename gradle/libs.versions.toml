@@ -111,6 +111,7 @@ androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profi
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 hiltAndroidPlugin = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlinxKover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 gradleKtlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }

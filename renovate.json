@@ -29,7 +29,7 @@
       "matchPackagePatterns": [
         "com.google.devtools.ksp"
       ],
-      "groupName": "kotlin",
+      "groupName": "kotlin"
     },
     {
       "matchPackageNames": [

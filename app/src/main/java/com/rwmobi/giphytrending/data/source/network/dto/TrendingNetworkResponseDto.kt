@@ -5,8 +5,8 @@
 
 package com.rwmobi.giphytrending.data.source.network.dto
 
-import androidx.annotation.Keep
-import com.squareup.moshi.Json
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /***
  * Note: Obviously large chunk of data is not being used by this App for the moment,
@@ -16,12 +16,12 @@ import com.squareup.moshi.Json
  * Otherwise in a real project once we know what's required, we don't have to keep so much,
  * as they will be thrown away at the time we convert it to domain model anyway.
  */
-@Keep
+@Serializable
 data class TrendingNetworkResponseDto(
-    @Json(name = "data")
+    @SerialName(value = "data")
     val trendingData: List<TrendingDataDto>,
-    @Json(name = "meta")
+    @SerialName(value = "meta")
     val metaDto: MetaDto,
-    @Json(name = "pagination")
+    @SerialName(value = "pagination")
     val pagination: PaginationDto,
 )

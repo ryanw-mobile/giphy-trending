@@ -5,15 +5,15 @@
 
 package com.rwmobi.giphytrending.data.source.network.dto
 
-import androidx.annotation.Keep
-import com.squareup.moshi.Json
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class SearchNetworkResponseDto(
-    @Json(name = "data")
+    @SerialName(value = "data")
     val trendingData: List<TrendingDataDto>,
-    @Json(name = "meta")
+    @SerialName(value = "meta")
     val metaDto: MetaDto,
-    @Json(name = "pagination")
+    @SerialName(value = "pagination")
     val pagination: PaginationDto,
 )

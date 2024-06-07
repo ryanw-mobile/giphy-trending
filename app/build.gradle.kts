@@ -19,6 +19,7 @@ plugins {
     alias(libs.plugins.gradleKtlint)
     alias(libs.plugins.baselineprofile)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.serialization)
 }
 
 android {
@@ -250,19 +251,13 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-    // Glide for Images
     implementation(libs.coil)
     implementation(libs.coil.gif)
 
-    // Retrofit 2
-    implementation(libs.retrofit)
-    implementation(libs.converter.moshi)
-    implementation(libs.logging.interceptor)
-
-    // Moshi
-    implementation(libs.moshi)
-    implementation(libs.moshi.kotlin)
-    implementation(libs.moshi.adapters)
+    // Ktor as replacement of Retrofit
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
 
     // Room 2
     implementation(libs.androidx.room.runtime)
@@ -279,7 +274,7 @@ dependencies {
     // testing
     testImplementation(libs.junit)
     testImplementation(libs.androidx.test.core.ktx)
-    testImplementation(libs.jetbrains.kotlinx.coroutines.test)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.robolectric)
     testImplementation(libs.mockk.android)
     testImplementation(libs.kotest.assertions.core)
@@ -293,7 +288,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.androidx.uiautomator)
     androidTestImplementation(libs.kotest.assertions.core)
-    androidTestImplementation(libs.jetbrains.kotlinx.coroutines.test)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.mockk.android)
 }

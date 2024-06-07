@@ -23,15 +23,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkDataSourceModule {
-//    @Singleton
-//    @Provides
-//    fun provideNetworkDataSource(
-//        giphyApiService: GiphyApi,
-//    ): NetworkDataSource {
-//        return RetrofitNetworkDataSource(giphyApiService = giphyApiService)
-//    }
-
-    // Ktor
     @Singleton
     @Provides
     fun provideNetworkDataSource(

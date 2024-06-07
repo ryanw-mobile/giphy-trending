@@ -85,3 +85,4 @@ lint/tmp/
 # lint/reports/
 .idea
 # app/src/release/generated/baselineProfiles
+.kotlin/sessions

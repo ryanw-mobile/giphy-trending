@@ -12,7 +12,7 @@ import com.rwmobi.giphytrending.data.source.network.dto.Images
 import com.rwmobi.giphytrending.data.source.network.dto.Original
 import com.rwmobi.giphytrending.data.source.network.dto.TrendingDataDto
 import com.rwmobi.giphytrending.domain.model.GifObject
-import java.util.Date
+import kotlinx.datetime.Instant
 
 internal object SampleTrendingMapper {
     val sampleTrendingDataDto1 =
@@ -57,7 +57,7 @@ internal object SampleTrendingMapper {
                     width = "480",
                 ),
             ),
-            importDatetime = Date(1635978358000),
+            importDatetime = Instant.fromEpochMilliseconds(1635978358000),
             isSticker = 0,
             rating = "g",
             slug = "moonagedaydream-neon-rated-moonage-daydream-UeaVRMdWRGzvzr62pF",
@@ -65,7 +65,7 @@ internal object SampleTrendingMapper {
             sourcePostUrl = "https://some.url/some-path",
             sourceTld = "neonrated.com",
             title = "Chef Cooking GIF by GIPHY Studios Originals",
-            trendingDatetime = Date(1636679711000),
+            trendingDatetime = Instant.fromEpochMilliseconds(1636679711000),
             type = "gif",
             url = "https://giphy.com/gifs/studiosoriginals-cooking-chef-cook-5KF7hci72bv2ZbchuT",
             username = "studiosoriginals",
@@ -82,8 +82,8 @@ internal object SampleTrendingMapper {
             title = "Chef Cooking GIF by GIPHY Studios Originals",
             type = "gif",
             username = "studiosoriginals",
-            trendingDateTime = Date(1636679711000),
-            importDateTime = Date(1635978358000),
+            trendingDateTime = Instant.fromEpochMilliseconds(1636679711000),
+            importDateTime = Instant.fromEpochMilliseconds(1635978358000),
         )
 
     val sampleDomainModel1 =
@@ -141,7 +141,7 @@ internal object SampleTrendingMapper {
                     width = "480",
                 ),
             ),
-            importDatetime = Date(1605041010000),
+            importDatetime = Instant.fromEpochMilliseconds(1605041010000),
             isSticker = 0,
             rating = "g",
             slug = "moonagedaydream-neon-rated-moonage-daydream-UeaVRMdWRGzvzr62pF",
@@ -149,7 +149,7 @@ internal object SampleTrendingMapper {
             sourcePostUrl = "https://neonrated.com/films/bowie-moonage-daydream",
             sourceTld = "neonrated.com",
             title = "Joe Biden GIF by Creative Courage",
-            trendingDatetime = Date(-62170156725000),
+            trendingDatetime = Instant.fromEpochMilliseconds(-62170156725000),
             type = "gif",
             url = "https://giphy.com/gifs/creative-courage-vidhyan-as-a-nation-we-have-lot-of-obligations-no-obligation-uaIAIw3ELuk69mhZ5I",
             username = "creative-courage",
@@ -166,8 +166,8 @@ internal object SampleTrendingMapper {
             title = "Joe Biden GIF by Creative Courage",
             type = "gif",
             username = "creative-courage",
-            trendingDateTime = Date(-62170156725000),
-            importDateTime = Date(1605041010000),
+            trendingDateTime = Instant.fromEpochMilliseconds(-62170156725000),
+            importDateTime = Instant.fromEpochMilliseconds(1605041010000),
         )
 
     val sampleDomainModel2 =
@@ -225,7 +225,7 @@ internal object SampleTrendingMapper {
                     width = "480",
                 ),
             ),
-            importDatetime = Date(1636417528000),
+            importDatetime = Instant.fromEpochMilliseconds(1636417528000),
             isSticker = 0,
             rating = "g",
             slug = "moonagedaydream-neon-rated-moonage-daydream-UeaVRMdWRGzvzr62pF",
@@ -233,7 +233,7 @@ internal object SampleTrendingMapper {
             sourcePostUrl = "https://neonrated.com/films/bowie-moonage-daydream",
             sourceTld = "neonrated.com",
             title = "Winner Winner Win GIF by GIPHY Studios Originals",
-            trendingDatetime = Date(1636678809000),
+            trendingDatetime = Instant.fromEpochMilliseconds(1636678809000),
             type = "gif",
             url = "https://giphy.com/gifs/studiosoriginals-chicken-dinner-winner-etKSrsbbKbqwW6vzOg",
             username = "studiosoriginals",
@@ -250,8 +250,8 @@ internal object SampleTrendingMapper {
             title = "Winner Winner Win GIF by GIPHY Studios Originals",
             type = "gif",
             username = "studiosoriginals",
-            trendingDateTime = Date(1636678809000),
-            importDateTime = Date(1636417528000),
+            trendingDateTime = Instant.fromEpochMilliseconds(1636678809000),
+            importDateTime = Instant.fromEpochMilliseconds(1636417528000),
         )
 
     val sampleDomainModel3 =

@@ -8,7 +8,7 @@ package com.rwmobi.giphytrending.data.source.local.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
+import kotlinx.datetime.Instant
 
 @Entity(tableName = "trending")
 data class TrendingEntity(
@@ -32,9 +32,9 @@ data class TrendingEntity(
     @ColumnInfo(name = "username")
     val username: String,
     @ColumnInfo(name = "trending_datetime")
-    val trendingDateTime: Date,
+    val trendingDateTime: Instant,
     @ColumnInfo(name = "import_datetime")
-    val importDateTime: Date,
+    val importDateTime: Instant,
 
     // This field is not from the RestAPI
     // Every time we overwrite the DB with API data. To remove outdated data in the FB,

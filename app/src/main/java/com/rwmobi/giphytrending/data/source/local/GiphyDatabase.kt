@@ -11,8 +11,8 @@ import androidx.room.TypeConverters
 import com.rwmobi.giphytrending.data.source.local.dao.TrendingDao
 import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
 
-@Database(entities = [TrendingEntity::class], version = 6, exportSchema = false)
-@TypeConverters(DateTypeConverters::class)
+@Database(entities = [TrendingEntity::class], version = 7, exportSchema = false)
+@TypeConverters(InstantTypeConverters::class)
 abstract class GiphyDatabase : RoomDatabase() {
     abstract fun trendingDao(): TrendingDao
 }

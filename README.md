@@ -72,6 +72,7 @@ now [logged as issues](https://github.com/ryanw-mobile/giphy-trending/issues?q=i
 * [AndroidX Legacy Support](https://developer.android.com/jetpack/androidx/releases/legacy) - Apache 2.0 - Legacy libraries
 * [AndroidX Lifecycle](https://developer.android.com/jetpack/androidx/releases/lifecycle) - Apache 2.0 - Lifecycles-aware components
 * [AndroidX Room](https://developer.android.com/jetpack/androidx/releases/room) - Apache 2.0 - Persistence library
+* [Kotlinx DateTime](https://github.com/Kotlin/kotlinx-datetime) - Apache 2.0 - A multiplatform Kotlin library for working with date and time
 * [Timber](https://github.com/JakeWharton/timber) - Apache 2.0 - A logger with a small, extensible API
 * [Coil](https://coil-kt.github.io/coil/) - Apache 2.0 - An image loading library for Android backed by Kotlin Coroutines
 * [MockK](https://mockk.io/) - Apache 2.0 - Mocking library for Kotlin

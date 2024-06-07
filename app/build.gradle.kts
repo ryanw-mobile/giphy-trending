@@ -19,6 +19,7 @@ plugins {
     alias(libs.plugins.gradleKtlint)
     alias(libs.plugins.baselineprofile)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.serialization)
 }
 
 android {
@@ -268,7 +269,7 @@ dependencies {
     implementation(libs.ktor.client.cio)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
-    
+
     // Room 2
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)

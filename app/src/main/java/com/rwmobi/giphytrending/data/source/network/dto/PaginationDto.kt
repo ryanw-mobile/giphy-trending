@@ -5,13 +5,13 @@
 
 package com.rwmobi.giphytrending.data.source.network.dto
 
-import androidx.annotation.Keep
-import com.squareup.moshi.Json
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@Keep
+@Serializable
 data class PaginationDto(
     val count: Int,
     val offset: Int,
-    @Json(name = "total_count")
+    @SerialName(value = "total_count")
     val totalCount: Int,
 )

@@ -5,92 +5,96 @@
 
 package com.rwmobi.giphytrending.data.source.network.dto
 
-import androidx.annotation.Keep
-import com.squareup.moshi.Json
+import com.rwmobi.giphytrending.data.source.network.CustomDateTimeAdapterKtor
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import java.util.Date
 
-@Keep
+@Serializable
 data class TrendingDataDto(
-    @Json(name = "analytics_response_payload")
+    @SerialName(value = "analytics_response_payload")
     val analyticsResponsePayload: String,
-    @Json(name = "bitly_gif_url")
+    @SerialName(value = "bitly_gif_url")
     val bitlyGifUrl: String,
-    @Json(name = "bitly_url")
+    @SerialName(value = "bitly_url")
     val bitlyUrl: String,
-    @Json(name = "content_url")
+    @SerialName(value = "content_url")
     val contentUrl: String,
-    @Json(name = "embed_url")
+    @SerialName(value = "embed_url")
     val embedUrl: String,
     val id: String,
     val images: Images,
-    @Json(name = "import_datetime")
+    @SerialName(value = "import_datetime")
+    @Serializable(with = CustomDateTimeAdapterKtor::class)
     val importDatetime: Date,
-    @Json(name = "is_sticker")
+    @SerialName(value = "is_sticker")
     val isSticker: Int,
     val rating: String,
     val slug: String,
     val source: String,
-    @Json(name = "source_post_url")
+    @SerialName(value = "source_post_url")
     val sourcePostUrl: String,
-    @Json(name = "source_tld")
+    @SerialName(value = "source_tld")
     val sourceTld: String,
     val title: String,
-    @Json(name = "trending_datetime")
+
+    @SerialName(value = "trending_datetime")
+    @Serializable(with = CustomDateTimeAdapterKtor::class)
     val trendingDatetime: Date,
     val type: String,
     val url: String,
     val username: String,
 )
 
-@Keep
+@Serializable
 data class Images(
-    @Json(name = "fixed_height")
+    @SerialName(value = "fixed_height")
     val fixedHeight: FixedHeight,
-    @Json(name = "fixed_width")
+    @SerialName(value = "fixed_width")
     val fixedWidth: FixedWidth,
     val original: Original,
 )
 
-@Keep
+@Serializable
 data class FixedHeight(
     val height: String,
     val mp4: String? = null,
-    @Json(name = "mp4_size")
+    @SerialName(value = "mp4_size")
     val mp4Size: String? = null,
     val size: String,
     val url: String,
     val webp: String? = null,
-    @Json(name = "webp_size")
+    @SerialName(value = "webp_size")
     val webpSize: String? = null,
     val width: String,
 )
 
-@Keep
+@Serializable
 data class FixedWidth(
     val height: String,
     val mp4: String? = null,
-    @Json(name = "mp4_size")
+    @SerialName(value = "mp4_size")
     val mp4Size: String? = null,
     val size: String,
     val url: String,
     val webp: String? = null,
-    @Json(name = "webp_size")
+    @SerialName(value = "webp_size")
     val webpSize: String? = null,
     val width: String,
 )
 
-@Keep
+@Serializable
 data class Original(
     val frames: String,
     val hash: String,
     val height: String,
     val mp4: String? = null,
-    @Json(name = "mp4_size")
+    @SerialName(value = "mp4_size")
     val mp4Size: String? = null,
     val size: String,
     val url: String,
     val webp: String? = null,
-    @Json(name = "webp_size")
+    @SerialName(value = "webp_size")
     val webpSize: String? = null,
     val width: String,
 )

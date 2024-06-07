@@ -5,10 +5,10 @@
 
 package com.rwmobi.giphytrending.data.source.network.dto
 
-import com.rwmobi.giphytrending.data.source.network.CustomDateTimeAdapterKtor
+import com.rwmobi.giphytrending.data.source.network.CustomInstantSerializer
+import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.util.Date
 
 @Serializable
 data class TrendingDataDto(
@@ -25,8 +25,8 @@ data class TrendingDataDto(
     val id: String,
     val images: Images,
     @SerialName(value = "import_datetime")
-    @Serializable(with = CustomDateTimeAdapterKtor::class)
-    val importDatetime: Date,
+    @Serializable(with = CustomInstantSerializer::class)
+    val importDatetime: Instant,
     @SerialName(value = "is_sticker")
     val isSticker: Int,
     val rating: String,
@@ -39,8 +39,8 @@ data class TrendingDataDto(
     val title: String,
 
     @SerialName(value = "trending_datetime")
-    @Serializable(with = CustomDateTimeAdapterKtor::class)
-    val trendingDatetime: Date,
+    @Serializable(with = CustomInstantSerializer::class)
+    val trendingDatetime: Instant,
     val type: String,
     val url: String,
     val username: String,

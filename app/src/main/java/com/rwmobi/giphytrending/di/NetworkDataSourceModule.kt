@@ -5,6 +5,7 @@
 
 package com.rwmobi.giphytrending.di
 
+import com.rwmobi.giphytrending.data.source.network.CustomInstantSerializer
 import com.rwmobi.giphytrending.data.source.network.KtorNetworkDataSource
 import com.rwmobi.giphytrending.data.source.network.interfaces.NetworkDataSource
 import dagger.Module
@@ -18,6 +19,8 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
 import javax.inject.Singleton
 
 @Module
@@ -51,6 +54,9 @@ object NetworkDataSourceModule {
                         ignoreUnknownKeys = true
                         prettyPrint = true
                         isLenient = true
+                        serializersModule = SerializersModule {
+                            contextual(CustomInstantSerializer)
+                        }
                     },
                 )
             }

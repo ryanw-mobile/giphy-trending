@@ -251,7 +251,6 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-    // Glide for Images
     implementation(libs.coil)
     implementation(libs.coil.gif)
 

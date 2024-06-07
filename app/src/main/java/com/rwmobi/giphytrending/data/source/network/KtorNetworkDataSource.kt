@@ -32,17 +32,12 @@ class KtorNetworkDataSource(
         rating: String,
     ): TrendingNetworkResponseDto {
         return withContext(dispatcher) {
-            val response: TrendingNetworkResponseDto? = httpClient.get(trendingUrl) {
+            httpClient.get(trendingUrl) {
                 parameter("api_key", apiKey)
                 parameter("limit", limit)
                 parameter("offset", offset)
                 parameter("rating", rating)
             }.body()
-
-            response ?: throw Exception("null result")
-//                ?.result?.let {
-//                response
-//            } ?: throw PlaceDetailsNotFoundException(placeId = placeId)
         }
     }
 
@@ -54,18 +49,13 @@ class KtorNetworkDataSource(
         rating: String,
     ): SearchNetworkResponseDto {
         return withContext(dispatcher) {
-            val response: SearchNetworkResponseDto? = httpClient.get(searchURl) {
+            httpClient.get(searchURl) {
                 parameter("api_key", apiKey)
                 parameter("q", keyword)
                 parameter("limit", limit) // ⚠️ observe API limit
                 parameter("offset", offset)
                 parameter("rating", rating)
             }.body()
-
-            response ?: throw Exception("null result")
-//            response?.result?.let {
-//                response
-//            } ?: throw PlaceDetailsNotFoundException(placeId = placeId)
         }
     }
 }

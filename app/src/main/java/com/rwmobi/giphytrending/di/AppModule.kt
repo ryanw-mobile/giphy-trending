@@ -10,8 +10,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.rwmobi.giphytrending.BuildConfig
-import com.rwmobi.giphytrending.data.source.network.GiphyApi
-import com.rwmobi.giphytrending.data.source.network.GiphyApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,12 +48,6 @@ object AppModule {
     @Provides
     fun providePreferencesDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
         return context.userDataStore
-    }
-
-    @Singleton
-    @Provides
-    fun provideApi(): GiphyApi {
-        return GiphyApiService.getClient()
     }
 
     @GiphyApiKey

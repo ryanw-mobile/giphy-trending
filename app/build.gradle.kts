@@ -264,6 +264,11 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
 
+    // Ktor as replacement of Retrofit
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    
     // Room 2
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)

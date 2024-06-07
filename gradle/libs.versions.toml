@@ -26,6 +26,7 @@ junit = "4.13.2"
 kotlin = "2.0.0"
 kotest = "5.9.1"
 kover = "0.8.0"
+ktor = "2.3.11"
 ktlint = "12.1.1"
 leakcanary = "2.14"
 legacySupportV4 = "1.0.0"
@@ -107,6 +108,11 @@ leakcanary-android = { group = "com.squareup.leakcanary", name = "leakcanary-and
 androidx-material3-adaptive-android = { group = "androidx.compose.material3", name = "material3-adaptive-android", version.ref = "material3AdaptiveAndroid" }
 androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
+
+ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktor" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

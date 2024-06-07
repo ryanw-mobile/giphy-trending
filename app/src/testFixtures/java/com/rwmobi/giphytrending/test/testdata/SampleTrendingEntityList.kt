@@ -6,7 +6,7 @@
 package com.rwmobi.giphytrending.test.testdata
 
 import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
-import java.util.Date
+import kotlinx.datetime.Instant
 
 object SampleTrendingEntityList {
     val singleEntityList = listOf(
@@ -20,8 +20,8 @@ object SampleTrendingEntityList {
             title = "Joe Biden GIF by Creative Courage",
             type = "gif",
             username = "creative-courage",
-            trendingDateTime = Date(-62170156725000),
-            importDateTime = Date(1605041010000),
+            trendingDateTime = Instant.fromEpochMilliseconds(-62170156725000),
+            importDateTime = Instant.fromEpochMilliseconds(1605041010000),
         ),
     )
 
@@ -36,8 +36,8 @@ object SampleTrendingEntityList {
             title = "Chef Cooking GIF by GIPHY Studios Originals",
             type = "gif",
             username = "studiosoriginals",
-            trendingDateTime = Date(1636679711000),
-            importDateTime = Date(1635978358000),
+            trendingDateTime = Instant.fromEpochMilliseconds(1636679711000),
+            importDateTime = Instant.fromEpochMilliseconds(1635978358000),
         ),
         TrendingEntity(
             id = "uaIAIw3ELuk69mhZ5I",
@@ -49,8 +49,8 @@ object SampleTrendingEntityList {
             title = "Joe Biden GIF by Creative Courage",
             type = "gif",
             username = "creative-courage",
-            trendingDateTime = Date(-62170156725000),
-            importDateTime = Date(1605041010000),
+            trendingDateTime = Instant.fromEpochMilliseconds(-62170156725000),
+            importDateTime = Instant.fromEpochMilliseconds(1605041010000),
         ),
         TrendingEntity(
             id = "etKSrsbbKbqwW6vzOg",
@@ -62,8 +62,8 @@ object SampleTrendingEntityList {
             title = "Winner Winner Win GIF by GIPHY Studios Originals",
             type = "gif",
             username = "studiosoriginals",
-            trendingDateTime = Date(1636678809000),
-            importDateTime = Date(1636417528000),
+            trendingDateTime = Instant.fromEpochMilliseconds(1636678809000),
+            importDateTime = Instant.fromEpochMilliseconds(1636417528000),
         ),
     )
 }

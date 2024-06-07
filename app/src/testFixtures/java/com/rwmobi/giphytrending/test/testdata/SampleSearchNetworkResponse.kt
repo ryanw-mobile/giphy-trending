@@ -13,7 +13,7 @@ import com.rwmobi.giphytrending.data.source.network.dto.Original
 import com.rwmobi.giphytrending.data.source.network.dto.PaginationDto
 import com.rwmobi.giphytrending.data.source.network.dto.SearchNetworkResponseDto
 import com.rwmobi.giphytrending.data.source.network.dto.TrendingDataDto
-import java.util.Date
+import kotlinx.datetime.Instant
 
 object SampleSearchNetworkResponse {
     val singleResponse = SearchNetworkResponseDto(
@@ -64,7 +64,7 @@ object SampleSearchNetworkResponse {
                         width = "480",
                     ),
                 ),
-                importDatetime = Date(1605041010000),
+                importDatetime = Instant.fromEpochMilliseconds(1605041010000),
                 isSticker = 0,
                 rating = "",
                 slug = "",
@@ -72,7 +72,7 @@ object SampleSearchNetworkResponse {
                 sourcePostUrl = "",
                 sourceTld = "",
                 title = "Joe Biden GIF by Creative Courage",
-                trendingDatetime = Date(-62170156725000),
+                trendingDatetime = Instant.fromEpochMilliseconds(-62170156725000),
                 type = "gif",
                 url = "https://giphy.com/gifs/creative-courage-vidhyan-as-a-nation-we-have-lot-of-obligations-no-obligation-uaIAIw3ELuk69mhZ5I",
                 username = "creative-courage",

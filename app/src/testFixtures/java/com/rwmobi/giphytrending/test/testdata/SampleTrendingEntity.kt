@@ -6,7 +6,7 @@
 package com.rwmobi.giphytrending.test.testdata
 
 import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
-import java.util.Date
+import kotlinx.datetime.Instant
 
 object SampleTrendingEntity {
     val case1 = TrendingEntity(
@@ -19,8 +19,8 @@ object SampleTrendingEntity {
         title = "Chef Cooking GIF by GIPHY Studios Originals",
         type = "gif",
         username = "studiosoriginals",
-        trendingDateTime = Date(1636679711000),
-        importDateTime = Date(1635978358000),
+        trendingDateTime = Instant.fromEpochMilliseconds(1636679711000),
+        importDateTime = Instant.fromEpochMilliseconds(1635978358000),
     )
 
     val case2 = TrendingEntity(
@@ -33,8 +33,8 @@ object SampleTrendingEntity {
         title = "Joe Biden GIF by Creative Courage",
         type = "gif",
         username = "creative-courage",
-        trendingDateTime = Date(-62170156725000),
-        importDateTime = Date(1605041010000),
+        trendingDateTime = Instant.fromEpochMilliseconds(-62170156725000),
+        importDateTime = Instant.fromEpochMilliseconds(1605041010000),
     )
 
     val case2Modified = TrendingEntity(
@@ -47,8 +47,8 @@ object SampleTrendingEntity {
         title = "Cam Newton Hit GIF by Tomi Ferraro, Sportz",
         type = "gif",
         username = "toferra",
-        trendingDateTime = Date(1487871000000),
-        importDateTime = Date(1487870240000),
+        trendingDateTime = Instant.fromEpochMilliseconds(1487871000000),
+        importDateTime = Instant.fromEpochMilliseconds(1487870240000),
     )
 
     val case3 = TrendingEntity(
@@ -61,8 +61,8 @@ object SampleTrendingEntity {
         title = "Winner Winner Win GIF by GIPHY Studios Originals",
         type = "gif",
         username = "studiosoriginals",
-        trendingDateTime = Date(1636678809000),
-        importDateTime = Date(1636417528000),
+        trendingDateTime = Instant.fromEpochMilliseconds(1636678809000),
+        importDateTime = Instant.fromEpochMilliseconds(1636417528000),
     )
 
     val case4 = TrendingEntity(
@@ -75,8 +75,8 @@ object SampleTrendingEntity {
         title = "Happy Birthday GIF by Mumbai Indians",
         type = "gif",
         username = "mumbaiindians",
-        trendingDateTime = Date(-62170156725000),
-        importDateTime = Date(1581493566000),
+        trendingDateTime = Instant.fromEpochMilliseconds(-62170156725000),
+        importDateTime = Instant.fromEpochMilliseconds(1581493566000),
     )
 
     val case5 = TrendingEntity(
@@ -89,8 +89,8 @@ object SampleTrendingEntity {
         title = "Proud Of You Reaction GIF",
         type = "gif",
         username = "editingandlayout",
-        trendingDateTime = Date(1621233914000),
-        importDateTime = Date(1410285308000),
+        trendingDateTime = Instant.fromEpochMilliseconds(1621233914000),
+        importDateTime = Instant.fromEpochMilliseconds(1410285308000),
     )
 
     val case6 = TrendingEntity(
@@ -103,7 +103,7 @@ object SampleTrendingEntity {
         title = "Cam Newton Hit GIF by Tomi Ferraro, Sportz",
         type = "gif",
         username = "toferra",
-        trendingDateTime = Date(1487871000000),
-        importDateTime = Date(1487870240000),
+        trendingDateTime = Instant.fromEpochMilliseconds(1487871000000),
+        importDateTime = Instant.fromEpochMilliseconds(1487870240000),
     )
 }

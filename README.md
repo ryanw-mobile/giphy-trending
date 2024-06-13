@@ -1,4 +1,4 @@
-# Giphy Trending ![Gradle Build](https://github.com/ryanw-mobile/giphy-trending/actions/workflows/main_build.yml/badge.svg) [![codecov](https://codecov.io/gh/ryanw-mobile/giphy-trending/graph/badge.svg?token=J8PHIH3OPU)](https://codecov.io/gh/ryanw-mobile/giphy-trending)
+# Giphy Trending ![Gradle Build](https://github.com/ryanw-mobile/giphy-trending/actions/workflows/main_build.yml/badge.svg) [![codecov](https://codecov.io/gh/ryanw-mobile/giphy-trending/graph/badge.svg?token=J8PHIH3OPU)](https://codecov.io/gh/ryanw-mobile/giphy-trending) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b229ea2d0be943cb8c4dde25b5d91ae2)](https://app.codacy.com/gh/ryanw-mobile/giphy-trending/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 This sample Android app presents the Giphy trending animated gifs for sharing or download. You can
 now also search animated gifs by keyword. It was elaborated from the work

@@ -34,7 +34,7 @@ testRules = "1.6.1"
 timber = "5.0.1"
 material3AdaptiveAndroid = "1.0.0-alpha06"
 uiautomator = "2.3.0"
-baselineprofile = "1.3.0-beta02"
+baselineprofile = "1.3.0-rc01"
 profileinstaller = "1.4.0-alpha01"
 
 # App configurations, not dependencies

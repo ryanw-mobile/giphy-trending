@@ -3,6 +3,7 @@
  * https://github.com/ryanw-mobile
  */
 
+import com.android.build.api.dsl.ManagedVirtualDevice
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import java.io.FileInputStream
 import java.io.InputStreamReader
@@ -206,6 +207,16 @@ android {
         unitTests {
             isIncludeAndroidResources = true
             isReturnDefaultValues = true
+        }
+
+        managedDevices {
+            devices {
+                create<ManagedVirtualDevice>("pixel2Api34") {
+                    device = "Pixel 2"
+                    apiLevel = 34
+                    systemImageSource = "aosp-atd"
+                }
+            }
         }
     }
 

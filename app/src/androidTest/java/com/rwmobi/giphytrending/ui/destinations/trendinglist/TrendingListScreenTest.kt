@@ -116,6 +116,7 @@ class TrendingListScreenTest {
 
                 checkGiphyItemIsDisplayed(gifObject = lastGiphyItem)
 
+                composeTestRule.mainClock.advanceTimeBy(milliseconds = 5_000)
                 checkGiphyImageItemButtonsLongClickToolTipAreDisplayed()
                 checkOpenInBrowserButton(url = lastGiphyItem.webUrl)
                 checkDownloadImageButton(imageUrl = lastGiphyItem.imageUrl)

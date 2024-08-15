@@ -35,7 +35,7 @@ object SampleGifObjectList {
             id = "uaIAIw3ELuk69mhZ5I",
             previewUrl = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/200w.gif",
             previewWidth = 480,
-            previewHeight = 480,
+            previewHeight = 180,
             imageUrl = "https://media3.giphy.com/media/uaIAIw3ELuk69mhZ5I/giphy.gif",
             webUrl = "https://giphy.com/gifs/creative-courage-vidhyan-as-a-nation-we-have-lot-of-obligations-no-obligation-uaIAIw3ELuk69mhZ5I",
             title = "Joe Biden GIF by Creative Courage",

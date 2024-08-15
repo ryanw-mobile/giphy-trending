@@ -10,6 +10,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithText
@@ -51,8 +52,9 @@ internal class GiphyItemTestRobot(
                     R.string.content_description_download_image,
                     R.string.content_description_open_in_browser,
                 ).forEach {
+                    waitForIdle()
                     assertLongClickToolTipIsDisplayed(
-                        contentDescription = activity.getString(it),
+                        contentDescription = activity.getString(tooltipResId),
                     )
                     waitForIdle()
                 }
@@ -97,6 +99,8 @@ internal class GiphyItemTestRobot(
             every { any(Context::class).downloadImageUsingMediaStore(any()) } returns true
 
             tapDownloadImageButton()
+
+            composeTestRule.waitForIdle()
 
             verify { any(Context::class).downloadImageUsingMediaStore(imageUrl) }
             unmockkStatic("com.rwmobi.giphytrending.ui.utils.KotlinExtensionsKt")
@@ -150,13 +154,21 @@ internal class GiphyItemTestRobot(
 
     private fun assertLongClickToolTipIsDisplayed(contentDescription: String) {
         with(composeTestRule) {
-            onAllNodes(
+            onNode(
                 matcher = withRole(Role.Button) and hasContentDescription(value = contentDescription),
-            ).onFirst().performTouchInput {
+            ).performTouchInput {
                 longClick()
             }
-            onNodeWithText(text = contentDescription).assertIsDisplayed()
-            mainClock.advanceTimeBy(milliseconds = 5_000)
+            waitForIdle()
+
+            // Attempt to perform the long-click with a retry mechanism
+            repeat(3) {
+                val isTooltipDisplayed = onNodeWithText(text = contentDescription).isDisplayed()
+                if (isTooltipDisplayed) return
+                waitForIdle()
+            }
+
+            throw AssertionError("Tooltip with contentDescription: $contentDescription not found.")
         }
     }
 

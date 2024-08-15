@@ -51,7 +51,7 @@ internal class GiphyItemTestRobot(
                     R.string.content_description_copy_image_link,
                     R.string.content_description_download_image,
                     R.string.content_description_open_in_browser,
-                ).forEach {
+                ).forEach { tooltipResId ->
                     waitForIdle()
                     assertLongClickToolTipIsDisplayed(
                         contentDescription = activity.getString(tooltipResId),

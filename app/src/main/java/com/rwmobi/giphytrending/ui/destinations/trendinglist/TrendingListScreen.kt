@@ -5,23 +5,19 @@
 
 package com.rwmobi.giphytrending.ui.destinations.trendinglist
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -42,7 +38,6 @@ import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.utils.downloadImage
 import com.rwmobi.giphytrending.ui.utils.getPreviewWindowSizeClass
 import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
-import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,10 +60,15 @@ fun TrendingListScreen(
 
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val pullRefreshState = rememberPullToRefreshState()
     val clipboardHistory = remember { mutableStateListOf<String>() }
 
-    Box(modifier = modifier.nestedScroll(connection = pullRefreshState.nestedScrollConnection)) {
+    PullToRefreshBox(
+        modifier = modifier.semantics { contentDescription = context.getString(R.string.content_description_pull_to_refresh) },
+        isRefreshing = uiState.isLoading,
+        onRefresh = {
+            uiEvent.onRefresh()
+        },
+    ) {
         uiState.gifObjects?.let { giphyImageItems ->
             if (giphyImageItems.isNotEmpty()) {
                 GiphyStaggeredGrid(
@@ -100,30 +100,6 @@ fun TrendingListScreen(
                 )
             }
         }
-
-        if (pullRefreshState.isRefreshing) {
-            LaunchedEffect(true) {
-                if (!uiState.isLoading) {
-                    delay(1000) // Trick to let user know work in progress
-                    uiEvent.onRefresh()
-                }
-            }
-        }
-
-        LaunchedEffect(uiState.isLoading) {
-            if (!uiState.isLoading) {
-                pullRefreshState.endRefresh()
-            } else {
-                pullRefreshState.startRefresh()
-            }
-        }
-
-        PullToRefreshContainer(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .semantics { contentDescription = context.getString(R.string.content_description_pull_to_refresh) },
-            state = pullRefreshState,
-        )
     }
 
     val clipboardManager = LocalClipboardManager.current

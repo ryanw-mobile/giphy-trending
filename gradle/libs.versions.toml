@@ -42,8 +42,8 @@ profileinstaller = "1.4.1"
 versionCode = "15"
 versionName = "2.4.0"
 minSdk = "28"
-targetSdk = "34"
-compileSdk = "34"
+targetSdk = "35"
+compileSdk = "35"
 buildToolsVersion = "34.0.0"
 
 [libraries]

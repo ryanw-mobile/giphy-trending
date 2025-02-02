@@ -44,7 +44,6 @@ versionName = "2.4.0"
 minSdk = "28"
 targetSdk = "35"
 compileSdk = "35"
-buildToolsVersion = "34.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

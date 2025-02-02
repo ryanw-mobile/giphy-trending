@@ -29,7 +29,6 @@ android {
     }
 
     targetProjectPath = ":app"
-    buildToolsVersion = libs.versions.buildToolsVersion.get()
     experimentalProperties["android.experimental.self-instrumenting"] = true
 }
 

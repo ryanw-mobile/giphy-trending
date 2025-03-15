@@ -8,9 +8,8 @@ package com.rwmobi.giphytrending.data.source.local.mappers
 import com.rwmobi.giphytrending.data.repository.mappers.toEntity
 import com.rwmobi.giphytrending.data.repository.mappers.toGifObject
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingMapper
-import io.kotest.matchers.collections.shouldContainExactly
-import io.kotest.matchers.shouldBe
 import org.junit.Test
+import kotlin.test.assertEquals
 
 internal class TrendingMapperTest {
     /***
@@ -23,7 +22,7 @@ internal class TrendingMapperTest {
     @Test
     fun toDomainModel_ShouldConvertTrendingEntityToGiphyImageItemCorrectly() {
         val giphyImageItemDomainModel = SampleTrendingMapper.sampleTrendingEntity1.toGifObject()
-        giphyImageItemDomainModel shouldBe SampleTrendingMapper.sampleDomainModel1
+        assertEquals(SampleTrendingMapper.sampleDomainModel1, giphyImageItemDomainModel)
     }
 
     @Test
@@ -41,13 +40,13 @@ internal class TrendingMapperTest {
 
         val giphyImageItemDomainModelList = trendingEntityList.map { it.toGifObject() }
 
-        giphyImageItemDomainModelList shouldContainExactly expectedGiphyImageItemDomainModelList
+        assertEquals(expectedGiphyImageItemDomainModelList, giphyImageItemDomainModelList)
     }
 
     @Test
     fun toTrendingEntity_ShouldConvertTrendingDataToTrendingEntityCorrectly() {
         val trendingEntity = SampleTrendingMapper.sampleTrendingDataDto1.toEntity()
-        trendingEntity shouldBe SampleTrendingMapper.sampleTrendingEntity1
+        assertEquals(SampleTrendingMapper.sampleTrendingEntity1, trendingEntity)
     }
 
     @Test
@@ -65,6 +64,6 @@ internal class TrendingMapperTest {
 
         val trendingEntityList = mockTrendingDataList.map { it.toEntity() }
 
-        trendingEntityList shouldBe expectedTrendingEntityList
+        assertEquals(expectedTrendingEntityList, trendingEntityList)
     }
 }

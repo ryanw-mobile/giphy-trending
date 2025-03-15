@@ -23,7 +23,7 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
-class TrendingRepositoryImplTest {
+internal class TrendingRepositoryImplTest {
     private lateinit var trendingRepository: TrendingRepository
     private lateinit var dispatcher: TestDispatcher
     private lateinit var fakeRoomDbDataSource: FakeDatabaseDataSource

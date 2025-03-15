@@ -11,8 +11,6 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingEntity
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingEntityList
-import io.kotest.matchers.collections.shouldContainOnly
-import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -20,10 +18,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.P])
-class RoomDatabaseDataSourceTest {
+internal class RoomDatabaseDataSourceTest {
     private lateinit var giphyDatabase: GiphyDatabase
     private lateinit var roomDatabaseDataSource: RoomDatabaseDataSource
 
@@ -50,9 +51,7 @@ class RoomDatabaseDataSourceTest {
         roomDatabaseDataSource.insertData(data = testData)
 
         val result = roomDatabaseDataSource.queryData()
-
-        result.size shouldBe 1
-        result[0] shouldBe testData
+        assertEquals(listOf(testData), result)
     }
 
     @Test
@@ -61,9 +60,7 @@ class RoomDatabaseDataSourceTest {
         roomDatabaseDataSource.insertAllData(data = testDataList)
 
         val result = roomDatabaseDataSource.queryData()
-
-        result.size shouldBe testDataList.size
-        result shouldContainOnly testDataList
+        assertEquals(testDataList.sortedBy { it.id }, result.sortedBy { it.id })
     }
 
     @Test
@@ -74,7 +71,7 @@ class RoomDatabaseDataSourceTest {
         roomDatabaseDataSource.clear()
         val result = roomDatabaseDataSource.queryData()
 
-        result.size shouldBe 0
+        assertTrue(result.isEmpty())
     }
 
     @Test
@@ -86,7 +83,7 @@ class RoomDatabaseDataSourceTest {
         val result = roomDatabaseDataSource.queryData()
 
         result.forEach { trendingEntity ->
-            trendingEntity.dirty shouldBe true
+            assertTrue(trendingEntity.dirty)
         }
     }
 
@@ -100,7 +97,7 @@ class RoomDatabaseDataSourceTest {
         val result = roomDatabaseDataSource.queryData()
 
         result.forEach { trendingEntity ->
-            trendingEntity.dirty shouldBe false
+            assertFalse(trendingEntity.dirty)
         }
     }
 }

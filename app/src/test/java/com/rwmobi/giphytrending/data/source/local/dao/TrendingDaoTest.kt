@@ -11,12 +11,6 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.rwmobi.giphytrending.data.source.local.GiphyDatabase
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingEntity
-import io.kotest.matchers.collections.shouldContain
-import io.kotest.matchers.collections.shouldContainAll
-import io.kotest.matchers.collections.shouldContainExactly
-import io.kotest.matchers.collections.shouldHaveSize
-import io.kotest.matchers.collections.shouldNotContain
-import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -24,10 +18,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import kotlin.test.assertContentEquals
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.P])
-class TrendingDaoTest {
+internal class TrendingDaoTest {
     private lateinit var giphyDatabase: GiphyDatabase
     private lateinit var trendingDao: TrendingDao
 
@@ -52,7 +49,7 @@ class TrendingDaoTest {
     @Test
     fun insertData_WithSingleEntry_ShouldReturnSingleEntry() = runTest {
         trendingDao.insertData(SampleTrendingEntity.case1)
-        trendingDao.queryData() shouldContainExactly (listOf(SampleTrendingEntity.case1))
+        assertEquals(listOf(SampleTrendingEntity.case1), trendingDao.queryData())
     }
 
     @Test
@@ -65,8 +62,10 @@ class TrendingDaoTest {
 
         trendingDao.insertAllData(testTrendingList)
 
-        // The order may not be the same due to sorting
-        trendingDao.queryData() shouldContainAll (testTrendingList)
+        assertEquals(
+            testTrendingList.sortedBy { it.id },
+            trendingDao.queryData().sortedBy { it.id },
+        )
     }
 
     @Test
@@ -76,16 +75,17 @@ class TrendingDaoTest {
             SampleTrendingEntity.case2,
             SampleTrendingEntity.case3,
         )
+        val expectedResult = listOf(
+            SampleTrendingEntity.case1,
+            SampleTrendingEntity.case2Modified,
+            SampleTrendingEntity.case3,
+        ).sortedBy { it.id }
         trendingDao.insertAllData(testTrendingList)
 
         trendingDao.insertData(SampleTrendingEntity.case2Modified)
 
-        val trendingList = trendingDao.queryData()
-        trendingList shouldHaveSize 3
-        trendingList shouldContain SampleTrendingEntity.case1
-        trendingList shouldNotContain SampleTrendingEntity.case2
-        trendingList shouldContain SampleTrendingEntity.case2Modified
-        trendingList shouldContain SampleTrendingEntity.case3
+        val trendingList = trendingDao.queryData().sortedBy { it.id }
+        assertContentEquals(expectedResult, trendingList)
     }
 
     @Test
@@ -99,7 +99,7 @@ class TrendingDaoTest {
 
         trendingDao.clear()
 
-        trendingDao.queryData() shouldHaveSize 0
+        assertTrue(trendingDao.queryData().isEmpty())
     }
 
     // Dirty bit test cases
@@ -115,10 +115,10 @@ class TrendingDaoTest {
         trendingDao.markDirty()
 
         val trendingList = trendingDao.queryData()
-        trendingList shouldHaveSize 3
-        trendingList[0].dirty shouldBe true
-        trendingList[1].dirty shouldBe true
-        trendingList[2].dirty shouldBe true
+        assertEquals(
+            listOf(true, true, true),
+            trendingList.map { it.dirty },
+        )
     }
 
     @Test
@@ -133,7 +133,7 @@ class TrendingDaoTest {
 
         trendingDao.deleteDirty()
 
-        trendingDao.queryData() shouldHaveSize 0
+        assertTrue(trendingDao.queryData().isEmpty())
     }
 
     @Test
@@ -143,12 +143,13 @@ class TrendingDaoTest {
             SampleTrendingEntity.case2,
             SampleTrendingEntity.case3,
         )
+        val expectedResult = listOf(SampleTrendingEntity.case4)
         trendingDao.insertAllData(testTrendingList)
         trendingDao.markDirty()
         trendingDao.insertData(SampleTrendingEntity.case4)
 
         trendingDao.deleteDirty()
 
-        trendingDao.queryData() shouldContainExactly (listOf(SampleTrendingEntity.case4))
+        assertEquals(expectedResult, trendingDao.queryData())
     }
 }

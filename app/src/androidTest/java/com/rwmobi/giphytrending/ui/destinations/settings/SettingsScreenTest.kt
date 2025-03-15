@@ -26,7 +26,7 @@ import javax.inject.Inject
 @kotlinx.coroutines.ExperimentalCoroutinesApi
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class SettingsScreenTest {
+internal class SettingsScreenTest {
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 

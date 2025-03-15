@@ -11,15 +11,18 @@ import com.rwmobi.giphytrending.domain.exceptions.EmptyGiphyAPIKeyException
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.repository.SearchRepository
 import com.rwmobi.giphytrending.test.testdata.SampleSearchNetworkResponse
-import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
-class SearchRepositoryImplTest {
+internal class SearchRepositoryImplTest {
     private lateinit var searchRepository: SearchRepository
     private lateinit var dispatcher: TestDispatcher
     private lateinit var fakeNetworkDataSource: FakeNetworkDataSource
@@ -44,8 +47,8 @@ class SearchRepositoryImplTest {
 
         val searchResult = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
 
-        searchResult.isSuccess shouldBe true
-        searchResult.getOrNull() shouldBe emptyList()
+        assertTrue(searchResult.isSuccess)
+        assertEquals(emptyList(), searchResult.getOrNull())
     }
 
     @Test
@@ -56,8 +59,8 @@ class SearchRepositoryImplTest {
 
         val searchResult = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
 
-        searchResult.isSuccess shouldBe true
-        searchResult.getOrNull() shouldBe emptyList()
+        assertTrue(searchResult.isSuccess)
+        assertEquals(emptyList(), searchResult.getOrNull())
     }
 
     @Test
@@ -68,8 +71,8 @@ class SearchRepositoryImplTest {
 
         val searchResult = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
 
-        searchResult.isSuccess shouldBe true
-        searchResult.getOrNull() shouldBe emptyList()
+        assertTrue(searchResult.isSuccess)
+        assertEquals(emptyList(), searchResult.getOrNull())
     }
 
     @Test
@@ -77,11 +80,12 @@ class SearchRepositoryImplTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword = "some keyword"
+        val expectedSearchResult = SampleSearchNetworkResponse.singleResponse.trendingData.map { it.toGifObject() }
 
         val searchResult = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
 
-        searchResult.isSuccess shouldBe true
-        searchResult.getOrNull() shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.map { it.toGifObject() }
+        assertTrue(searchResult.isSuccess)
+        assertEquals(expectedSearchResult, searchResult.getOrNull())
     }
 
     @Test
@@ -91,8 +95,10 @@ class SearchRepositoryImplTest {
 
         val searchResult = searchRepository.search(keyword = "some-keyword", limit = 100, rating = Rating.R)
 
-        searchResult.isFailure shouldBe true
-        searchResult.exceptionOrNull() shouldBe EmptyGiphyAPIKeyException()
+        assertTrue(searchResult.isFailure)
+        assertFailsWith<EmptyGiphyAPIKeyException> {
+            throw searchResult.exceptionOrNull()!!
+        }
     }
 
     @Test
@@ -102,8 +108,10 @@ class SearchRepositoryImplTest {
 
         val searchResult = searchRepository.search(keyword = "some-keyword", limit = 100, rating = Rating.R)
 
-        searchResult.isFailure shouldBe true
-        searchResult.exceptionOrNull() shouldBe Exception()
+        assertTrue(searchResult.isFailure)
+        assertFailsWith<Exception> {
+            throw searchResult.exceptionOrNull()!!
+        }
     }
 
     // lastSuccessfulSearchResults
@@ -111,14 +119,14 @@ class SearchRepositoryImplTest {
     fun getLastSuccessfulSearchKeyword_WithoutSuccessfulSearch_ShouldReturnNull() {
         setupRepository()
         val lastSuccessfulSearchKeyword = searchRepository.getLastSuccessfulSearchKeyword()
-        lastSuccessfulSearchKeyword shouldBe null
+        assertNull(lastSuccessfulSearchKeyword)
     }
 
     @Test
     fun getLastSuccessfulSearchResults_WithoutSuccessfulSearch_ShouldReturnNull() {
         setupRepository()
         val lastSuccessfulSearchResults = searchRepository.getLastSuccessfulSearchResults()
-        lastSuccessfulSearchResults shouldBe null
+        assertNull(lastSuccessfulSearchResults)
     }
 
     @Test
@@ -126,12 +134,13 @@ class SearchRepositoryImplTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword = "some keyword"
+        val expectedSearchResults = SampleSearchNetworkResponse.singleResponse.trendingData.map { it.toGifObject() }
         searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
 
         val lastSuccessfulSearchKeyword = searchRepository.getLastSuccessfulSearchKeyword()
         val lastSuccessfulSearchResults = searchRepository.getLastSuccessfulSearchResults()
-        lastSuccessfulSearchKeyword shouldBe keyword
-        lastSuccessfulSearchResults shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.map { it.toGifObject() }
+        assertEquals(keyword, lastSuccessfulSearchKeyword)
+        assertEquals(expectedSearchResults, lastSuccessfulSearchResults)
     }
 
     @Test
@@ -139,13 +148,14 @@ class SearchRepositoryImplTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword = "some keyword"
+        val expectedSearchResults = SampleSearchNetworkResponse.singleResponse.trendingData.map { it.toGifObject() }
         searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
         fakeNetworkDataSource.apiError = Exception()
         searchRepository.search(keyword = "failed keyword", limit = 100, rating = Rating.R)
 
         val lastSuccessfulSearchKeyword = searchRepository.getLastSuccessfulSearchKeyword()
         val lastSuccessfulSearchResults = searchRepository.getLastSuccessfulSearchResults()
-        lastSuccessfulSearchKeyword shouldBe keyword
-        lastSuccessfulSearchResults shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.map { it.toGifObject() }
+        assertEquals(keyword, lastSuccessfulSearchKeyword)
+        assertEquals(expectedSearchResults, lastSuccessfulSearchResults)
     }
 }

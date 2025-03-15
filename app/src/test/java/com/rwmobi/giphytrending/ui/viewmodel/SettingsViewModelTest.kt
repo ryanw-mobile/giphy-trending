@@ -8,13 +8,15 @@ package com.rwmobi.giphytrending.ui.viewmodel
 import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
-import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
 internal class SettingsViewModelTest {
@@ -47,8 +49,8 @@ internal class SettingsViewModelTest {
         settingsViewModel.setApiRequestLimit(expectedMaxApiEntries)
         val uiState = settingsViewModel.uiState.value
 
-        uiState.apiRequestLimit shouldBe expectedMaxApiEntries
-        uiState.isLoading shouldBe false
+        assertEquals(expectedMaxApiEntries, uiState.apiRequestLimit)
+        assertFalse(uiState.isLoading)
     }
 
     @Test
@@ -64,8 +66,8 @@ internal class SettingsViewModelTest {
         settingsViewModel.setRating(expectedRating)
         val uiState = settingsViewModel.uiState.value
 
-        uiState.rating shouldBe expectedRating
-        uiState.isLoading shouldBe false
+        assertEquals(expectedRating, uiState.rating)
+        assertFalse(uiState.isLoading)
     }
 
     @Test
@@ -75,7 +77,7 @@ internal class SettingsViewModelTest {
         settingsViewModel.requestScrollToTop(enabled = expectedRequestScrollToTop)
         val uiState = settingsViewModel.uiState.value
 
-        uiState.requestScrollToTop shouldBe expectedRequestScrollToTop
+        assertEquals(expectedRequestScrollToTop, uiState.requestScrollToTop)
     }
 
     @Test
@@ -85,9 +87,9 @@ internal class SettingsViewModelTest {
 
         val uiState = settingsViewModel.uiState.value
 
-        uiState.errorMessages.size shouldBe 1
-        uiState.errorMessages.first().message shouldBe errorMessage
-        uiState.isLoading shouldBe false
+        assertEquals(1, uiState.errorMessages.size)
+        assertEquals(errorMessage, uiState.errorMessages.first().message)
+        assertFalse(uiState.isLoading)
     }
 
     @Test
@@ -99,6 +101,6 @@ internal class SettingsViewModelTest {
         settingsViewModel.errorShown(errorId)
 
         val uiState = settingsViewModel.uiState.value
-        uiState.errorMessages shouldBe emptyList()
+        assertTrue(uiState.errorMessages.isEmpty())
     }
 }

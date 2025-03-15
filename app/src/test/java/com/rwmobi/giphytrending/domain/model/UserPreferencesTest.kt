@@ -9,7 +9,7 @@ import junit.framework.TestCase.assertFalse
 import org.junit.Test
 import kotlin.test.assertTrue
 
-class UserPreferencesTest {
+internal class UserPreferencesTest {
 
     // Test function names reviewed by ChatGPT for consistency
 

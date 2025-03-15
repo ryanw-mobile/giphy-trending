@@ -6,7 +6,6 @@ import com.rwmobi.giphytrending.data.source.preferences.FakePreferencesDataStore
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
-import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
@@ -16,6 +15,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
 internal class UserPreferencesRepositoryImplTest {
@@ -59,16 +59,19 @@ internal class UserPreferencesRepositoryImplTest {
 
             fakePreferencesDataStoreWrapper.emitError(expectedException)
 
-            values[0] shouldBe expectedException
+            assertEquals(expectedException, values[0])
         }
     }
 
     @Test
     fun initialization_ShouldUseDefaultPreferences_WhenDataStoreIsEmpty() = runTest {
         setupRepository()
-        userPreferencesRepository.userPreferences.value shouldBe UserPreferences(
-            apiRequestLimit = ((defaultApiMaxEntries + defaultApiMinEntries) / 2),
-            rating = Rating.G,
+        assertEquals(
+            UserPreferences(
+                apiRequestLimit = ((defaultApiMaxEntries + defaultApiMinEntries) / 2),
+                rating = Rating.G,
+            ),
+            userPreferencesRepository.userPreferences.value,
         )
     }
 
@@ -79,9 +82,12 @@ internal class UserPreferencesRepositoryImplTest {
 
         setupRepository()
 
-        userPreferencesRepository.userPreferences.value shouldBe UserPreferences(
-            apiRequestLimit = 100,
-            rating = Rating.R,
+        assertEquals(
+            UserPreferences(
+                apiRequestLimit = 100,
+                rating = Rating.R,
+            ),
+            userPreferencesRepository.userPreferences.value,
         )
     }
 
@@ -93,9 +99,12 @@ internal class UserPreferencesRepositoryImplTest {
 
         userPreferencesRepository.setApiRequestLimit(limit = 50)
 
-        userPreferencesRepository.userPreferences.value shouldBe UserPreferences(
-            apiRequestLimit = 50,
-            rating = Rating.R,
+        assertEquals(
+            UserPreferences(
+                apiRequestLimit = 50,
+                rating = Rating.R,
+            ),
+            userPreferencesRepository.userPreferences.value,
         )
     }
 
@@ -107,9 +116,12 @@ internal class UserPreferencesRepositoryImplTest {
 
         userPreferencesRepository.setRating(rating = Rating.G)
 
-        userPreferencesRepository.userPreferences.value shouldBe UserPreferences(
-            apiRequestLimit = 100,
-            rating = Rating.G,
+        assertEquals(
+            UserPreferences(
+                apiRequestLimit = 100,
+                rating = Rating.G,
+            ),
+            userPreferencesRepository.userPreferences.value,
         )
     }
 }

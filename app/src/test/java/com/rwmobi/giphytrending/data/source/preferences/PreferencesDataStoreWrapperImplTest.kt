@@ -29,7 +29,7 @@ private const val TEST_DATASTORE_NAME: String = "test_datastore"
 
 @ExperimentalCoroutinesApi
 @RunWith(RobolectricTestRunner::class)
-class PreferencesDataStoreWrapperImplTest {
+internal class PreferencesDataStoreWrapperImplTest {
     // Reference: https://medium.com/androiddevelopers/datastore-and-testing-edf7ae8df3d8
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = TEST_DATASTORE_NAME)
     private lateinit var preferencesDataStoreWrapper: PreferencesDataStoreWrapper

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024. Ryan Wong
+ * Copyright (c) 2024-2025. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -44,10 +44,10 @@ internal class SearchViewModelTest {
         )
     }
 
-    // Test function names reviewed by ChatGPT for consistency
+    // Test function names reviewed by Gemini for consistency
 
     @Test
-    fun fetchLastSuccessfulSearch_ShouldUpdateUIStateCorrectly_WhenDataIsAvailable() = runTest {
+    fun `updates UI state with last successful search data when data is available`() = runTest {
         val lastSuccessfulSearchKeyword = "last serach keyword"
         val lastSuccessfulSearchResult = SampleGifObjectList.gifObjects
         fakeSearchRepository.setLastSuccessfulSearchKeywordForTest(lastSuccessfulSearchKeyword)
@@ -63,7 +63,7 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun fetchLastSuccessfulSearch_ShouldSetUIStateToDefault_WhenNoDataReturned() = runTest {
+    fun `sets UI state to default when no last successful search data is returned`() = runTest {
         viewModel.fetchLastSuccessfulSearch()
 
         with(viewModel.uiState.value) {
@@ -74,20 +74,20 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun updateKeyword_ShouldCorrectlyUpdateUIStateWithNewKeyword() = runTest {
+    fun `updates UI state with new keyword when new keyword is updated`() = runTest {
         val keyword = "some search keyword"
         viewModel.updateKeyword(keyword)
         assertEquals(keyword, viewModel.uiState.value.keyword)
     }
 
     @Test
-    fun updateKeyword_ShouldClearKeyword_WhenNullInputReceived() = runTest {
+    fun `clears keyword when null input is received`() = runTest {
         viewModel.updateKeyword(null)
         assertTrue(viewModel.uiState.value.keyword.isEmpty())
     }
 
     @Test
-    fun updateKeyword_ShouldTrimKeywordToMaxLength_WhenExceedingLimit() = runTest {
+    fun `trims keyword to max length when input keyword exceeds limit`() = runTest {
         val maxLength = viewModel.uiState.value.keywordMaxLength
         val longKeyword = "x".repeat(100)
         viewModel.updateKeyword(longKeyword)
@@ -95,7 +95,7 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun clearKeyword_ShouldResetKeywordInUIState() = runTest {
+    fun `resets keyword in UI state when clear keyword is called`() = runTest {
         viewModel.updateKeyword("test")
         viewModel.clearKeyword()
         assertTrue(viewModel.uiState.value.keyword.isEmpty())
@@ -118,7 +118,7 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun search_ShouldHandleError_WhenPreferencesNotSet() = runTest {
+    fun `shows error message when user preferences are not fully set`() = runTest {
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
                 apiRequestLimit = null,
@@ -137,7 +137,7 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun search_ShouldUpdateUIWithError_WhenSearchFails() = runTest {
+    fun `updates UI with error when search fails`() = runTest {
         val errorMessage = "some error message"
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
@@ -159,14 +159,14 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun getImageLoader_ShouldReturnCorrectImageLoaderInstance() {
+    fun `returns correct image loader instance when getImageLoader is called`() {
         val expectedImageLoader = mockImageLoader
         val imageLoader = viewModel.getImageLoader()
         assertSame(expectedImageLoader, imageLoader)
     }
 
     @Test
-    fun requestScrollToTop_ShouldUpdateRequestInUIState() {
+    fun `updates request scroll to top in UI state when requestScrollToTop is called`() {
         val expectedRequestScrollToTop = true
 
         viewModel.requestScrollToTop(enabled = expectedRequestScrollToTop)
@@ -176,7 +176,7 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun searchError_ShouldUpdateUIStateAndSetLoadingFalse_WhenErrorOccurs() = runTest {
+    fun `updates UI state with error message and set loading to false when error occurs`() = runTest {
         val errorMessage = "Test error"
         fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 
@@ -190,7 +190,7 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun errorMessages_ShouldAccumulateErrorMessages_OnMultipleFailures() = runTest {
+    fun `accumulates error messages when multiple failures occur`() = runTest {
         val errorMessage1 = "Test error 1"
         val errorMessage2 = "Test error 2"
 
@@ -207,7 +207,7 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun errorMessages_ShouldNotAccumulateDuplicatedErrorMessages_OnMultipleFailures() = runTest {
+    fun `does not accumulate duplicated error messages when multiple failures with same error occur`() = runTest {
         val errorMessage = "Test error"
 
         repeat(times = 2) {
@@ -220,7 +220,7 @@ internal class SearchViewModelTest {
     }
 
     @Test
-    fun errorShown_ShouldRemoveErrorMessageFromUIState_WhenCalled() = runTest {
+    fun `removes error message from UI state when errorShown is called`() = runTest {
         val errorMessage = "Test error"
         fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 

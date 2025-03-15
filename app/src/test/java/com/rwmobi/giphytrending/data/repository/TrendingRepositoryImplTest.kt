@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024. Ryan Wong
+ * Copyright (c) 2024-2025. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -41,10 +41,10 @@ internal class TrendingRepositoryImplTest {
         )
     }
 
-    // Test function names reviewed by ChatGPT for consistency
+    // Test function names reviewed by Gemini for consistency
 
     @Test
-    fun fetchCachedTrending_ShouldReturnCorrectList_WhenDatabaseQuerySucceeds() = runTest {
+    fun `returns correct list when database query succeeds`() = runTest {
         setupRepository()
         fakeRoomDbDataSource.queryDataResponse = SampleTrendingEntityList.singleEntityList
 
@@ -55,7 +55,7 @@ internal class TrendingRepositoryImplTest {
     }
 
     @Test
-    fun fetchCachedTrending_ShouldReturnFailure_WhenDatabaseQueryFails() = runTest {
+    fun `returns failure when database query fails`() = runTest {
         setupRepository()
         val expectedException = Exception()
         fakeRoomDbDataSource.apiError = expectedException
@@ -67,7 +67,7 @@ internal class TrendingRepositoryImplTest {
     }
 
     @Test
-    fun reloadTrending_ShouldReturnCorrectList_WhenNetworkAndDatabaseOperationsSucceed() = runTest {
+    fun `returns correct list when network and database operations succeed`() = runTest {
         setupRepository()
         fakeNetworkDataSource.trendingNetworkResponseDto = SampleTrendingNetworkResponse.singleResponse
         fakeRoomDbDataSource.queryDataResponse = SampleTrendingEntityList.singleEntityList
@@ -79,7 +79,7 @@ internal class TrendingRepositoryImplTest {
     }
 
     @Test
-    fun reloadTrending_ShouldReturnFailure_WhenApiKeyIsBlank() = runTest {
+    fun `throws EmptyGiphyAPIKeyException when API key is blank`() = runTest {
         setupRepository(giphyApiKey = "")
         val expectedException = Exception()
         fakeNetworkDataSource.apiError = expectedException
@@ -93,7 +93,7 @@ internal class TrendingRepositoryImplTest {
     }
 
     @Test
-    fun reloadTrending_ShouldReturnFailure_WhenNetworkCallFails() = runTest {
+    fun `returns failure when network call fails`() = runTest {
         setupRepository()
         fakeNetworkDataSource.apiError = Exception()
 
@@ -106,7 +106,7 @@ internal class TrendingRepositoryImplTest {
     }
 
     @Test
-    fun reloadTrending_ShouldReturnFailure_WhenDatabaseOperationThrowsException() = runTest {
+    fun `returns failure when database operation throws exception`() = runTest {
         setupRepository()
         val expectedException = Exception()
         fakeRoomDbDataSource.apiError = expectedException

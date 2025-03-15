@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024. Ryan Wong
+ * Copyright (c) 2024-2025. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -34,10 +34,10 @@ internal class SettingsViewModelTest {
         )
     }
 
-    // Test function names reviewed by ChatGPT for consistency
+    // Test function names reviewed by Gemini for consistency
 
     @Test
-    fun setApiRequestLimit_ShouldUpdateApiRequestLimitAndSetIsLoadingToFalse() {
+    fun `updates api request limit and sets isLoading to false when setApiRequestLimit is called`() {
         val expectedMaxApiEntries = 100
         fakeUserPreferencesRepository.init(
             UserPreferences(
@@ -54,7 +54,7 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun setRating_ShouldUpdateRatingInUIStateAndSetIsLoadingToFalse() {
+    fun `updates rating and sets isLoading to false when setRating is called`() {
         val expectedRating = Rating.R
         fakeUserPreferencesRepository.init(
             UserPreferences(
@@ -71,7 +71,7 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun requestScrollToTop_ShouldUpdateRequestInUIStateCorrectly() {
+    fun `updates requestScrollToTop in UI state when requestScrollToTop is called`() {
         val expectedRequestScrollToTop = true
 
         settingsViewModel.requestScrollToTop(enabled = expectedRequestScrollToTop)
@@ -81,7 +81,7 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun emitError_ShouldAddErrorMessageToUIStateAndSetIsLoadingToFalse() = runTest {
+    fun `adds error message to UI state and sets isLoading to false when emitError is called`() = runTest {
         val errorMessage = "Test error"
         fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 
@@ -93,7 +93,7 @@ internal class SettingsViewModelTest {
     }
 
     @Test
-    fun errorShown_ShouldRemoveSpecifiedErrorMessageFromUIState() = runTest {
+    fun `removes specified error message from UI state when errorShown is called`() = runTest {
         val errorMessage = "Test error"
         fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024. Ryan Wong
+ * Copyright (c) 2024-2025. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -44,16 +44,16 @@ internal class TrendingDaoTest {
     }
 
     // Basic test cases: CRUD usages
-    // Test function names reviewed by ChatGPT for consistency
+    // Test function names reviewed by Gemini for consistency
 
     @Test
-    fun insertData_WithSingleEntry_ShouldReturnSingleEntry() = runTest {
+    fun `returns single entry when inserting single entry`() = runTest {
         trendingDao.insertData(SampleTrendingEntity.case1)
         assertEquals(listOf(SampleTrendingEntity.case1), trendingDao.queryData())
     }
 
     @Test
-    fun insertAllData_WithMultipleEntries_ShouldMatchInsertedEntries() = runTest {
+    fun `matches inserted entries when inserting multiple entries`() = runTest {
         val testTrendingList = listOf(
             SampleTrendingEntity.case2,
             SampleTrendingEntity.case3,
@@ -69,7 +69,7 @@ internal class TrendingDaoTest {
     }
 
     @Test
-    fun updateData_WithModifiedEntry_ShouldReflectUpdatedEntry() = runTest {
+    fun `reflects updated entry when modifying entry`() = runTest {
         val testTrendingList = listOf(
             SampleTrendingEntity.case1,
             SampleTrendingEntity.case2,
@@ -89,7 +89,7 @@ internal class TrendingDaoTest {
     }
 
     @Test
-    fun clearDatabase_WhenCalled_ShouldResultInEmptyDatabase() = runTest {
+    fun `results in empty database when clearing database`() = runTest {
         val testTrendingList = listOf(
             SampleTrendingEntity.case1,
             SampleTrendingEntity.case2,
@@ -104,7 +104,7 @@ internal class TrendingDaoTest {
 
     // Dirty bit test cases
     @Test
-    fun markDirty_OnCleanDatabase_ShouldSetAllEntriesAsDirty() = runTest {
+    fun `sets all entries as dirty when marking dirty on clean database`() = runTest {
         val testTrendingList = listOf(
             SampleTrendingEntity.case1,
             SampleTrendingEntity.case2,
@@ -122,7 +122,7 @@ internal class TrendingDaoTest {
     }
 
     @Test
-    fun deleteDirty_WhenAllEntriesAreDirty_ShouldClearDatabase() = runTest {
+    fun `clears database when all entries are dirty`() = runTest {
         val testTrendingList = listOf(
             SampleTrendingEntity.case1,
             SampleTrendingEntity.case2,
@@ -137,7 +137,7 @@ internal class TrendingDaoTest {
     }
 
     @Test
-    fun deleteDirty_WithMixedCleanAndDirtyEntries_ShouldRemoveOnlyDirtyEntries() = runTest {
+    fun `removes only dirty entries when mixed clean and dirty entries`() = runTest {
         val testTrendingList = listOf(
             SampleTrendingEntity.case1,
             SampleTrendingEntity.case2,

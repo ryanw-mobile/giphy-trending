@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024. Ryan Wong
+ * Copyright (c) 2024-2025. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -37,10 +37,10 @@ internal class SearchRepositoryImplTest {
         )
     }
 
-    // Test function names reviewed by ChatGPT for consistency
+    // Test function names reviewed by Gemini for consistency
 
     @Test
-    fun search_WithNullKeyword_ShouldReturnEmptyResult() = runTest {
+    fun `returns empty list when keyword is null`() = runTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword: String? = null
@@ -52,7 +52,7 @@ internal class SearchRepositoryImplTest {
     }
 
     @Test
-    fun search_WithEmptyKeyword_ShouldReturnEmptyResult() = runTest {
+    fun `returns empty list when keyword is empty`() = runTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword: String? = ""
@@ -64,7 +64,7 @@ internal class SearchRepositoryImplTest {
     }
 
     @Test
-    fun search_WithBlankKeyword_ShouldReturnEmptyResult() = runTest {
+    fun `returns empty list when keyword is blank`() = runTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword = "     "
@@ -76,7 +76,7 @@ internal class SearchRepositoryImplTest {
     }
 
     @Test
-    fun search_WithValidKeyword_ShouldReturnSuccessfulResult() = runTest {
+    fun `returns successful result when keyword is valid`() = runTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword = "some keyword"
@@ -89,7 +89,7 @@ internal class SearchRepositoryImplTest {
     }
 
     @Test
-    fun search_WithBlankApiKey_ShouldThrowEmptyGiphyAPIKeyException() = runTest {
+    fun `throws EmptyGiphyAPIKeyException when API key is blank`() = runTest {
         setupRepository(giphyApiKey = "")
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
 
@@ -102,7 +102,7 @@ internal class SearchRepositoryImplTest {
     }
 
     @Test
-    fun search_WithNetworkError_ShouldReturnFailure() = runTest {
+    fun `returns failure when network error occurs`() = runTest {
         setupRepository()
         fakeNetworkDataSource.apiError = Exception()
 
@@ -116,7 +116,7 @@ internal class SearchRepositoryImplTest {
 
     // lastSuccessfulSearchResults
     @Test
-    fun getLastSuccessfulSearchKeyword_WithoutSuccessfulSearch_ShouldReturnNull() {
+    fun `returns null when no successful search keyword`() {
         setupRepository()
         val lastSuccessfulSearchKeyword = searchRepository.getLastSuccessfulSearchKeyword()
         assertNull(lastSuccessfulSearchKeyword)
@@ -144,7 +144,7 @@ internal class SearchRepositoryImplTest {
     }
 
     @Test
-    fun getLastSuccessfulSearch_AfterFailedSearch_ShouldMaintainPreviousSuccess() = runTest {
+    fun `maintains previous successful search data after failed search`() = runTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword = "some keyword"

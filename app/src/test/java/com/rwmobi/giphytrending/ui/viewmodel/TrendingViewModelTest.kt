@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024. Ryan Wong
+ * Copyright (c) 2024-2025. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -46,16 +46,16 @@ internal class TrendingViewModelTest {
         mockImageLoader = mockk(relaxed = true)
     }
 
-    // Test function names reviewed by ChatGPT for consistency
+    // Test function names reviewed by Gemini for consistency
 
     @Test
-    fun initialiseViewModel_ShouldStartWithIsLoadingTrue() {
+    fun `starts with loading state true when initialised`() {
         setupViewModel()
         assertTrue(viewModel.uiState.value.isLoading)
     }
 
     @Test
-    fun initialiseViewModel_ShouldSetUIStateToEmptyAndNotLoading_OnEmptyDataFetch() {
+    fun `sets UI state to empty and not loading when data fetch is empty`() {
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
                 apiRequestLimit = 100,
@@ -71,7 +71,7 @@ internal class TrendingViewModelTest {
     }
 
     @Test
-    fun initialiseViewModel_ShouldUpdateUIStateWithError_OnDataFetchFailure() {
+    fun `updates UI state with error when data fetch fails`() {
         val errorMessage = "some error message"
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
@@ -88,7 +88,7 @@ internal class TrendingViewModelTest {
     }
 
     @Test
-    fun refresh_ShouldUpdateUIWithNewItems_FromRepositorySuccessfully() {
+    fun `updates UI with new items when refresh succeeds`() {
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
                 apiRequestLimit = 100,
@@ -106,7 +106,7 @@ internal class TrendingViewModelTest {
     }
 
     @Test
-    fun refresh_ShouldDisplayError_WhenUserPreferencesNotFullyConfigured() {
+    fun `displays error when user preferences are not fully configured during refresh`() {
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
                 apiRequestLimit = null,
@@ -122,7 +122,7 @@ internal class TrendingViewModelTest {
     }
 
     @Test
-    fun handleUserPreferenceErrors_ShouldAddErrorMessageToUIState() = runTest {
+    fun `adds error message to UI state when user preference has errors`() = runTest {
         setupViewModel()
         val errorMessage = "Preference error"
 
@@ -132,7 +132,7 @@ internal class TrendingViewModelTest {
     }
 
     @Test
-    fun getImageLoader_ShouldReturnCorrectInstance() {
+    fun `returns correct image loader instance`() {
         setupViewModel()
         val expectedImageLoader = mockImageLoader
 
@@ -142,7 +142,7 @@ internal class TrendingViewModelTest {
     }
 
     @Test
-    fun requestScrollToTop_ShouldUpdateUIStateCorrectly() {
+    fun `updates UI state with request scroll to top`() {
         setupViewModel()
         val expectedRequestScrollToTop = true
 
@@ -153,7 +153,7 @@ internal class TrendingViewModelTest {
     }
 
     @Test
-    fun errorMessages_ShouldAccumulateErrorMessages_OnMultipleFailures() = runTest {
+    fun `accumulates error messages on multiple failures`() = runTest {
         val errorMessage1 = "Test error 1"
         val errorMessage2 = "Test error 2"
         fakeUserPreferencesRepository.init(
@@ -176,7 +176,7 @@ internal class TrendingViewModelTest {
     }
 
     @Test
-    fun errorMessages_ShouldNotAccumulateDuplicatedErrorMessages_OnMultipleFailures() = runTest {
+    fun `does not accumulate duplicated error messages on multiple failures`() = runTest {
         val errorMessage1 = "Test error 1"
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
@@ -197,7 +197,7 @@ internal class TrendingViewModelTest {
     }
 
     @Test
-    fun errorShown_ShouldRemoveSpecifiedErrorMessageFromUIState() = runTest {
+    fun `removes specified error message from UI state when error is shown`() = runTest {
         setupViewModel()
         fakeUserPreferencesRepository.emitError(Exception("some error message"))
         viewModel.refresh()

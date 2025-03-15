@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024. Ryan Wong
+ * Copyright (c) 2024-2025. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -43,10 +43,10 @@ internal class RoomDatabaseDataSourceTest {
         giphyDatabase.close()
     }
 
-    // Test function names reviewed by ChatGPT for consistency
+    // Test function names reviewed by Gemini for consistency
 
     @Test
-    fun insertData_WithSingleEntity_ShouldStoreAndRetrieveEntityCorrectly() = runTest {
+    fun `returns single entity when single entity is inserted`() = runTest {
         val testData = SampleTrendingEntity.case1
         roomDatabaseDataSource.insertData(data = testData)
 
@@ -55,7 +55,7 @@ internal class RoomDatabaseDataSourceTest {
     }
 
     @Test
-    fun insertAllData_WithMultipleEntities_ShouldStoreAndRetrieveAllEntitiesCorrectly() = runTest {
+    fun `returns all entities when multiple entities are inserted`() = runTest {
         val testDataList = SampleTrendingEntityList.tripleEntityList
         roomDatabaseDataSource.insertAllData(data = testDataList)
 
@@ -64,7 +64,7 @@ internal class RoomDatabaseDataSourceTest {
     }
 
     @Test
-    fun clearData_AfterInserting_ShouldEmptyDatabaseSuccessfully() = runTest {
+    fun `returns empty database when database is cleared after inserting`() = runTest {
         val testDataList = SampleTrendingEntityList.tripleEntityList
         roomDatabaseDataSource.insertAllData(data = testDataList)
 
@@ -75,7 +75,7 @@ internal class RoomDatabaseDataSourceTest {
     }
 
     @Test
-    fun markDirty_AfterInserting_ShouldSetDirtyFlagForAllEntries() = runTest {
+    fun `sets dirty flag for all entries when markDirty is called after inserting`() = runTest {
         val testDataList = SampleTrendingEntityList.tripleEntityList
         roomDatabaseDataSource.insertAllData(data = testDataList)
 
@@ -88,7 +88,7 @@ internal class RoomDatabaseDataSourceTest {
     }
 
     @Test
-    fun deleteDirty_WhenDataIsMarkedDirty_ShouldRemoveAllDirtyEntries() = runTest {
+    fun `removes all dirty entries when data is marked dirty`() = runTest {
         val testDataList = SampleTrendingEntityList.tripleEntityList
         roomDatabaseDataSource.insertAllData(data = testDataList)
         roomDatabaseDataSource.markDirty()

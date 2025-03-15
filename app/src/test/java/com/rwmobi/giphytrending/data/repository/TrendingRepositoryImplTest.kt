@@ -13,12 +13,14 @@ import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.repository.TrendingRepository
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingEntityList
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingNetworkResponse
-import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
 class TrendingRepositoryImplTest {
@@ -48,19 +50,20 @@ class TrendingRepositoryImplTest {
 
         val result = trendingRepository.fetchCachedTrending()
 
-        result.isSuccess shouldBe true
-        result.getOrNull() shouldBe SampleTrendingEntityList.singleEntityList.map { it.toGifObject() }
+        assertTrue(result.isSuccess)
+        assertEquals(SampleTrendingEntityList.singleEntityList.map { it.toGifObject() }, result.getOrNull())
     }
 
     @Test
     fun fetchCachedTrending_ShouldReturnFailure_WhenDatabaseQueryFails() = runTest {
         setupRepository()
-        fakeRoomDbDataSource.apiError = Exception()
+        val expectedException = Exception()
+        fakeRoomDbDataSource.apiError = expectedException
 
         val result = trendingRepository.fetchCachedTrending()
 
-        result.isFailure shouldBe true
-        result.exceptionOrNull() shouldBe Exception()
+        assertTrue(result.isFailure)
+        assertEquals(expectedException, result.exceptionOrNull())
     }
 
     @Test
@@ -71,19 +74,22 @@ class TrendingRepositoryImplTest {
 
         val result = trendingRepository.reloadTrending(limit = 100, rating = Rating.R)
 
-        result.isSuccess shouldBe true
-        result.getOrNull() shouldBe SampleTrendingEntityList.singleEntityList.map { it.toGifObject() }
+        assertTrue(result.isSuccess)
+        assertEquals(SampleTrendingEntityList.singleEntityList.map { it.toGifObject() }, result.getOrNull())
     }
 
     @Test
     fun reloadTrending_ShouldReturnFailure_WhenApiKeyIsBlank() = runTest {
         setupRepository(giphyApiKey = "")
-        fakeNetworkDataSource.apiError = Exception()
+        val expectedException = Exception()
+        fakeNetworkDataSource.apiError = expectedException
 
         val result = trendingRepository.reloadTrending(limit = 100, rating = Rating.R)
 
-        result.isFailure shouldBe true
-        result.exceptionOrNull() shouldBe EmptyGiphyAPIKeyException()
+        assertTrue(result.isFailure)
+        assertFailsWith<EmptyGiphyAPIKeyException> {
+            throw result.exceptionOrNull()!!
+        }
     }
 
     @Test
@@ -93,18 +99,21 @@ class TrendingRepositoryImplTest {
 
         val result = trendingRepository.reloadTrending(limit = 100, rating = Rating.R)
 
-        result.isFailure shouldBe true
-        result.exceptionOrNull() shouldBe Exception()
+        assertTrue(result.isFailure)
+        assertFailsWith<Exception> {
+            throw result.exceptionOrNull()!!
+        }
     }
 
     @Test
     fun reloadTrending_ShouldReturnFailure_WhenDatabaseOperationThrowsException() = runTest {
         setupRepository()
-        fakeRoomDbDataSource.apiError = Exception()
+        val expectedException = Exception()
+        fakeRoomDbDataSource.apiError = expectedException
 
         val result = trendingRepository.reloadTrending(limit = 100, rating = Rating.R)
 
-        result.isFailure shouldBe true
-        result.exceptionOrNull() shouldBe Exception()
+        assertTrue(result.isFailure)
+        assertEquals(expectedException, result.exceptionOrNull())
     }
 }

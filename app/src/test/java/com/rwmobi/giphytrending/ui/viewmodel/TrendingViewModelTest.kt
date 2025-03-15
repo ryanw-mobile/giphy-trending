@@ -11,15 +11,16 @@ import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
 import com.rwmobi.giphytrending.test.testdata.SampleGifObjectList
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.types.shouldBeSameInstanceAs
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertSame
+import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
 internal class TrendingViewModelTest {
@@ -50,7 +51,7 @@ internal class TrendingViewModelTest {
     @Test
     fun initialiseViewModel_ShouldStartWithIsLoadingTrue() {
         setupViewModel()
-        assertEquals(true, viewModel.uiState.value.isLoading)
+        assertTrue(viewModel.uiState.value.isLoading)
     }
 
     @Test
@@ -65,8 +66,8 @@ internal class TrendingViewModelTest {
 
         setupViewModel()
 
-        viewModel.uiState.value.gifObjects shouldBe emptyList()
-        viewModel.uiState.value.isLoading shouldBe false
+        assertEquals(emptyList(), viewModel.uiState.value.gifObjects)
+        assertFalse(viewModel.uiState.value.isLoading)
     }
 
     @Test
@@ -82,8 +83,8 @@ internal class TrendingViewModelTest {
 
         setupViewModel()
 
-        viewModel.uiState.value.errorMessages.any { it.message.contains("Error getting data: $errorMessage") } shouldBe true
-        viewModel.uiState.value.isLoading shouldBe false
+        assertTrue(viewModel.uiState.value.errorMessages.any { it.message.contains("Error getting data: $errorMessage") })
+        assertFalse(viewModel.uiState.value.isLoading)
     }
 
     @Test
@@ -100,8 +101,8 @@ internal class TrendingViewModelTest {
         fakeTrendingRepository.setTrendingResultForTest(Result.success(SampleGifObjectList.gifObjects))
         viewModel.refresh()
 
-        viewModel.uiState.value.gifObjects shouldBe SampleGifObjectList.gifObjects
-        viewModel.uiState.value.isLoading shouldBe false
+        assertEquals(SampleGifObjectList.gifObjects, viewModel.uiState.value.gifObjects)
+        assertFalse(viewModel.uiState.value.isLoading)
     }
 
     @Test
@@ -116,8 +117,8 @@ internal class TrendingViewModelTest {
 
         viewModel.refresh()
 
-        viewModel.uiState.value.errorMessages.any { it.message.contains("Unable to access user preferences. Cannot refresh.") } shouldBe true
-        viewModel.uiState.value.isLoading shouldBe false
+        assertTrue(viewModel.uiState.value.errorMessages.any { it.message.contains("Unable to access user preferences. Cannot refresh.") })
+        assertFalse(viewModel.uiState.value.isLoading)
     }
 
     @Test
@@ -127,7 +128,7 @@ internal class TrendingViewModelTest {
 
         fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 
-        viewModel.uiState.value.errorMessages.any { it.message.contains(errorMessage) } shouldBe true
+        assertTrue(viewModel.uiState.value.errorMessages.any { it.message.contains(errorMessage) })
     }
 
     @Test
@@ -137,7 +138,7 @@ internal class TrendingViewModelTest {
 
         val imageLoader = viewModel.getImageLoader()
 
-        imageLoader shouldBeSameInstanceAs expectedImageLoader
+        assertSame(expectedImageLoader, imageLoader)
     }
 
     @Test
@@ -148,7 +149,7 @@ internal class TrendingViewModelTest {
         viewModel.requestScrollToTop(enabled = expectedRequestScrollToTop)
         val uiState = viewModel.uiState.value
 
-        uiState.requestScrollToTop shouldBe expectedRequestScrollToTop
+        assertEquals(expectedRequestScrollToTop, uiState.requestScrollToTop)
     }
 
     @Test
@@ -169,9 +170,9 @@ internal class TrendingViewModelTest {
         viewModel.refresh()
 
         val uiState = viewModel.uiState.value
-        uiState.errorMessages.size shouldBe 2
-        uiState.errorMessages[0].message shouldBe errorMessage1
-        uiState.errorMessages[1].message shouldBe errorMessage2
+        assertEquals(2, uiState.errorMessages.size)
+        assertEquals(errorMessage1, uiState.errorMessages[0].message)
+        assertEquals(errorMessage2, uiState.errorMessages[1].message)
     }
 
     @Test
@@ -191,8 +192,8 @@ internal class TrendingViewModelTest {
         }
 
         val uiState = viewModel.uiState.value
-        uiState.errorMessages.size shouldBe 1
-        uiState.errorMessages[0].message shouldBe errorMessage1
+        assertEquals(1, uiState.errorMessages.size)
+        assertEquals(errorMessage1, uiState.errorMessages[0].message)
     }
 
     @Test
@@ -204,6 +205,6 @@ internal class TrendingViewModelTest {
 
         viewModel.errorShown(errorId = errorMessages.first().id)
 
-        viewModel.uiState.value.errorMessages.size shouldBe errorMessages.size - 1
+        assertEquals(errorMessages.size - 1, viewModel.uiState.value.errorMessages.size)
     }
 }

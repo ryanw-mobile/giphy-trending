@@ -77,7 +77,6 @@ now [logged as issues](https://github.com/ryanw-mobile/giphy-trending/issues?q=i
 * [Coil](https://coil-kt.github.io/coil/) - Apache 2.0 - An image loading library for Android backed by Kotlin Coroutines
 * [MockK](https://mockk.io/) - Apache 2.0 - Mocking library for Kotlin
 * [Kotlinx Coroutines](https://github.com/Kotlin/kotlinx.coroutines) - Apache 2.0 - Libraries for Kotlin coroutines
-* [Kotest](https://kotest.io/) - Apache 2.0 - Kotlin test framework
 * [Robolectric](http://robolectric.org/) - MIT - A framework that brings fast, reliable unit tests to Android
 * [AndroidX Test](https://developer.android.com/jetpack/androidx/releases/test) - Apache 2.0 - Testing framework for Android
 * [Hilt](https://dagger.dev/hilt/) - Apache 2.0 - A dependency injection library for Android that reduces the boilerplate of doing manual dependency injection

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2025. Ryan Wong
+ * https://github.com/ryanw-mobile
+ */
+
 package com.rwmobi.giphytrending.data.repository
 
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -6,7 +11,6 @@ import com.rwmobi.giphytrending.data.source.preferences.FakePreferencesDataStore
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
-import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
@@ -16,6 +20,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
 internal class UserPreferencesRepositoryImplTest {
@@ -44,10 +49,10 @@ internal class UserPreferencesRepositoryImplTest {
         fakePreferencesDataStoreWrapper = FakePreferencesDataStoreWrapper()
     }
 
-    // Test function names reviewed by ChatGPT for consistency
+    // Test function names reviewed by Gemini for consistency
 
     @Test
-    fun initialization_ShouldPropagateError_WhenDataStoreThrowsException() = runTest {
+    fun `propagates error when DataStore throws exception`() = runTest {
         // Testing sharedFlow: https://developer.android.com/kotlin/flow/test#continuous-collection
         runTest(dispatcher) {
             val expectedException = Exception("some error message")
@@ -59,57 +64,69 @@ internal class UserPreferencesRepositoryImplTest {
 
             fakePreferencesDataStoreWrapper.emitError(expectedException)
 
-            values[0] shouldBe expectedException
+            assertEquals(expectedException, values[0])
         }
     }
 
     @Test
-    fun initialization_ShouldUseDefaultPreferences_WhenDataStoreIsEmpty() = runTest {
+    fun `uses default preferences when DataStore is empty`() = runTest {
         setupRepository()
-        userPreferencesRepository.userPreferences.value shouldBe UserPreferences(
-            apiRequestLimit = ((defaultApiMaxEntries + defaultApiMinEntries) / 2),
-            rating = Rating.G,
+        assertEquals(
+            UserPreferences(
+                apiRequestLimit = ((defaultApiMaxEntries + defaultApiMinEntries) / 2),
+                rating = Rating.G,
+            ),
+            userPreferencesRepository.userPreferences.value,
         )
     }
 
     @Test
-    fun initialization_ShouldReflectStoredPreferences_WhenDataStoreHasValues() = runTest {
+    fun `reflects stored preferences when DataStore has values`() = runTest {
         fakePreferencesDataStoreWrapper.updatePreference(key = intPreferencesKey(KEY_API_REQUEST_LIMIT), newValue = 100)
         fakePreferencesDataStoreWrapper.updatePreference(key = stringPreferencesKey(KEY_RATING), newValue = Rating.R.apiValue)
 
         setupRepository()
 
-        userPreferencesRepository.userPreferences.value shouldBe UserPreferences(
-            apiRequestLimit = 100,
-            rating = Rating.R,
+        assertEquals(
+            UserPreferences(
+                apiRequestLimit = 100,
+                rating = Rating.R,
+            ),
+            userPreferencesRepository.userPreferences.value,
         )
     }
 
     @Test
-    fun setApiRequestLimit_ShouldUpdateApiRequestLimitCorrectly() = runTest {
+    fun `updates api request limit correctly`() = runTest {
         fakePreferencesDataStoreWrapper.updatePreference(key = intPreferencesKey(KEY_API_REQUEST_LIMIT), newValue = 100)
         fakePreferencesDataStoreWrapper.updatePreference(key = stringPreferencesKey(KEY_RATING), newValue = Rating.R.apiValue)
         setupRepository()
 
         userPreferencesRepository.setApiRequestLimit(limit = 50)
 
-        userPreferencesRepository.userPreferences.value shouldBe UserPreferences(
-            apiRequestLimit = 50,
-            rating = Rating.R,
+        assertEquals(
+            UserPreferences(
+                apiRequestLimit = 50,
+                rating = Rating.R,
+            ),
+            userPreferencesRepository.userPreferences.value,
         )
     }
 
     @Test
-    fun setRating_ShouldUpdateRatingCorrectly() = runTest {
+    fun `updates rating correctly`() = runTest {
         fakePreferencesDataStoreWrapper.updatePreference(key = intPreferencesKey(KEY_API_REQUEST_LIMIT), newValue = 100)
         fakePreferencesDataStoreWrapper.updatePreference(key = stringPreferencesKey(KEY_RATING), newValue = Rating.R.apiValue)
         setupRepository()
 
         userPreferencesRepository.setRating(rating = Rating.G)
 
-        userPreferencesRepository.userPreferences.value shouldBe UserPreferences(
-            apiRequestLimit = 100,
-            rating = Rating.G,
+        assertEquals(
+            UserPreferences(
+                apiRequestLimit = 100,
+                rating = Rating.G,
+            ),
+            userPreferencesRepository.userPreferences.value,
         )
     }
 }

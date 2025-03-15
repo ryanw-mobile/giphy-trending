@@ -285,12 +285,14 @@ dependencies {
     implementation(libs.timber)
 
     // testing
+    testImplementation(kotlin("test"))
+    testImplementation(kotlin("test-common"))
+    testImplementation(kotlin("test-annotations-common"))
     testImplementation(libs.junit)
     testImplementation(libs.androidx.test.core.ktx)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.robolectric)
     testImplementation(libs.mockk.android)
-    testImplementation(libs.kotest.assertions.core)
 
     // For instrumented tests - with Kotlin
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -300,7 +302,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.androidx.uiautomator)
-    androidTestImplementation(libs.kotest.assertions.core)
     androidTestImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.mockk.android)

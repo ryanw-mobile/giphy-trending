@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024. Ryan Wong
+ * Copyright (c) 2024-2025. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -11,15 +11,18 @@ import com.rwmobi.giphytrending.domain.exceptions.EmptyGiphyAPIKeyException
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.repository.SearchRepository
 import com.rwmobi.giphytrending.test.testdata.SampleSearchNetworkResponse
-import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
-class SearchRepositoryImplTest {
+internal class SearchRepositoryImplTest {
     private lateinit var searchRepository: SearchRepository
     private lateinit var dispatcher: TestDispatcher
     private lateinit var fakeNetworkDataSource: FakeNetworkDataSource
@@ -34,91 +37,96 @@ class SearchRepositoryImplTest {
         )
     }
 
-    // Test function names reviewed by ChatGPT for consistency
+    // Test function names reviewed by Gemini for consistency
 
     @Test
-    fun search_WithNullKeyword_ShouldReturnEmptyResult() = runTest {
+    fun `returns empty list when keyword is null`() = runTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword: String? = null
 
         val searchResult = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
 
-        searchResult.isSuccess shouldBe true
-        searchResult.getOrNull() shouldBe emptyList()
+        assertTrue(searchResult.isSuccess)
+        assertEquals(emptyList(), searchResult.getOrNull())
     }
 
     @Test
-    fun search_WithEmptyKeyword_ShouldReturnEmptyResult() = runTest {
+    fun `returns empty list when keyword is empty`() = runTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword: String? = ""
 
         val searchResult = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
 
-        searchResult.isSuccess shouldBe true
-        searchResult.getOrNull() shouldBe emptyList()
+        assertTrue(searchResult.isSuccess)
+        assertEquals(emptyList(), searchResult.getOrNull())
     }
 
     @Test
-    fun search_WithBlankKeyword_ShouldReturnEmptyResult() = runTest {
+    fun `returns empty list when keyword is blank`() = runTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword = "     "
 
         val searchResult = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
 
-        searchResult.isSuccess shouldBe true
-        searchResult.getOrNull() shouldBe emptyList()
+        assertTrue(searchResult.isSuccess)
+        assertEquals(emptyList(), searchResult.getOrNull())
     }
 
     @Test
-    fun search_WithValidKeyword_ShouldReturnSuccessfulResult() = runTest {
+    fun `returns successful result when keyword is valid`() = runTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword = "some keyword"
+        val expectedSearchResult = SampleSearchNetworkResponse.singleResponse.trendingData.map { it.toGifObject() }
 
         val searchResult = searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
 
-        searchResult.isSuccess shouldBe true
-        searchResult.getOrNull() shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.map { it.toGifObject() }
+        assertTrue(searchResult.isSuccess)
+        assertEquals(expectedSearchResult, searchResult.getOrNull())
     }
 
     @Test
-    fun search_WithBlankApiKey_ShouldThrowEmptyGiphyAPIKeyException() = runTest {
+    fun `throws EmptyGiphyAPIKeyException when API key is blank`() = runTest {
         setupRepository(giphyApiKey = "")
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
 
         val searchResult = searchRepository.search(keyword = "some-keyword", limit = 100, rating = Rating.R)
 
-        searchResult.isFailure shouldBe true
-        searchResult.exceptionOrNull() shouldBe EmptyGiphyAPIKeyException()
+        assertTrue(searchResult.isFailure)
+        assertFailsWith<EmptyGiphyAPIKeyException> {
+            throw searchResult.exceptionOrNull()!!
+        }
     }
 
     @Test
-    fun search_WithNetworkError_ShouldReturnFailure() = runTest {
+    fun `returns failure when network error occurs`() = runTest {
         setupRepository()
         fakeNetworkDataSource.apiError = Exception()
 
         val searchResult = searchRepository.search(keyword = "some-keyword", limit = 100, rating = Rating.R)
 
-        searchResult.isFailure shouldBe true
-        searchResult.exceptionOrNull() shouldBe Exception()
+        assertTrue(searchResult.isFailure)
+        assertFailsWith<Exception> {
+            throw searchResult.exceptionOrNull()!!
+        }
     }
 
     // lastSuccessfulSearchResults
     @Test
-    fun getLastSuccessfulSearchKeyword_WithoutSuccessfulSearch_ShouldReturnNull() {
+    fun `returns null when no successful search keyword`() {
         setupRepository()
         val lastSuccessfulSearchKeyword = searchRepository.getLastSuccessfulSearchKeyword()
-        lastSuccessfulSearchKeyword shouldBe null
+        assertNull(lastSuccessfulSearchKeyword)
     }
 
     @Test
     fun getLastSuccessfulSearchResults_WithoutSuccessfulSearch_ShouldReturnNull() {
         setupRepository()
         val lastSuccessfulSearchResults = searchRepository.getLastSuccessfulSearchResults()
-        lastSuccessfulSearchResults shouldBe null
+        assertNull(lastSuccessfulSearchResults)
     }
 
     @Test
@@ -126,26 +134,28 @@ class SearchRepositoryImplTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword = "some keyword"
+        val expectedSearchResults = SampleSearchNetworkResponse.singleResponse.trendingData.map { it.toGifObject() }
         searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
 
         val lastSuccessfulSearchKeyword = searchRepository.getLastSuccessfulSearchKeyword()
         val lastSuccessfulSearchResults = searchRepository.getLastSuccessfulSearchResults()
-        lastSuccessfulSearchKeyword shouldBe keyword
-        lastSuccessfulSearchResults shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.map { it.toGifObject() }
+        assertEquals(keyword, lastSuccessfulSearchKeyword)
+        assertEquals(expectedSearchResults, lastSuccessfulSearchResults)
     }
 
     @Test
-    fun getLastSuccessfulSearch_AfterFailedSearch_ShouldMaintainPreviousSuccess() = runTest {
+    fun `maintains previous successful search data after failed search`() = runTest {
         setupRepository()
         fakeNetworkDataSource.searchNetworkResponseDto = SampleSearchNetworkResponse.singleResponse
         val keyword = "some keyword"
+        val expectedSearchResults = SampleSearchNetworkResponse.singleResponse.trendingData.map { it.toGifObject() }
         searchRepository.search(keyword = keyword, limit = 100, rating = Rating.R)
         fakeNetworkDataSource.apiError = Exception()
         searchRepository.search(keyword = "failed keyword", limit = 100, rating = Rating.R)
 
         val lastSuccessfulSearchKeyword = searchRepository.getLastSuccessfulSearchKeyword()
         val lastSuccessfulSearchResults = searchRepository.getLastSuccessfulSearchResults()
-        lastSuccessfulSearchKeyword shouldBe keyword
-        lastSuccessfulSearchResults shouldBe SampleSearchNetworkResponse.singleResponse.trendingData.map { it.toGifObject() }
+        assertEquals(keyword, lastSuccessfulSearchKeyword)
+        assertEquals(expectedSearchResults, lastSuccessfulSearchResults)
     }
 }

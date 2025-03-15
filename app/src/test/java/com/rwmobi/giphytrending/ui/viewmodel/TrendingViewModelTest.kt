@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024. Ryan Wong
+ * Copyright (c) 2024-2025. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -11,15 +11,16 @@ import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
 import com.rwmobi.giphytrending.test.testdata.SampleGifObjectList
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.types.shouldBeSameInstanceAs
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertSame
+import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
 internal class TrendingViewModelTest {
@@ -45,16 +46,16 @@ internal class TrendingViewModelTest {
         mockImageLoader = mockk(relaxed = true)
     }
 
-    // Test function names reviewed by ChatGPT for consistency
+    // Test function names reviewed by Gemini for consistency
 
     @Test
-    fun initialiseViewModel_ShouldStartWithIsLoadingTrue() {
+    fun `starts with loading state true when initialised`() {
         setupViewModel()
-        assertEquals(true, viewModel.uiState.value.isLoading)
+        assertTrue(viewModel.uiState.value.isLoading)
     }
 
     @Test
-    fun initialiseViewModel_ShouldSetUIStateToEmptyAndNotLoading_OnEmptyDataFetch() {
+    fun `sets UI state to empty and not loading when data fetch is empty`() {
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
                 apiRequestLimit = 100,
@@ -65,12 +66,12 @@ internal class TrendingViewModelTest {
 
         setupViewModel()
 
-        viewModel.uiState.value.gifObjects shouldBe emptyList()
-        viewModel.uiState.value.isLoading shouldBe false
+        assertEquals(emptyList(), viewModel.uiState.value.gifObjects)
+        assertFalse(viewModel.uiState.value.isLoading)
     }
 
     @Test
-    fun initialiseViewModel_ShouldUpdateUIStateWithError_OnDataFetchFailure() {
+    fun `updates UI state with error when data fetch fails`() {
         val errorMessage = "some error message"
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
@@ -82,12 +83,12 @@ internal class TrendingViewModelTest {
 
         setupViewModel()
 
-        viewModel.uiState.value.errorMessages.any { it.message.contains("Error getting data: $errorMessage") } shouldBe true
-        viewModel.uiState.value.isLoading shouldBe false
+        assertTrue(viewModel.uiState.value.errorMessages.any { it.message.contains("Error getting data: $errorMessage") })
+        assertFalse(viewModel.uiState.value.isLoading)
     }
 
     @Test
-    fun refresh_ShouldUpdateUIWithNewItems_FromRepositorySuccessfully() {
+    fun `updates UI with new items when refresh succeeds`() {
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
                 apiRequestLimit = 100,
@@ -100,12 +101,12 @@ internal class TrendingViewModelTest {
         fakeTrendingRepository.setTrendingResultForTest(Result.success(SampleGifObjectList.gifObjects))
         viewModel.refresh()
 
-        viewModel.uiState.value.gifObjects shouldBe SampleGifObjectList.gifObjects
-        viewModel.uiState.value.isLoading shouldBe false
+        assertEquals(SampleGifObjectList.gifObjects, viewModel.uiState.value.gifObjects)
+        assertFalse(viewModel.uiState.value.isLoading)
     }
 
     @Test
-    fun refresh_ShouldDisplayError_WhenUserPreferencesNotFullyConfigured() {
+    fun `displays error when user preferences are not fully configured during refresh`() {
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
                 apiRequestLimit = null,
@@ -116,43 +117,43 @@ internal class TrendingViewModelTest {
 
         viewModel.refresh()
 
-        viewModel.uiState.value.errorMessages.any { it.message.contains("Unable to access user preferences. Cannot refresh.") } shouldBe true
-        viewModel.uiState.value.isLoading shouldBe false
+        assertTrue(viewModel.uiState.value.errorMessages.any { it.message.contains("Unable to access user preferences. Cannot refresh.") })
+        assertFalse(viewModel.uiState.value.isLoading)
     }
 
     @Test
-    fun handleUserPreferenceErrors_ShouldAddErrorMessageToUIState() = runTest {
+    fun `adds error message to UI state when user preference has errors`() = runTest {
         setupViewModel()
         val errorMessage = "Preference error"
 
         fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 
-        viewModel.uiState.value.errorMessages.any { it.message.contains(errorMessage) } shouldBe true
+        assertTrue(viewModel.uiState.value.errorMessages.any { it.message.contains(errorMessage) })
     }
 
     @Test
-    fun getImageLoader_ShouldReturnCorrectInstance() {
+    fun `returns correct image loader instance`() {
         setupViewModel()
         val expectedImageLoader = mockImageLoader
 
         val imageLoader = viewModel.getImageLoader()
 
-        imageLoader shouldBeSameInstanceAs expectedImageLoader
+        assertSame(expectedImageLoader, imageLoader)
     }
 
     @Test
-    fun requestScrollToTop_ShouldUpdateUIStateCorrectly() {
+    fun `updates UI state with request scroll to top`() {
         setupViewModel()
         val expectedRequestScrollToTop = true
 
         viewModel.requestScrollToTop(enabled = expectedRequestScrollToTop)
         val uiState = viewModel.uiState.value
 
-        uiState.requestScrollToTop shouldBe expectedRequestScrollToTop
+        assertEquals(expectedRequestScrollToTop, uiState.requestScrollToTop)
     }
 
     @Test
-    fun errorMessages_ShouldAccumulateErrorMessages_OnMultipleFailures() = runTest {
+    fun `accumulates error messages on multiple failures`() = runTest {
         val errorMessage1 = "Test error 1"
         val errorMessage2 = "Test error 2"
         fakeUserPreferencesRepository.init(
@@ -169,13 +170,13 @@ internal class TrendingViewModelTest {
         viewModel.refresh()
 
         val uiState = viewModel.uiState.value
-        uiState.errorMessages.size shouldBe 2
-        uiState.errorMessages[0].message shouldBe errorMessage1
-        uiState.errorMessages[1].message shouldBe errorMessage2
+        assertEquals(2, uiState.errorMessages.size)
+        assertEquals(errorMessage1, uiState.errorMessages[0].message)
+        assertEquals(errorMessage2, uiState.errorMessages[1].message)
     }
 
     @Test
-    fun errorMessages_ShouldNotAccumulateDuplicatedErrorMessages_OnMultipleFailures() = runTest {
+    fun `does not accumulate duplicated error messages on multiple failures`() = runTest {
         val errorMessage1 = "Test error 1"
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
@@ -191,12 +192,12 @@ internal class TrendingViewModelTest {
         }
 
         val uiState = viewModel.uiState.value
-        uiState.errorMessages.size shouldBe 1
-        uiState.errorMessages[0].message shouldBe errorMessage1
+        assertEquals(1, uiState.errorMessages.size)
+        assertEquals(errorMessage1, uiState.errorMessages[0].message)
     }
 
     @Test
-    fun errorShown_ShouldRemoveSpecifiedErrorMessageFromUIState() = runTest {
+    fun `removes specified error message from UI state when error is shown`() = runTest {
         setupViewModel()
         fakeUserPreferencesRepository.emitError(Exception("some error message"))
         viewModel.refresh()
@@ -204,6 +205,6 @@ internal class TrendingViewModelTest {
 
         viewModel.errorShown(errorId = errorMessages.first().id)
 
-        viewModel.uiState.value.errorMessages.size shouldBe errorMessages.size - 1
+        assertEquals(errorMessages.size - 1, viewModel.uiState.value.errorMessages.size)
     }
 }

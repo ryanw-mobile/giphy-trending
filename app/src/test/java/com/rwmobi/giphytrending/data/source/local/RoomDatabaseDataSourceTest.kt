@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024. Ryan Wong
+ * Copyright (c) 2024-2025. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -11,8 +11,6 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingEntity
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingEntityList
-import io.kotest.matchers.collections.shouldContainOnly
-import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -20,10 +18,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.P])
-class RoomDatabaseDataSourceTest {
+internal class RoomDatabaseDataSourceTest {
     private lateinit var giphyDatabase: GiphyDatabase
     private lateinit var roomDatabaseDataSource: RoomDatabaseDataSource
 
@@ -42,43 +43,39 @@ class RoomDatabaseDataSourceTest {
         giphyDatabase.close()
     }
 
-    // Test function names reviewed by ChatGPT for consistency
+    // Test function names reviewed by Gemini for consistency
 
     @Test
-    fun insertData_WithSingleEntity_ShouldStoreAndRetrieveEntityCorrectly() = runTest {
+    fun `returns single entity when single entity is inserted`() = runTest {
         val testData = SampleTrendingEntity.case1
         roomDatabaseDataSource.insertData(data = testData)
 
         val result = roomDatabaseDataSource.queryData()
-
-        result.size shouldBe 1
-        result[0] shouldBe testData
+        assertEquals(listOf(testData), result)
     }
 
     @Test
-    fun insertAllData_WithMultipleEntities_ShouldStoreAndRetrieveAllEntitiesCorrectly() = runTest {
+    fun `returns all entities when multiple entities are inserted`() = runTest {
         val testDataList = SampleTrendingEntityList.tripleEntityList
         roomDatabaseDataSource.insertAllData(data = testDataList)
 
         val result = roomDatabaseDataSource.queryData()
-
-        result.size shouldBe testDataList.size
-        result shouldContainOnly testDataList
+        assertEquals(testDataList.sortedBy { it.id }, result.sortedBy { it.id })
     }
 
     @Test
-    fun clearData_AfterInserting_ShouldEmptyDatabaseSuccessfully() = runTest {
+    fun `returns empty database when database is cleared after inserting`() = runTest {
         val testDataList = SampleTrendingEntityList.tripleEntityList
         roomDatabaseDataSource.insertAllData(data = testDataList)
 
         roomDatabaseDataSource.clear()
         val result = roomDatabaseDataSource.queryData()
 
-        result.size shouldBe 0
+        assertTrue(result.isEmpty())
     }
 
     @Test
-    fun markDirty_AfterInserting_ShouldSetDirtyFlagForAllEntries() = runTest {
+    fun `sets dirty flag for all entries when markDirty is called after inserting`() = runTest {
         val testDataList = SampleTrendingEntityList.tripleEntityList
         roomDatabaseDataSource.insertAllData(data = testDataList)
 
@@ -86,12 +83,12 @@ class RoomDatabaseDataSourceTest {
         val result = roomDatabaseDataSource.queryData()
 
         result.forEach { trendingEntity ->
-            trendingEntity.dirty shouldBe true
+            assertTrue(trendingEntity.dirty)
         }
     }
 
     @Test
-    fun deleteDirty_WhenDataIsMarkedDirty_ShouldRemoveAllDirtyEntries() = runTest {
+    fun `removes all dirty entries when data is marked dirty`() = runTest {
         val testDataList = SampleTrendingEntityList.tripleEntityList
         roomDatabaseDataSource.insertAllData(data = testDataList)
         roomDatabaseDataSource.markDirty()
@@ -100,7 +97,7 @@ class RoomDatabaseDataSourceTest {
         val result = roomDatabaseDataSource.queryData()
 
         result.forEach { trendingEntity ->
-            trendingEntity.dirty shouldBe false
+            assertFalse(trendingEntity.dirty)
         }
     }
 }

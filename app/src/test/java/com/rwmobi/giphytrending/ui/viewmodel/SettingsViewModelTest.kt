@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024. Ryan Wong
+ * Copyright (c) 2024-2025. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -8,13 +8,15 @@ package com.rwmobi.giphytrending.ui.viewmodel
 import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
-import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
 internal class SettingsViewModelTest {
@@ -32,10 +34,10 @@ internal class SettingsViewModelTest {
         )
     }
 
-    // Test function names reviewed by ChatGPT for consistency
+    // Test function names reviewed by Gemini for consistency
 
     @Test
-    fun setApiRequestLimit_ShouldUpdateApiRequestLimitAndSetIsLoadingToFalse() {
+    fun `updates api request limit and sets isLoading to false when setApiRequestLimit is called`() {
         val expectedMaxApiEntries = 100
         fakeUserPreferencesRepository.init(
             UserPreferences(
@@ -47,12 +49,12 @@ internal class SettingsViewModelTest {
         settingsViewModel.setApiRequestLimit(expectedMaxApiEntries)
         val uiState = settingsViewModel.uiState.value
 
-        uiState.apiRequestLimit shouldBe expectedMaxApiEntries
-        uiState.isLoading shouldBe false
+        assertEquals(expectedMaxApiEntries, uiState.apiRequestLimit)
+        assertFalse(uiState.isLoading)
     }
 
     @Test
-    fun setRating_ShouldUpdateRatingInUIStateAndSetIsLoadingToFalse() {
+    fun `updates rating and sets isLoading to false when setRating is called`() {
         val expectedRating = Rating.R
         fakeUserPreferencesRepository.init(
             UserPreferences(
@@ -64,34 +66,34 @@ internal class SettingsViewModelTest {
         settingsViewModel.setRating(expectedRating)
         val uiState = settingsViewModel.uiState.value
 
-        uiState.rating shouldBe expectedRating
-        uiState.isLoading shouldBe false
+        assertEquals(expectedRating, uiState.rating)
+        assertFalse(uiState.isLoading)
     }
 
     @Test
-    fun requestScrollToTop_ShouldUpdateRequestInUIStateCorrectly() {
+    fun `updates requestScrollToTop in UI state when requestScrollToTop is called`() {
         val expectedRequestScrollToTop = true
 
         settingsViewModel.requestScrollToTop(enabled = expectedRequestScrollToTop)
         val uiState = settingsViewModel.uiState.value
 
-        uiState.requestScrollToTop shouldBe expectedRequestScrollToTop
+        assertEquals(expectedRequestScrollToTop, uiState.requestScrollToTop)
     }
 
     @Test
-    fun emitError_ShouldAddErrorMessageToUIStateAndSetIsLoadingToFalse() = runTest {
+    fun `adds error message to UI state and sets isLoading to false when emitError is called`() = runTest {
         val errorMessage = "Test error"
         fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 
         val uiState = settingsViewModel.uiState.value
 
-        uiState.errorMessages.size shouldBe 1
-        uiState.errorMessages.first().message shouldBe errorMessage
-        uiState.isLoading shouldBe false
+        assertEquals(1, uiState.errorMessages.size)
+        assertEquals(errorMessage, uiState.errorMessages.first().message)
+        assertFalse(uiState.isLoading)
     }
 
     @Test
-    fun errorShown_ShouldRemoveSpecifiedErrorMessageFromUIState() = runTest {
+    fun `removes specified error message from UI state when errorShown is called`() = runTest {
         val errorMessage = "Test error"
         fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 
@@ -99,6 +101,6 @@ internal class SettingsViewModelTest {
         settingsViewModel.errorShown(errorId)
 
         val uiState = settingsViewModel.uiState.value
-        uiState.errorMessages shouldBe emptyList()
+        assertTrue(uiState.errorMessages.isEmpty())
     }
 }

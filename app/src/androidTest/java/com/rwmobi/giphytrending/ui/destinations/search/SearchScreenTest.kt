@@ -31,7 +31,7 @@ import javax.inject.Inject
 @kotlinx.coroutines.ExperimentalCoroutinesApi
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class SearchScreenTest {
+internal class SearchScreenTest {
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 

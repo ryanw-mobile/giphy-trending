@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024. Ryan Wong
+ * Copyright (c) 2024-2025. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -11,15 +11,18 @@ import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
 import com.rwmobi.giphytrending.test.testdata.SampleGifObjectList
-import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.types.shouldBeSameInstanceAs
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertContentEquals
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
+import kotlin.test.assertSame
+import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
 internal class SearchViewModelTest {
@@ -41,10 +44,10 @@ internal class SearchViewModelTest {
         )
     }
 
-    // Test function names reviewed by ChatGPT for consistency
+    // Test function names reviewed by Gemini for consistency
 
     @Test
-    fun fetchLastSuccessfulSearch_ShouldUpdateUIStateCorrectly_WhenDataIsAvailable() = runTest {
+    fun `updates UI state with last successful search data when data is available`() = runTest {
         val lastSuccessfulSearchKeyword = "last serach keyword"
         val lastSuccessfulSearchResult = SampleGifObjectList.gifObjects
         fakeSearchRepository.setLastSuccessfulSearchKeywordForTest(lastSuccessfulSearchKeyword)
@@ -53,51 +56,49 @@ internal class SearchViewModelTest {
         viewModel.fetchLastSuccessfulSearch()
 
         with(viewModel.uiState.value) {
-            isLoading shouldBe false
-            keyword shouldBe lastSuccessfulSearchKeyword
-            gifObjects shouldContainExactlyInAnyOrder lastSuccessfulSearchResult
+            assertFalse(isLoading)
+            assertEquals(lastSuccessfulSearchKeyword, keyword)
+            assertContentEquals(lastSuccessfulSearchResult, gifObjects)
         }
     }
 
     @Test
-    fun fetchLastSuccessfulSearch_ShouldSetUIStateToDefault_WhenNoDataReturned() = runTest {
+    fun `sets UI state to default when no last successful search data is returned`() = runTest {
         viewModel.fetchLastSuccessfulSearch()
 
         with(viewModel.uiState.value) {
-            isLoading shouldBe false
-            keyword shouldBe ""
-            gifObjects shouldBe null
+            assertFalse(isLoading)
+            assertTrue(keyword.isEmpty())
+            assertNull(gifObjects)
         }
     }
 
     @Test
-    fun updateKeyword_ShouldCorrectlyUpdateUIStateWithNewKeyword() = runTest {
+    fun `updates UI state with new keyword when new keyword is updated`() = runTest {
         val keyword = "some search keyword"
         viewModel.updateKeyword(keyword)
-        viewModel.uiState.value.keyword shouldBe keyword
+        assertEquals(keyword, viewModel.uiState.value.keyword)
     }
 
     @Test
-    fun updateKeyword_ShouldClearKeyword_WhenNullInputReceived() = runTest {
+    fun `clears keyword when null input is received`() = runTest {
         viewModel.updateKeyword(null)
-        viewModel.uiState.value.keyword.isEmpty() shouldBe true
+        assertTrue(viewModel.uiState.value.keyword.isEmpty())
     }
 
     @Test
-    fun updateKeyword_ShouldTrimKeywordToMaxLength_WhenExceedingLimit() = runTest {
+    fun `trims keyword to max length when input keyword exceeds limit`() = runTest {
         val maxLength = viewModel.uiState.value.keywordMaxLength
         val longKeyword = "x".repeat(100)
-
         viewModel.updateKeyword(longKeyword)
-
-        viewModel.uiState.value.keyword.length shouldBe maxLength
+        assertEquals(maxLength, viewModel.uiState.value.keyword.length)
     }
 
     @Test
-    fun clearKeyword_ShouldResetKeywordInUIState() = runTest {
+    fun `resets keyword in UI state when clear keyword is called`() = runTest {
         viewModel.updateKeyword("test")
         viewModel.clearKeyword()
-        viewModel.uiState.value.keyword.isEmpty() shouldBe true
+        assertTrue(viewModel.uiState.value.keyword.isEmpty())
     }
 
     @Test
@@ -113,11 +114,11 @@ internal class SearchViewModelTest {
         viewModel.updateKeyword("test")
         viewModel.search()
 
-        viewModel.uiState.value.gifObjects shouldContainExactlyInAnyOrder SampleGifObjectList.gifObjects
+        assertContentEquals(SampleGifObjectList.gifObjects, viewModel.uiState.value.gifObjects)
     }
 
     @Test
-    fun search_ShouldHandleError_WhenPreferencesNotSet() = runTest {
+    fun `shows error message when user preferences are not fully set`() = runTest {
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
                 apiRequestLimit = null,
@@ -130,13 +131,13 @@ internal class SearchViewModelTest {
         val uiState = viewModel.uiState.value
 
         with(uiState) {
-            errorMessages.any { it.message.contains("Preferences are not fully set.") } shouldBe true
-            isLoading shouldBe false
+            assertTrue(errorMessages.any { it.message.contains("Preferences are not fully set.") })
+            assertFalse(isLoading)
         }
     }
 
     @Test
-    fun search_ShouldUpdateUIWithError_WhenSearchFails() = runTest {
+    fun `updates UI with error when search fails`() = runTest {
         val errorMessage = "some error message"
         fakeUserPreferencesRepository.init(
             userPreferences = UserPreferences(
@@ -151,45 +152,45 @@ internal class SearchViewModelTest {
         val uiState = viewModel.uiState.value
 
         with(uiState) {
-            errorMessages.size shouldBe 1
-            errorMessages.first().message shouldBe "Error getting data: $errorMessage"
-            isLoading shouldBe false
+            assertEquals(1, errorMessages.size)
+            assertEquals("Error getting data: $errorMessage", errorMessages.first().message)
+            assertFalse(isLoading)
         }
     }
 
     @Test
-    fun getImageLoader_ShouldReturnCorrectImageLoaderInstance() {
+    fun `returns correct image loader instance when getImageLoader is called`() {
         val expectedImageLoader = mockImageLoader
         val imageLoader = viewModel.getImageLoader()
-        imageLoader shouldBeSameInstanceAs expectedImageLoader
+        assertSame(expectedImageLoader, imageLoader)
     }
 
     @Test
-    fun requestScrollToTop_ShouldUpdateRequestInUIState() {
+    fun `updates request scroll to top in UI state when requestScrollToTop is called`() {
         val expectedRequestScrollToTop = true
 
         viewModel.requestScrollToTop(enabled = expectedRequestScrollToTop)
         val uiState = viewModel.uiState.value
 
-        uiState.requestScrollToTop shouldBe expectedRequestScrollToTop
+        assertEquals(expectedRequestScrollToTop, uiState.requestScrollToTop)
     }
 
     @Test
-    fun searchError_ShouldUpdateUIStateAndSetLoadingFalse_WhenErrorOccurs() = runTest {
+    fun `updates UI state with error message and set loading to false when error occurs`() = runTest {
         val errorMessage = "Test error"
         fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 
         val uiState = viewModel.uiState.value
 
         with(uiState) {
-            errorMessages.size shouldBe 1
-            errorMessages.first().message shouldBe errorMessage
-            isLoading shouldBe false
+            assertEquals(1, errorMessages.size)
+            assertEquals(errorMessage, errorMessages.first().message)
+            assertFalse(isLoading)
         }
     }
 
     @Test
-    fun errorMessages_ShouldAccumulateErrorMessages_OnMultipleFailures() = runTest {
+    fun `accumulates error messages when multiple failures occur`() = runTest {
         val errorMessage1 = "Test error 1"
         val errorMessage2 = "Test error 2"
 
@@ -197,13 +198,16 @@ internal class SearchViewModelTest {
         fakeUserPreferencesRepository.emitError(Exception(errorMessage2))
 
         val uiState = viewModel.uiState.value
-        uiState.errorMessages.size shouldBe 2
-        uiState.errorMessages[0].message shouldBe errorMessage1
-        uiState.errorMessages[1].message shouldBe errorMessage2
+
+        with(uiState) {
+            assertEquals(2, errorMessages.size)
+            assertEquals(errorMessage1, errorMessages[0].message)
+            assertEquals(errorMessage2, errorMessages[1].message)
+        }
     }
 
     @Test
-    fun errorMessages_ShouldNotAccumulateDuplicatedErrorMessages_OnMultipleFailures() = runTest {
+    fun `does not accumulate duplicated error messages when multiple failures with same error occur`() = runTest {
         val errorMessage = "Test error"
 
         repeat(times = 2) {
@@ -211,12 +215,12 @@ internal class SearchViewModelTest {
         }
 
         val uiState = viewModel.uiState.value
-        uiState.errorMessages.size shouldBe 1
-        uiState.errorMessages[0].message shouldBe errorMessage
+        assertEquals(1, uiState.errorMessages.size)
+        assertEquals(errorMessage, uiState.errorMessages[0].message)
     }
 
     @Test
-    fun errorShown_ShouldRemoveErrorMessageFromUIState_WhenCalled() = runTest {
+    fun `removes error message from UI state when errorShown is called`() = runTest {
         val errorMessage = "Test error"
         fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 
@@ -224,6 +228,6 @@ internal class SearchViewModelTest {
         viewModel.errorShown(errorId)
 
         val uiState = viewModel.uiState.value
-        uiState.errorMessages shouldBe emptyList()
+        assertTrue(uiState.errorMessages.isEmpty())
     }
 }

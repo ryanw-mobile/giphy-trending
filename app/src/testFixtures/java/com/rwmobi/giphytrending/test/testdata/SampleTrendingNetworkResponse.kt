@@ -13,7 +13,7 @@ import com.rwmobi.giphytrending.data.source.network.dto.Original
 import com.rwmobi.giphytrending.data.source.network.dto.PaginationDto
 import com.rwmobi.giphytrending.data.source.network.dto.TrendingDataDto
 import com.rwmobi.giphytrending.data.source.network.dto.TrendingNetworkResponseDto
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 object SampleTrendingNetworkResponse {
     val singleResponse = TrendingNetworkResponseDto(

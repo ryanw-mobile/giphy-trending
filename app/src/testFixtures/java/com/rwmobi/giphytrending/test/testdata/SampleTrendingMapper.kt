@@ -12,7 +12,7 @@ import com.rwmobi.giphytrending.data.source.network.dto.Images
 import com.rwmobi.giphytrending.data.source.network.dto.Original
 import com.rwmobi.giphytrending.data.source.network.dto.TrendingDataDto
 import com.rwmobi.giphytrending.domain.model.GifObject
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 internal object SampleTrendingMapper {
     val sampleTrendingDataDto1 =

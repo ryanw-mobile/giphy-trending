@@ -6,7 +6,7 @@
 package com.rwmobi.giphytrending.data.source.local
 
 import androidx.room.TypeConverter
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 class InstantTypeConverters {
 

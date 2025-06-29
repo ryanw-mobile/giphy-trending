@@ -6,7 +6,7 @@
 package com.rwmobi.giphytrending.test.testdata
 
 import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 object SampleTrendingEntity {
     val case1 = TrendingEntity(

@@ -3,10 +3,13 @@
  * https://github.com/ryanw-mobile
  */
 
+@file:OptIn(ExperimentalTime::class)
+
 package com.rwmobi.giphytrending.data.source.local
 
 import androidx.room.TypeConverter
-import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 class InstantTypeConverters {
 

@@ -3,6 +3,8 @@
  * https://github.com/ryanw-mobile
  */
 
+@file:OptIn(ExperimentalTime::class)
+
 package com.rwmobi.giphytrending.test.testdata
 
 import com.rwmobi.giphytrending.data.source.network.dto.FixedHeight
@@ -13,7 +15,8 @@ import com.rwmobi.giphytrending.data.source.network.dto.Original
 import com.rwmobi.giphytrending.data.source.network.dto.PaginationDto
 import com.rwmobi.giphytrending.data.source.network.dto.SearchNetworkResponseDto
 import com.rwmobi.giphytrending.data.source.network.dto.TrendingDataDto
-import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 object SampleSearchNetworkResponse {
     val singleResponse = SearchNetworkResponseDto(

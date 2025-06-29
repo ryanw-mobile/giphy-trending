@@ -3,12 +3,15 @@
  * https://github.com/ryanw-mobile
  */
 
+@file:OptIn(ExperimentalTime::class)
+
 package com.rwmobi.giphytrending.data.source.local.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @Entity(tableName = "trending")
 data class TrendingEntity(

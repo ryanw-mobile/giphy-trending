@@ -3,8 +3,6 @@
  * https://github.com/ryanw-mobile
  */
 
-@file:OptIn(ExperimentalTime::class)
-
 package com.rwmobi.giphytrending.test.testdata
 
 import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
@@ -14,7 +12,6 @@ import com.rwmobi.giphytrending.data.source.network.dto.Images
 import com.rwmobi.giphytrending.data.source.network.dto.Original
 import com.rwmobi.giphytrending.data.source.network.dto.TrendingDataDto
 import com.rwmobi.giphytrending.domain.model.GifObject
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 internal object SampleTrendingMapper {

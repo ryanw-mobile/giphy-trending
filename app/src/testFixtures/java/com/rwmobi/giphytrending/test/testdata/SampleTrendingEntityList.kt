@@ -3,12 +3,9 @@
  * https://github.com/ryanw-mobile
  */
 
-@file:OptIn(ExperimentalTime::class)
-
 package com.rwmobi.giphytrending.test.testdata
 
 import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 object SampleTrendingEntityList {

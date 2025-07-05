@@ -19,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import coil3.ImageLoader
 import com.rwmobi.giphytrending.BuildConfig
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.destinations.search.SearchScreen
@@ -37,6 +38,7 @@ fun AppNavHost(
     modifier: Modifier = Modifier,
     isLargeScreen: Boolean,
     navController: NavHostController,
+    imageLoader: ImageLoader,
     lastDoubleTappedNavItem: AppNavItem?,
     scrollBehavior: TopAppBarScrollBehavior,
     onShowSnackbar: suspend (String) -> Unit,
@@ -70,7 +72,7 @@ fun AppNavHost(
                     .fillMaxSize()
                     .nestedScroll(scrollBehavior.nestedScrollConnection),
                 useCardLayout = isLargeScreen,
-                imageLoader = viewModel.getImageLoader(),
+                imageLoader = imageLoader,
                 uiState = uiState,
                 uiEvent = TrendingUIEvent(
                     onRefresh = { viewModel.refresh() },
@@ -105,7 +107,7 @@ fun AppNavHost(
                     .fillMaxSize()
                     .nestedScroll(scrollBehavior.nestedScrollConnection),
                 useCardLayout = isLargeScreen,
-                imageLoader = viewModel.getImageLoader(),
+                imageLoader = imageLoader,
                 uiState = uiState,
                 uiEvent = SearchUIEvent(
                     onFetchLastSuccessfulSearch = { viewModel.fetchLastSuccessfulSearch() },

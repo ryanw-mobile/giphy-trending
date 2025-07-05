@@ -5,13 +5,11 @@
 
 package com.rwmobi.giphytrending.ui.viewmodel
 
-import coil.ImageLoader
 import com.rwmobi.giphytrending.data.repository.FakeTrendingRepository
 import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
 import com.rwmobi.giphytrending.test.testdata.SampleGifObjectList
-import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -19,7 +17,6 @@ import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
@@ -28,13 +25,11 @@ internal class TrendingViewModelTest {
     private lateinit var viewModel: TrendingViewModel
     private lateinit var fakeTrendingRepository: FakeTrendingRepository
     private lateinit var fakeUserPreferencesRepository: FakeUserPreferencesRepository
-    private lateinit var mockImageLoader: ImageLoader
 
     private fun setupViewModel() {
         viewModel = TrendingViewModel(
             trendingRepository = fakeTrendingRepository,
             userPreferencesRepository = fakeUserPreferencesRepository,
-            imageLoader = mockImageLoader,
             dispatcher = UnconfinedTestDispatcher(),
         )
     }
@@ -43,7 +38,6 @@ internal class TrendingViewModelTest {
     fun setUp() {
         fakeTrendingRepository = FakeTrendingRepository()
         fakeUserPreferencesRepository = FakeUserPreferencesRepository()
-        mockImageLoader = mockk(relaxed = true)
     }
 
     // Test function names reviewed by Gemini for consistency
@@ -129,16 +123,6 @@ internal class TrendingViewModelTest {
         fakeUserPreferencesRepository.emitError(Exception(errorMessage))
 
         assertTrue(viewModel.uiState.value.errorMessages.any { it.message.contains(errorMessage) })
-    }
-
-    @Test
-    fun `returns correct image loader instance`() {
-        setupViewModel()
-        val expectedImageLoader = mockImageLoader
-
-        val imageLoader = viewModel.getImageLoader()
-
-        assertSame(expectedImageLoader, imageLoader)
     }
 
     @Test

@@ -7,7 +7,6 @@ package com.rwmobi.giphytrending.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import coil.ImageLoader
 import com.rwmobi.giphytrending.di.DispatcherModule
 import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.domain.model.Rating
@@ -30,7 +29,6 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val searchRepository: SearchRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
-    private val imageLoader: ImageLoader,
     @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
     // API returns HTTP 414 if query string longer than this
@@ -122,8 +120,6 @@ class SearchViewModel @Inject constructor(
             )
         }
     }
-
-    fun getImageLoader() = imageLoader
 
     private fun collectErrors() {
         viewModelScope.launch(dispatcher) {

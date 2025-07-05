@@ -5,13 +5,11 @@
 
 package com.rwmobi.giphytrending.ui.viewmodel
 
-import coil.ImageLoader
 import com.rwmobi.giphytrending.data.repository.FakeSearchRepository
 import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
 import com.rwmobi.giphytrending.test.testdata.SampleGifObjectList
-import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -21,7 +19,6 @@ import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
-import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
@@ -29,17 +26,14 @@ internal class SearchViewModelTest {
     private lateinit var viewModel: SearchViewModel
     private lateinit var fakeSearchRepository: FakeSearchRepository
     private lateinit var fakeUserPreferencesRepository: FakeUserPreferencesRepository
-    private lateinit var mockImageLoader: ImageLoader
 
     @Before
     fun setUp() {
         fakeUserPreferencesRepository = FakeUserPreferencesRepository()
         fakeSearchRepository = FakeSearchRepository()
-        mockImageLoader = mockk(relaxed = true)
         viewModel = SearchViewModel(
             searchRepository = fakeSearchRepository,
             userPreferencesRepository = fakeUserPreferencesRepository,
-            imageLoader = mockImageLoader,
             dispatcher = UnconfinedTestDispatcher(),
         )
     }
@@ -156,13 +150,6 @@ internal class SearchViewModelTest {
             assertEquals("Error getting data: $errorMessage", errorMessages.first().message)
             assertFalse(isLoading)
         }
-    }
-
-    @Test
-    fun `returns correct image loader instance when getImageLoader is called`() {
-        val expectedImageLoader = mockImageLoader
-        val imageLoader = viewModel.getImageLoader()
-        assertSame(expectedImageLoader, imageLoader)
     }
 
     @Test

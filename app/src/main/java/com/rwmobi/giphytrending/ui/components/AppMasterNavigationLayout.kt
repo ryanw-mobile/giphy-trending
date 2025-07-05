@@ -31,12 +31,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil3.ImageLoader
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.navigation.AppNavHost
 import com.rwmobi.giphytrending.ui.navigation.AppNavItem
@@ -69,6 +71,7 @@ fun AppMasterNavigationLayout(
     modifier: Modifier = Modifier,
     windowSizeClass: WindowSizeClass,
     navController: NavHostController,
+    imageLoader: ImageLoader,
     snackbarHostState: SnackbarHostState,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -135,6 +138,7 @@ fun AppMasterNavigationLayout(
                     .padding(paddingValues),
                 isLargeScreen = navigationLayoutType == NavigationLayoutType.NavigationRail,
                 navController = navController,
+                imageLoader = imageLoader,
                 lastDoubleTappedNavItem = lastDoubleTappedNavItem.value,
                 scrollBehavior = scrollBehavior,
                 onShowSnackbar = { errorMessageText ->
@@ -163,6 +167,7 @@ private fun Preview() {
             AppMasterNavigationLayout(
                 modifier = Modifier.fillMaxSize(),
                 windowSizeClass = getPreviewWindowSizeClass(),
+                imageLoader = ImageLoader(LocalContext.current),
                 navController = rememberNavController(),
                 snackbarHostState = remember { SnackbarHostState() },
             )

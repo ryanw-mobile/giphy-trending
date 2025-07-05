@@ -31,7 +31,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.AnnotatedString
 import androidx.core.net.toUri
-import coil.ImageLoader
+import coil3.ImageLoader
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.components.GiphyStaggeredGrid
 import com.rwmobi.giphytrending.ui.components.NoDataScreen

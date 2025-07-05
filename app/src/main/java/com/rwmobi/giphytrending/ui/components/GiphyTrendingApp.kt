@@ -16,11 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import coil3.ImageLoader
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 
 @Composable
 fun GiphyTrendingApp(
     windowSizeClass: WindowSizeClass,
+    imageLoader: ImageLoader,
 ) {
     val navController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -38,6 +40,7 @@ fun GiphyTrendingApp(
                     .imePadding(),
                 windowSizeClass = windowSizeClass,
                 navController = navController,
+                imageLoader = imageLoader,
                 snackbarHostState = snackbarHostState,
             )
         }

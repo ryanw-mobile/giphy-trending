@@ -7,7 +7,6 @@ package com.rwmobi.giphytrending.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import coil.ImageLoader
 import com.rwmobi.giphytrending.di.DispatcherModule
 import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.domain.model.Rating
@@ -30,7 +29,6 @@ import javax.inject.Inject
 class TrendingViewModel @Inject constructor(
     private val trendingRepository: TrendingRepository,
     private val userPreferencesRepository: UserPreferencesRepository,
-    private val imageLoader: ImageLoader,
     @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<TrendingUIState> = MutableStateFlow(TrendingUIState(isLoading = true))
@@ -75,8 +73,6 @@ class TrendingViewModel @Inject constructor(
             )
         }
     }
-
-    fun getImageLoader() = imageLoader
 
     private fun collectErrors() {
         viewModelScope.launch(dispatcher) {

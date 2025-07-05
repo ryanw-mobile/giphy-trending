@@ -267,7 +267,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     implementation(libs.coil)
+    implementation(libs.coil.network.ktor3)
     implementation(libs.coil.gif)
+    implementation(libs.coil.test)
 
     // Ktor as replacement of Retrofit
     implementation(libs.ktor.client.cio)

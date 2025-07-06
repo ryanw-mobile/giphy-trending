@@ -6,8 +6,11 @@
 package com.rwmobi.giphytrending.di
 
 import android.content.Context
-import coil.ImageLoader
-import com.rwmobi.giphytrending.ui.test.FakeImageLoader
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import coil3.ImageLoader
+import coil3.test.FakeImageLoaderEngine
+import coil3.test.default
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -24,6 +27,12 @@ object FakeCoilModule {
     @Singleton
     @Provides
     fun provideFakeCoilImageLoader(@ApplicationContext context: Context): ImageLoader {
-        return FakeImageLoader(context = context)
+        val sampleDrawable = ColorDrawable(Color.BLACK)
+        val engine = FakeImageLoaderEngine.Builder()
+            .default(drawable = sampleDrawable)
+            .build()
+        return ImageLoader.Builder(context)
+            .components { add(engine) }
+            .build()
     }
 }

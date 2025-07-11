@@ -24,11 +24,9 @@ object SearchRepositoryModule {
         networkDataSource: NetworkDataSource,
         @GiphyApiKey giphyApiKey: String,
         @DispatcherModule.IoDispatcher dispatcher: CoroutineDispatcher,
-    ): SearchRepository {
-        return SearchRepositoryImpl(
-            networkDataSource = networkDataSource,
-            giphyApiKey = giphyApiKey,
-            dispatcher = dispatcher,
-        )
-    }
+    ): SearchRepository = SearchRepositoryImpl(
+        networkDataSource = networkDataSource,
+        giphyApiKey = giphyApiKey,
+        dispatcher = dispatcher,
+    )
 }

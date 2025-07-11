@@ -30,15 +30,13 @@ class KtorNetworkDataSource(
         limit: Int,
         offset: Int,
         rating: String,
-    ): TrendingNetworkResponseDto {
-        return withContext(dispatcher) {
-            httpClient.get(trendingUrl) {
-                parameter("api_key", apiKey)
-                parameter("limit", limit)
-                parameter("offset", offset)
-                parameter("rating", rating)
-            }.body()
-        }
+    ): TrendingNetworkResponseDto = withContext(dispatcher) {
+        httpClient.get(trendingUrl) {
+            parameter("api_key", apiKey)
+            parameter("limit", limit)
+            parameter("offset", offset)
+            parameter("rating", rating)
+        }.body()
     }
 
     override suspend fun getSearch(
@@ -47,15 +45,13 @@ class KtorNetworkDataSource(
         limit: Int,
         offset: Int,
         rating: String,
-    ): SearchNetworkResponseDto {
-        return withContext(dispatcher) {
-            httpClient.get(searchURl) {
-                parameter("api_key", apiKey)
-                parameter("q", keyword)
-                parameter("limit", limit) // ⚠️ observe API limit
-                parameter("offset", offset)
-                parameter("rating", rating)
-            }.body()
-        }
+    ): SearchNetworkResponseDto = withContext(dispatcher) {
+        httpClient.get(searchURl) {
+            parameter("api_key", apiKey)
+            parameter("q", keyword)
+            parameter("limit", limit) // ⚠️ observe API limit
+            parameter("offset", offset)
+            parameter("rating", rating)
+        }.body()
     }
 }

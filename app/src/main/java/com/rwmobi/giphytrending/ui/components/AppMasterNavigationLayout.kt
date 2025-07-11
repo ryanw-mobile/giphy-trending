@@ -51,17 +51,15 @@ private enum class NavigationLayoutType {
     FullScreen,
 }
 
-private fun calculateNavigationLayout(windowWidthSizeClass: WindowWidthSizeClass): NavigationLayoutType {
-    return when (windowWidthSizeClass) {
-        WindowWidthSizeClass.Compact -> {
-            NavigationLayoutType.BottomNavigation
-        }
+private fun calculateNavigationLayout(windowWidthSizeClass: WindowWidthSizeClass): NavigationLayoutType = when (windowWidthSizeClass) {
+    WindowWidthSizeClass.Compact -> {
+        NavigationLayoutType.BottomNavigation
+    }
 
-        else -> {
-            // WindowWidthSizeClass.Medium, -- tablet portrait
-            // WindowWidthSizeClass.Expanded, -- phone landscape mode
-            NavigationLayoutType.NavigationRail
-        }
+    else -> {
+        // WindowWidthSizeClass.Medium, -- tablet portrait
+        // WindowWidthSizeClass.Expanded, -- phone landscape mode
+        NavigationLayoutType.NavigationRail
     }
 }
 

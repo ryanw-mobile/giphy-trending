@@ -24,10 +24,8 @@ object PreferencesDataStoreWrapperModule {
     fun providePreferenceDataStoreWrapper(
         dataStore: DataStore<Preferences>,
         @DispatcherModule.IoDispatcher dispatcher: CoroutineDispatcher,
-    ): PreferencesDataStoreWrapper {
-        return PreferencesDataStoreWrapperImpl(
-            dataStore = dataStore,
-            dispatcher = dispatcher,
-        )
-    }
+    ): PreferencesDataStoreWrapper = PreferencesDataStoreWrapperImpl(
+        dataStore = dataStore,
+        dispatcher = dispatcher,
+    )
 }

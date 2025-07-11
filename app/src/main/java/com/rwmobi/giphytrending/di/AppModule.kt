@@ -35,20 +35,16 @@ annotation class GiphyApiKey
 object AppModule {
     @Singleton
     @Provides
-    fun provideApplicationScope(): CoroutineScope {
-        return CoroutineScope(
-            context = SupervisorJob() + Dispatchers.Default + CoroutineExceptionHandler { _, throwable ->
-                // Handle uncaught exceptions from this scope.
-                Timber.tag("CoroutineScope").e("Unhandled exception: $throwable")
-            },
-        )
-    }
+    fun provideApplicationScope(): CoroutineScope = CoroutineScope(
+        context = SupervisorJob() + Dispatchers.Default + CoroutineExceptionHandler { _, throwable ->
+            // Handle uncaught exceptions from this scope.
+            Timber.tag("CoroutineScope").e("Unhandled exception: $throwable")
+        },
+    )
 
     @Singleton
     @Provides
-    fun providePreferencesDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
-        return context.userDataStore
-    }
+    fun providePreferencesDataStore(@ApplicationContext context: Context): DataStore<Preferences> = context.userDataStore
 
     @GiphyApiKey
     @Singleton

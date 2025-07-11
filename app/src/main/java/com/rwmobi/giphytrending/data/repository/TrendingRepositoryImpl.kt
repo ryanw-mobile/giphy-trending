@@ -29,12 +29,10 @@ class TrendingRepositoryImpl @Inject constructor(
     @GiphyApiKey private val giphyApiKey: String,
     @DispatcherModule.IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : TrendingRepository {
-    override suspend fun fetchCachedTrending(): Result<List<GifObject>> {
-        return withContext(dispatcher) {
-            Result.runCatching {
-                databaseDataSource.queryData().map { it.toGifObject() }
-            }.except<CancellationException, _>()
-        }
+    override suspend fun fetchCachedTrending(): Result<List<GifObject>> = withContext(dispatcher) {
+        Result.runCatching {
+            databaseDataSource.queryData().map { it.toGifObject() }
+        }.except<CancellationException, _>()
     }
 
     override suspend fun reloadTrending(limit: Int, rating: Rating): Result<List<GifObject>> {
@@ -67,23 +65,19 @@ class TrendingRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun getTrendingFromNetwork(limit: Int, rating: Rating): TrendingNetworkResponseDto {
-        return withContext(dispatcher) {
-            networkDataSource.getTrending(
-                apiKey = giphyApiKey,
-                limit = limit,
-                offset = (0..5).random(), // Eye candie to make every refresh different
-                rating = rating.apiValue,
-            )
-        }
+    private suspend fun getTrendingFromNetwork(limit: Int, rating: Rating): TrendingNetworkResponseDto = withContext(dispatcher) {
+        networkDataSource.getTrending(
+            apiKey = giphyApiKey,
+            limit = limit,
+            offset = (0..5).random(), // Eye candie to make every refresh different
+            rating = rating.apiValue,
+        )
     }
 
-    private suspend fun invalidateDirtyTrendingDb(): Result<Unit> {
-        return withContext(dispatcher) {
-            Result.runCatching {
-                databaseDataSource.deleteDirty()
-                Timber.tag("invalidateDirtyTrendingDb").v("success")
-            }.except<CancellationException, _>()
-        }
+    private suspend fun invalidateDirtyTrendingDb(): Result<Unit> = withContext(dispatcher) {
+        Result.runCatching {
+            databaseDataSource.deleteDirty()
+            Timber.tag("invalidateDirtyTrendingDb").v("success")
+        }.except<CancellationException, _>()
     }
 }

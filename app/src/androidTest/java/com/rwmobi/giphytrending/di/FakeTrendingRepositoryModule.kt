@@ -21,7 +21,5 @@ import javax.inject.Singleton
 object FakeTrendingRepositoryModule {
     @Singleton
     @Provides
-    fun provideTrendingRepository(): TrendingRepository {
-        return FakeUITestTrendingRepository()
-    }
+    fun provideTrendingRepository(): TrendingRepository = FakeUITestTrendingRepository()
 }

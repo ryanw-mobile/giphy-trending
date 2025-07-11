@@ -383,13 +383,11 @@ private fun getAnnotatedFootnote(): AnnotatedString {
     }
 }
 
-private fun getRatingDescriptionRes(rating: Rating): Int {
-    return when (rating) {
-        Rating.G -> R.string.rating_g
-        Rating.PG -> R.string.rating_pg
-        Rating.PG_13 -> R.string.rating_pg_13
-        Rating.R -> R.string.rating_r
-    }
+private fun getRatingDescriptionRes(rating: Rating): Int = when (rating) {
+    Rating.G -> R.string.rating_g
+    Rating.PG -> R.string.rating_pg
+    Rating.PG_13 -> R.string.rating_pg_13
+    Rating.R -> R.string.rating_r
 }
 
 @PreviewLightDark

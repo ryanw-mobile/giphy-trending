@@ -19,8 +19,7 @@ import javax.inject.Singleton
 object CoilModule {
     @Singleton
     @Provides
-    fun provideCoilImageLoader(@ApplicationContext context: Context): ImageLoader {
-        return ImageLoader.Builder(context)
+    fun provideCoilImageLoader(@ApplicationContext context: Context): ImageLoader = ImageLoader.Builder(context)
 //            .components {
 //                if (android.os.Build.VERSION.SDK_INT >= 28) {
 //                    add(ImageDecoderDecoder.Factory())
@@ -28,6 +27,5 @@ object CoilModule {
 //                    add(GifDecoder.Factory())
 //                }
 //            }
-            .build()
-    }
+        .build()
 }

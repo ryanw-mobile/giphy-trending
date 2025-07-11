@@ -31,35 +31,29 @@ object NetworkDataSourceModule {
     fun provideNetworkDataSource(
         httpClient: HttpClient,
         @DispatcherModule.IoDispatcher dispatcher: CoroutineDispatcher,
-    ): NetworkDataSource {
-        return KtorNetworkDataSource(
-            httpClient = httpClient,
-            dispatcher = dispatcher,
-        )
-    }
+    ): NetworkDataSource = KtorNetworkDataSource(
+        httpClient = httpClient,
+        dispatcher = dispatcher,
+    )
 
     @Singleton
     @Provides
-    fun provideKtorEngine(): HttpClientEngine {
-        return CIO.create()
-    }
+    fun provideKtorEngine(): HttpClientEngine = CIO.create()
 
     @Singleton
     @Provides
-    fun provideHttpClient(engine: HttpClientEngine): HttpClient {
-        return HttpClient(engine) {
-            install(ContentNegotiation) {
-                json(
-                    Json {
-                        ignoreUnknownKeys = true
-                        prettyPrint = true
-                        isLenient = true
-                        serializersModule = SerializersModule {
-                            contextual(CustomInstantSerializer)
-                        }
-                    },
-                )
-            }
+    fun provideHttpClient(engine: HttpClientEngine): HttpClient = HttpClient(engine) {
+        install(ContentNegotiation) {
+            json(
+                Json {
+                    ignoreUnknownKeys = true
+                    prettyPrint = true
+                    isLenient = true
+                    serializersModule = SerializersModule {
+                        contextual(CustomInstantSerializer)
+                    }
+                },
+            )
         }
     }
 }

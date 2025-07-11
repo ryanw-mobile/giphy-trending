@@ -13,13 +13,9 @@ import javax.inject.Inject
 class FakeUITestTrendingRepository @Inject constructor() : TrendingRepository {
     private var trendingResult: Result<List<GifObject>>? = null
 
-    override suspend fun fetchCachedTrending(): Result<List<GifObject>> {
-        return trendingResult ?: Result.success(emptyList())
-    }
+    override suspend fun fetchCachedTrending(): Result<List<GifObject>> = trendingResult ?: Result.success(emptyList())
 
-    override suspend fun reloadTrending(limit: Int, rating: Rating): Result<List<GifObject>> {
-        return trendingResult ?: Result.success(emptyList())
-    }
+    override suspend fun reloadTrending(limit: Int, rating: Rating): Result<List<GifObject>> = trendingResult ?: Result.success(emptyList())
 
     fun setTrendingResultForTest(trendingResult: Result<List<GifObject>>?) {
         this.trendingResult = trendingResult

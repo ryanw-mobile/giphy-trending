@@ -67,6 +67,4 @@ val sw360Dimension = Dimension(
     grid_6 = 48.dp,
 )
 
-fun Configuration.getDimension(): Dimension {
-    return if (screenWidthDp <= 360) smallDimension else sw360Dimension
-}
+fun Configuration.getDimension(): Dimension = if (screenWidthDp <= 360) smallDimension else sw360Dimension

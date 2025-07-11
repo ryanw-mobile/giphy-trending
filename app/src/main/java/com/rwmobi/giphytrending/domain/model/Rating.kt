@@ -17,8 +17,6 @@ enum class Rating(val apiValue: String) {
     companion object {
         private val map = entries.associateBy(Rating::apiValue)
 
-        fun fromApiValue(apiValue: String?, defaultValue: Rating): Rating {
-            return map[apiValue?.lowercase(Locale.ENGLISH)] ?: defaultValue
-        }
+        fun fromApiValue(apiValue: String?, defaultValue: Rating): Rating = map[apiValue?.lowercase(Locale.ENGLISH)] ?: defaultValue
     }
 }

@@ -211,7 +211,7 @@ android {
         }
 
         managedDevices {
-            devices {
+            allDevices {
                 create<ManagedVirtualDevice>("pixel2Api34") {
                     device = "Pixel 2"
                     apiLevel = 34

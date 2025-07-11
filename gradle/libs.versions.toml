@@ -41,8 +41,8 @@ profileinstaller = "1.4.1"
 versionCode = "15"
 versionName = "2.4.0"
 minSdk = "28"
-targetSdk = "35"
-compileSdk = "35"
+targetSdk = "36"
+compileSdk = "36"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

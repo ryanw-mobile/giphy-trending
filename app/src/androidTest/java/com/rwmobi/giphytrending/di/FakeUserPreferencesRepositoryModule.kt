@@ -21,7 +21,5 @@ import javax.inject.Singleton
 object FakeUserPreferencesRepositoryModule {
     @Singleton
     @Provides
-    fun provideFakeUserPreferencesRepository(): UserPreferencesRepository {
-        return FakeUITestUserPreferencesRepository()
-    }
+    fun provideFakeUserPreferencesRepository(): UserPreferencesRepository = FakeUITestUserPreferencesRepository()
 }

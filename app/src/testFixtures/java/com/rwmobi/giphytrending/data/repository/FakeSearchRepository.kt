@@ -9,9 +9,7 @@ class FakeSearchRepository : SearchRepository {
     private var lastSuccessfulSearchKeyword: String? = null
     private var lastSuccessfulSearchResults: List<GifObject>? = null
 
-    override suspend fun search(keyword: String?, limit: Int, rating: Rating): Result<List<GifObject>> {
-        return searchResult ?: Result.success(emptyList())
-    }
+    override suspend fun search(keyword: String?, limit: Int, rating: Rating): Result<List<GifObject>> = searchResult ?: Result.success(emptyList())
 
     override fun getLastSuccessfulSearchKeyword(): String? = lastSuccessfulSearchKeyword
     override fun getLastSuccessfulSearchResults(): List<GifObject>? = lastSuccessfulSearchResults

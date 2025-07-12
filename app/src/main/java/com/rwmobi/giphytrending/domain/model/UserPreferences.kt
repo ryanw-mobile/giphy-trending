@@ -9,7 +9,5 @@ data class UserPreferences(
     val apiRequestLimit: Int?,
     val rating: Rating?,
 ) {
-    fun isFullyConfigured(): Boolean {
-        return apiRequestLimit != null && rating != null
-    }
+    fun isFullyConfigured(): Boolean = apiRequestLimit != null && rating != null
 }

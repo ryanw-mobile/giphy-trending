@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -51,7 +49,6 @@ import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
-import com.rwmobi.giphytrending.ui.theme.getDimension
 
 @Composable
 fun GiphyItem(
@@ -63,19 +60,18 @@ fun GiphyItem(
     onClickToOpen: (url: String) -> Unit,
     onClickToShare: (url: String) -> Unit,
 ) {
-    val dimension = LocalConfiguration.current.getDimension()
     Column(
         modifier = modifier,
     ) {
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .defaultMinSize(minHeight = dimension.minListItemHeight)
+                .defaultMinSize(minHeight = GiphyTrendingTheme.dimens.minListItemHeight)
                 .padding(
-                    horizontal = dimension.defaultFullPadding,
-                    vertical = dimension.defaultHalfPadding,
+                    horizontal = GiphyTrendingTheme.dimens.defaultFullPadding,
+                    vertical = GiphyTrendingTheme.dimens.defaultHalfPadding,
                 ),
-            style = MaterialTheme.typography.headlineSmall,
+            style = GiphyTrendingTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
@@ -86,7 +82,7 @@ fun GiphyItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(ratio = (gifObject.previewWidth / gifObject.previewHeight.toFloat()))
-                .background(color = MaterialTheme.colorScheme.surfaceDim.copy(alpha = 0.3f)),
+                .background(color = GiphyTrendingTheme.colorScheme.surfaceDim.copy(alpha = 0.3f)),
             model = ImageRequest
                 .Builder(LocalContext.current)
                 .data(gifObject.previewUrl)
@@ -100,11 +96,11 @@ fun GiphyItem(
             imageLoader = imageLoader,
         )
 
-        val imageTypeBadgeBackground = MaterialTheme.colorScheme.tertiaryContainer
+        val imageTypeBadgeBackground = GiphyTrendingTheme.colorScheme.tertiaryContainer
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .requiredHeight(height = dimension.minListItemHeight),
+                .requiredHeight(height = GiphyTrendingTheme.dimens.minListItemHeight),
         ) {
             val currentDensity = LocalDensity.current
             CompositionLocalProvider(
@@ -113,16 +109,16 @@ fun GiphyItem(
                 Text(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .padding(horizontal = dimension.defaultFullPadding, vertical = dimension.grid_1)
+                        .padding(horizontal = GiphyTrendingTheme.dimens.defaultFullPadding, vertical = GiphyTrendingTheme.dimens.grid_1)
                         .aspectRatio(ratio = 1f)
                         .clip(shape = CircleShape)
                         .wrapContentHeight(align = Alignment.CenterVertically)
                         .drawBehind {
                             drawRect(color = imageTypeBadgeBackground)
                         },
-                    style = MaterialTheme.typography.labelSmall,
+                    style = GiphyTrendingTheme.typography.labelSmall,
                     textAlign = TextAlign.Center,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                    color = GiphyTrendingTheme.colorScheme.onTertiaryContainer,
                     maxLines = 1,
                     overflow = TextOverflow.Clip,
                     text = gifObject.type.uppercase(),
@@ -135,9 +131,9 @@ fun GiphyItem(
                             .weight(1.0f, fill = true)
                             .fillMaxWidth(fraction = 1.0f)
                             .width(intrinsicSize = IntrinsicSize.Min)
-                            .padding(horizontal = dimension.grid_1)
+                            .padding(horizontal = GiphyTrendingTheme.dimens.grid_1)
                             .align(alignment = Alignment.CenterVertically),
-                        style = MaterialTheme.typography.bodyMedium,
+                        style = GiphyTrendingTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
@@ -177,7 +173,7 @@ fun GiphyItem(
             HorizontalDivider(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = dimension.grid_0_5),
+                    .padding(vertical = GiphyTrendingTheme.dimens.grid_0_5),
                 thickness = 1.dp,
             )
         }

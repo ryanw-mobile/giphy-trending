@@ -21,7 +21,5 @@ object RoomDbDataSourceModule {
     @Provides
     fun provideRoomDbDataSource(
         giphyDatabase: GiphyDatabase,
-    ): DatabaseDataSource {
-        return RoomDatabaseDataSource(giphyDatabase = giphyDatabase)
-    }
+    ): DatabaseDataSource = RoomDatabaseDataSource(giphyDatabase = giphyDatabase)
 }

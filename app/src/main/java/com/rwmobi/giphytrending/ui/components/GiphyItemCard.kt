@@ -9,11 +9,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewFontScale
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -23,7 +21,6 @@ import coil3.ImageLoader
 import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
-import com.rwmobi.giphytrending.ui.theme.getDimension
 
 @Composable
 fun GiphyItemCard(
@@ -34,15 +31,13 @@ fun GiphyItemCard(
     onClickToOpen: (url: String) -> Unit,
     onClickToShare: (url: String) -> Unit,
 ) {
-    val dimension = LocalConfiguration.current.getDimension()
-
     Card(
-        modifier = modifier.background(color = MaterialTheme.colorScheme.surface),
+        modifier = modifier.background(color = GiphyTrendingTheme.colorScheme.surface),
     ) {
         GiphyItem(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = dimension.defaultHalfPadding),
+                .padding(all = GiphyTrendingTheme.dimens.defaultHalfPadding),
             gifObject = gifObject,
             showBottomDivider = false,
             imageLoader = imageLoader,

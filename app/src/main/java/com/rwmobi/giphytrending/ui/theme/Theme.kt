@@ -8,16 +8,25 @@ package com.rwmobi.giphytrending.ui.theme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 
 private val LightColors = lightColorScheme(
@@ -91,6 +100,10 @@ fun GiphyTrendingTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit,
 ) {
+    val containerSize = LocalWindowInfo.current.containerSize
+    val density = LocalDensity.current
+    val dimension = if (containerSize.width <= with(density) { 360.dp.toPx() }) smallDimension else sw360Dimension
+
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
@@ -109,9 +122,57 @@ fun GiphyTrendingTheme(
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = appTypography,
-        content = content,
-    )
+    ProvideDimens(dimensions = dimension) {
+        ProvideColorScheme(colorScheme = colorScheme) {
+            MaterialTheme(
+                colorScheme = colorScheme,
+                typography = appTypography,
+                content = content,
+            )
+        }
+    }
+}
+
+@Composable
+fun ProvideColorScheme(
+    colorScheme: ColorScheme,
+    content: @Composable () -> Unit,
+) {
+    val colorPalette = remember { colorScheme }
+    CompositionLocalProvider(LocalColorScheme provides colorPalette, content = content)
+}
+
+private val LocalColorScheme = staticCompositionLocalOf {
+    LightColors
+}
+
+@Composable
+fun ProvideDimens(
+    dimensions: Dimension,
+    content: @Composable () -> Unit,
+) {
+    val dimensionSet = remember { dimensions }
+    CompositionLocalProvider(LocalAppDimens provides dimensionSet, content = content)
+}
+
+private val LocalAppDimens = staticCompositionLocalOf {
+    smallDimension
+}
+
+object GiphyTrendingTheme {
+    val colorScheme: ColorScheme
+        @Composable
+        get() = LocalColorScheme.current
+
+    val dimens: Dimension
+        @Composable
+        get() = LocalAppDimens.current
+
+    val typography: Typography
+        @Composable
+        get() = MaterialTheme.typography
+
+    val shapes: Shapes
+        @Composable
+        get() = MaterialTheme.shapes
 }

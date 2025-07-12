@@ -21,7 +21,5 @@ import javax.inject.Singleton
 object FakeSearchRepositoryModule {
     @Singleton
     @Provides
-    fun provideFakeSearchRepository(): SearchRepository {
-        return FakeUITestSearchRepository()
-    }
+    fun provideFakeSearchRepository(): SearchRepository = FakeUITestSearchRepository()
 }

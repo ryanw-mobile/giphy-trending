@@ -26,12 +26,10 @@ object TrendingRepositoryModule {
         databaseDataSource: DatabaseDataSource,
         @GiphyApiKey giphyApiKey: String,
         @DispatcherModule.IoDispatcher dispatcher: CoroutineDispatcher,
-    ): TrendingRepository {
-        return TrendingRepositoryImpl(
-            networkDataSource = networkDataSource,
-            databaseDataSource = databaseDataSource,
-            giphyApiKey = giphyApiKey,
-            dispatcher = dispatcher,
-        )
-    }
+    ): TrendingRepository = TrendingRepositoryImpl(
+        networkDataSource = networkDataSource,
+        databaseDataSource = databaseDataSource,
+        giphyApiKey = giphyApiKey,
+        dispatcher = dispatcher,
+    )
 }

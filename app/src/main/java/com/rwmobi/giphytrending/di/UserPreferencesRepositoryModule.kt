@@ -25,11 +25,9 @@ object UserPreferencesRepositoryModule {
         preferencesDataStoreWrapper: PreferencesDataStoreWrapper,
         externalCoroutineScope: CoroutineScope,
         @DispatcherModule.MainDispatcher dispatcher: CoroutineDispatcher,
-    ): UserPreferencesRepository {
-        return UserPreferencesRepositoryImpl(
-            preferencesDataStoreWrapper = preferencesDataStoreWrapper,
-            externalCoroutineScope = externalCoroutineScope,
-            dispatcher = dispatcher,
-        )
-    }
+    ): UserPreferencesRepository = UserPreferencesRepositoryImpl(
+        preferencesDataStoreWrapper = preferencesDataStoreWrapper,
+        externalCoroutineScope = externalCoroutineScope,
+        dispatcher = dispatcher,
+    )
 }

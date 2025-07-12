@@ -8,7 +8,6 @@ package com.rwmobi.giphytrending.ui.components
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -32,7 +31,7 @@ fun GiphyTrendingApp(
             modifier = Modifier
                 .safeDrawingPadding()
                 .fillMaxSize(),
-            color = MaterialTheme.colorScheme.background,
+            color = GiphyTrendingTheme.colorScheme.background,
         ) {
             AppMasterNavigationLayout(
                 modifier = Modifier

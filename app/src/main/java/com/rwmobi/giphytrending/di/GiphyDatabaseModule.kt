@@ -21,11 +21,12 @@ import dagger.hilt.android.scopes.ViewModelScoped
 object GiphyDatabaseModule {
     @ViewModelScoped
     @Provides
-    fun provideDatabase(@ApplicationContext applicationContext: Context): GiphyDatabase {
-        return Room.databaseBuilder(
-            applicationContext,
-            GiphyDatabase::class.java,
-            BuildConfig.DATABASE_NAME,
-        ).fallbackToDestructiveMigration().build()
-    }
+    fun provideDatabase(
+        @ApplicationContext applicationContext: Context,
+    ): GiphyDatabase = Room.databaseBuilder(
+        applicationContext,
+        GiphyDatabase::class.java,
+        BuildConfig.DATABASE_NAME,
+    ).fallbackToDestructiveMigration(dropAllTables = true)
+        .build()
 }

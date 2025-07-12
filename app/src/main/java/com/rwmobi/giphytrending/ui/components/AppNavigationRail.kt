@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Surface
@@ -18,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,7 +30,6 @@ import androidx.navigation.compose.rememberNavController
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.navigation.AppNavItem
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
-import com.rwmobi.giphytrending.ui.theme.getDimension
 import java.util.Locale
 
 @Composable
@@ -50,7 +47,6 @@ fun AppNavigationRail(
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
-        val dimension = LocalConfiguration.current.getDimension()
 
         Spacer(Modifier.weight(1f))
 
@@ -59,7 +55,7 @@ fun AppNavigationRail(
 
             NavigationRailItem(
                 modifier = Modifier
-                    .padding(vertical = dimension.defaultFullPadding)
+                    .padding(vertical = GiphyTrendingTheme.dimens.defaultFullPadding)
                     .semantics { contentDescription = context.getString(item.titleResId) },
                 selected = selected,
                 onClick = {
@@ -76,7 +72,7 @@ fun AppNavigationRail(
                     Icon(
                         painter = painterResource(id = if (selected) item.iconFocusedResId else item.iconDefaultResId),
                         contentDescription = null,
-                        tint = if (selected) MaterialTheme.colorScheme.tertiary else LocalContentColor.current,
+                        tint = if (selected) GiphyTrendingTheme.colorScheme.tertiary else LocalContentColor.current,
                     )
                 },
                 label = {
@@ -89,7 +85,7 @@ fun AppNavigationRail(
                                 it.toString()
                             }
                         },
-                        style = MaterialTheme.typography.labelMedium,
+                        style = GiphyTrendingTheme.typography.labelMedium,
                     )
                 },
             )

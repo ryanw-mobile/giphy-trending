@@ -211,7 +211,7 @@ android {
         }
 
         managedDevices {
-            devices {
+            allDevices {
                 create<ManagedVirtualDevice>("pixel2Api34") {
                     device = "Pixel 2"
                     apiLevel = 34
@@ -235,6 +235,7 @@ kotlin {
     jvmToolchain(17)
     compilerOptions {
         optIn.add("kotlin.time.ExperimentalTime")
+        freeCompilerArgs.add("-Xannotation-default-target=param-property")
     }
 }
 

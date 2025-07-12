@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Surface
@@ -45,7 +44,7 @@ fun AppBottomNavigationBar(
             contentDescription = context.getString(R.string.content_description_navigation_bar)
         },
         tonalElevation = 0.dp,
-        containerColor = MaterialTheme.colorScheme.background,
+        containerColor = GiphyTrendingTheme.colorScheme.background,
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -70,14 +69,14 @@ fun AppBottomNavigationBar(
                     Icon(
                         painter = painterResource(id = if (selected) item.iconFocusedResId else item.iconDefaultResId),
                         contentDescription = null,
-                        tint = if (selected) MaterialTheme.colorScheme.tertiary else LocalContentColor.current,
+                        tint = if (selected) GiphyTrendingTheme.colorScheme.tertiary else LocalContentColor.current,
                     )
                 },
                 label = {
                     AnimatedVisibility(visible = selected) {
                         Text(
                             text = stringResource(id = item.titleResId).uppercase(),
-                            style = MaterialTheme.typography.labelMedium,
+                            style = GiphyTrendingTheme.typography.labelMedium,
                         )
                     }
                 },

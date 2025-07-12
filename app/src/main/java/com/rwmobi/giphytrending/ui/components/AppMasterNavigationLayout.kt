@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -51,17 +50,15 @@ private enum class NavigationLayoutType {
     FullScreen,
 }
 
-private fun calculateNavigationLayout(windowWidthSizeClass: WindowWidthSizeClass): NavigationLayoutType {
-    return when (windowWidthSizeClass) {
-        WindowWidthSizeClass.Compact -> {
-            NavigationLayoutType.BottomNavigation
-        }
+private fun calculateNavigationLayout(windowWidthSizeClass: WindowWidthSizeClass): NavigationLayoutType = when (windowWidthSizeClass) {
+    WindowWidthSizeClass.Compact -> {
+        NavigationLayoutType.BottomNavigation
+    }
 
-        else -> {
-            // WindowWidthSizeClass.Medium, -- tablet portrait
-            // WindowWidthSizeClass.Expanded, -- phone landscape mode
-            NavigationLayoutType.NavigationRail
-        }
+    else -> {
+        // WindowWidthSizeClass.Medium, -- tablet portrait
+        // WindowWidthSizeClass.Expanded, -- phone landscape mode
+        NavigationLayoutType.NavigationRail
     }
 }
 
@@ -97,7 +94,7 @@ fun AppMasterNavigationLayout(
                 TopAppBar(
                     modifier = Modifier.wrapContentHeight(),
                     colors = TopAppBarDefaults.topAppBarColors().copy(
-                        containerColor = MaterialTheme.colorScheme.background,
+                        containerColor = GiphyTrendingTheme.colorScheme.background,
                     ),
                     scrollBehavior = scrollBehavior,
                     title = {
@@ -162,7 +159,7 @@ private fun Preview() {
         Surface(
             modifier = Modifier
                 .fillMaxSize(),
-            color = MaterialTheme.colorScheme.surface,
+            color = GiphyTrendingTheme.colorScheme.surface,
         ) {
             AppMasterNavigationLayout(
                 modifier = Modifier.fillMaxSize(),

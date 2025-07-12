@@ -39,6 +39,4 @@ fun TrendingDataDto.toGifObject() = GifObject(
  * The image URL returned by the server contains tracking code.
  * Trying to remove it to avoid unnecessary cache invalidation (experimental)
  */
-private fun urlCleanUp(url: String): String {
-    return url.substringBefore("?")
-}
+private fun urlCleanUp(url: String): String = url.substringBefore("?")

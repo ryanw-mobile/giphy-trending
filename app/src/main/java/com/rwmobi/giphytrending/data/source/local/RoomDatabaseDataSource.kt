@@ -12,17 +12,11 @@ import javax.inject.Inject
 class RoomDatabaseDataSource @Inject constructor(
     private val giphyDatabase: GiphyDatabase,
 ) : DatabaseDataSource {
-    override suspend fun insertData(data: TrendingEntity) {
-        return giphyDatabase.trendingDao().insertData(data = data)
-    }
+    override suspend fun insertData(data: TrendingEntity) = giphyDatabase.trendingDao().insertData(data = data)
 
-    override suspend fun insertAllData(data: List<TrendingEntity>) {
-        return giphyDatabase.trendingDao().insertAllData(data = data)
-    }
+    override suspend fun insertAllData(data: List<TrendingEntity>) = giphyDatabase.trendingDao().insertAllData(data = data)
 
-    override suspend fun queryData(): List<TrendingEntity> {
-        return giphyDatabase.trendingDao().queryData()
-    }
+    override suspend fun queryData(): List<TrendingEntity> = giphyDatabase.trendingDao().queryData()
 
     override suspend fun clear() {
         giphyDatabase.trendingDao().clear()

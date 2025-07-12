@@ -6,6 +6,7 @@
 package com.rwmobi.giphytrending.data.source.preferences
 
 import android.content.Context
+import android.os.Build
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -24,11 +25,13 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 private const val TEST_DATASTORE_NAME: String = "test_datastore"
 
 @ExperimentalCoroutinesApi
 @RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.P])
 internal class PreferencesDataStoreWrapperImplTest {
     // Reference: https://medium.com/androiddevelopers/datastore-and-testing-edf7ae8df3d8
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = TEST_DATASTORE_NAME)

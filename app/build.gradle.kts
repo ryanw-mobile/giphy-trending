@@ -235,6 +235,7 @@ kotlin {
     jvmToolchain(17)
     compilerOptions {
         optIn.add("kotlin.time.ExperimentalTime")
+        freeCompilerArgs.add("-Xannotation-default-target=param-property")
     }
 }
 

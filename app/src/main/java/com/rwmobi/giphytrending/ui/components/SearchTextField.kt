@@ -19,7 +19,6 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -36,7 +35,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -46,7 +44,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
-import com.rwmobi.giphytrending.ui.theme.getDimension
 import kotlinx.coroutines.launch
 
 @Composable
@@ -59,7 +56,6 @@ fun SearchTextField(
     onSearch: () -> Unit,
 ) {
     val context = LocalContext.current
-    val dimension = LocalConfiguration.current.getDimension()
     val focusRequester = FocusRequester()
     val coroutineScope = rememberCoroutineScope()
     var isFocused by remember { mutableStateOf(false) }
@@ -67,7 +63,7 @@ fun SearchTextField(
     TextField(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = dimension.defaultHalfPadding)
+            .padding(horizontal = GiphyTrendingTheme.dimens.defaultHalfPadding)
             .focusRequester(focusRequester)
             .onFocusChanged { focusState ->
                 isFocused = focusState.isFocused
@@ -79,11 +75,11 @@ fun SearchTextField(
         onValueChange = { onUpdateKeyword(it) },
         singleLine = true,
         maxLines = 1,
-        shape = MaterialTheme.shapes.medium,
+        shape = GiphyTrendingTheme.shapes.medium,
         colors = TextFieldDefaults.colors().copy(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
-            cursorColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(
+            cursorColor = GiphyTrendingTheme.colorScheme.onPrimaryContainer.copy(
                 alpha = 0.28f,
             ),
         ),
@@ -104,7 +100,7 @@ fun SearchTextField(
                     .wrapContentHeight()
                     .fillMaxWidth(),
                 maxLines = 1,
-                style = MaterialTheme.typography.bodyMedium,
+                style = GiphyTrendingTheme.typography.bodyMedium,
                 text = stringResource(id = R.string.search),
             )
         },
@@ -113,7 +109,7 @@ fun SearchTextField(
                 modifier = Modifier.wrapContentSize(),
                 imageVector = Icons.Filled.Search,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                tint = GiphyTrendingTheme.colorScheme.onPrimaryContainer.copy(
                     alpha = 0.28f,
                 ),
             )
@@ -129,7 +125,7 @@ fun SearchTextField(
                         modifier = Modifier.wrapContentSize(),
                         imageVector = Icons.Filled.Clear,
                         contentDescription = stringResource(R.string.content_description_clear_search_keyword),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                        tint = GiphyTrendingTheme.colorScheme.onPrimaryContainer.copy(
                             alpha = 0.68f,
                         ),
                     )

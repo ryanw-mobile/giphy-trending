@@ -5,7 +5,6 @@
 
 package com.rwmobi.giphytrending.ui.theme
 
-import android.content.res.Configuration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -66,5 +65,3 @@ val sw360Dimension = Dimension(
     grid_5_5 = 44.dp,
     grid_6 = 48.dp,
 )
-
-fun Configuration.getDimension(): Dimension = if (screenWidthDp <= 360) smallDimension else sw360Dimension

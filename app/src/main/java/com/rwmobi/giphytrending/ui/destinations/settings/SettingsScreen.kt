@@ -25,7 +25,6 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -42,7 +41,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -69,9 +67,7 @@ import com.rwmobi.giphytrending.BuildConfig
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.ui.components.LoadingOverlay
-import com.rwmobi.giphytrending.ui.theme.Dimension
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
-import com.rwmobi.giphytrending.ui.theme.getDimension
 import com.rwmobi.giphytrending.ui.utils.getPreviewWindowSizeClass
 import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
 
@@ -170,33 +166,29 @@ private fun Settings(
     onUpdateRating: (Rating) -> Unit,
     onBrowseUrl: (url: String) -> Unit,
 ) {
-    val dimension = LocalConfiguration.current.getDimension()
-
     Column(
-        modifier = modifier.padding(all = dimension.defaultFullPadding),
+        modifier = modifier.padding(all = GiphyTrendingTheme.dimens.defaultFullPadding),
     ) {
         ItemsToLoad(
             modifier = Modifier.fillMaxWidth(),
-            dimension = dimension,
             sliderRange = sliderRange,
             sliderValue = sliderValue,
             onUpdateApiRequestLimit = onUpdateApiRequestLimit,
         )
 
         HorizontalDivider(
-            modifier = Modifier.padding(vertical = dimension.defaultFullPadding),
+            modifier = Modifier.padding(vertical = GiphyTrendingTheme.dimens.defaultFullPadding),
             thickness = 1.dp,
         )
 
         ImageRating(
             modifier = Modifier.fillMaxWidth(),
-            dimension = dimension,
             rating = rating,
             onUpdateRating = onUpdateRating,
         )
 
         HorizontalDivider(
-            modifier = Modifier.padding(top = dimension.grid_4, bottom = dimension.defaultFullPadding),
+            modifier = Modifier.padding(top = GiphyTrendingTheme.dimens.grid_4, bottom = GiphyTrendingTheme.dimens.defaultFullPadding),
             thickness = 1.dp,
         )
 
@@ -204,17 +196,17 @@ private fun Settings(
             modifier = Modifier
                 .wrapContentSize()
                 .align(alignment = Alignment.CenterHorizontally),
-            style = MaterialTheme.typography.titleMedium,
+            style = GiphyTrendingTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             text = stringResource(R.string.version, BuildConfig.VERSION_NAME),
         )
 
-        Spacer(modifier = Modifier.height(height = dimension.defaultHalfPadding))
+        Spacer(modifier = Modifier.height(height = GiphyTrendingTheme.dimens.defaultHalfPadding))
 
         val annotatedText = getAnnotatedFootnote()
         ClickableText(
             modifier = Modifier.fillMaxWidth(),
-            style = MaterialTheme.typography.bodyMedium,
+            style = GiphyTrendingTheme.typography.bodyMedium,
             text = annotatedText,
             onClick = { offset ->
                 annotatedText.getStringAnnotations(tag = "URL", start = offset, end = offset)
@@ -229,7 +221,6 @@ private fun Settings(
 @Composable
 private fun ItemsToLoad(
     modifier: Modifier = Modifier,
-    dimension: Dimension,
     sliderRange: ClosedFloatingPointRange<Float>,
     sliderValue: Float,
     onUpdateApiRequestLimit: (Float) -> Unit,
@@ -240,17 +231,17 @@ private fun ItemsToLoad(
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.fillMaxWidth(),
-            style = MaterialTheme.typography.titleMedium,
+            style = GiphyTrendingTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             text = stringResource(id = R.string.api_max_description),
         )
 
-        Spacer(modifier = Modifier.height(height = dimension.defaultHalfPadding))
+        Spacer(modifier = Modifier.height(height = GiphyTrendingTheme.dimens.defaultHalfPadding))
 
         Slider(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = dimension.defaultFullPadding)
+                .padding(horizontal = GiphyTrendingTheme.dimens.defaultFullPadding)
                 .semantics { contentDescription = context.getString(R.string.content_description_slider) },
             valueRange = sliderRange,
             value = tempSliderValue,
@@ -264,17 +255,17 @@ private fun ItemsToLoad(
         Text(
             modifier = Modifier
                 .wrapContentSize()
-                .padding(horizontal = dimension.defaultFullPadding)
+                .padding(horizontal = GiphyTrendingTheme.dimens.defaultFullPadding)
                 .align(Alignment.CenterHorizontally),
-            style = MaterialTheme.typography.bodyMedium,
+            style = GiphyTrendingTheme.typography.bodyMedium,
             text = "${tempSliderValue.toInt()}",
         )
 
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = dimension.defaultHalfPadding),
-            style = MaterialTheme.typography.bodyMedium,
+                .padding(vertical = GiphyTrendingTheme.dimens.defaultHalfPadding),
+            style = GiphyTrendingTheme.typography.bodyMedium,
             textAlign = TextAlign.Justify,
             text = stringResource(id = R.string.apimax_desc),
         )
@@ -284,7 +275,6 @@ private fun ItemsToLoad(
 @Composable
 private fun ImageRating(
     modifier: Modifier = Modifier,
-    dimension: Dimension,
     rating: Rating,
     onUpdateRating: (Rating) -> Unit,
 ) {
@@ -293,17 +283,17 @@ private fun ImageRating(
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.fillMaxWidth(),
-            style = MaterialTheme.typography.titleMedium,
+            style = GiphyTrendingTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             text = stringResource(R.string.rating),
         )
 
-        Spacer(modifier = Modifier.height(height = dimension.defaultHalfPadding))
+        Spacer(modifier = Modifier.height(height = GiphyTrendingTheme.dimens.defaultHalfPadding))
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(shape = MaterialTheme.shapes.medium)
+                .clip(shape = GiphyTrendingTheme.shapes.medium)
                 .semantics {
                     contentDescription = context.getString(R.string.content_description_rating_selector)
                 },
@@ -332,13 +322,13 @@ private fun ImageRating(
                     ) {
                         Text(
                             modifier = Modifier.wrapContentSize(),
-                            style = MaterialTheme.typography.labelLarge,
+                            style = GiphyTrendingTheme.typography.labelLarge,
                             text = ratingOption.toString(),
                         )
                     }
 
                     if (ratingOption.ordinal < Rating.entries.lastIndex) {
-                        Spacer(modifier = Modifier.width(width = dimension.grid_0_25))
+                        Spacer(modifier = Modifier.width(width = GiphyTrendingTheme.dimens.grid_0_25))
                     }
                 }
             }
@@ -347,8 +337,8 @@ private fun ImageRating(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = dimension.defaultHalfPadding),
-            style = MaterialTheme.typography.bodyMedium,
+                .padding(top = GiphyTrendingTheme.dimens.defaultHalfPadding),
+            style = GiphyTrendingTheme.typography.bodyMedium,
             textAlign = TextAlign.Justify,
             text = stringResource(getRatingDescriptionRes(rating = rating)),
         )
@@ -357,9 +347,9 @@ private fun ImageRating(
 
 @Composable
 private fun getAnnotatedFootnote(): AnnotatedString {
-    val annotatedTextSpanStyle = SpanStyle(color = MaterialTheme.colorScheme.onSurface)
+    val annotatedTextSpanStyle = SpanStyle(color = GiphyTrendingTheme.colorScheme.onSurface)
     val underlineSpanStyle = SpanStyle(
-        color = MaterialTheme.colorScheme.primary,
+        color = GiphyTrendingTheme.colorScheme.primary,
         textDecoration = TextDecoration.Underline,
     )
 

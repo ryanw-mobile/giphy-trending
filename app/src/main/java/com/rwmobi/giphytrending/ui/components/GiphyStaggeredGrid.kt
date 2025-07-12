@@ -17,7 +17,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -29,7 +28,6 @@ import coil3.ImageLoader
 import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemsProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
-import com.rwmobi.giphytrending.ui.theme.getDimension
 
 @Composable
 fun GiphyStaggeredGrid(
@@ -44,7 +42,6 @@ fun GiphyStaggeredGrid(
     onClickToOpen: (url: String) -> Unit,
     onScrolledToTop: () -> Unit,
 ) {
-    val dimension = LocalConfiguration.current.getDimension()
     val lazyStaggeredGridState = rememberLazyStaggeredGridState()
 
     LaunchedEffect(requestScrollToTop) {
@@ -60,7 +57,7 @@ fun GiphyStaggeredGrid(
             .semantics { contentDescription = listContentDescription },
         state = lazyStaggeredGridState,
         columns = StaggeredGridCells.Adaptive(minSize = 320.dp),
-        contentPadding = PaddingValues(all = dimension.defaultHalfPadding),
+        contentPadding = PaddingValues(all = GiphyTrendingTheme.dimens.defaultHalfPadding),
     ) {
         itemsIndexed(
             items = gifObjects,
@@ -68,7 +65,7 @@ fun GiphyStaggeredGrid(
         ) { index, giphyImageItem ->
             if (useCardLayout) {
                 GiphyItemCard(
-                    modifier = Modifier.padding(all = dimension.defaultHalfPadding),
+                    modifier = Modifier.padding(all = GiphyTrendingTheme.dimens.defaultHalfPadding),
                     gifObject = giphyImageItem,
                     imageLoader = imageLoader,
                     onClickToDownload = onClickToDownload,

@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -95,7 +94,7 @@ fun AppMasterNavigationLayout(
                 TopAppBar(
                     modifier = Modifier.wrapContentHeight(),
                     colors = TopAppBarDefaults.topAppBarColors().copy(
-                        containerColor = MaterialTheme.colorScheme.background,
+                        containerColor = GiphyTrendingTheme.colorScheme.background,
                     ),
                     scrollBehavior = scrollBehavior,
                     title = {
@@ -160,7 +159,7 @@ private fun Preview() {
         Surface(
             modifier = Modifier
                 .fillMaxSize(),
-            color = MaterialTheme.colorScheme.surface,
+            color = GiphyTrendingTheme.colorScheme.surface,
         ) {
             AppMasterNavigationLayout(
                 modifier = Modifier.fillMaxSize(),

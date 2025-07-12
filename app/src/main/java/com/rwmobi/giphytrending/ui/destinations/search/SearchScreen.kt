@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -36,7 +35,7 @@ import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.components.GiphyStaggeredGrid
 import com.rwmobi.giphytrending.ui.components.NoDataScreen
 import com.rwmobi.giphytrending.ui.components.SearchTextField
-import com.rwmobi.giphytrending.ui.theme.getDimension
+import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.utils.downloadImage
 import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
 import kotlinx.coroutines.launch
@@ -60,7 +59,6 @@ fun SearchScreen(
     }
 
     val context = LocalContext.current
-    val dimension = LocalConfiguration.current.getDimension()
     val coroutineScope = rememberCoroutineScope()
     val clipboardHistory = remember { mutableStateListOf<String>() }
     val focusManager: FocusManager = LocalFocusManager.current
@@ -82,7 +80,7 @@ fun SearchScreen(
             SearchTextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = dimension.defaultHalfPadding),
+                    .padding(vertical = GiphyTrendingTheme.dimens.defaultHalfPadding),
                 keyword = uiState.keyword,
                 focusManager = focusManager,
                 onClearKeyword = uiEvent.onClearKeyword,

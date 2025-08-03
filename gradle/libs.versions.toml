@@ -39,8 +39,8 @@ kotlinter = "5.2.0"
 detekt = "1.23.8"
 
 # App configurations, not dependencies
-versionCode = "15"
-versionName = "2.4.0"
+versionCode = "16"
+versionName = "2.5.0"
 minSdk = "28"
 targetSdk = "36"
 compileSdk = "36"

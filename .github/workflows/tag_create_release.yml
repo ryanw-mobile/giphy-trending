@@ -27,16 +27,25 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
-      # :app:generateReleaseBaselineProfile  taken out as it's too expensive to run on Github
-      - name: Gradle build
-        run: ./gradlew :app:bundleRelease :app:assembleRelease --no-daemon
+      - name: Generate Baseline Profile
+        run: ./gradlew :app:generateReleaseBaselineProfile -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile -Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect -Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true -Pandroid.experimental.testOptions.managedDevices.maxConcurrentDevices=1 -Pandroid.experimental.testOptions.managedDevices.setupTimeoutMinutes=180 -Dorg.gradle.configuration-cache=false
         env:
-          BITRISE: 'true'
+          CI: 'true'
           GIPHYAPIKEY: ${{ secrets.GIPHYAPIKEY }}
           KEYSTORE_LOCATION: ${{ steps.decode_keystore.outputs.filePath }}
-          BITRISEIO_ANDROID_KEYSTORE_ALIAS: ${{ secrets.BITRISEIO_ANDROID_KEYSTORE_ALIAS }}
-          BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD: ${{ secrets.BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD }}
-          BITRISEIO_ANDROID_KEYSTORE_PASSWORD: ${{ secrets.BITRISEIO_ANDROID_KEYSTORE_PASSWORD }}
+          CI_ANDROID_KEYSTORE_ALIAS: ${{ secrets.CI_ANDROID_KEYSTORE_ALIAS }}
+          CI_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD: ${{ secrets.CI_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD }}
+          CI_ANDROID_KEYSTORE_PASSWORD: ${{ secrets.CI_ANDROID_KEYSTORE_PASSWORD }}
+
+      - name: Gradle build
+        run: ./gradlew :app:bundleRelease :app:assembleRelease
+        env:
+          CI: 'true'
+          GIPHYAPIKEY: ${{ secrets.GIPHYAPIKEY }}
+          KEYSTORE_LOCATION: ${{ steps.decode_keystore.outputs.filePath }}
+          CI_ANDROID_KEYSTORE_ALIAS: ${{ secrets.CI_ANDROID_KEYSTORE_ALIAS }}
+          CI_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD: ${{ secrets.CI_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD }}
+          CI_ANDROID_KEYSTORE_PASSWORD: ${{ secrets.CI_ANDROID_KEYSTORE_PASSWORD }}
 
       - name: Extract Version Number
         run: echo "version=${GITHUB_REF#refs/tags/release/}" >> $GITHUB_ENV

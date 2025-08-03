@@ -18,7 +18,6 @@ kotlin = "2.2.0"
 kotlinxDatetime = "0.7.1-0.6.x-compat"
 kover = "0.9.1"
 ktor = "3.2.3"
-ktlint = "13.0.0"
 leakcanary = "2.14"
 legacySupportV4 = "1.0.0"
 lifecycleExtensions = "2.2.0"
@@ -36,6 +35,8 @@ material3AdaptiveAndroid = "1.0.0-alpha06"
 uiautomator = "2.3.0"
 baselineprofile = "1.4.0"
 profileinstaller = "1.4.1"
+kotlinter = "5.2.0"
+detekt = "1.23.8"
 
 # App configurations, not dependencies
 versionCode = "15"
@@ -112,8 +113,9 @@ jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "k
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 hiltAndroidPlugin = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlinxKover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
-gradleKtlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 devtoolsKsp = { id = "com.google.devtools.ksp", version.ref = "devtoolsksp" }
 androidTest = { id = "com.android.test", version.ref = "agp" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }

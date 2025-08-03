@@ -4,7 +4,7 @@
  */
 
 import com.android.build.api.dsl.ManagedVirtualDevice
-import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.text.SimpleDateFormat
@@ -17,66 +17,32 @@ plugins {
     alias(libs.plugins.hiltAndroidPlugin)
     alias(libs.plugins.kotlinxKover)
     alias(libs.plugins.devtoolsKsp)
-    alias(libs.plugins.gradleKtlint)
     alias(libs.plugins.baselineprofile)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.kotlinter)
 }
 
+// Configuration
+val productApkName = "giphy"
+val productNamespace = "com.rwmobi.giphytrending"
+val isRunningOnCI = System.getenv("CI") == "true"
+
 android {
-    namespace = "com.rwmobi.giphytrending"
-    compileSdk = libs.versions.compileSdk.get().toInt()
+    namespace = productNamespace
 
-    signingConfigs {
-        create("release") {
-            val isRunningOnCI = System.getenv("BITRISE") == "true"
-            val keystorePropertiesFile = file("../../keystore.properties")
-
-            if (isRunningOnCI) {
-                println("Signing Config: using environment variables")
-                keyAlias = System.getenv("BITRISEIO_ANDROID_KEYSTORE_ALIAS")
-                keyPassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
-                storeFile = file(System.getenv("KEYSTORE_LOCATION"))
-                storePassword = System.getenv("BITRISEIO_ANDROID_KEYSTORE_PASSWORD")
-            } else if (keystorePropertiesFile.exists()) {
-                println("Signing Config: using keystore properties")
-                val properties = Properties()
-                InputStreamReader(
-                    FileInputStream(keystorePropertiesFile),
-                    Charsets.UTF_8,
-                ).use { reader ->
-                    properties.load(reader)
-                }
-
-                keyAlias = properties.getProperty("alias")
-                keyPassword = properties.getProperty("pass")
-                storeFile = file(properties.getProperty("store"))
-                storePassword = properties.getProperty("storePass")
-            } else {
-                println("Signing Config: skipping signing")
-            }
-        }
-    }
+    setupSdkVersionsFromVersionCatalog()
+    setupSigningAndBuildTypes()
+    setupPackagingResourcesDeduplication()
 
     defaultConfig {
-        applicationId = "com.rwmobi.giphytrending"
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = libs.versions.versionCode.get().toInt()
-        versionName = libs.versions.versionName.get()
+        applicationId = productNamespace
 
-        androidResources {
-            localeFilters.add("en")
-        }
+        androidResources { localeFilters.add("en") }
 
         testInstrumentationRunner = "com.rwmobi.giphytrending.ui.test.CustomTestRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-
-        // Bundle output filename
-        val timestamp = SimpleDateFormat("yyyyMMdd-HHmmss").format(Date())
-        setProperty("archivesBaseName", "giphy-$versionName-$timestamp")
+        vectorDrawables { useSupportLibrary = true }
 
         // Configurable values - We are able to set different values for each build
         buildConfigField("String", "GIPHY_ENDPOINT", "\"https://api.giphy.com/\"")
@@ -84,90 +50,31 @@ android {
         buildConfigField("String", "API_MAX_ENTRIES", "\"100\"")
         buildConfigField("String", "API_MIN_ENTRIES", "\"25\"")
 
-        val isRunningOnCI = System.getenv("BITRISE") == "true"
-        val keystorePropertiesFile = file("../../keystore.properties")
-        if (isRunningOnCI) {
-            println("Importing Giphy API Key from environment variable")
-            defaultConfig.buildConfigField(
-                type = "String",
-                name = "GIPHY_API_KEY",
-                value = System.getenv("GIPHYAPIKEY"),
-            )
-        } else if (keystorePropertiesFile.exists()) {
-            println("Importing Giphy API Key from keystore")
-            val properties = Properties()
-            InputStreamReader(
-                FileInputStream(keystorePropertiesFile),
-                Charsets.UTF_8,
-            ).use { reader ->
-                properties.load(reader)
-            }
-
-            defaultConfig.buildConfigField(
-                type = "String",
-                name = "GIPHY_API_KEY",
-                value = properties.getProperty("giphyApiKey") ?: "\"\"",
-            )
+        val giphyApiKey = if (isRunningOnCI) {
+            println("🔑 Giphy API Key: from environment variable")
+            System.getenv("GIPHYAPIKEY")
         } else {
-            println("Giphy API key not found.")
-            defaultConfig.buildConfigField(
-                "String",
-                "GIPHY_API_KEY",
-                "\"\"",
-            )
-        }
-    }
-
-    buildTypes {
-        fun setOutputFileName() {
-            applicationVariants.all {
-                val variant = this
-                variant.outputs
-                    .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
-                    .forEach { output ->
-                        val timestamp = SimpleDateFormat("yyyyMMdd-HHmmss").format(Date())
-                        val outputFileName =
-                            "giphy-${variant.versionName}-$timestamp-${variant.name}.apk"
-                        output.outputFileName = outputFileName
-                    }
+            val keystorePropertiesFile = file("../../keystore.properties")
+            if (keystorePropertiesFile.exists()) {
+                println("🔑 Giphy API Key: from keystore")
+                val properties = Properties()
+                InputStreamReader(
+                    FileInputStream(keystorePropertiesFile),
+                    Charsets.UTF_8,
+                ).use { reader ->
+                    properties.load(reader)
+                }
+                properties.getProperty("giphyApiKey") ?: "\"\""
+            } else {
+                println("🔑 Giphy API key: not found.")
+                "\"\""
             }
         }
-
-        getByName("debug") {
-            applicationIdSuffix = ".debug"
-            isMinifyEnabled = false
-            isShrinkResources = false
-            isDebuggable = true
-            setOutputFileName()
-        }
-
-        create("benchmark") {
-            initWith(getByName("release"))
-            isDebuggable = false
-            isMinifyEnabled = true
-            isShrinkResources = true
-
-            signingConfig = signingConfigs.getByName("debug")
-            matchingFallbacks.add("release")
-        }
-
-        getByName("release") {
-            isShrinkResources = true
-            isMinifyEnabled = true
-            isDebuggable = false
-            setProguardFiles(
-                listOf(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro",
-                ),
-            )
-
-            signingConfigs.getByName("release").keyAlias?.let {
-                signingConfig = signingConfigs.getByName("release")
-            }
-
-            setOutputFileName()
-        }
+        defaultConfig.buildConfigField(
+            type = "String",
+            name = "GIPHY_API_KEY",
+            value = giphyApiKey,
+        )
     }
 
     compileOptions {
@@ -178,28 +85,6 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-
-    packaging {
-        resources {
-            excludes += listOf(
-                "META-INF/AL2.0",
-                "META-INF/LGPL2.1",
-                "META-INF/licenses/ASM",
-                "META-INF/LICENSE.md",
-                "META-INF/LICENSE*.md",
-            )
-            pickFirsts += listOf(
-                "win32-x86-64/attach_hotspot_windows.dll",
-                "win32-x86/attach_hotspot_windows.dll",
-            )
-        }
-    }
-
-    sourceSets {
-        named("test") {
-            java.srcDirs("src/testFixtures/java")
-        }
     }
 
     testOptions {
@@ -216,8 +101,20 @@ android {
                     device = "Pixel 2"
                     apiLevel = 34
                     systemImageSource = "aosp-atd"
+                    testedAbi = "arm64-v8a" // better performance on CI and Macs
                 }
             }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    sourceSets {
+        named("test") {
+            java.srcDirs("src/testFixtures/java")
         }
     }
 
@@ -232,11 +129,11 @@ android {
 }
 
 kotlin {
-    jvmToolchain(17)
     compilerOptions {
         optIn.add("kotlin.time.ExperimentalTime")
         freeCompilerArgs.add("-Xannotation-default-target=param-property")
     }
+    jvmToolchain(17)
 }
 
 dependencies {
@@ -313,64 +210,199 @@ dependencies {
     androidTestImplementation(libs.mockk.android)
 }
 
-configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    android.set(true)
-    ignoreFailures.set(true)
-    reporters {
-        reporter(ReporterType.PLAIN)
-        reporter(ReporterType.CHECKSTYLE)
-        reporter(ReporterType.SARIF)
+tasks {
+    copyBaselineProfileAfterBuild()
+    check { dependsOn("detekt") }
+    preBuild { dependsOn("formatKotlin") }
+}
+
+detekt { parallel = true }
+
+kover {
+    useJacoco()
+    reports.filters.excludes {
+        packages(
+            "$productNamespace.ui.*",
+            "$productNamespace.di*",
+            "$productNamespace.data.repository.demodata*",
+            "$productNamespace.ui.components",
+            "$productNamespace.ui.destinations",
+            "$productNamespace.ui.navigation",
+            "$productNamespace.ui.previewparameter",
+            "$productNamespace.ui.theme",
+            "$productNamespace.ui.utils",
+        )
+
+        classes(
+            "dagger.hilt.internal.aggregatedroot.codegen.*",
+            "hilt_aggregated_deps.*",
+            "$productNamespace.*.Hilt_*",
+            "$productNamespace.*.*_Factory*",
+            "$productNamespace.*.*_HiltModules*",
+            "$productNamespace.*.*Module_*",
+            "$productNamespace.*.*MembersInjector*",
+            "$productNamespace.*.*_Impl*",
+            "$productNamespace.ComposableSingletons*",
+            "$productNamespace.BuildConfig*",
+            "$productNamespace.*.Fake*",
+            "$productNamespace.*.previewparameter*",
+            "$productNamespace.app.ComposableSingletons*",
+            "$productNamespace.GiphyApplication*",
+            "*Fragment",
+            "*Fragment\$*",
+            "*Activity",
+            "*Activity\$*",
+            "*.databinding.*",
+            "*.BuildConfig",
+            "*.DebugUtil",
+        )
     }
 }
 
-tasks.named("preBuild") {
-    dependsOn(tasks.named("ktlintFormat"))
+// Gradle Build Utilities
+private fun BaseAppModuleExtension.setupSdkVersionsFromVersionCatalog() {
+    compileSdk = libs.versions.compileSdk.get().toInt()
+    defaultConfig {
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = libs.versions.versionCode.get().toInt()
+        versionName = libs.versions.versionName.get()
+    }
 }
 
-kover {
-    reports {
-        // common filters for all reports of all variants
-        filters {
-            // exclusions for reports
-            excludes {
-                // excludes class by fully-qualified JVM class name, wildcards '*' and '?' are available
-                classes(
-                    listOf(
-                        "com.rwmobi.giphytrending.GiphyApplication",
-                        "com.rwmobi.giphytrending.*.*MembersInjector",
-                        "com.rwmobi.giphytrending.*.*Factory",
-                        "com.rwmobi.giphytrending.*.*HiltModules*",
-                        "com.rwmobi.giphytrending.data.source.local.*_Impl*",
-                        "com.rwmobi.giphytrending.data.source.local.*Impl_Factory",
-                        "com.rwmobi.giphytrending.BR",
-                        "com.rwmobi.giphytrending.BuildConfig",
-                        "com.rwmobi.giphytrending.Hilt*",
-                        "com.rwmobi.giphytrending.*.Hilt_*",
-                        "com.rwmobi.giphytrending.ComposableSingletons*",
-                        "*Fragment",
-                        "*Fragment\$*",
-                        "*Activity",
-                        "*Activity\$*",
-                        "*.BuildConfig",
-                        "*.DebugUtil",
-                    ),
-                )
-                // excludes all classes located in specified package and it subpackages, wildcards '*' and '?' are available
-                packages(
-                    listOf(
-                        "com.rwmobi.giphytrending.di",
-                        "com.rwmobi.giphytrending.ui.components",
-                        "com.rwmobi.giphytrending.ui.destinations",
-                        "com.rwmobi.giphytrending.ui.navigation",
-                        "com.rwmobi.giphytrending.ui.previewparameter",
-                        "com.rwmobi.giphytrending.ui.theme",
-                        "com.rwmobi.giphytrending.ui.utils",
-                        "androidx",
-                        "dagger.hilt.internal.aggregatedroot.codegen",
-                        "hilt_aggregated_deps",
-                    ),
-                )
+private fun BaseAppModuleExtension.setupPackagingResourcesDeduplication() {
+    packaging.resources {
+        excludes.addAll(
+            listOf(
+                "META-INF/*.md",
+                "META-INF/proguard/*",
+                "META-INF/*.kotlin_module",
+                "META-INF/DEPENDENCIES",
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.*",
+                "META-INF/LICENSE-notice.txt",
+                "META-INF/NOTICE",
+                "META-INF/NOTICE.*",
+                "META-INF/AL2.0",
+                "META-INF/LGPL2.1",
+                "META-INF/*.properties",
+                "/*.properties",
+            ),
+        )
+    }
+}
+
+private fun BaseAppModuleExtension.setupSigningAndBuildTypes() {
+    signingConfigs {
+        create("releaseSigningConfig") {
+            // Only initialise the signing config when a Release or Bundle task is being executed.
+            // This prevents Gradle sync or debug builds from attempting to load the keystore,
+            // which could fail if the keystore or environment variables are not available.
+            // SigningConfig itself is only wired to the 'release' build type, so this guard avoids unnecessary setup.
+            val isReleaseBuild =
+                gradle.startParameter.taskNames.any {
+                    it.contains("Release", ignoreCase = true) ||
+                            it.contains("Bundle", ignoreCase = true) ||
+                            it.equals("build", ignoreCase = true)
+                }
+
+            if (isReleaseBuild || isRunningOnCI) {
+                val keystorePropertiesFile = file("../../keystore.properties")
+
+                if (isRunningOnCI || !keystorePropertiesFile.exists()) {
+                    println("⚠\uFE0F Signing Config: using environment variables")
+                    keyAlias = System.getenv("CI_ANDROID_KEYSTORE_ALIAS")
+                    keyPassword = System.getenv("CI_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+                    storeFile = file(System.getenv("KEYSTORE_LOCATION"))
+                    storePassword = System.getenv("CI_ANDROID_KEYSTORE_PASSWORD")
+                } else {
+                    println("⚠\uFE0F Signing Config: using keystore properties")
+                    val properties = Properties()
+                    InputStreamReader(
+                        FileInputStream(keystorePropertiesFile),
+                        Charsets.UTF_8,
+                    ).use { reader ->
+                        properties.load(reader)
+                    }
+
+                    keyAlias = properties.getProperty("alias")
+                    keyPassword = properties.getProperty("pass")
+                    storeFile = file(properties.getProperty("store"))
+                    storePassword = properties.getProperty("storePass")
+                }
+            } else {
+                println("⚠\uFE0F Warning: Signing Config not created for non-release builds.")
+            }
+        }
+    }
+
+    val timestamp = SimpleDateFormat("yyyyMMdd-HHmmss").format(Date())
+    val baseName = "$productApkName-${libs.versions.versionName.get()}-$timestamp"
+    extensions.configure<BasePluginExtension> {
+        archivesName.set(baseName)
+    }
+
+    buildTypes {
+        fun setOutputFileName() {
+            applicationVariants.all {
+                outputs
+                    .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
+                    .forEach { output ->
+                        val outputFileName = "$productApkName-$name-$versionName-$timestamp.apk"
+                        output.outputFileName = outputFileName
+                    }
+            }
+        }
+
+        getByName("debug") {
+            applicationIdSuffix = ".debug"
+            isMinifyEnabled = false
+            isShrinkResources = false
+            isDebuggable = true
+            setOutputFileName()
+        }
+
+        create("benchmark") {
+            initWith(getByName("release"))
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks.add("release")
+        }
+
+        getByName("release") {
+            isShrinkResources = true
+            isMinifyEnabled = true
+            isDebuggable = false
+            setProguardFiles(
+                listOf(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro",
+                ),
+            )
+            signingConfig = signingConfigs.getByName("releaseSigningConfig")
+            setOutputFileName()
+        }
+    }
+}
+
+private fun TaskContainerScope.copyBaselineProfileAfterBuild() {
+    afterEvaluate {
+        named("generateReleaseBaselineProfile") {
+            doLast {
+                val outputFile =
+                    File(
+                        "$projectDir/src/release/generated/baselineProfiles/baseline-prof.txt",
+                    )
+                val destinationDir = File("$projectDir/src/main")
+                destinationDir.mkdirs()
+                val destinationFile = File(destinationDir, outputFile.name)
+                println("Moving file $outputFile to $destinationDir")
+                outputFile.renameTo(destinationFile)
             }
         }
     }
 }
+

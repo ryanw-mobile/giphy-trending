@@ -59,42 +59,43 @@ now [logged as issues](https://github.com/ryanw-mobile/giphy-trending/issues?q=i
 
 ### Dependencies
 
-* [AndroidX Core KTX](https://developer.android.com/jetpack/androidx/releases/core) - Apache 2.0 - Extensions to Java APIs for Android development
-* [JUnit](https://junit.org/junit5/) - EPL 2.0 - A simple framework to write repeatable tests
-* [AndroidX Espresso](https://developer.android.com/training/testing/espresso) - Apache 2.0 - UI testing framework
-* [AndroidX Activity Compose](https://developer.android.com/jetpack/androidx/releases/activity) - Apache 2.0 - Jetpack Compose integration with Activity
-* [Jetpack Compose BOM](https://developer.android.com/jetpack/compose/bom) - Apache 2.0 - Bill of Materials for Jetpack Compose
-* [AndroidX Compose UI](https://developer.android.com/jetpack/androidx/releases/compose-ui) - Apache 2.0 - UI components for Jetpack Compose
-* [AndroidX Material3](https://developer.android.com/jetpack/androidx/releases/compose-material3) - Apache 2.0 - Material Design components for Jetpack Compose
-* [AndroidX Benchmark](https://developer.android.com/jetpack/androidx/releases/benchmark) - Apache 2.0 - Benchmarking library
-* [AndroidX Core Splashscreen](https://developer.android.com/jetpack/androidx/releases/core) - Apache 2.0 - Core splash screen
-* [AndroidX DataStore Preferences](https://developer.android.com/jetpack/androidx/releases/datastore) - Apache 2.0 - Data storage solution
-* [AndroidX Legacy Support](https://developer.android.com/jetpack/androidx/releases/legacy) - Apache 2.0 - Legacy libraries
-* [AndroidX Lifecycle](https://developer.android.com/jetpack/androidx/releases/lifecycle) - Apache 2.0 - Lifecycles-aware components
-* [AndroidX Room](https://developer.android.com/jetpack/androidx/releases/room) - Apache 2.0 - Persistence library
-* [Kotlinx DateTime](https://github.com/Kotlin/kotlinx-datetime) - Apache 2.0 - A multiplatform Kotlin library for working with date and time
+* [AndroidX Core KTX](https://developer.android.com/jetpack/androidx/releases/core) - Apache 2.0 - Kotlin extensions for core Android APIs
+* [JUnit](https://junit.org/junit4/) - EPL-1.0 - A simple framework to write repeatable tests
+* [AndroidX Espresso](https://developer.android.com/training/testing/espresso) - Apache 2.0 - UI testing framework for Android
+* [AndroidX Activity Compose](https://developer.android.com/jetpack/androidx/releases/activity) - Apache 2.0 - Compose integration with Activity
+* [Jetpack Compose BOM](https://developer.android.com/jetpack/compose/bom) - Apache 2.0 - BOM for consistent Jetpack Compose dependencies
+* [Jetpack Compose UI](https://developer.android.com/jetpack/compose) - Apache 2.0 - Core UI components for Compose
+* [Material3](https://developer.android.com/jetpack/androidx/releases/compose-material3) - Apache 2.0 - Material Design 3 components for Compose
+* [AndroidX Benchmark](https://developer.android.com/studio/profile/benchmark) - Apache 2.0 - Benchmarking tools for performance analysis
+* [AndroidX Splashscreen](https://developer.android.com/jetpack/androidx/releases/core) - Apache 2.0 - Splash screen API
+* [AndroidX DataStore](https://developer.android.com/topic/libraries/architecture/datastore) - Apache 2.0 - Data storage solution
+* [AndroidX Legacy Support](https://developer.android.com/jetpack/androidx/releases/legacy) - Apache 2.0 - Legacy support library
+* [AndroidX Lifecycle](https://developer.android.com/jetpack/androidx/releases/lifecycle) - Apache 2.0 - Lifecycle-aware components
+* [AndroidX Room](https://developer.android.com/jetpack/androidx/releases/room) - Apache 2.0 - SQLite abstraction with LiveData and Coroutines support
+* [Kotlinx DateTime](https://github.com/Kotlin/kotlinx-datetime) - Apache 2.0 - Date and time utilities for Kotlin
 * [Timber](https://github.com/JakeWharton/timber) - Apache 2.0 - A logger with a small, extensible API
-* [Coil](https://coil-kt.github.io/coil/) - Apache 2.0 - An image loading library for Android backed by Kotlin Coroutines
+* [Coil](https://coil-kt.github.io/coil/) - Apache 2.0 - Image loading for Android backed by Kotlin Coroutines
 * [MockK](https://mockk.io/) - Apache 2.0 - Mocking library for Kotlin
-* [Kotlinx Coroutines](https://github.com/Kotlin/kotlinx.coroutines) - Apache 2.0 - Libraries for Kotlin coroutines
-* [Robolectric](http://robolectric.org/) - MIT - A framework that brings fast, reliable unit tests to Android
-* [AndroidX Test](https://developer.android.com/jetpack/androidx/releases/test) - Apache 2.0 - Testing framework for Android
-* [Hilt](https://dagger.dev/hilt/) - Apache 2.0 - A dependency injection library for Android that reduces the boilerplate of doing manual dependency injection
-* [LeakCanary](https://square.github.io/leakcanary/) - Apache 2.0 - A memory leak detection library for Android
-* [Ktor](https://ktor.io/) - Apache 2.0 - Framework for building asynchronous servers and clients in connected systems
+* [Kotlinx Coroutines](https://github.com/Kotlin/kotlinx.coroutines) - Apache 2.0 - Support for asynchronous programming in Kotlin
+* [Robolectric](http://robolectric.org/) - Apache 2.0 - Unit test Android apps on the JVM
+* [AndroidX Test](https://developer.android.com/testing) - Apache 2.0 - Tools for Android testing including JUnit extensions and rules
+* [Hilt](https://dagger.dev/hilt/) - Apache 2.0 - Dependency injection framework built on top of Dagger
+* [LeakCanary](https://square.github.io/leakcanary/) - Apache 2.0 - Memory leak detection library for Android
+* [Ktor](https://ktor.io/) - Apache 2.0 - Asynchronous networking library for Kotlin
 
 ### Plugins
 
 * [Android Application Plugin](https://developer.android.com/studio/build/gradle-plugin-3-0-0-migration) - Google - Plugin for building Android applications
-* [Jetbrains Kotlin Android Plugin](https://kotlinlang.org/docs/gradle.html) - JetBrains - Plugin for Kotlin Android projects
-* [Compose Compiler Plugin](https://developer.android.com/jetpack/compose) - JetBrains - Plugin for Jetpack Compose
+* [Kotlin Android Plugin](https://kotlinlang.org/docs/gradle.html) - JetBrains - Plugin for Kotlin Android support
+* [Compose Compiler Plugin](https://developer.android.com/jetpack/compose) - JetBrains - Compiler plugin for Jetpack Compose
 * [Hilt Android Plugin](https://dagger.dev/hilt/gradle-setup.html) - Google - Plugin for Hilt dependency injection
 * [Kover Plugin](https://github.com/Kotlin/kotlinx-kover) - JetBrains - Code coverage tool for Kotlin
-* [Ktlint Plugin](https://github.com/JLLeitschuh/ktlint-gradle) - JLLeitschuh - Plugin for Kotlin linter
-* [Google DevTools KSP](https://github.com/google/ksp) - Google - Kotlin Symbol Processing API plugin
-* [Android Test Plugin](https://developer.android.com/studio/test) - Google - Plugin for Android testing
-* [Baseline Profile Plugin](https://developer.android.com/studio/profile/baselineprofile) - AndroidX - Plugin for generating baseline profiles
+* [KSP Plugin](https://github.com/google/ksp) - Google - Kotlin Symbol Processing API
+* [Android Test Plugin](https://developer.android.com/studio/test) - Google - Plugin for setting up Android test modules
+* [Baseline Profile Plugin](https://developer.android.com/topic/performance/baselineprofiles) - AndroidX - Plugin for generating performance profiles
 * [Serialization Plugin](https://github.com/Kotlin/kotlinx.serialization) - JetBrains - Plugin for Kotlin serialization
+* [Detekt Plugin](https://detekt.dev/) - Artur Bosch - Static code analysis tool for Kotlin
+* [Kotlinter Plugin](https://github.com/jeremymailen/kotlinter-gradle) - Jeremy Lichtenstein - Kotlin linter for Gradle
 
 &nbsp;
 
@@ -134,11 +135,11 @@ pull any data from the endpoint.
 
 * The following environment variables have been set to provide the keystore:
   ```
-     BITRISE = true
+     CI = true
      HOME = <the home directory of the bitrise environment>
-     BITRISEIO_ANDROID_KEYSTORE_PASSWORD = <your keystore password>
-     BITRISEIO_ANDROID_KEYSTORE_ALIAS = <your keystore alias>
-     BITRISEIO_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD = <your keystore private key password>
+     CI_ANDROID_KEYSTORE_PASSWORD = <your keystore password>
+     CI_ANDROID_KEYSTORE_ALIAS = <your keystore alias>
+     CI_ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD = <your keystore private key password>
      GIPHYAPIKEY= <your API Key>
   ```
 

@@ -8,6 +8,13 @@ jobs:
     if: github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/release/')
     runs-on: ubuntu-latest
     steps:
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls /dev/kvm
+
       - name: Decode Keystore
         id: decode_keystore
         uses: timheuer/base64-to-file@v1.2
@@ -27,8 +34,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
+      - name: Install Xvfb
+        run: sudo apt-get install -y xvfb
+
       - name: Generate Baseline Profile
-        run: ./gradlew :app:generateReleaseBaselineProfile -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile -Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect -Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true -Pandroid.experimental.testOptions.managedDevices.maxConcurrentDevices=1 -Pandroid.experimental.testOptions.managedDevices.setupTimeoutMinutes=180 -Dorg.gradle.configuration-cache=false
+        run: xvfb-run ./gradlew :app:generateReleaseBaselineProfile -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.enabledRules=BaselineProfile -Pandroid.testoptions.manageddevices.emulator.gpu=swiftshader_indirect -Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true -Pandroid.experimental.testOptions.managedDevices.maxConcurrentDevices=1 -Pandroid.experimental.testOptions.managedDevices.setupTimeoutMinutes=180 -Dorg.gradle.configuration-cache=false
         env:
           CI: 'true'
           GIPHYAPIKEY: ${{ secrets.GIPHYAPIKEY }}
@@ -60,7 +70,7 @@ jobs:
           release_name: Release ${{ env.version }}
           draft: false
           prerelease: false
-          body: "Description of the release for version ${{ env.version }}"
+          body: "Release notes for version ${{ env.version }} is coming  soon! 🚀\n\nThis release includes the latest features and improvements. Stay tuned for more details."
           commitish: ${{ github.sha }}
 
       - name: Upload Release Asset Mapping

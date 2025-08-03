@@ -28,9 +28,9 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
 
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
         setContent {
+            enableEdgeToEdge()
             GiphyTrendingApp(
                 windowSizeClass = calculateWindowSizeClass(this),
                 imageLoader = imageLoader,

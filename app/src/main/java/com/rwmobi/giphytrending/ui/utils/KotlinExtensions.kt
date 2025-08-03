@@ -19,6 +19,7 @@ internal fun Context.startBrowserActivity(url: String) {
     startActivity(intent)
 }
 
+@Suppress("TooGenericExceptionCaught")
 internal fun Context.downloadImageUsingMediaStore(imageUrl: String): Boolean = try {
     val identifier = imageUrl.substringAfterLast("/media/").substringBeforeLast('/')
     val fileName = "giphy-$identifier.gif"

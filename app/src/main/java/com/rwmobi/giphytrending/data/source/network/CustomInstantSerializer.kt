@@ -17,6 +17,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlin.time.Instant
 
+@Suppress("TooGenericExceptionCaught")
 object CustomInstantSerializer : KSerializer<Instant> {
     override val descriptor: SerialDescriptor
         get() = PrimitiveSerialDescriptor("Instant", PrimitiveKind.STRING)

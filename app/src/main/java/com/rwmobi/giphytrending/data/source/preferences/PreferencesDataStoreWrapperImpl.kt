@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@Suppress("TooGenericExceptionCaught")
 class PreferencesDataStoreWrapperImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>,
     @DispatcherModule.IoDispatcher private val dispatcher: CoroutineDispatcher,

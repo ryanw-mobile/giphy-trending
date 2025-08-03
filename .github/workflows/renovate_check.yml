@@ -20,6 +20,13 @@ jobs:
 
       - uses: actions/checkout@v4
 
+      - name: Decode Keystore
+        id: decode_keystore
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: 'release.jks'
+          encodedString: ${{ secrets.KEYSTORE }}
+
       - name: set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -38,9 +45,11 @@ jobs:
         env:
           CI: 'true'
           GIPHYAPIKEY: ${{ secrets.GIPHYAPIKEY }}
+          KEYSTORE_LOCATION: ${{ steps.decode_keystore.outputs.filePath }}  # Workaround due to api key
 
       - name: Gradle Check
         run: ./gradlew check assembleDebug --no-daemon
         env:
           CI: 'true'
           GIPHYAPIKEY: ${{ secrets.GIPHYAPIKEY }}
+          KEYSTORE_LOCATION: ${{ steps.decode_keystore.outputs.filePath }}  # Workaround due to api key

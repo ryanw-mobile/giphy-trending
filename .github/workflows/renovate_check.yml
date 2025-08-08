@@ -48,7 +48,7 @@ jobs:
           KEYSTORE_LOCATION: ${{ steps.decode_keystore.outputs.filePath }}  # Workaround due to api key
 
       - name: Gradle Check
-        run: ./gradlew check assembleDebug --no-daemon
+        run: ./gradlew check assembleDebug
         env:
           CI: 'true'
           GIPHYAPIKEY: ${{ secrets.GIPHYAPIKEY }}

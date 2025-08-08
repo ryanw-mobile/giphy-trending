@@ -7,6 +7,8 @@ jobs:
   build-and-release:
     if: github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/release/')
     runs-on: ubuntu-latest
+    env:
+      app_name: "giphy"
     steps:
       - name: Enable KVM group perms
         run: |
@@ -60,6 +62,21 @@ jobs:
       - name: Extract Version Number
         run: echo "version=${GITHUB_REF#refs/tags/release/}" >> $GITHUB_ENV
 
+      - name: Prepare Release Notes
+        id: release_notes
+        run: |
+          file_path="release_notes/release_note_${{ env.version }}.md"
+          if [ -f "$file_path" ]; then
+            echo "Using release notes from $file_path"
+            content=$(cat "$file_path")
+          else
+            echo "Using default release notes"
+            content="Release notes for version ${{ env.version }} is coming  soon! 🚀\n\nThis release includes the latest features and improvements. Stay tuned for more details."
+          fi
+          echo "release_body<<EOF" >> $GITHUB_OUTPUT
+          echo "$content" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -70,7 +87,7 @@ jobs:
           release_name: Release ${{ env.version }}
           draft: false
           prerelease: false
-          body: "Release notes for version ${{ env.version }} is coming  soon! 🚀\n\nThis release includes the latest features and improvements. Stay tuned for more details."
+          body: ${{ steps.release_notes.outputs.release_body }}
           commitish: ${{ github.sha }}
 
       - name: Upload Release Asset Mapping
@@ -86,7 +103,7 @@ jobs:
 
       - name: Find APK file
         run: |
-          apk_path=$(find ./app/build/outputs/apk/release -name "giphy-*.apk" | head -n 1)
+          apk_path=$(find ./app/build/outputs/apk/release -name "${{ env.app_name }}-*.apk" | head -n 1)
           echo "apk_path=$apk_path" >> $GITHUB_ENV
 
       - name: Upload Release Asset APK
@@ -96,12 +113,12 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.apk_path }}
-          asset_name: giphy-${{ env.version }}.apk
+          asset_name: ${{ env.app_name }}-${{ env.version }}.apk
           asset_content_type: application/vnd.android.package-archive
 
       - name: Find AAB file
         run: |
-          aab_path=$(find ./app/build/outputs/bundle/release -name "giphy-*.aab" | head -n 1)
+          aab_path=$(find ./app/build/outputs/bundle/release -name "${{ env.app_name }}-*.aab" | head -n 1)
           echo "aab_path=$aab_path" >> $GITHUB_ENV
 
       - name: Upload Release Asset AAB
@@ -111,5 +128,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.aab_path }}
-          asset_name: giphy-${{ env.version }}.aab
+          asset_name: ${{ env.app_name }}-${{ env.version }}.aab
           asset_content_type: application/vnd.android.package-archive

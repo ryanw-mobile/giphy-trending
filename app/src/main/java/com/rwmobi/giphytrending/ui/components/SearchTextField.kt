@@ -56,7 +56,7 @@ fun SearchTextField(
     onSearch: () -> Unit,
 ) {
     val context = LocalContext.current
-    val focusRequester = FocusRequester()
+    val focusRequester = remember { FocusRequester() }
     val coroutineScope = rememberCoroutineScope()
     var isFocused by remember { mutableStateOf(false) }
 

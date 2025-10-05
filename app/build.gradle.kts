@@ -148,6 +148,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material3.windowsizeclass)
+    implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.material3.adaptive.android)
     implementation(libs.androidx.profileinstaller)
@@ -297,9 +298,9 @@ private fun BaseAppModuleExtension.setupSigningAndBuildTypes() {
     val timestamp = SimpleDateFormat("yyyyMMdd-HHmmss").format(Date())
     val baseName = "$productApkName-${libs.versions.versionName.get()}-$timestamp"
     val isReleaseBuild = gradle.startParameter.taskNames.any {
-        it.contains("Release", ignoreCase = true)
-                || it.contains("Bundle", ignoreCase = true)
-                || it.equals("build", ignoreCase = true)
+        it.contains("Release", ignoreCase = true) ||
+            it.contains("Bundle", ignoreCase = true) ||
+            it.equals("build", ignoreCase = true)
     }
 
     extensions.configure<BasePluginExtension> { archivesName.set(baseName) }
@@ -401,4 +402,3 @@ private fun TaskContainerScope.copyBaselineProfileAfterBuild() {
         }
     }
 }
-

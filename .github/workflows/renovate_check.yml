@@ -30,8 +30,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Start Android Emulator
-        uses: reactivecircus/android-emulator-runner@v2
+      - name: Check KVM availability
+        run: ls -alh /dev/kvm
+
+      - name: Android Emulator Runner
+        uses: ReactiveCircus/android-emulator-runner@v2.35.0
         with:
           api-level: 34
           target: aosp-atd

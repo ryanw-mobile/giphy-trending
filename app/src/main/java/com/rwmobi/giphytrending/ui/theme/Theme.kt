@@ -111,6 +111,7 @@ fun GiphyTrendingTheme(
         }
 
         darkTheme -> DarkColors
+
         else -> LightColors
     }
     val view = LocalView.current

@@ -44,7 +44,7 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-api-34
+          key: avd-api-34-google_apis
 
       - name: Create AVD and snapshot (if not cached)
         if: steps.avd-cache.outputs.cache-hit != 'true'
@@ -54,6 +54,8 @@ jobs:
           target: google_apis
           arch: x86_64
           profile: pixel_2
+          avd-name: test
+          force-avd-creation: true
           emulator-options: "-no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none"
           disable-animations: false
           script: echo "Generated AVD snapshot."
@@ -66,9 +68,10 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 34
-          target: aosp-atd
+          target: google_apis
           arch: x86_64
           profile: pixel_2
+          avd-name: test
           force-avd-creation: false
           emulator-options: "-no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none"
           disable-animations: true

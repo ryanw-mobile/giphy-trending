@@ -13,7 +13,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -58,7 +57,6 @@ fun AppNavHost(
         composable(route = "trendingList") {
             val viewModel: TrendingViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val context = LocalContext.current
 
             LaunchedEffect(lastDoubleTappedNavItem) {
                 val enabled = lastDoubleTappedNavItem?.equals(AppNavItem.TrendingList) ?: false
@@ -95,7 +93,6 @@ fun AppNavHost(
         composable(route = "search") {
             val viewModel: SearchViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val context = LocalContext.current
 
             LaunchedEffect(lastDoubleTappedNavItem) {
                 val enabled = lastDoubleTappedNavItem?.equals(AppNavItem.Search) ?: false

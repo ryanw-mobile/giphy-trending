@@ -226,7 +226,6 @@ private fun ItemsToLoad(
     onUpdateApiRequestLimit: (Float) -> Unit,
 ) {
     var tempSliderValue by remember { mutableFloatStateOf(sliderValue) }
-    val context = LocalContext.current
 
     Column(modifier = modifier) {
         Text(
@@ -238,11 +237,12 @@ private fun ItemsToLoad(
 
         Spacer(modifier = Modifier.height(height = GiphyTrendingTheme.dimens.defaultHalfPadding))
 
+        val contentDescriptionSlider = stringResource(R.string.content_description_slider)
         Slider(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = GiphyTrendingTheme.dimens.defaultFullPadding)
-                .semantics { contentDescription = context.getString(R.string.content_description_slider) },
+                .semantics { contentDescription = contentDescriptionSlider },
             valueRange = sliderRange,
             value = tempSliderValue,
             onValueChange = { tempSliderValue = it },
@@ -290,13 +290,14 @@ private fun ImageRating(
 
         Spacer(modifier = Modifier.height(height = GiphyTrendingTheme.dimens.defaultHalfPadding))
 
+        val contentDescriptionRatingSelector = stringResource(R.string.content_description_rating_selector)
+        val selected = stringResource(R.string.selected)
+        val notSelected = stringResource(R.string.not_selected)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(shape = GiphyTrendingTheme.shapes.medium)
-                .semantics {
-                    contentDescription = context.getString(R.string.content_description_rating_selector)
-                },
+                .semantics { contentDescription = contentDescriptionRatingSelector },
         ) {
             val currentDensity = LocalDensity.current
             CompositionLocalProvider(
@@ -310,10 +311,10 @@ private fun ImageRating(
                             .align(alignment = Alignment.CenterVertically)
                             .semantics {
                                 role = Role.RadioButton
-                                if (ratingOption == rating) {
-                                    stateDescription = context.getString(R.string.selected)
+                                stateDescription = if (ratingOption == rating) {
+                                    selected
                                 } else {
-                                    stateDescription = context.getString(R.string.not_selected)
+                                    notSelected
                                 }
                             },
                         shape = RectangleShape,

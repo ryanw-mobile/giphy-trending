@@ -13,8 +13,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.res.stringResource
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -57,7 +57,6 @@ fun AppNavHost(
         composable(route = "trendingList") {
             val viewModel: TrendingViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val context = LocalContext.current
 
             LaunchedEffect(lastDoubleTappedNavItem) {
                 val enabled = lastDoubleTappedNavItem?.equals(AppNavItem.TrendingList) ?: false
@@ -67,6 +66,8 @@ fun AppNavHost(
                 }
             }
 
+            val failedToDownloadFile = stringResource(R.string.failed_to_download_file)
+            val imageQueuedForDownload = stringResource(R.string.image_queued_for_download)
             TrendingListScreen(
                 modifier = Modifier
                     .fillMaxSize()
@@ -78,8 +79,8 @@ fun AppNavHost(
                     onRefresh = { viewModel.refresh() },
                     onErrorShown = { viewModel.errorShown(it) },
                     onScrolledToTop = { onScrolledToTop(AppNavItem.TrendingList) },
-                    onQueueDownloadFailed = { onShowSnackbar(context.getString(R.string.failed_to_download_file)) },
-                    onQueueDownloadSuccess = { onShowSnackbar(context.getString(R.string.image_queued_for_download)) },
+                    onQueueDownloadFailed = { onShowSnackbar(failedToDownloadFile) },
+                    onQueueDownloadSuccess = { onShowSnackbar(imageQueuedForDownload) },
                     onShowSnackbar = onShowSnackbar,
                 ),
             )
@@ -92,7 +93,6 @@ fun AppNavHost(
         composable(route = "search") {
             val viewModel: SearchViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val context = LocalContext.current
 
             LaunchedEffect(lastDoubleTappedNavItem) {
                 val enabled = lastDoubleTappedNavItem?.equals(AppNavItem.Search) ?: false
@@ -102,6 +102,8 @@ fun AppNavHost(
                 }
             }
 
+            val failedToDownloadFile = stringResource(R.string.failed_to_download_file)
+            val imageQueuedForDownload = stringResource(R.string.image_queued_for_download)
             SearchScreen(
                 modifier = Modifier
                     .fillMaxSize()
@@ -119,8 +121,8 @@ fun AppNavHost(
                     },
                     onErrorShown = { viewModel.errorShown(it) },
                     onScrolledToTop = { onScrolledToTop(AppNavItem.Search) },
-                    onQueueDownloadFailed = { onShowSnackbar(context.getString(R.string.failed_to_download_file)) },
-                    onQueueDownloadSuccess = { onShowSnackbar(context.getString(R.string.image_queued_for_download)) },
+                    onQueueDownloadFailed = { onShowSnackbar(failedToDownloadFile) },
+                    onQueueDownloadSuccess = { onShowSnackbar(imageQueuedForDownload) },
                     onShowSnackbar = onShowSnackbar,
                 ),
             )

@@ -61,9 +61,10 @@ fun TrendingListScreen(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val clipboardHistory = remember { mutableStateListOf<String>() }
+    val contentDescriptionPullToRefresh = stringResource(R.string.content_description_pull_to_refresh)
 
     PullToRefreshBox(
-        modifier = modifier.semantics { contentDescription = context.getString(R.string.content_description_pull_to_refresh) },
+        modifier = modifier.semantics { contentDescription = contentDescriptionPullToRefresh },
         isRefreshing = uiState.isLoading,
         onRefresh = {
             uiEvent.onRefresh()

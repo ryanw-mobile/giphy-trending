@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -38,11 +37,11 @@ fun AppNavigationRail(
     navController: NavController,
     onCurrentRouteSecondTapped: (item: AppNavItem) -> Unit,
 ) {
-    val context = LocalContext.current
+    val contentDescriptionNavigationRail = stringResource(R.string.content_description_navigation_rail)
 
     NavigationRail(
         modifier = modifier.semantics {
-            contentDescription = context.getString(R.string.content_description_navigation_rail)
+            contentDescription = contentDescriptionNavigationRail
         },
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -52,11 +51,12 @@ fun AppNavigationRail(
 
         for (item in AppNavItem.navigationBarItems) {
             val selected = currentRoute == item.screenRoute
+            val navRailItemContentDescription = stringResource(item.titleResId)
 
             NavigationRailItem(
                 modifier = Modifier
                     .padding(vertical = GiphyTrendingTheme.dimens.defaultFullPadding)
-                    .semantics { contentDescription = context.getString(item.titleResId) },
+                    .semantics { contentDescription = navRailItemContentDescription },
                 selected = selected,
                 onClick = {
                     if (!selected) {

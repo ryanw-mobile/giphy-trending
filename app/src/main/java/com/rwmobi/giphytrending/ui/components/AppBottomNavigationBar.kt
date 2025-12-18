@@ -38,10 +38,11 @@ fun AppBottomNavigationBar(
     onCurrentRouteSecondTapped: (item: AppNavItem) -> Unit,
 ) {
     val context = LocalContext.current
+    val navBarContentDescription = stringResource(R.string.content_description_navigation_bar)
 
     NavigationBar(
         modifier = modifier.semantics {
-            contentDescription = context.getString(R.string.content_description_navigation_bar)
+            contentDescription = navBarContentDescription
         },
         tonalElevation = 0.dp,
         containerColor = GiphyTrendingTheme.colorScheme.background,
@@ -51,9 +52,12 @@ fun AppBottomNavigationBar(
 
         for (item in AppNavItem.navigationBarItems) {
             val selected = currentRoute == item.screenRoute
+            val navBarItemContentDescription = stringResource(item.titleResId)
 
             NavigationBarItem(
-                modifier = Modifier.semantics { contentDescription = context.getString(item.titleResId) },
+                modifier = Modifier.semantics {
+                    contentDescription = navBarItemContentDescription
+                },
                 selected = selected,
                 onClick = {
                     if (!selected) {

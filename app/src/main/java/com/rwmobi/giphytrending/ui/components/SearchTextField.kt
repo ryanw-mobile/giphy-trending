@@ -35,7 +35,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -55,10 +54,10 @@ fun SearchTextField(
     onClearKeyword: () -> Unit,
     onSearch: () -> Unit,
 ) {
-    val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
     val coroutineScope = rememberCoroutineScope()
     var isFocused by remember { mutableStateOf(false) }
+    val contentDescriptionSearchBar = stringResource(R.string.content_description_search_bar)
 
     TextField(
         modifier = modifier
@@ -68,9 +67,7 @@ fun SearchTextField(
             .onFocusChanged { focusState ->
                 isFocused = focusState.isFocused
             }
-            .semantics {
-                contentDescription = context.getString(R.string.content_description_search_bar)
-            },
+            .semantics { contentDescription = contentDescriptionSearchBar },
         value = keyword,
         onValueChange = { onUpdateKeyword(it) },
         singleLine = true,

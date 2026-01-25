@@ -27,11 +27,11 @@ jobs:
           fileName: 'release.jks'
           encodedString: ${{ secrets.KEYSTORE }}
 
-      - name: set up JDK 17
+      - name: set up JDK 21
         uses: actions/setup-java@v5
         with:
           distribution: 'corretto'
-          java-version: '17'
+          java-version: '21'
           cache: gradle
 
       - name: Grant execute permission for gradlew

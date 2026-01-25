@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024. Ryan Wong
+ * Copyright 2024-2026 RW MobiMedia UK Limited
  * https://github.com/ryanw-mobile
  */
 

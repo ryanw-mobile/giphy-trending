@@ -163,7 +163,7 @@ The generated apk(s) will be stored under `app/build/outputs/`
 Nothing is free in this world. RW MobiMedia UK Limited, a fully tax-paying entity in the UK,
 sponsors the infrastructure and development costs of this project.
 
-Copyright 2024 RW MobiMedia UK Limited
+Copyright 2024-2026 RW MobiMedia UK Limited
 
 This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International
 License. To view a copy of this license,

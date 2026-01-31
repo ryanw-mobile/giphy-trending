@@ -2,7 +2,6 @@ import com.android.build.api.dsl.ManagedVirtualDevice
 
 plugins {
     alias(libs.plugins.androidTest)
-    alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.baselineprofile)
 }
 
@@ -24,11 +23,15 @@ android {
 
     targetProjectPath = ":app"
 
-    testOptions.managedDevices.devices {
-        create<ManagedVirtualDevice>("pixel6Api34") {
-            device = "Pixel 6"
-            apiLevel = 34
-            systemImageSource = "google"
+    testOptions {
+        managedDevices {
+            allDevices {
+                create<ManagedVirtualDevice>("pixel6Api34") {
+                    device = "Pixel 6"
+                    apiLevel = 34
+                    systemImageSource = "google"
+                }
+            }
         }
     }
 }

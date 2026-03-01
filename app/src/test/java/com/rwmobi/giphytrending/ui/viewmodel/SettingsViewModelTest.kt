@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025. Ryan Wong
+ * Copyright (c) 2024-2026. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -8,6 +8,7 @@ package com.rwmobi.giphytrending.ui.viewmodel
 import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
+import com.rwmobi.giphytrending.domain.usecase.GetUserPreferencesUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -29,12 +30,11 @@ internal class SettingsViewModelTest {
         testDispatcher = UnconfinedTestDispatcher()
         fakeUserPreferencesRepository = FakeUserPreferencesRepository()
         settingsViewModel = SettingsViewModel(
+            getUserPreferencesUseCase = GetUserPreferencesUseCase(fakeUserPreferencesRepository),
             userPreferencesRepository = fakeUserPreferencesRepository,
             dispatcher = testDispatcher,
         )
     }
-
-    // Test function names reviewed by Gemini for consistency
 
     @Test
     fun `updates api request limit and sets isLoading to false when setApiRequestLimit is called`() {

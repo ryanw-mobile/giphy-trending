@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025. Ryan Wong
+ * Copyright (c) 2024-2026. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -14,6 +14,7 @@ import com.rwmobi.giphytrending.domain.repository.TrendingRepository
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingEntityList
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingNetworkResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -41,41 +42,26 @@ internal class TrendingRepositoryImplTest {
         )
     }
 
-    // Test function names reviewed by Gemini for consistency
-
     @Test
     fun `returns correct list when database query succeeds`() = runTest {
         setupRepository()
-        fakeRoomDbDataSource.queryDataResponse = SampleTrendingEntityList.singleEntityList
+        fakeRoomDbDataSource.queryDataResponse.value = SampleTrendingEntityList.singleEntityList
 
-        val result = trendingRepository.fetchCachedTrending()
+        val result = trendingRepository.trendingFlow.first()
 
-        assertTrue(result.isSuccess)
-        assertEquals(SampleTrendingEntityList.singleEntityList.map { it.toGifObject() }, result.getOrNull())
-    }
-
-    @Test
-    fun `returns failure when database query fails`() = runTest {
-        setupRepository()
-        val expectedException = Exception()
-        fakeRoomDbDataSource.apiError = expectedException
-
-        val result = trendingRepository.fetchCachedTrending()
-
-        assertTrue(result.isFailure)
-        assertEquals(expectedException, result.exceptionOrNull())
+        assertEquals(SampleTrendingEntityList.singleEntityList.map { it.toGifObject() }, result)
     }
 
     @Test
     fun `returns correct list when network and database operations succeed`() = runTest {
         setupRepository()
         fakeNetworkDataSource.trendingNetworkResponseDto = SampleTrendingNetworkResponse.singleResponse
-        fakeRoomDbDataSource.queryDataResponse = SampleTrendingEntityList.singleEntityList
+        fakeRoomDbDataSource.queryDataResponse.value = SampleTrendingEntityList.singleEntityList
 
-        val result = trendingRepository.reloadTrending(limit = 100, rating = Rating.R)
+        val result = trendingRepository.refreshTrending(limit = 100, rating = Rating.R)
 
         assertTrue(result.isSuccess)
-        assertEquals(SampleTrendingEntityList.singleEntityList.map { it.toGifObject() }, result.getOrNull())
+        assertEquals(SampleTrendingEntityList.singleEntityList.map { it.toGifObject() }, trendingRepository.trendingFlow.first())
     }
 
     @Test
@@ -84,7 +70,7 @@ internal class TrendingRepositoryImplTest {
         val expectedException = Exception()
         fakeNetworkDataSource.apiError = expectedException
 
-        val result = trendingRepository.reloadTrending(limit = 100, rating = Rating.R)
+        val result = trendingRepository.refreshTrending(limit = 100, rating = Rating.R)
 
         assertTrue(result.isFailure)
         assertFailsWith<EmptyGiphyAPIKeyException> {
@@ -97,7 +83,7 @@ internal class TrendingRepositoryImplTest {
         setupRepository()
         fakeNetworkDataSource.apiError = Exception()
 
-        val result = trendingRepository.reloadTrending(limit = 100, rating = Rating.R)
+        val result = trendingRepository.refreshTrending(limit = 100, rating = Rating.R)
 
         assertTrue(result.isFailure)
         assertFailsWith<Exception> {
@@ -111,7 +97,7 @@ internal class TrendingRepositoryImplTest {
         val expectedException = Exception()
         fakeRoomDbDataSource.apiError = expectedException
 
-        val result = trendingRepository.reloadTrending(limit = 100, rating = Rating.R)
+        val result = trendingRepository.refreshTrending(limit = 100, rating = Rating.R)
 
         assertTrue(result.isFailure)
         assertEquals(expectedException, result.exceptionOrNull())

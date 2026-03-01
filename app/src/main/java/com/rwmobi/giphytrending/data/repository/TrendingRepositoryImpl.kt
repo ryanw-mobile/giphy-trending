@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025. Ryan Wong
+ * Copyright (c) 2024-2026. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -19,6 +19,8 @@ import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.repository.TrendingRepository
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
@@ -29,16 +31,11 @@ class TrendingRepositoryImpl @Inject constructor(
     @GiphyApiKey private val giphyApiKey: String,
     @DispatcherModule.IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : TrendingRepository {
-    override suspend fun fetchCachedTrending(): Result<List<GifObject>> = withContext(dispatcher) {
-        Result.runCatching {
-            databaseDataSource.queryData().map { it.toGifObject() }
-        }.except<CancellationException, _>()
-    }
+    override val trendingFlow: Flow<List<GifObject>> = databaseDataSource.queryData()
+        .map { entities -> entities.map { it.toGifObject() } }
 
-    override suspend fun reloadTrending(limit: Int, rating: Rating): Result<List<GifObject>> {
+    override suspend fun refreshTrending(limit: Int, rating: Rating): Result<Unit> {
         if (giphyApiKey.isBlank()) {
-            @Suppress("UNREACHABLE_CODE")
-            // It won't work without an API Key - CI might pass in nothing
             return Result.failure(exception = EmptyGiphyAPIKeyException())
         }
 
@@ -52,15 +49,7 @@ class TrendingRepositoryImpl @Inject constructor(
                 Timber.tag("refreshTrending").v("Insertion completed")
 
                 val invalidationResult = invalidateDirtyTrendingDb()
-                invalidationResult.fold(
-                    onSuccess = {
-                        databaseDataSource.queryData().map { it.toGifObject() }
-                    },
-                    onFailure = { exception ->
-                        Timber.tag("invalidationResult").e(exception)
-                        throw exception
-                    },
-                )
+                invalidationResult.getOrThrow()
             }.except<CancellationException, _>()
         }
     }

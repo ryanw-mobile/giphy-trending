@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025. Ryan Wong
+ * Copyright (c) 2024-2026. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -16,7 +16,7 @@ class RoomDatabaseDataSource @Inject constructor(
 
     override suspend fun insertAllData(data: List<TrendingEntity>) = giphyDatabase.trendingDao().insertAllData(data = data)
 
-    override suspend fun queryData(): List<TrendingEntity> = giphyDatabase.trendingDao().queryData()
+    override fun queryData(): kotlinx.coroutines.flow.Flow<List<TrendingEntity>> = giphyDatabase.trendingDao().queryData()
 
     override suspend fun clear() {
         giphyDatabase.trendingDao().clear()

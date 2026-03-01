@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025. Ryan Wong
+ * Copyright (c) 2024-2026. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -9,6 +9,9 @@ import com.rwmobi.giphytrending.data.repository.FakeTrendingRepository
 import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
+import com.rwmobi.giphytrending.domain.usecase.GetTrendingFlowUseCase
+import com.rwmobi.giphytrending.domain.usecase.GetUserPreferencesUseCase
+import com.rwmobi.giphytrending.domain.usecase.RefreshTrendingUseCase
 import com.rwmobi.giphytrending.test.testdata.SampleGifObjectList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -28,7 +31,9 @@ internal class TrendingViewModelTest {
 
     private fun setupViewModel() {
         viewModel = TrendingViewModel(
-            trendingRepository = fakeTrendingRepository,
+            getTrendingFlowUseCase = GetTrendingFlowUseCase(fakeTrendingRepository),
+            refreshTrendingUseCase = RefreshTrendingUseCase(fakeTrendingRepository),
+            getUserPreferencesUseCase = GetUserPreferencesUseCase(fakeUserPreferencesRepository),
             userPreferencesRepository = fakeUserPreferencesRepository,
             dispatcher = UnconfinedTestDispatcher(),
         )
@@ -39,8 +44,6 @@ internal class TrendingViewModelTest {
         fakeTrendingRepository = FakeTrendingRepository()
         fakeUserPreferencesRepository = FakeUserPreferencesRepository()
     }
-
-    // Test function names reviewed by Gemini for consistency
 
     @Test
     fun `starts with loading state true when initialised`() {

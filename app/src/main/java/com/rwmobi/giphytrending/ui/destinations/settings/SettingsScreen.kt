@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024-2025. Ryan Wong
+ * Copyright (c) 2024-2026. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -25,6 +25,7 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -63,6 +64,9 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import com.rwmobi.giphytrending.BuildConfig
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.domain.model.Rating
@@ -70,6 +74,8 @@ import com.rwmobi.giphytrending.ui.components.LoadingOverlay
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.utils.getPreviewWindowSizeClass
 import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
 fun SettingsScreen(
@@ -78,15 +84,28 @@ fun SettingsScreen(
     apiMinEntries: Int,
     apiMaxEntries: Int,
     uiState: SettingsUIState,
-    uiEvent: SettingsUIEvent,
+    uiActions: SettingsUIActions,
+    effectFlow: Flow<SettingsEffect>,
+    onShowSnackbar: suspend (String) -> Unit,
 ) {
     if (uiState.errorMessages.isNotEmpty()) {
         val errorMessage = remember(uiState) { uiState.errorMessages[0] }
         val errorMessageText = errorMessage.message
 
         LaunchedEffect(errorMessage.id) {
-            uiEvent.onShowSnackbar(errorMessageText)
-            uiEvent.onErrorShown(errorMessage.id)
+            onShowSnackbar(errorMessageText)
+            uiActions.onErrorShown(errorMessage.id)
+        }
+    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(lifecycleOwner.lifecycle) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            effectFlow.collect { effect ->
+                when (effect) {
+                    is SettingsEffect.ShowSnackbar -> onShowSnackbar(effect.message)
+                }
+            }
         }
     }
 
@@ -103,15 +122,15 @@ fun SettingsScreen(
                     rating = uiState.rating,
                     sliderValue = uiState.apiRequestLimit.toFloat(),
                     sliderRange = apiMinEntries.toFloat()..apiMaxEntries.toFloat(),
-                    onUpdateApiRequestLimit = { uiEvent.onUpdateApiMaxEntries(it.toInt()) },
-                    onUpdateRating = { uiEvent.onUpdateRating(it) },
+                    onUpdateApiRequestLimit = { uiActions.onUpdateApiMaxEntries(it.toInt()) },
+                    onUpdateRating = { uiActions.onUpdateRating(it) },
                     onBrowseUrl = { url -> context.startBrowserActivity(url = url) },
                 )
 
                 LaunchedEffect(uiState.requestScrollToTop) {
                     if (uiState.requestScrollToTop) {
                         scrollState.scrollTo(value = 0)
-                        uiEvent.onScrolledToTop()
+                        uiActions.onScrolledToTop()
                     }
                 }
             } else {
@@ -131,8 +150,8 @@ fun SettingsScreen(
                         rating = uiState.rating,
                         sliderValue = uiState.apiRequestLimit.toFloat(),
                         sliderRange = apiMinEntries.toFloat()..apiMaxEntries.toFloat(),
-                        onUpdateApiRequestLimit = { uiEvent.onUpdateApiMaxEntries(it.toInt()) },
-                        onUpdateRating = { uiEvent.onUpdateRating(it) },
+                        onUpdateApiRequestLimit = { uiActions.onUpdateApiMaxEntries(it.toInt()) },
+                        onUpdateRating = { uiActions.onUpdateRating(it) },
                         onBrowseUrl = { url -> context.startBrowserActivity(url = url) },
                     )
 
@@ -142,7 +161,7 @@ fun SettingsScreen(
                 LaunchedEffect(uiState.requestScrollToTop) {
                     if (uiState.requestScrollToTop) {
                         scrollState.scrollTo(value = 0)
-                        uiEvent.onScrolledToTop()
+                        uiActions.onScrolledToTop()
                     }
                 }
             }
@@ -278,8 +297,6 @@ private fun ImageRating(
     rating: Rating,
     onUpdateRating: (Rating) -> Unit,
 ) {
-    val context = LocalContext.current
-
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -399,13 +416,14 @@ private fun Preview() {
                     rating = Rating.G,
                     isLoading = false,
                 ),
-                uiEvent = SettingsUIEvent(
+                uiActions = SettingsUIActions(
                     onErrorShown = {},
                     onUpdateApiMaxEntries = {},
                     onUpdateRating = {},
                     onScrolledToTop = {},
-                    onShowSnackbar = {},
                 ),
+                effectFlow = emptyFlow(),
+                onShowSnackbar = {},
             )
         }
     }

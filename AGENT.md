@@ -53,10 +53,10 @@
 
 ## Development Conventions
 ### Clean Architecture
-The project strictly follows Clean Architecture principles:
-- **`data`**: Implements repositories and data sources (local, network, preferences). Uses Room, Ktor, and DataStore.
-- **`domain`**: Contains business logic, domain models, and repository interfaces. Pure Kotlin, no Android dependencies.
-- **`ui`**: Jetpack Compose implementation. Follows MVVM with `uiState` flows and `ViewIntent` patterns.
+The project strictly follows Clean Architecture principles with a focus on an **Offline-First** data flow:
+- **`data`**: Implements repositories and data sources (local, network, preferences). Uses Room, Ktor, and DataStore. The repository acts as a coordinator, ensuring the local database remains the single source of truth.
+- **`domain`**: Contains business logic, domain models, repository interfaces, and **Use Cases (Interactors)**. Pure Kotlin, no Android dependencies. Use Cases encapsulate specific business rules and provide a clean API for the UI layer.
+- **`ui`**: Jetpack Compose implementation. Follows MVVM with `uiState` flows, `Effect` flows for one-time side effects, and `UIActions` for user-triggered events. ViewModels are reactive and update the UI automatically when domain data or user preferences change.
 
 ### Testing Strategy
 - **Unit Tests:** Located in `src/test`. Focus on ViewModels and Domain logic.

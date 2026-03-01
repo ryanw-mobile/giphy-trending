@@ -43,10 +43,13 @@ now [logged as issues](https://github.com/ryanw-mobile/giphy-trending/issues?q=i
 ## High level architecture
 
 * Kotlin
-* MVVM & clean architecture
+* MVVM & clean architecture with **Use Case (Interactor)** layer
+* **Offline-First** data strategy using Room as a single source of truth
 * Jetpack Compose - Single Activity
 * Kotlin Coroutines and Flow
 * Dependency Injection using Dagger Hilt
+* Reactive UI updates responding to data and preference changes
+* Standardized UI side-effect handling using `SharedFlow` (Effect pattern)
 * Material 3 dynamic colour theming supporting light and dark modes
 * Dynamic screen layout support using Windows Size Class
 * Gradle Kotlin DSL and Version Catalog

@@ -86,3 +86,6 @@ lint/tmp/
 .idea
 # app/src/release/generated/baselineProfiles
 .kotlin/sessions
+
+.gemini/
+gha-creds-*.json

@@ -8,16 +8,20 @@ package com.rwmobi.giphytrending.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rwmobi.giphytrending.di.DispatcherModule
-import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
-import com.rwmobi.giphytrending.domain.repository.TrendingRepository
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
+import com.rwmobi.giphytrending.domain.usecase.GetTrendingFlowUseCase
+import com.rwmobi.giphytrending.domain.usecase.GetUserPreferencesUseCase
+import com.rwmobi.giphytrending.domain.usecase.RefreshTrendingUseCase
+import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingEffect
 import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingUIState
 import com.rwmobi.giphytrending.ui.model.ErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,17 +31,22 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TrendingViewModel @Inject constructor(
-    private val trendingRepository: TrendingRepository,
-    private val userPreferencesRepository: UserPreferencesRepository,
+    private val getTrendingFlowUseCase: GetTrendingFlowUseCase,
+    private val refreshTrendingUseCase: RefreshTrendingUseCase,
+    private val getUserPreferencesUseCase: GetUserPreferencesUseCase,
+    private val userPreferencesRepository: UserPreferencesRepository, // Keep for preferenceErrors
     @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<TrendingUIState> = MutableStateFlow(TrendingUIState(isLoading = true))
     val uiState = _uiState.asStateFlow()
 
+    private val _effect = MutableSharedFlow<TrendingEffect>()
+    val effect = _effect.asSharedFlow()
+
     private var userPreferences: UserPreferences = UserPreferences(apiRequestLimit = null, rating = null)
-    private var firstRefreshDone: Boolean = false
 
     init {
+        collectTrendingGifs()
         collectErrors()
         collectUserPreferences()
     }
@@ -74,6 +83,20 @@ class TrendingViewModel @Inject constructor(
         }
     }
 
+    fun showSnackbar(message: String) {
+        viewModelScope.launch(dispatcher) {
+            _effect.emit(TrendingEffect.ShowSnackbar(message))
+        }
+    }
+
+    private fun collectTrendingGifs() {
+        viewModelScope.launch(dispatcher) {
+            getTrendingFlowUseCase().collect { gifObjects ->
+                _uiState.update { it.copy(gifObjects = gifObjects) }
+            }
+        }
+    }
+
     private fun collectErrors() {
         viewModelScope.launch(dispatcher) {
             userPreferencesRepository.preferenceErrors.collect { preferenceErrors ->
@@ -85,12 +108,14 @@ class TrendingViewModel @Inject constructor(
 
     private fun collectUserPreferences() {
         viewModelScope.launch(dispatcher) {
-            userPreferencesRepository.userPreferences.collect { prefs ->
+            getUserPreferencesUseCase().collect { prefs ->
+                val previousPrefs = userPreferences
                 userPreferences = prefs
-                if (userPreferences.isFullyConfigured() && !firstRefreshDone) {
-                    Timber.tag("refresh").v("Got user preferences, trigger initial refresh")
-                    refresh()
-                    firstRefreshDone = true
+                if (userPreferences.isFullyConfigured()) {
+                    if (previousPrefs != userPreferences) {
+                        Timber.tag("refresh").v("Got new user preferences, trigger refresh")
+                        refresh()
+                    }
                 }
             }
         }
@@ -102,27 +127,12 @@ class TrendingViewModel @Inject constructor(
 
     private fun loadTrendingData(apiMaxEntries: Int, rating: Rating) {
         viewModelScope.launch(dispatcher) {
-            val repositoryResult = trendingRepository.reloadTrending(limit = apiMaxEntries, rating = rating)
-            processTrendingList(repositoryResult = repositoryResult, isLoadingDone = true)
-        }
-    }
-
-    private fun processTrendingList(repositoryResult: Result<List<GifObject>>, isLoadingDone: Boolean) {
-        repositoryResult.fold(
-            onSuccess = { gifObjects ->
-                _uiState.update { currentUiState ->
-                    currentUiState.copy(
-                        isLoading = !isLoadingDone,
-                        gifObjects = gifObjects,
-                    ).also {
-                        Timber.tag("processTrendingList").v("Processed ${gifObjects.count()} entries, isLoading = ${!isLoadingDone}")
-                    }
-                }
-            },
-            onFailure = { exception ->
+            val repositoryResult = refreshTrendingUseCase(limit = apiMaxEntries, rating = rating)
+            _uiState.update { it.copy(isLoading = false) }
+            repositoryResult.onFailure { exception ->
                 updateUIForError("Error getting data: ${exception.message}")
-            },
-        )
+            }
+        }
     }
 
     private fun updateUIForError(message: String) {

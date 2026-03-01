@@ -11,6 +11,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.rwmobi.giphytrending.data.source.local.GiphyDatabase
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingEntity
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -49,7 +50,7 @@ internal class TrendingDaoTest {
     @Test
     fun `returns single entry when inserting single entry`() = runTest {
         trendingDao.insertData(SampleTrendingEntity.case1)
-        assertEquals(listOf(SampleTrendingEntity.case1), trendingDao.queryData())
+        assertEquals(listOf(SampleTrendingEntity.case1), trendingDao.queryData().first())
     }
 
     @Test
@@ -64,7 +65,7 @@ internal class TrendingDaoTest {
 
         assertEquals(
             testTrendingList.sortedBy { it.id },
-            trendingDao.queryData().sortedBy { it.id },
+            trendingDao.queryData().first().sortedBy { it.id },
         )
     }
 
@@ -84,7 +85,7 @@ internal class TrendingDaoTest {
 
         trendingDao.insertData(SampleTrendingEntity.case2Modified)
 
-        val trendingList = trendingDao.queryData().sortedBy { it.id }
+        val trendingList = trendingDao.queryData().first().sortedBy { it.id }
         assertContentEquals(expectedResult, trendingList)
     }
 
@@ -99,7 +100,7 @@ internal class TrendingDaoTest {
 
         trendingDao.clear()
 
-        assertTrue(trendingDao.queryData().isEmpty())
+        assertTrue(trendingDao.queryData().first().isEmpty())
     }
 
     // Dirty bit test cases
@@ -114,7 +115,7 @@ internal class TrendingDaoTest {
 
         trendingDao.markDirty()
 
-        val trendingList = trendingDao.queryData()
+        val trendingList = trendingDao.queryData().first()
         assertEquals(
             listOf(true, true, true),
             trendingList.map { it.dirty },
@@ -133,7 +134,7 @@ internal class TrendingDaoTest {
 
         trendingDao.deleteDirty()
 
-        assertTrue(trendingDao.queryData().isEmpty())
+        assertTrue(trendingDao.queryData().first().isEmpty())
     }
 
     @Test
@@ -150,6 +151,6 @@ internal class TrendingDaoTest {
 
         trendingDao.deleteDirty()
 
-        assertEquals(expectedResult, trendingDao.queryData())
+        assertEquals(expectedResult, trendingDao.queryData().first())
     }
 }

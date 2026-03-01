@@ -23,11 +23,11 @@ import coil3.ImageLoader
 import com.rwmobi.giphytrending.BuildConfig
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.destinations.search.SearchScreen
-import com.rwmobi.giphytrending.ui.destinations.search.SearchUIEvent
+import com.rwmobi.giphytrending.ui.destinations.search.SearchUIActions
 import com.rwmobi.giphytrending.ui.destinations.settings.SettingsScreen
-import com.rwmobi.giphytrending.ui.destinations.settings.SettingsUIEvent
+import com.rwmobi.giphytrending.ui.destinations.settings.SettingsUIActions
 import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingListScreen
-import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingUIEvent
+import com.rwmobi.giphytrending.ui.destinations.trendinglist.TrendingUIActions
 import com.rwmobi.giphytrending.ui.viewmodel.SearchViewModel
 import com.rwmobi.giphytrending.ui.viewmodel.SettingsViewModel
 import com.rwmobi.giphytrending.ui.viewmodel.TrendingViewModel
@@ -75,14 +75,15 @@ fun AppNavHost(
                 useCardLayout = isLargeScreen,
                 imageLoader = imageLoader,
                 uiState = uiState,
-                uiEvent = TrendingUIEvent(
+                uiActions = TrendingUIActions(
                     onRefresh = { viewModel.refresh() },
                     onErrorShown = { viewModel.errorShown(it) },
                     onScrolledToTop = { onScrolledToTop(AppNavItem.TrendingList) },
-                    onQueueDownloadFailed = { onShowSnackbar(failedToDownloadFile) },
-                    onQueueDownloadSuccess = { onShowSnackbar(imageQueuedForDownload) },
-                    onShowSnackbar = onShowSnackbar,
+                    onQueueDownloadFailed = { viewModel.showSnackbar(failedToDownloadFile) },
+                    onQueueDownloadSuccess = { viewModel.showSnackbar(imageQueuedForDownload) },
                 ),
+                effectFlow = viewModel.effect,
+                onShowSnackbar = onShowSnackbar,
             )
 
             LaunchedEffect(Unit) {
@@ -111,7 +112,7 @@ fun AppNavHost(
                 useCardLayout = isLargeScreen,
                 imageLoader = imageLoader,
                 uiState = uiState,
-                uiEvent = SearchUIEvent(
+                uiActions = SearchUIActions(
                     onFetchLastSuccessfulSearch = { viewModel.fetchLastSuccessfulSearch() },
                     onClearKeyword = { viewModel.clearKeyword() },
                     onUpdateKeyword = { viewModel.updateKeyword(it) },
@@ -121,10 +122,11 @@ fun AppNavHost(
                     },
                     onErrorShown = { viewModel.errorShown(it) },
                     onScrolledToTop = { onScrolledToTop(AppNavItem.Search) },
-                    onQueueDownloadFailed = { onShowSnackbar(failedToDownloadFile) },
-                    onQueueDownloadSuccess = { onShowSnackbar(imageQueuedForDownload) },
-                    onShowSnackbar = onShowSnackbar,
+                    onQueueDownloadFailed = { viewModel.showSnackbar(failedToDownloadFile) },
+                    onQueueDownloadSuccess = { viewModel.showSnackbar(imageQueuedForDownload) },
                 ),
+                effectFlow = viewModel.effect,
+                onShowSnackbar = onShowSnackbar,
             )
 
             LaunchedEffect(Unit) {
@@ -152,13 +154,14 @@ fun AppNavHost(
                 apiMinEntries = BuildConfig.API_MIN_ENTRIES.toInt(),
                 apiMaxEntries = BuildConfig.API_MAX_ENTRIES.toInt(),
                 uiState = uiState,
-                uiEvent = SettingsUIEvent(
+                uiActions = SettingsUIActions(
                     onUpdateApiMaxEntries = { viewModel.setApiRequestLimit(it) },
                     onUpdateRating = { viewModel.setRating(it) },
                     onErrorShown = { viewModel.errorShown(it) },
                     onScrolledToTop = { onScrolledToTop(AppNavItem.Settings) },
-                    onShowSnackbar = onShowSnackbar,
                 ),
+                effectFlow = viewModel.effect,
+                onShowSnackbar = onShowSnackbar,
             )
 
             LaunchedEffect(Unit) {

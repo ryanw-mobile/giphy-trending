@@ -1,5 +1,5 @@
 /*
- * Copyright 2024-2026 RW MobiMedia UK Limited
+ * Copyright (c) 2024-2025. Ryan Wong
  * https://github.com/ryanw-mobile
  */
 
@@ -7,36 +7,39 @@ package com.rwmobi.giphytrending.data.source.local
 
 import com.rwmobi.giphytrending.data.source.local.interfaces.DatabaseDataSource
 import com.rwmobi.giphytrending.data.source.local.model.TrendingEntity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 
 class FakeDatabaseDataSource : DatabaseDataSource {
-    var apiError: Throwable? = null
-    var queryDataResponse: List<TrendingEntity>? = null
+
+    var queryDataResponse = MutableStateFlow<List<TrendingEntity>>(emptyList())
+    var queryDataError: Exception? = null
+    var apiError: Exception? = null
 
     override suspend fun insertData(data: TrendingEntity) {
-        apiError?.run { throw this }
-        queryDataResponse = listOf(data)
+        // no-op
     }
 
     override suspend fun insertAllData(data: List<TrendingEntity>) {
-        apiError?.run { throw this }
-        queryDataResponse = data
+        apiError?.let { throw it }
+        queryDataResponse.value = data
     }
 
-    override suspend fun queryData(): List<TrendingEntity> {
-        apiError?.run { throw this }
-        return queryDataResponse ?: emptyList()
+    override fun queryData(): Flow<List<TrendingEntity>> {
+        queryDataError?.let { throw it }
+        return queryDataResponse
     }
 
     override suspend fun clear() {
-        apiError?.run { throw this }
-        queryDataResponse = emptyList()
+        // no-op
     }
 
     override suspend fun markDirty() {
-        apiError?.run { throw this }
+        apiError?.let { throw it }
     }
 
     override suspend fun deleteDirty() {
-        apiError?.run { throw this }
+        apiError?.let { throw it }
     }
 }

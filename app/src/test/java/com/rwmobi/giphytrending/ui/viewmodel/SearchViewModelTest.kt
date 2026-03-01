@@ -9,6 +9,8 @@ import com.rwmobi.giphytrending.data.repository.FakeSearchRepository
 import com.rwmobi.giphytrending.data.repository.FakeUserPreferencesRepository
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
+import com.rwmobi.giphytrending.domain.usecase.GetUserPreferencesUseCase
+import com.rwmobi.giphytrending.domain.usecase.SearchGifsUseCase
 import com.rwmobi.giphytrending.test.testdata.SampleGifObjectList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -32,13 +34,13 @@ internal class SearchViewModelTest {
         fakeUserPreferencesRepository = FakeUserPreferencesRepository()
         fakeSearchRepository = FakeSearchRepository()
         viewModel = SearchViewModel(
+            searchGifsUseCase = SearchGifsUseCase(fakeSearchRepository),
+            getUserPreferencesUseCase = GetUserPreferencesUseCase(fakeUserPreferencesRepository),
             searchRepository = fakeSearchRepository,
             userPreferencesRepository = fakeUserPreferencesRepository,
             dispatcher = UnconfinedTestDispatcher(),
         )
     }
-
-    // Test function names reviewed by Gemini for consistency
 
     @Test
     fun `updates UI state with last successful search data when data is available`() = runTest {

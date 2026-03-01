@@ -5,14 +5,23 @@
 
 package com.rwmobi.giphytrending.ui.destinations.search
 
-data class SearchUIEvent(
+/**
+ * UI actions for the Search screen.
+ */
+data class SearchUIActions(
     val onFetchLastSuccessfulSearch: () -> Unit,
     val onUpdateKeyword: (keyword: String) -> Unit,
     val onClearKeyword: () -> Unit,
     val onSearch: () -> Unit,
     val onScrolledToTop: () -> Unit,
-    val onQueueDownloadSuccess: suspend () -> Unit,
-    val onQueueDownloadFailed: suspend () -> Unit,
+    val onQueueDownloadSuccess: () -> Unit,
+    val onQueueDownloadFailed: () -> Unit,
     val onErrorShown: (errorId: Long) -> Unit,
-    val onShowSnackbar: suspend (String) -> Unit,
 )
+
+/**
+ * One-time side effects for the Search screen.
+ */
+sealed class SearchEffect {
+    data class ShowSnackbar(val message: String) : SearchEffect()
+}

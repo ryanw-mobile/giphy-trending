@@ -20,7 +20,7 @@ interface TrendingDao {
     suspend fun insertAllData(data: List<TrendingEntity>)
 
     @Query("SELECT * FROM trending ORDER BY trending_datetime DESC, import_datetime DESC")
-    suspend fun queryData(): List<TrendingEntity>
+    fun queryData(): kotlinx.coroutines.flow.Flow<List<TrendingEntity>>
 
     @Query("DELETE FROM trending")
     suspend fun clear()

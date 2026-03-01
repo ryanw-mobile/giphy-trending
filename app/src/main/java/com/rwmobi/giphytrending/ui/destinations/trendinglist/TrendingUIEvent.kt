@@ -5,11 +5,20 @@
 
 package com.rwmobi.giphytrending.ui.destinations.trendinglist
 
-data class TrendingUIEvent(
+/**
+ * UI actions for the Trending list screen.
+ */
+data class TrendingUIActions(
     val onRefresh: () -> Unit,
     val onScrolledToTop: () -> Unit,
-    val onQueueDownloadSuccess: suspend () -> Unit,
-    val onQueueDownloadFailed: suspend () -> Unit,
+    val onQueueDownloadSuccess: () -> Unit,
+    val onQueueDownloadFailed: () -> Unit,
     val onErrorShown: (errorId: Long) -> Unit,
-    val onShowSnackbar: suspend (String) -> Unit,
 )
+
+/**
+ * One-time side effects for the Trending list screen.
+ */
+sealed class TrendingEffect {
+    data class ShowSnackbar(val message: String) : TrendingEffect()
+}

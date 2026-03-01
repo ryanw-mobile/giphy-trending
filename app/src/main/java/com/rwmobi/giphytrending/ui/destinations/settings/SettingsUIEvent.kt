@@ -7,10 +7,19 @@ package com.rwmobi.giphytrending.ui.destinations.settings
 
 import com.rwmobi.giphytrending.domain.model.Rating
 
-data class SettingsUIEvent(
+/**
+ * UI actions for the Settings screen.
+ */
+data class SettingsUIActions(
     val onUpdateApiMaxEntries: (maxApiEntries: Int) -> Unit,
     val onUpdateRating: (rating: Rating) -> Unit,
     val onScrolledToTop: () -> Unit,
     val onErrorShown: (errorId: Long) -> Unit,
-    val onShowSnackbar: suspend (String) -> Unit,
 )
+
+/**
+ * One-time side effects for the Settings screen.
+ */
+sealed class SettingsEffect {
+    data class ShowSnackbar(val message: String) : SettingsEffect()
+}

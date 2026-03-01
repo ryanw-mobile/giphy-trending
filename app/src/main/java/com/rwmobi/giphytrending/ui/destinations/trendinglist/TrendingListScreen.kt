@@ -14,7 +14,6 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -28,6 +27,9 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.core.net.toUri
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.repeatOnLifecycle
 import coil3.ImageLoader
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.domain.model.GifObject
@@ -38,6 +40,9 @@ import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.utils.downloadImage
 import com.rwmobi.giphytrending.ui.utils.getPreviewWindowSizeClass
 import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,28 +51,42 @@ fun TrendingListScreen(
     useCardLayout: Boolean,
     imageLoader: ImageLoader,
     uiState: TrendingUIState,
-    uiEvent: TrendingUIEvent,
+    uiActions: TrendingUIActions,
+    effectFlow: Flow<TrendingEffect>,
+    onShowSnackbar: suspend (String) -> Unit,
 ) {
     if (uiState.errorMessages.isNotEmpty()) {
         val errorMessage = remember(uiState) { uiState.errorMessages[0] }
         val errorMessageText = errorMessage.message
 
         LaunchedEffect(errorMessage.id) {
-            uiEvent.onShowSnackbar(errorMessageText)
-            uiEvent.onErrorShown(errorMessage.id)
+            onShowSnackbar(errorMessageText)
+            uiActions.onErrorShown(errorMessage.id)
+        }
+    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(lifecycleOwner.lifecycle) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            effectFlow.collect { effect ->
+                when (effect) {
+                    is TrendingEffect.ShowSnackbar -> onShowSnackbar(effect.message)
+                }
+            }
         }
     }
 
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val clipboardHistory = remember { mutableStateListOf<String>() }
+    val clipboardManager = LocalClipboardManager.current
+    val clipboardSnackbarText = stringResource(id = R.string.clipboard_copied)
     val contentDescriptionPullToRefresh = stringResource(R.string.content_description_pull_to_refresh)
 
     PullToRefreshBox(
         modifier = modifier.semantics { contentDescription = contentDescriptionPullToRefresh },
         isRefreshing = uiState.isLoading,
         onRefresh = {
-            uiEvent.onRefresh()
+            uiActions.onRefresh()
         },
     ) {
         uiState.gifObjects?.let { giphyImageItems ->
@@ -84,13 +103,19 @@ fun TrendingListScreen(
                             imageUrl = imageUrl,
                             coroutineScope = coroutineScope,
                             context = context,
-                            onSuccess = uiEvent.onQueueDownloadSuccess,
-                            onError = uiEvent.onQueueDownloadFailed,
+                            onSuccess = { uiActions.onQueueDownloadSuccess() },
+                            onError = { uiActions.onQueueDownloadFailed() },
                         )
                     },
                     onClickToOpen = { url -> context.startBrowserActivity(url = url) },
-                    onClickToShare = { url -> clipboardHistory.add(url) },
-                    onScrolledToTop = uiEvent.onScrolledToTop,
+                    onClickToShare = { url ->
+                        val uri = url.toUri().buildUpon().scheme("https").build()
+                        clipboardManager.setText(AnnotatedString(uri.toString()))
+                        coroutineScope.launch {
+                            onShowSnackbar(clipboardSnackbarText)
+                        }
+                    },
+                    onScrolledToTop = uiActions.onScrolledToTop,
                 )
             } else if (!uiState.isLoading) {
                 NoDataScreen(
@@ -100,17 +125,6 @@ fun TrendingListScreen(
                     stringResource(R.string.there_is_nothing_to_show_try_pull_to_reload),
                 )
             }
-        }
-    }
-
-    val clipboardManager = LocalClipboardManager.current
-    val snackbarText = stringResource(id = R.string.clipboard_copied)
-    LaunchedEffect(clipboardHistory.lastOrNull()) {
-        clipboardHistory.lastOrNull()?.let { url ->
-            val uri = url.toUri().buildUpon().scheme("https").build()
-            clipboardManager.setText(AnnotatedString(uri.toString()))
-            uiEvent.onShowSnackbar(snackbarText)
-            clipboardHistory.remove(url) // Remove after processing to avoid re-triggering
         }
     }
 }
@@ -131,14 +145,15 @@ private fun Preview(
                     gifObjects = gifObjects,
                     isLoading = false,
                 ),
-                uiEvent = TrendingUIEvent(
+                uiActions = TrendingUIActions(
                     onRefresh = {},
                     onErrorShown = {},
-                    onShowSnackbar = {},
                     onScrolledToTop = {},
                     onQueueDownloadFailed = {},
                     onQueueDownloadSuccess = {},
                 ),
+                effectFlow = emptyFlow(),
+                onShowSnackbar = {},
             )
         }
     }
@@ -157,14 +172,15 @@ private fun NoDataPreview() {
                     gifObjects = emptyList(),
                     isLoading = false,
                 ),
-                uiEvent = TrendingUIEvent(
+                uiActions = TrendingUIActions(
                     onRefresh = {},
                     onErrorShown = {},
-                    onShowSnackbar = {},
                     onScrolledToTop = {},
                     onQueueDownloadFailed = {},
                     onQueueDownloadSuccess = {},
                 ),
+                effectFlow = emptyFlow(),
+                onShowSnackbar = {},
             )
         }
     }

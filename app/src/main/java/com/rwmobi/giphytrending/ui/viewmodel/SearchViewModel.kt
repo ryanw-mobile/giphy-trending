@@ -8,16 +8,20 @@ package com.rwmobi.giphytrending.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rwmobi.giphytrending.di.DispatcherModule
-import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.model.UserPreferences
 import com.rwmobi.giphytrending.domain.repository.SearchRepository
 import com.rwmobi.giphytrending.domain.repository.UserPreferencesRepository
+import com.rwmobi.giphytrending.domain.usecase.GetUserPreferencesUseCase
+import com.rwmobi.giphytrending.domain.usecase.SearchGifsUseCase
+import com.rwmobi.giphytrending.ui.destinations.search.SearchEffect
 import com.rwmobi.giphytrending.ui.destinations.search.SearchUIState
 import com.rwmobi.giphytrending.ui.model.ErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,8 +31,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val searchRepository: SearchRepository,
-    private val userPreferencesRepository: UserPreferencesRepository,
+    private val searchGifsUseCase: SearchGifsUseCase,
+    private val getUserPreferencesUseCase: GetUserPreferencesUseCase,
+    private val searchRepository: SearchRepository, // Still needed for getLastSuccessfulSearch...
+    private val userPreferencesRepository: UserPreferencesRepository, // Keep for preferenceErrors
     @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
     // API returns HTTP 414 if query string longer than this
@@ -40,6 +46,9 @@ class SearchViewModel @Inject constructor(
         ),
     )
     val uiState = _uiState.asStateFlow()
+
+    private val _effect = MutableSharedFlow<SearchEffect>()
+    val effect = _effect.asSharedFlow()
 
     private var userPreferences: UserPreferences = UserPreferences(apiRequestLimit = null, rating = null)
     private var initialisationDone: Boolean = false
@@ -121,6 +130,12 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    fun showSnackbar(message: String) {
+        viewModelScope.launch(dispatcher) {
+            _effect.emit(SearchEffect.ShowSnackbar(message))
+        }
+    }
+
     private fun collectErrors() {
         viewModelScope.launch(dispatcher) {
             userPreferencesRepository.preferenceErrors.collect { preferenceErrors ->
@@ -132,7 +147,7 @@ class SearchViewModel @Inject constructor(
 
     private fun collectUserPreferences() {
         viewModelScope.launch(dispatcher) {
-            userPreferencesRepository.userPreferences.collect { prefs ->
+            getUserPreferencesUseCase().collect { prefs ->
                 userPreferences = prefs
                 if (userPreferences.isFullyConfigured() && !initialisationDone) {
                     _uiState.update { currentUiState ->
@@ -154,27 +169,23 @@ class SearchViewModel @Inject constructor(
 
     private fun startNewSearch(keyword: String?, apiMaxEntries: Int, rating: Rating) {
         viewModelScope.launch(dispatcher) {
-            val searchResult = searchRepository.search(keyword = keyword, limit = apiMaxEntries, rating = rating)
-            processTrendingList(repositoryResult = searchResult)
-        }
-    }
-
-    private fun processTrendingList(repositoryResult: Result<List<GifObject>>) {
-        repositoryResult.fold(
-            onSuccess = { gifObjects ->
-                _uiState.update { currentUiState ->
-                    currentUiState.copy(
-                        isLoading = false,
-                        gifObjects = gifObjects,
-                    ).also {
-                        Timber.tag("processTrendingList").v("Processed ${gifObjects.count()} entries")
+            val searchResult = searchGifsUseCase(keyword = keyword, limit = apiMaxEntries, rating = rating)
+            searchResult.fold(
+                onSuccess = { gifObjects ->
+                    _uiState.update { currentUiState ->
+                        currentUiState.copy(
+                            isLoading = false,
+                            gifObjects = gifObjects,
+                        ).also {
+                            Timber.tag("processTrendingList").v("Processed ${gifObjects.count()} entries")
+                        }
                     }
-                }
-            },
-            onFailure = { exception ->
-                updateUIForError("Error getting data: ${exception.message}")
-            },
-        )
+                },
+                onFailure = { exception ->
+                    updateUIForError("Error getting data: ${exception.message}")
+                },
+            )
+        }
     }
 
     private fun updateUIForError(message: String) {

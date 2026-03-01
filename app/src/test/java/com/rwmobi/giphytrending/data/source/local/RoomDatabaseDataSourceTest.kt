@@ -11,6 +11,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingEntity
 import com.rwmobi.giphytrending.test.testdata.SampleTrendingEntityList
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -50,7 +51,7 @@ internal class RoomDatabaseDataSourceTest {
         val testData = SampleTrendingEntity.case1
         roomDatabaseDataSource.insertData(data = testData)
 
-        val result = roomDatabaseDataSource.queryData()
+        val result = roomDatabaseDataSource.queryData().first()
         assertEquals(listOf(testData), result)
     }
 
@@ -59,7 +60,7 @@ internal class RoomDatabaseDataSourceTest {
         val testDataList = SampleTrendingEntityList.tripleEntityList
         roomDatabaseDataSource.insertAllData(data = testDataList)
 
-        val result = roomDatabaseDataSource.queryData()
+        val result = roomDatabaseDataSource.queryData().first()
         assertEquals(testDataList.sortedBy { it.id }, result.sortedBy { it.id })
     }
 
@@ -69,7 +70,7 @@ internal class RoomDatabaseDataSourceTest {
         roomDatabaseDataSource.insertAllData(data = testDataList)
 
         roomDatabaseDataSource.clear()
-        val result = roomDatabaseDataSource.queryData()
+        val result = roomDatabaseDataSource.queryData().first()
 
         assertTrue(result.isEmpty())
     }
@@ -80,7 +81,7 @@ internal class RoomDatabaseDataSourceTest {
         roomDatabaseDataSource.insertAllData(data = testDataList)
 
         roomDatabaseDataSource.markDirty()
-        val result = roomDatabaseDataSource.queryData()
+        val result = roomDatabaseDataSource.queryData().first()
 
         result.forEach { trendingEntity ->
             assertTrue(trendingEntity.dirty)
@@ -94,7 +95,7 @@ internal class RoomDatabaseDataSourceTest {
         roomDatabaseDataSource.markDirty()
 
         roomDatabaseDataSource.deleteDirty()
-        val result = roomDatabaseDataSource.queryData()
+        val result = roomDatabaseDataSource.queryData().first()
 
         result.forEach { trendingEntity ->
             assertFalse(trendingEntity.dirty)

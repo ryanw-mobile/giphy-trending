@@ -5,6 +5,7 @@
 
 package com.rwmobi.giphytrending.ui.destinations.search
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -85,7 +87,14 @@ fun SearchScreen(
     val clipboardSnackbarText = stringResource(id = R.string.clipboard_copied)
     val focusManager = LocalFocusManager.current
 
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    focusManager.clearFocus()
+                })
+            },
+    ) {
         SearchTextField(
             modifier = Modifier
                 .fillMaxWidth()

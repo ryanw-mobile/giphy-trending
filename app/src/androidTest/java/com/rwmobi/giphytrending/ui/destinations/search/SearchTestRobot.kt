@@ -13,8 +13,8 @@ import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onParent
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
@@ -157,9 +157,11 @@ internal class SearchTestRobot(
 
     private fun tapToDismissKeyboard() {
         with(composeTestRule) {
-            onNodeWithTag(testTag = "layoutBox").performTouchInput {
-                click()
-            }
+            onNodeWithContentDescription(label = activity.getString(R.string.content_description_search_bar))
+                .onParent()
+                .performTouchInput {
+                    click(bottomCenter)
+                }
         }
     }
 

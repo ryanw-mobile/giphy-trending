@@ -8,16 +8,24 @@ package com.rwmobi.giphytrending.data.repository
 import com.rwmobi.giphytrending.domain.model.GifObject
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.domain.repository.TrendingRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 class FakeUITestTrendingRepository @Inject constructor() : TrendingRepository {
-    private var trendingResult: Result<List<GifObject>>? = null
+    private val _trendingFlow = MutableStateFlow<List<GifObject>>(emptyList())
+    override val trendingFlow: Flow<List<GifObject>> = _trendingFlow
 
-    override suspend fun fetchCachedTrending(): Result<List<GifObject>> = trendingResult ?: Result.success(emptyList())
+    private var refreshResult: Result<Unit> = Result.success(Unit)
 
-    override suspend fun reloadTrending(limit: Int, rating: Rating): Result<List<GifObject>> = trendingResult ?: Result.success(emptyList())
+    override suspend fun refreshTrending(limit: Int, rating: Rating): Result<Unit> = refreshResult
 
-    fun setTrendingResultForTest(trendingResult: Result<List<GifObject>>?) {
-        this.trendingResult = trendingResult
+    fun setTrendingResultForTest(trendingResult: Result<List<GifObject>>) {
+        if (trendingResult.isSuccess) {
+            _trendingFlow.value = trendingResult.getOrNull() ?: emptyList()
+            this.refreshResult = Result.success(Unit)
+        } else {
+            this.refreshResult = Result.failure(trendingResult.exceptionOrNull() ?: Exception("Unknown error"))
+        }
     }
 }

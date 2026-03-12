@@ -11,7 +11,7 @@
 - **Networking:** Ktor
 - **Persistence:** Room (Database) and DataStore (Preferences)
 - **Image Loading:** Coil (with Ktor and GIF support)
-- **Quality & Performance:** Detekt, Kotlinter, Kover, Macrobenchmark, and Baseline Profiles.
+- **Quality & Performance:** Detekt, Kotlinter, JaCoCo, Macrobenchmark, and Baseline Profiles.
 
 ## Module Structure
 - `app`: Main application module containing core logic and UI.
@@ -48,7 +48,7 @@
 - **Build Release Bundle:** `./gradlew clean bundleRelease`
 - **Lint/Check:** `./gradlew lint detekt kotlinterCheck`
 - **Format Code:** `./gradlew formatKotlin`
-- **Code Coverage:** `./gradlew koverHtmlReport`
+- **Code Coverage:** `./gradlew :app:jacocoTestReportDebug`
 - **Generate Baseline Profile:** `./gradlew generateBaselineProfile`
 
 ## Development Conventions
@@ -62,7 +62,7 @@ The project strictly follows Clean Architecture principles with a focus on an **
 - **Unit Tests:** Located in `src/test`. Focus on ViewModels and Domain logic.
 - **Test Fixtures:** Manual fakes for repositories are provided in `src/testFixtures` to ensure reliable and fast unit tests without excessive mocking.
 - **UI Tests:** Located in `src/androidTest`. Uses Compose UI testing and Hilt for dependency injection in tests.
-- **Code Coverage:** Managed by Kover.
+- **Code Coverage:** Managed by JaCoCo.
 
 ### Coding Style
 - Follows Kotlin coding standards enforced by **Kotlinter** and **Detekt**.

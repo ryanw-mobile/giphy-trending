@@ -5,6 +5,7 @@
 
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.ManagedVirtualDevice
+import org.gradle.testing.jacoco.tasks.JacocoReport
 import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.text.SimpleDateFormat
@@ -14,13 +15,17 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.hiltAndroidPlugin)
-    alias(libs.plugins.kotlinxKover)
+    alias(libs.plugins.jacoco)
     alias(libs.plugins.devtoolsKsp)
     alias(libs.plugins.baselineprofile)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.serialization)
     alias(libs.plugins.detekt)
     alias(libs.plugins.kotlinter)
+}
+
+jacoco {
+    toolVersion = libs.versions.jacoco.get()
 }
 
 // Configuration
@@ -216,45 +221,71 @@ tasks {
 
 detekt { parallel = true }
 
-kover {
-    useJacoco()
-    reports.filters.excludes {
-        packages(
-            "$productNamespace.ui.*",
-            "$productNamespace.di*",
-            "$productNamespace.data.repository.demodata*",
-            "$productNamespace.ui.components",
-            "$productNamespace.ui.destinations",
-            "$productNamespace.ui.navigation",
-            "$productNamespace.ui.previewparameter",
-            "$productNamespace.ui.theme",
-            "$productNamespace.ui.utils",
-        )
+tasks.register<JacocoReport>("jacocoTestReportDebug") {
+    dependsOn("testDebugUnitTest")
 
-        classes(
-            "dagger.hilt.internal.aggregatedroot.codegen.*",
-            "hilt_aggregated_deps.*",
-            "$productNamespace.*.Hilt_*",
-            "$productNamespace.*.*_Factory*",
-            "$productNamespace.*.*_HiltModules*",
-            "$productNamespace.*.*Module_*",
-            "$productNamespace.*.*MembersInjector*",
-            "$productNamespace.*.*_Impl*",
-            "$productNamespace.ComposableSingletons*",
-            "$productNamespace.BuildConfig*",
-            "$productNamespace.*.Fake*",
-            "$productNamespace.*.previewparameter*",
-            "$productNamespace.app.ComposableSingletons*",
-            "$productNamespace.GiphyApplication*",
-            "*Fragment",
-            "*Fragment\$*",
-            "*Activity",
-            "*Activity\$*",
-            "*.databinding.*",
-            "*.BuildConfig",
-            "*.DebugUtil",
-        )
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports for the debug build."
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
     }
+
+    val fileFilter = listOf(
+        "**/R.class",
+        "**/R\$*.class",
+        "**/BuildConfig.*",
+        "**/Manifest*.*",
+        "**/*Test*.*",
+        "android/**/*.*",
+        "**/*\$ViewInjector*.*",
+        "**/*\$ViewBinder*.*",
+        "**/Lambda\$*.class",
+        "**/Lambda.class",
+        "**/*Lambda.class",
+        "**/*Lambda*.class",
+        "**/*_MembersInjector.class",
+        "**/Dagger*Component*.*",
+        "**/*Module_*Factory.class",
+        "**/*_Factory*.*",
+        "**/*_Provide*Factory*.*",
+        "**/*Extensions*.*",
+        "**/*\$Result.*",
+        "**/*\$Result\$*.*",
+        "**/ui/**/*.*",
+        "**/di/**/*.*",
+        "**/data/repository/demodata/**/*.*",
+        "**/ui/components/**/*.*",
+        "**/ui/destinations/**/*.*",
+        "**/ui/navigation/**/*.*",
+        "**/ui/previewparameter/**/*.*",
+        "**/ui/theme/**/*.*",
+        "**/ui/utils/**/*.*",
+        "**/dagger/hilt/internal/aggregatedroot/codegen/**/*.*",
+        "**/hilt_aggregated_deps/**/*.*",
+        "**/*Hilt_*.*",
+        "**/*_HiltModules*.*",
+        "**/*Module_*.*",
+        "**/*_Impl*.*",
+        "**/ComposableSingletons*.*",
+        "**/Fake*.*",
+        "**/GiphyApplication*.*",
+        "**/*Fragment*.*",
+        "**/*Activity*.*",
+        "**/databinding/**/*.*",
+        "**/DebugUtil*.*",
+    )
+
+    val debugTree = fileTree("${project.layout.buildDirectory.get()}/intermediates/classes/debug/transformDebugClassesWithAsm/dirs") {
+        exclude(fileFilter)
+    }
+
+    sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
+    classDirectories.setFrom(files(debugTree))
+    executionData.setFrom(fileTree(project.layout.buildDirectory.get()) {
+        include("outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
+    })
 }
 
 // Gradle Build Utilities - Revision 2026.01.22.01
@@ -347,6 +378,7 @@ private fun ApplicationExtension.setupSigningAndBuildTypes() {
             applicationIdSuffix = ".debug"
             isMinifyEnabled = false
             isDebuggable = true
+            enableUnitTestCoverage = true
         }
 
         getByName("release") {

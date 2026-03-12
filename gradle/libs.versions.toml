@@ -16,7 +16,7 @@ kotlinxCoroutinesTest = "1.10.2"
 junit = "4.13.2"
 kotlin = "2.3.10"
 kotlinxDatetime = "0.7.1-0.6.x-compat"
-kover = "0.9.7"
+jacoco = "0.8.12"
 ktor = "3.4.1"
 leakcanary = "2.14"
 legacySupportV4 = "1.0.0"
@@ -112,8 +112,8 @@ ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref =
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 hiltAndroidPlugin = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-kotlinxKover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 devtoolsKsp = { id = "com.google.devtools.ksp", version.ref = "devtoolsksp" }
+jacoco = { id = "org.gradle.jacoco" }
 androidTest = { id = "com.android.test", version.ref = "agp" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

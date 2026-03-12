@@ -92,7 +92,7 @@ now [logged as issues](https://github.com/ryanw-mobile/giphy-trending/issues?q=i
 * [Kotlin Android Plugin](https://kotlinlang.org/docs/gradle.html) - JetBrains - Plugin for Kotlin Android support
 * [Compose Compiler Plugin](https://developer.android.com/jetpack/compose) - JetBrains - Compiler plugin for Jetpack Compose
 * [Hilt Android Plugin](https://dagger.dev/hilt/gradle-setup.html) - Google - Plugin for Hilt dependency injection
-* [Kover Plugin](https://github.com/Kotlin/kotlinx-kover) - JetBrains - Code coverage tool for Kotlin
+* [JaCoCo Plugin](https://github.com/jacoco/jacoco) - JaCoCo - Code coverage tool for Java and Kotlin
 * [KSP Plugin](https://github.com/google/ksp) - Google - Kotlin Symbol Processing API
 * [Android Test Plugin](https://developer.android.com/studio/test) - Google - Plugin for setting up Android test modules
 * [Baseline Profile Plugin](https://developer.android.com/topic/performance/baselineprofiles) - AndroidX - Plugin for generating performance profiles

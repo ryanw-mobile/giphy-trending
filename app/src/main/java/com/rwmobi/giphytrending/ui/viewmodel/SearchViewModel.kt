@@ -23,6 +23,10 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -53,10 +57,33 @@ class SearchViewModel @Inject constructor(
     private var userPreferences: UserPreferences = UserPreferences(apiRequestLimit = null, rating = null)
     private var initialisationDone: Boolean = false
     private var keyword: String = ""
+    
+    // Internal flow for automatic search with debounce
+    private val keywordFlow = MutableStateFlow("")
 
     init {
         collectErrors()
         collectUserPreferences()
+        collectKeywordChanges()
+    }
+
+    private fun collectKeywordChanges() {
+        viewModelScope.launch(dispatcher) {
+            keywordFlow
+                .debounce(500) // Wait 500ms after user stops typing
+                .map { it.trim() } // Trim whitespace
+                .distinctUntilChanged() // Only trigger if keyword actually changed
+                .filter { it.isNotEmpty() } // Only search for non-empty keywords
+                .collect { trimmedKeyword ->
+                    val apiMaxEntries = userPreferences.apiRequestLimit
+                    val rating = userPreferences.rating
+                    if (apiMaxEntries != null && rating != null) {
+                        // Clear results before new search
+                        _uiState.update { it.copy(isLoading = true, gifObjects = emptyList()) }
+                        startNewSearch(keyword = trimmedKeyword, apiMaxEntries = apiMaxEntries, rating = rating)
+                    }
+                }
+        }
     }
 
     fun fetchLastSuccessfulSearch() {
@@ -78,6 +105,9 @@ class SearchViewModel @Inject constructor(
     fun updateKeyword(keyword: String?) {
         // caller is not allowed to feed us null value, which is reserved to the ViewModel
         this.keyword = keyword?.take(keywordMaxLength) ?: ""
+        
+        // Emit to flow for automatic search
+        keywordFlow.value = this.keyword
 
         _uiState.update { currentUiState ->
             currentUiState.copy(
@@ -88,6 +118,9 @@ class SearchViewModel @Inject constructor(
 
     fun clearKeyword() {
         keyword = ""
+
+        // Clear the flow as well
+        keywordFlow.value = ""
 
         _uiState.update { currentUiState ->
             currentUiState.copy(

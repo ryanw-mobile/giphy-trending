@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
@@ -27,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
@@ -39,11 +36,9 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
-import kotlinx.coroutines.launch
 
 @Composable
 fun SearchTextField(
@@ -52,10 +47,8 @@ fun SearchTextField(
     focusManager: FocusManager,
     onUpdateKeyword: (keyword: String) -> Unit,
     onClearKeyword: () -> Unit,
-    onSearch: () -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
-    val coroutineScope = rememberCoroutineScope()
     var isFocused by remember { mutableStateOf(false) }
     val contentDescriptionSearchBar = stringResource(R.string.content_description_search_bar)
 
@@ -79,17 +72,6 @@ fun SearchTextField(
             cursorColor = GiphyTrendingTheme.colorScheme.onPrimaryContainer.copy(
                 alpha = 0.28f,
             ),
-        ),
-        keyboardOptions = KeyboardOptions.Default.copy(
-            imeAction = ImeAction.Search,
-        ),
-        keyboardActions = KeyboardActions(
-            onSearch = {
-                onSearch()
-                coroutineScope.launch {
-                    focusManager.clearFocus()
-                }
-            },
         ),
         placeholder = {
             Text(
@@ -142,7 +124,6 @@ private fun SearchTextFieldEmptyPreview() {
                 focusManager = LocalFocusManager.current,
                 onUpdateKeyword = {},
                 onClearKeyword = {},
-                onSearch = { },
             )
         }
     }
@@ -158,7 +139,6 @@ private fun SearchTextFieldPreview() {
                 focusManager = LocalFocusManager.current,
                 onUpdateKeyword = {},
                 onClearKeyword = {},
-                onSearch = { },
             )
         }
     }

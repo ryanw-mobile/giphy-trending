@@ -12,7 +12,6 @@ data class SearchUIActions(
     val onFetchLastSuccessfulSearch: () -> Unit,
     val onUpdateKeyword: (keyword: String) -> Unit,
     val onClearKeyword: () -> Unit,
-    val onSearch: () -> Unit,
     val onScrolledToTop: () -> Unit,
     val onQueueDownloadSuccess: () -> Unit,
     val onQueueDownloadFailed: () -> Unit,

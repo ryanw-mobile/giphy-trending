@@ -116,10 +116,6 @@ fun AppNavHost(
                     onFetchLastSuccessfulSearch = { viewModel.fetchLastSuccessfulSearch() },
                     onClearKeyword = { viewModel.clearKeyword() },
                     onUpdateKeyword = { viewModel.updateKeyword(it) },
-                    onSearch = {
-                        resetScrollBehavior()
-                        viewModel.search()
-                    },
                     onErrorShown = { viewModel.errorShown(it) },
                     onScrolledToTop = { onScrolledToTop(AppNavItem.Search) },
                     onQueueDownloadFailed = { viewModel.showSnackbar(failedToDownloadFile) },

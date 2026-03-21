@@ -23,6 +23,10 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -37,8 +41,13 @@ class SearchViewModel @Inject constructor(
     private val userPreferencesRepository: UserPreferencesRepository, // Keep for preferenceErrors
     @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
-    // API returns HTTP 414 if query string longer than this
-    private val keywordMaxLength = 50
+    internal companion object {
+        // API returns HTTP 414 if query string longer than this
+        const val KEYWORD_MAX_LENGTH = 50
+        const val SEARCH_DEBOUNCE_MILLIS = 500L
+    }
+
+    private val keywordMaxLength = KEYWORD_MAX_LENGTH
     private val _uiState: MutableStateFlow<SearchUIState> = MutableStateFlow(
         SearchUIState(
             isLoading = true,
@@ -54,9 +63,32 @@ class SearchViewModel @Inject constructor(
     private var initialisationDone: Boolean = false
     private var keyword: String = ""
 
+    // Internal flow for automatic search with debounce
+    private val keywordFlow = MutableStateFlow("")
+
     init {
         collectErrors()
         collectUserPreferences()
+        collectKeywordChanges()
+    }
+
+    private fun collectKeywordChanges() {
+        viewModelScope.launch(dispatcher) {
+            keywordFlow
+                .debounce(SEARCH_DEBOUNCE_MILLIS)
+                .map { it.trim() } // Trim whitespace
+                .distinctUntilChanged() // Only trigger if keyword actually changed
+                .filter { it.isNotEmpty() } // Only search for non-empty keywords
+                .collect { trimmedKeyword ->
+                    val apiMaxEntries = userPreferences.apiRequestLimit
+                    val rating = userPreferences.rating
+                    if (apiMaxEntries != null && rating != null) {
+                        // Clear results before new search
+                        _uiState.update { it.copy(isLoading = true, gifObjects = emptyList()) }
+                        startNewSearch(keyword = trimmedKeyword, apiMaxEntries = apiMaxEntries, rating = rating)
+                    }
+                }
+        }
     }
 
     fun fetchLastSuccessfulSearch() {
@@ -79,6 +111,9 @@ class SearchViewModel @Inject constructor(
         // caller is not allowed to feed us null value, which is reserved to the ViewModel
         this.keyword = keyword?.take(keywordMaxLength) ?: ""
 
+        // Emit to flow for automatic search
+        keywordFlow.value = this.keyword
+
         _uiState.update { currentUiState ->
             currentUiState.copy(
                 keyword = this.keyword,
@@ -89,6 +124,9 @@ class SearchViewModel @Inject constructor(
     fun clearKeyword() {
         keyword = ""
 
+        // Clear the flow as well
+        keywordFlow.value = ""
+
         _uiState.update { currentUiState ->
             currentUiState.copy(
                 keyword = keyword,
@@ -97,6 +135,8 @@ class SearchViewModel @Inject constructor(
     }
 
     fun search() {
+        // Cancel any pending debounce-triggered search to avoid double-firing
+        keywordFlow.value = ""
         startLoading()
         val apiMaxEntries = userPreferences.apiRequestLimit
         val rating = userPreferences.rating

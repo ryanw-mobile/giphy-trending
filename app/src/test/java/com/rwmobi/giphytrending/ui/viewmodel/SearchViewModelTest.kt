@@ -14,6 +14,7 @@ import com.rwmobi.giphytrending.domain.usecase.SearchGifsUseCase
 import com.rwmobi.giphytrending.test.testdata.SampleGifObjectList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -29,6 +30,9 @@ internal class SearchViewModelTest {
     private lateinit var fakeSearchRepository: FakeSearchRepository
     private lateinit var fakeUserPreferencesRepository: FakeUserPreferencesRepository
 
+    // Shared dispatcher allows runTest(testDispatcher) to advance time for debounce tests
+    private val testDispatcher = UnconfinedTestDispatcher()
+
     @Before
     fun setUp() {
         fakeUserPreferencesRepository = FakeUserPreferencesRepository()
@@ -38,7 +42,7 @@ internal class SearchViewModelTest {
             getUserPreferencesUseCase = GetUserPreferencesUseCase(fakeUserPreferencesRepository),
             searchRepository = fakeSearchRepository,
             userPreferencesRepository = fakeUserPreferencesRepository,
-            dispatcher = UnconfinedTestDispatcher(),
+            dispatcher = testDispatcher,
         )
     }
 
@@ -218,5 +222,84 @@ internal class SearchViewModelTest {
 
         val uiState = viewModel.uiState.value
         assertTrue(uiState.errorMessages.isEmpty())
+    }
+
+    @Test
+    fun `automatic search triggers after debounce when keyword is non-empty with valid preferences`() = runTest(testDispatcher) {
+        fakeUserPreferencesRepository.init(
+            userPreferences = UserPreferences(
+                apiRequestLimit = 100,
+                rating = Rating.G,
+            ),
+        )
+        fakeSearchRepository.setSearchResultForTest(Result.success(SampleGifObjectList.gifObjects))
+
+        viewModel.updateKeyword("cats")
+        advanceTimeBy(SearchViewModel.SEARCH_DEBOUNCE_MILLIS + 100)
+
+        assertContentEquals(SampleGifObjectList.gifObjects, viewModel.uiState.value.gifObjects)
+    }
+
+    @Test
+    fun `automatic search does not trigger for empty keyword`() = runTest(testDispatcher) {
+        fakeUserPreferencesRepository.init(
+            userPreferences = UserPreferences(
+                apiRequestLimit = 100,
+                rating = Rating.G,
+            ),
+        )
+        fakeSearchRepository.setSearchResultForTest(Result.success(SampleGifObjectList.gifObjects))
+
+        viewModel.updateKeyword("")
+        advanceTimeBy(SearchViewModel.SEARCH_DEBOUNCE_MILLIS + 100)
+
+        assertNull(viewModel.uiState.value.gifObjects)
+    }
+
+    @Test
+    fun `automatic search does not trigger when preferences are not fully set`() = runTest(testDispatcher) {
+        fakeSearchRepository.setSearchResultForTest(Result.success(SampleGifObjectList.gifObjects))
+
+        viewModel.updateKeyword("cats")
+        advanceTimeBy(SearchViewModel.SEARCH_DEBOUNCE_MILLIS + 100)
+
+        assertNull(viewModel.uiState.value.gifObjects)
+    }
+
+    @Test
+    fun `automatic search does not trigger after clear keyword resets the keyword flow`() = runTest(testDispatcher) {
+        fakeUserPreferencesRepository.init(
+            userPreferences = UserPreferences(
+                apiRequestLimit = 100,
+                rating = Rating.G,
+            ),
+        )
+        fakeSearchRepository.setSearchResultForTest(Result.success(SampleGifObjectList.gifObjects))
+
+        viewModel.updateKeyword("cats")
+        viewModel.clearKeyword()
+        advanceTimeBy(SearchViewModel.SEARCH_DEBOUNCE_MILLIS + 100)
+
+        assertNull(viewModel.uiState.value.gifObjects)
+    }
+
+    @Test
+    fun `search cancels pending automatic search to prevent double firing`() = runTest(testDispatcher) {
+        fakeUserPreferencesRepository.init(
+            userPreferences = UserPreferences(
+                apiRequestLimit = 100,
+                rating = Rating.G,
+            ),
+        )
+        fakeSearchRepository.setSearchResultForTest(Result.success(SampleGifObjectList.gifObjects))
+
+        viewModel.updateKeyword("cats")
+        // Manual search fires immediately, resets keywordFlow to cancel pending debounce
+        viewModel.search()
+        // After debounce period, the cancelled flow emits empty string (filtered out)
+        advanceTimeBy(SearchViewModel.SEARCH_DEBOUNCE_MILLIS + 100)
+
+        assertContentEquals(SampleGifObjectList.gifObjects, viewModel.uiState.value.gifObjects)
+        assertFalse(viewModel.uiState.value.isLoading)
     }
 }

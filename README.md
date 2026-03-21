@@ -49,6 +49,7 @@ now [logged as issues](https://github.com/ryanw-mobile/giphy-trending/issues?q=i
 * Kotlin Coroutines and Flow
 * Dependency Injection using Dagger Hilt
 * Reactive UI updates responding to data and preference changes
+* Debounced automatic search using Kotlin Flow — triggers search as the user types, with IME action for immediate submission
 * Standardized UI side-effect handling using `SharedFlow` (Effect pattern)
 * Material 3 dynamic colour theming supporting light and dark modes
 * Dynamic screen layout support using Windows Size Class

@@ -27,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
@@ -43,7 +42,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
-import kotlinx.coroutines.launch
 
 @Composable
 fun SearchTextField(
@@ -55,7 +53,6 @@ fun SearchTextField(
     onSearch: () -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
-    val coroutineScope = rememberCoroutineScope()
     var isFocused by remember { mutableStateOf(false) }
     val contentDescriptionSearchBar = stringResource(R.string.content_description_search_bar)
 
@@ -72,6 +69,13 @@ fun SearchTextField(
         onValueChange = { onUpdateKeyword(it) },
         singleLine = true,
         maxLines = 1,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+        keyboardActions = KeyboardActions(
+            onSearch = {
+                onSearch()
+                focusManager.clearFocus()
+            },
+        ),
         shape = GiphyTrendingTheme.shapes.medium,
         colors = TextFieldDefaults.colors().copy(
             focusedIndicatorColor = Color.Transparent,
@@ -79,17 +83,6 @@ fun SearchTextField(
             cursorColor = GiphyTrendingTheme.colorScheme.onPrimaryContainer.copy(
                 alpha = 0.28f,
             ),
-        ),
-        keyboardOptions = KeyboardOptions.Default.copy(
-            imeAction = ImeAction.Search,
-        ),
-        keyboardActions = KeyboardActions(
-            onSearch = {
-                onSearch()
-                coroutineScope.launch {
-                    focusManager.clearFocus()
-                }
-            },
         ),
         placeholder = {
             Text(
@@ -142,7 +135,7 @@ private fun SearchTextFieldEmptyPreview() {
                 focusManager = LocalFocusManager.current,
                 onUpdateKeyword = {},
                 onClearKeyword = {},
-                onSearch = { },
+                onSearch = {},
             )
         }
     }
@@ -158,7 +151,7 @@ private fun SearchTextFieldPreview() {
                 focusManager = LocalFocusManager.current,
                 onUpdateKeyword = {},
                 onClearKeyword = {},
-                onSearch = { },
+                onSearch = {},
             )
         }
     }

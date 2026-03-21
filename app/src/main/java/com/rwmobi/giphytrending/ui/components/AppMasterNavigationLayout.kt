@@ -6,6 +6,7 @@
 package com.rwmobi.giphytrending.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -96,6 +97,7 @@ fun AppMasterNavigationLayout(
         },
     ) {
         Scaffold(
+            contentWindowInsets = WindowInsets(0, 0, 0, 0),
             topBar = {
                 TopAppBar(
                     modifier = Modifier.wrapContentHeight(),

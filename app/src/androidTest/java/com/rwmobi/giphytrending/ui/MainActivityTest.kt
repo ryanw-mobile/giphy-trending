@@ -47,11 +47,13 @@ internal class MainActivityTest {
         with(mainActivityTestRobot) {
             // Rotate to landscape
             uiDevice.setOrientationLeft()
-            checkNavigationLayoutIsCorrect()
+            // Rotate to landscape
+            checkAppLayoutIsDisplayed()
 
-// Rotate to portrait
+            // Rotate to portrait
             uiDevice.setOrientationNatural()
-            checkNavigationLayoutIsCorrect()
+            checkAppLayoutIsDisplayed()
+            printSemanticTree()
         }
     }
 }

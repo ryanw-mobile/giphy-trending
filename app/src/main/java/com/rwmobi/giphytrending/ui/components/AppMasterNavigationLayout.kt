@@ -134,7 +134,6 @@ fun AppMasterNavigationLayout(
                     )
                 },
                 onScrolledToTop = { lastDoubleTappedNavItem.value = null },
-                windowSizeClass = adaptiveInfo.windowSizeClass,
             )
         }
     }

@@ -8,6 +8,7 @@ package com.rwmobi.giphytrending.ui.navigation
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,7 +20,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.window.core.layout.WindowSizeClass
 import coil3.ImageLoader
 import com.rwmobi.giphytrending.BuildConfig
 import com.rwmobi.giphytrending.R
@@ -44,17 +44,11 @@ fun AppNavHost(
     scrollBehavior: TopAppBarScrollBehavior,
     onShowSnackbar: suspend (String) -> Unit,
     onScrolledToTop: (AppNavItem) -> Unit,
-    windowSizeClass: WindowSizeClass,
 ) {
     fun resetScrollBehavior() {
         scrollBehavior.state.heightOffset = 0f
         scrollBehavior.state.contentOffset = 0f
     }
-
-    // Explicitly use windowSizeClass if required by architecture, or mark as unused if not.
-    // For now, suppress unused warning to maintain compliance with detekt.
-    @Suppress("UNUSED_PARAMETER")
-    val unused = windowSizeClass
 
     NavHost(
         modifier = modifier,

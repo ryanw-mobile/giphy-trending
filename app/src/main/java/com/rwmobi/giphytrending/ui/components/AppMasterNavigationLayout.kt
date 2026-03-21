@@ -24,6 +24,7 @@ import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.ExperimentalMaterial3AdaptiveNavigationSuiteApi
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -121,7 +122,7 @@ fun AppMasterNavigationLayout(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues),
-                isLargeScreen = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(adaptiveInfo).toString() != "NavigationBar",
+                isLargeScreen = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(adaptiveInfo) != NavigationSuiteType.NavigationBar,
                 navController = navController,
                 imageLoader = imageLoader,
                 lastDoubleTappedNavItem = lastDoubleTappedNavItem.value,

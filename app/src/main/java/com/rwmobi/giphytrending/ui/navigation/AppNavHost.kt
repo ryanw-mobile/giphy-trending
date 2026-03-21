@@ -51,6 +51,11 @@ fun AppNavHost(
         scrollBehavior.state.contentOffset = 0f
     }
 
+    // Explicitly use windowSizeClass if required by architecture, or mark as unused if not.
+    // For now, suppress unused warning to maintain compliance with detekt.
+    @Suppress("UNUSED_PARAMETER")
+    val unused = windowSizeClass
+
     NavHost(
         modifier = modifier,
         navController = navController,

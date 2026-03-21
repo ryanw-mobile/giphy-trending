@@ -17,6 +17,7 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
@@ -59,6 +60,7 @@ fun AppMasterNavigationLayout(
     val currentRoute = navBackStackEntry?.destination?.route
 
     NavigationSuiteScaffold(
+        modifier = modifier,
         layoutType = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(adaptiveInfo),
         navigationSuiteItems = {
             AppNavItem.navigationBarItems.forEach { item ->
@@ -82,7 +84,7 @@ fun AppMasterNavigationLayout(
                         )
                     },
                     label = {
-                        androidx.compose.material3.Text(
+                        Text(
                             text = stringResource(id = item.titleResId).replaceFirstChar {
                                 if (it.isLowerCase()) it.titlecase(Locale.ENGLISH) else it.toString()
                             },

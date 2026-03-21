@@ -11,7 +11,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -30,6 +29,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.window.core.layout.WindowWidthSizeClass
 import coil3.ImageLoader
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.domain.model.GifObject
@@ -38,7 +38,7 @@ import com.rwmobi.giphytrending.ui.components.NoDataScreen
 import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemsProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.utils.downloadImage
-import com.rwmobi.giphytrending.ui.utils.getPreviewWindowSizeClass
+import com.rwmobi.giphytrending.ui.utils.getPreviewWindowAdaptiveInfo
 import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -139,7 +139,7 @@ private fun Preview(
         Surface {
             TrendingListScreen(
                 modifier = Modifier.fillMaxSize(),
-                useCardLayout = getPreviewWindowSizeClass().widthSizeClass != WindowWidthSizeClass.Compact,
+                useCardLayout = getPreviewWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass != WindowWidthSizeClass.COMPACT,
                 imageLoader = ImageLoader(LocalContext.current),
                 uiState = TrendingUIState(
                     gifObjects = gifObjects,
@@ -166,7 +166,7 @@ private fun NoDataPreview() {
         Surface {
             TrendingListScreen(
                 modifier = Modifier.fillMaxSize(),
-                useCardLayout = getPreviewWindowSizeClass().widthSizeClass != WindowWidthSizeClass.Compact,
+                useCardLayout = getPreviewWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass != WindowWidthSizeClass.COMPACT,
                 imageLoader = ImageLoader(LocalContext.current),
                 uiState = TrendingUIState(
                     gifObjects = emptyList(),

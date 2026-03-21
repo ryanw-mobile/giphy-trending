@@ -31,7 +31,7 @@ testCoreKtx = "1.7.0"
 testExt = "1.3.0"
 testRules = "1.7.0"
 timber = "5.0.1"
-material3AdaptiveAndroid = "1.0.0-alpha06"
+material3Adaptive = "1.0.0"
 uiautomator = "2.3.0"
 baselineprofile = "1.5.0-alpha04"
 profileinstaller = "1.4.1"
@@ -99,7 +99,10 @@ hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testi
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 
 leakcanary-android = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
-androidx-material3-adaptive-android = { group = "androidx.compose.material3", name = "material3-adaptive-android", version.ref = "material3AdaptiveAndroid" }
+androidx-material3-adaptive = { group = "androidx.compose.material3.adaptive", name = "adaptive", version.ref = "material3Adaptive" }
+androidx-material3-adaptive-layout = { group = "androidx.compose.material3.adaptive", name = "adaptive-layout", version.ref = "material3Adaptive" }
+androidx-material3-adaptive-navigation = { group = "androidx.compose.material3.adaptive", name = "adaptive-navigation", version.ref = "material3Adaptive" }
+androidx-window = { group = "androidx.window", name = "window", version = "1.3.0" }
 androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 

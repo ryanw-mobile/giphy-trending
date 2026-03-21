@@ -23,8 +23,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.VerticalDivider
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,12 +36,13 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.window.core.layout.WindowWidthSizeClass
 import coil3.ImageLoader
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.navigation.AppNavHost
 import com.rwmobi.giphytrending.ui.navigation.AppNavItem
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
-import com.rwmobi.giphytrending.ui.utils.getPreviewWindowSizeClass
+import com.rwmobi.giphytrending.ui.utils.getPreviewWindowAdaptiveInfo
 
 private enum class NavigationLayoutType {
     BottomNavigation,
@@ -50,30 +50,23 @@ private enum class NavigationLayoutType {
     FullScreen,
 }
 
-private fun calculateNavigationLayout(windowWidthSizeClass: WindowWidthSizeClass): NavigationLayoutType = when (windowWidthSizeClass) {
-    WindowWidthSizeClass.Compact -> {
-        NavigationLayoutType.BottomNavigation
-    }
-
-    else -> {
-        // WindowWidthSizeClass.Medium, -- tablet portrait
-        // WindowWidthSizeClass.Expanded, -- phone landscape mode
-        NavigationLayoutType.NavigationRail
-    }
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppMasterNavigationLayout(
     modifier: Modifier = Modifier,
-    windowSizeClass: WindowSizeClass,
+    adaptiveInfo: WindowAdaptiveInfo,
     navController: NavHostController,
     imageLoader: ImageLoader,
     snackbarHostState: SnackbarHostState,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val lastDoubleTappedNavItem = remember { mutableStateOf<AppNavItem?>(null) }
-    val navigationLayoutType = calculateNavigationLayout(windowWidthSizeClass = windowSizeClass.widthSizeClass)
+
+    val navigationLayoutType = if (adaptiveInfo.windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.COMPACT) {
+        NavigationLayoutType.BottomNavigation
+    } else {
+        NavigationLayoutType.NavigationRail
+    }
 
     Row(modifier = modifier) {
         if (navigationLayoutType == NavigationLayoutType.NavigationRail) {
@@ -146,6 +139,7 @@ fun AppMasterNavigationLayout(
                     )
                 },
                 onScrolledToTop = { lastDoubleTappedNavItem.value = null },
+                windowSizeClass = adaptiveInfo.windowSizeClass,
             )
         }
     }
@@ -163,7 +157,7 @@ private fun Preview() {
         ) {
             AppMasterNavigationLayout(
                 modifier = Modifier.fillMaxSize(),
-                windowSizeClass = getPreviewWindowSizeClass(),
+                adaptiveInfo = getPreviewWindowAdaptiveInfo(),
                 imageLoader = ImageLoader(LocalContext.current),
                 navController = rememberNavController(),
                 snackbarHostState = remember { SnackbarHostState() },

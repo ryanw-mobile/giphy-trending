@@ -5,7 +5,6 @@
 
 package com.rwmobi.giphytrending.ui
 
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -43,7 +42,6 @@ internal class MainActivityTest {
         uiDevice.setOrientationNatural()
     }
 
-    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     @Test
     fun appNavigationLayoutTest() {
         with(mainActivityTestRobot) {

@@ -5,9 +5,6 @@
 
 package com.rwmobi.giphytrending.ui
 
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsSelected
@@ -21,6 +18,7 @@ import androidx.compose.ui.test.printToLog
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.window.core.layout.WindowSizeClass
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.navigation.AppNavItem
 import com.rwmobi.giphytrending.ui.test.GiphyTrendingTestRule
@@ -41,8 +39,8 @@ internal class MainActivityTestRobot(
 
     fun checkNavigationLayoutIsCorrect() {
         try {
-            val windowWidthSizeClass = getWindowSizeClass().widthSizeClass
-            if (windowWidthSizeClass == WindowWidthSizeClass.Compact) {
+            val windowWidthSizeClass = getWindowSizeClass().windowWidthSizeClass
+            if (windowWidthSizeClass.toString() == "COMPACT") {
                 assertNavigationBarIsDisplayed()
             } else {
                 assertNavigationRailIsDisplayed()
@@ -164,7 +162,7 @@ internal class MainActivityTestRobot(
         }
     }
 
-    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+    @Suppress("DEPRECATION")
     private fun getWindowSizeClass(): WindowSizeClass {
         val metrics = InstrumentationRegistry.getInstrumentation().targetContext.resources.displayMetrics
         val widthPx = metrics.widthPixels
@@ -174,7 +172,7 @@ internal class MainActivityTestRobot(
         val widthDp = widthPx / density
         val heightDp = heightPx / density
 
-        return WindowSizeClass.calculateFromSize(size = DpSize(width = widthDp.dp, height = heightDp.dp))
+        return WindowSizeClass.compute(widthDp, heightDp)
     }
 
     // Assertions

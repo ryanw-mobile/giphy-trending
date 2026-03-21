@@ -19,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.window.core.layout.WindowSizeClass
 import coil3.ImageLoader
 import com.rwmobi.giphytrending.BuildConfig
 import com.rwmobi.giphytrending.R
@@ -43,6 +44,7 @@ fun AppNavHost(
     scrollBehavior: TopAppBarScrollBehavior,
     onShowSnackbar: suspend (String) -> Unit,
     onScrolledToTop: (AppNavItem) -> Unit,
+    windowSizeClass: WindowSizeClass,
 ) {
     fun resetScrollBehavior() {
         scrollBehavior.state.heightOffset = 0f

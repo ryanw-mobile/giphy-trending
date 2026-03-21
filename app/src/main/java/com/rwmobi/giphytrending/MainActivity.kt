@@ -9,8 +9,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import coil3.ImageLoader
 import com.rwmobi.giphytrending.ui.components.GiphyTrendingApp
@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var imageLoader: ImageLoader
 
-    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+    @OptIn(ExperimentalMaterial3AdaptiveApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
 
@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             enableEdgeToEdge()
             GiphyTrendingApp(
-                windowSizeClass = calculateWindowSizeClass(this),
+                adaptiveInfo = currentWindowAdaptiveInfo(),
                 imageLoader = imageLoader,
             )
         }

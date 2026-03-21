@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -20,7 +20,7 @@ import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 
 @Composable
 fun GiphyTrendingApp(
-    windowSizeClass: WindowSizeClass,
+    adaptiveInfo: WindowAdaptiveInfo,
     imageLoader: ImageLoader,
 ) {
     val navController = rememberNavController()
@@ -37,7 +37,7 @@ fun GiphyTrendingApp(
                 modifier = Modifier
                     .fillMaxSize()
                     .imePadding(),
-                windowSizeClass = windowSizeClass,
+                adaptiveInfo = adaptiveInfo,
                 navController = navController,
                 imageLoader = imageLoader,
                 snackbarHostState = snackbarHostState,

@@ -31,6 +31,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.window.core.layout.WindowWidthSizeClass
 import coil3.ImageLoader
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.domain.model.GifObject
@@ -40,7 +41,7 @@ import com.rwmobi.giphytrending.ui.components.SearchTextField
 import com.rwmobi.giphytrending.ui.previewparameter.GiphyImageItemsProvider
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
 import com.rwmobi.giphytrending.ui.utils.downloadImage
-import com.rwmobi.giphytrending.ui.utils.getPreviewWindowSizeClass
+import com.rwmobi.giphytrending.ui.utils.getPreviewWindowAdaptiveInfo
 import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -156,7 +157,7 @@ private fun Preview(
         Surface {
             SearchScreen(
                 modifier = Modifier.fillMaxSize(),
-                useCardLayout = getPreviewWindowSizeClass().widthSizeClass != androidx.compose.material3.windowsizeclass.WindowWidthSizeClass.Compact,
+                useCardLayout = getPreviewWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass != WindowWidthSizeClass.COMPACT,
                 imageLoader = ImageLoader(LocalContext.current),
                 uiState = SearchUIState(
                     gifObjects = gifObjects,

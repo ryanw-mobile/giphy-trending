@@ -5,22 +5,17 @@
 
 package com.rwmobi.giphytrending.ui
 
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.printToLog
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.window.core.layout.WindowSizeClass
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.navigation.AppNavItem
 import com.rwmobi.giphytrending.ui.test.GiphyTrendingTestRule
@@ -36,20 +31,6 @@ internal class MainActivityTestRobot(
         } catch (e: AssertionError) {
             composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
             throw AssertionError("Expected App layout is not displayed. ${e.message}", e)
-        }
-    }
-
-    fun checkNavigationLayoutIsCorrect() {
-        try {
-            val windowWidthSizeClass = getWindowSizeClass().widthSizeClass
-            if (windowWidthSizeClass == WindowWidthSizeClass.Compact) {
-                assertNavigationBarIsDisplayed()
-            } else {
-                assertNavigationRailIsDisplayed()
-            }
-        } catch (e: AssertionError) {
-            composeTestRule.onRoot().printToLog("MainActivityTestRobotError")
-            throw AssertionError("Expected navigation layout is not observed. ${e.message}", e)
         }
     }
 
@@ -135,7 +116,7 @@ internal class MainActivityTestRobot(
     private fun tapTrendingTab() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab) and hasContentDescription(value = activity.getString(AppNavItem.TrendingList.titleResId)),
+                matcher = withRole(Role.Tab) and hasText(text = activity.getString(AppNavItem.TrendingList.titleResId)),
             ).performClick()
         }
     }
@@ -143,7 +124,7 @@ internal class MainActivityTestRobot(
     private fun tapSearchTab() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab) and hasContentDescription(value = activity.getString(AppNavItem.Search.titleResId)),
+                matcher = withRole(Role.Tab) and hasText(text = activity.getString(AppNavItem.Search.titleResId)),
             ).performClick()
         }
     }
@@ -151,7 +132,7 @@ internal class MainActivityTestRobot(
     private fun tapSettingsTab() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab) and hasContentDescription(value = activity.getString(AppNavItem.Settings.titleResId)),
+                matcher = withRole(Role.Tab) and hasText(text = activity.getString(AppNavItem.Settings.titleResId)),
             ).performClick()
         }
     }
@@ -164,7 +145,7 @@ internal class MainActivityTestRobot(
         }
     }
 
-    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+    @Suppress("DEPRECATION")
     private fun getWindowSizeClass(): WindowSizeClass {
         val metrics = InstrumentationRegistry.getInstrumentation().targetContext.resources.displayMetrics
         val widthPx = metrics.widthPixels
@@ -174,7 +155,7 @@ internal class MainActivityTestRobot(
         val widthDp = widthPx / density
         val heightDp = heightPx / density
 
-        return WindowSizeClass.calculateFromSize(size = DpSize(width = widthDp.dp, height = heightDp.dp))
+        return WindowSizeClass.compute(widthDp, heightDp)
     }
 
     // Assertions
@@ -194,23 +175,11 @@ internal class MainActivityTestRobot(
         }
     }
 
-    private fun assertNavigationBarIsDisplayed() {
-        with(composeTestRule) {
-            onNodeWithContentDescription(label = activity.getString(R.string.content_description_navigation_bar)).assertIsDisplayed()
-        }
-    }
-
-    private fun assertNavigationRailIsDisplayed() {
-        with(composeTestRule) {
-            onNodeWithContentDescription(label = activity.getString(R.string.content_description_navigation_rail)).assertIsDisplayed()
-        }
-    }
-
     private fun assertNavigationItemsAreDisplayed() {
         with(composeTestRule) {
             for (navigationItem in AppNavItem.navigationBarItems) {
                 onNode(
-                    matcher = withRole(Role.Tab) and hasContentDescription(value = activity.getString(navigationItem.titleResId)),
+                    matcher = withRole(Role.Tab) and hasText(activity.getString(navigationItem.titleResId)),
                 ).assertIsDisplayed()
             }
         }
@@ -219,7 +188,7 @@ internal class MainActivityTestRobot(
     private fun assertTrendingTabIsSelected() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab) and hasContentDescription(value = activity.getString(AppNavItem.TrendingList.titleResId)),
+                matcher = withRole(Role.Tab) and hasText(text = activity.getString(AppNavItem.TrendingList.titleResId)),
             ).assertIsSelected()
         }
     }
@@ -227,7 +196,7 @@ internal class MainActivityTestRobot(
     private fun assertSearchTabIsSelected() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab) and hasContentDescription(value = activity.getString(AppNavItem.Search.titleResId)),
+                matcher = withRole(Role.Tab) and hasText(text = activity.getString(AppNavItem.Search.titleResId)),
             ).assertIsSelected()
         }
     }
@@ -235,7 +204,7 @@ internal class MainActivityTestRobot(
     private fun assertSettingsTabIsSelected() {
         with(composeTestRule) {
             onNode(
-                matcher = withRole(Role.Tab) and hasContentDescription(value = activity.getString(AppNavItem.Settings.titleResId)),
+                matcher = withRole(Role.Tab) and hasText(text = activity.getString(AppNavItem.Settings.titleResId)),
             ).assertIsSelected()
         }
     }

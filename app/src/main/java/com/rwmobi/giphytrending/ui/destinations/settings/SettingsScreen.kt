@@ -30,7 +30,6 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -67,12 +66,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.window.core.layout.WindowWidthSizeClass
 import com.rwmobi.giphytrending.BuildConfig
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.domain.model.Rating
 import com.rwmobi.giphytrending.ui.components.LoadingOverlay
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
-import com.rwmobi.giphytrending.ui.utils.getPreviewWindowSizeClass
+import com.rwmobi.giphytrending.ui.utils.getPreviewWindowAdaptiveInfo
 import com.rwmobi.giphytrending.ui.utils.startBrowserActivity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -408,7 +408,7 @@ private fun Preview() {
         Surface {
             SettingsScreen(
                 modifier = Modifier.fillMaxSize(),
-                isLargeScreen = getPreviewWindowSizeClass().widthSizeClass != WindowWidthSizeClass.Compact,
+                isLargeScreen = getPreviewWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass != WindowWidthSizeClass.COMPACT,
                 apiMinEntries = 25,
                 apiMaxEntries = 250,
                 uiState = SettingsUIState(

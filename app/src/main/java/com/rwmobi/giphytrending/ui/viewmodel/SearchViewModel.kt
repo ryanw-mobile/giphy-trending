@@ -41,8 +41,13 @@ class SearchViewModel @Inject constructor(
     private val userPreferencesRepository: UserPreferencesRepository, // Keep for preferenceErrors
     @DispatcherModule.MainDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ViewModel() {
-    // API returns HTTP 414 if query string longer than this
-    private val keywordMaxLength = 50
+    internal companion object {
+        // API returns HTTP 414 if query string longer than this
+        const val KEYWORD_MAX_LENGTH = 50
+        const val SEARCH_DEBOUNCE_MILLIS = 500L
+    }
+
+    private val keywordMaxLength = KEYWORD_MAX_LENGTH
     private val _uiState: MutableStateFlow<SearchUIState> = MutableStateFlow(
         SearchUIState(
             isLoading = true,
@@ -57,7 +62,7 @@ class SearchViewModel @Inject constructor(
     private var userPreferences: UserPreferences = UserPreferences(apiRequestLimit = null, rating = null)
     private var initialisationDone: Boolean = false
     private var keyword: String = ""
-    
+
     // Internal flow for automatic search with debounce
     private val keywordFlow = MutableStateFlow("")
 
@@ -70,7 +75,7 @@ class SearchViewModel @Inject constructor(
     private fun collectKeywordChanges() {
         viewModelScope.launch(dispatcher) {
             keywordFlow
-                .debounce(500) // Wait 500ms after user stops typing
+                .debounce(SEARCH_DEBOUNCE_MILLIS)
                 .map { it.trim() } // Trim whitespace
                 .distinctUntilChanged() // Only trigger if keyword actually changed
                 .filter { it.isNotEmpty() } // Only search for non-empty keywords
@@ -105,7 +110,7 @@ class SearchViewModel @Inject constructor(
     fun updateKeyword(keyword: String?) {
         // caller is not allowed to feed us null value, which is reserved to the ViewModel
         this.keyword = keyword?.take(keywordMaxLength) ?: ""
-        
+
         // Emit to flow for automatic search
         keywordFlow.value = this.keyword
 
@@ -130,6 +135,8 @@ class SearchViewModel @Inject constructor(
     }
 
     fun search() {
+        // Cancel any pending debounce-triggered search to avoid double-firing
+        keywordFlow.value = ""
         startLoading()
         val apiMaxEntries = userPreferences.apiRequestLimit
         val rating = userPreferences.rating

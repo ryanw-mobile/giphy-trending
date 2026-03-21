@@ -104,6 +104,7 @@ fun SearchScreen(
             focusManager = focusManager,
             onUpdateKeyword = uiActions.onUpdateKeyword,
             onClearKeyword = uiActions.onClearKeyword,
+            onSearch = uiActions.onSearch,
         )
 
         uiState.gifObjects?.let { giphyImageItems ->
@@ -166,6 +167,7 @@ private fun Preview(
                     onFetchLastSuccessfulSearch = {},
                     onUpdateKeyword = {},
                     onClearKeyword = {},
+                    onSearch = {},
                     onScrolledToTop = {},
                     onQueueDownloadFailed = {},
                     onQueueDownloadSuccess = {},

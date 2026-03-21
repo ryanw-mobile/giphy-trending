@@ -57,6 +57,7 @@ The project strictly follows Clean Architecture principles with a focus on an **
 - **`data`**: Implements repositories and data sources (local, network, preferences). Uses Room, Ktor, and DataStore. The repository acts as a coordinator, ensuring the local database remains the single source of truth.
 - **`domain`**: Contains business logic, domain models, repository interfaces, and **Use Cases (Interactors)**. Pure Kotlin, no Android dependencies. Use Cases encapsulate specific business rules and provide a clean API for the UI layer.
 - **`ui`**: Jetpack Compose implementation. Follows MVVM with `uiState` flows, `Effect` flows for one-time side effects, and `UIActions` for user-triggered events. ViewModels are reactive and update the UI automatically when domain data or user preferences change.
+  - The Search screen uses **debounced automatic search**: `SearchViewModel` exposes a `keywordFlow` that applies `debounce(SEARCH_DEBOUNCE_MILLIS)` + `distinctUntilChanged` + `filter { isNotEmpty() }` to trigger searches as the user types. Calling `search()` (e.g., via the keyboard IME search action) fires immediately and resets the flow to cancel any pending debounce. Constants such as `SEARCH_DEBOUNCE_MILLIS` and `KEYWORD_MAX_LENGTH` live in `SearchViewModel.Companion`.
 
 ### Testing Strategy
 - **Unit Tests:** Located in `src/test`. Focus on ViewModels and Domain logic.

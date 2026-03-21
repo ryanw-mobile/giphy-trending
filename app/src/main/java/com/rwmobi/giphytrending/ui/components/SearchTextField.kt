@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
@@ -36,6 +38,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import com.rwmobi.giphytrending.R
 import com.rwmobi.giphytrending.ui.theme.GiphyTrendingTheme
@@ -47,6 +50,7 @@ fun SearchTextField(
     focusManager: FocusManager,
     onUpdateKeyword: (keyword: String) -> Unit,
     onClearKeyword: () -> Unit,
+    onSearch: () -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
     var isFocused by remember { mutableStateOf(false) }
@@ -65,6 +69,13 @@ fun SearchTextField(
         onValueChange = { onUpdateKeyword(it) },
         singleLine = true,
         maxLines = 1,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+        keyboardActions = KeyboardActions(
+            onSearch = {
+                onSearch()
+                focusManager.clearFocus()
+            },
+        ),
         shape = GiphyTrendingTheme.shapes.medium,
         colors = TextFieldDefaults.colors().copy(
             focusedIndicatorColor = Color.Transparent,
@@ -124,6 +135,7 @@ private fun SearchTextFieldEmptyPreview() {
                 focusManager = LocalFocusManager.current,
                 onUpdateKeyword = {},
                 onClearKeyword = {},
+                onSearch = {},
             )
         }
     }
@@ -139,6 +151,7 @@ private fun SearchTextFieldPreview() {
                 focusManager = LocalFocusManager.current,
                 onUpdateKeyword = {},
                 onClearKeyword = {},
+                onSearch = {},
             )
         }
     }
